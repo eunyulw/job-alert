@@ -38,6 +38,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from pydantic import HttpUrl, ValidationError
 
 from job_alert.adapters.base import AdapterError
+from job_alert.adapters.common import https_url, is_absolute_https, optional_text
 from job_alert.fetch import HttpFetcher, HttpPayload, RequestSpec
 from job_alert.identity import build_dedupe_key, build_job_key, content_hash
 from job_alert.models import CollectionResult, NormalizedJob, SourceConfig
@@ -252,10 +253,13 @@ def _normalize_job(
         raise _UnusableJob("record is not a JSON object")
     source_job_id = _source_job_id(record)
     title = _title(record)
-    posting_url = _https_url(record, "absolute_url")
+    try:
+        posting_url = https_url(record.get("absolute_url"), field="absolute_url")
+    except ValueError as exc:
+        raise _UnusableJob(str(exc)) from exc
     locations = _locations(record)
     department = _first_name(record.get("departments"))
-    requisition_id = _optional_text(record.get("requisition_id"))
+    requisition_id = optional_text(record.get("requisition_id"))
     description_text = _plain_text(record.get("content"))
     apply_url = _apply_url(
         source, tenant=tenant, source_job_id=source_job_id, posting_url=posting_url
@@ -318,26 +322,6 @@ def _title(record: Mapping[str, object]) -> str:
     return value
 
 
-def _https_url(record: Mapping[str, object], field: str) -> str:
-    value = record.get(field)
-    if not isinstance(value, str) or not value.strip():
-        raise _UnusableJob(f"missing {field}")
-    url = value.strip()
-    if not _is_absolute_https(url):
-        raise _UnusableJob(f"{field} is not an absolute https URL")
-    return url
-
-
-def _is_absolute_https(value: str) -> bool:
-    try:
-        parts = urlsplit(value)
-    except ValueError:
-        # ``urlsplit`` rejects malformed URLs itself, for example an unmatched IPv6 bracket. A
-        # provider value like that is a bad record, not a reason to abort the whole board.
-        return False
-    return parts.scheme == "https" and bool(parts.netloc)
-
-
 def _names(value: object) -> list[str]:
     """Nonblank ``name`` fields of a provider collection such as ``offices`` or ``departments``."""
     if not isinstance(value, list):
@@ -371,13 +355,6 @@ def _locations(record: Mapping[str, object]) -> list[str]:
             seen.add(key)
             locations.append(text)
     return locations
-
-
-def _optional_text(value: object) -> str | None:
-    if isinstance(value, bool) or not isinstance(value, (int, str)):
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _timestamp(value: object, field: str) -> datetime | None:
@@ -429,7 +406,7 @@ def _apply_url(
         raise AdapterError(
             f"greenhouse source {source.id} has an unusable {APPLY_URL_TEMPLATE_PARAMETER}: {exc}"
         ) from exc
-    if not _is_absolute_https(rendered):
+    if not is_absolute_https(rendered):
         raise AdapterError(
             f"greenhouse source {source.id} {APPLY_URL_TEMPLATE_PARAMETER} "
             "did not render an absolute https URL"
@@ -441,7 +418,7 @@ def _raw_metadata(record: Mapping[str, object]) -> dict[str, object]:
     """Provider bookkeeping kept for diagnosis; not part of job identity."""
     board_metadata = record.get("metadata")
     return {
-        "internal_job_id": _optional_text(record.get("internal_job_id")),
+        "internal_job_id": optional_text(record.get("internal_job_id")),
         "department_names": _names(record.get("departments")),
         "office_names": _names(record.get("offices")),
         "board_metadata": [

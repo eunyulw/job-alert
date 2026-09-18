@@ -54,6 +54,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from pydantic import HttpUrl, ValidationError
 
 from job_alert.adapters.base import AdapterError
+from job_alert.adapters.common import https_url, optional_text
 from job_alert.fetch import HttpFetcher, HttpPayload, RequestSpec
 from job_alert.identity import build_dedupe_key, build_job_key, content_hash
 from job_alert.models import CollectionResult, NormalizedJob, SourceConfig
@@ -253,14 +254,17 @@ def _normalize_job(
         raise _UnusableJob("record is not a JSON object")
     source_job_id = _source_job_id(record)
     title = _title(record)
-    posting_url = _https_url(record, "hostedUrl")
-    apply_url = _https_url(record, "applyUrl")
+    try:
+        posting_url = https_url(record.get("hostedUrl"), field="hostedUrl")
+        apply_url = https_url(record.get("applyUrl"), field="applyUrl")
+    except ValueError as exc:
+        raise _UnusableJob(str(exc)) from exc
     categories = record.get("categories")
     category_values: Mapping[str, object] = categories if isinstance(categories, Mapping) else {}
     locations = _locations(category_values)
-    department = _optional_text(category_values.get("department"))
-    team = _optional_text(category_values.get("team"))
-    employment_type = _optional_text(category_values.get("commitment"))
+    department = optional_text(category_values.get("department"))
+    team = optional_text(category_values.get("team"))
+    employment_type = optional_text(category_values.get("commitment"))
     description_text = _plain_text(record.get("descriptionPlain"))
     try:
         return NormalizedJob(
@@ -289,7 +293,7 @@ def _normalize_job(
             department=department,
             team=team,
             employment_type=employment_type,
-            workplace_type=_optional_text(record.get("workplaceType")),
+            workplace_type=optional_text(record.get("workplaceType")),
             description_text=description_text,
             content_hash=content_hash(title, locations, description_text),
             # ``NormalizedJob`` types both URLs as ``HttpUrl``, so validate them here and let the
@@ -321,26 +325,6 @@ def _title(record: Mapping[str, object]) -> str:
     return value
 
 
-def _https_url(record: Mapping[str, object], field: str) -> str:
-    value = record.get(field)
-    if not isinstance(value, str) or not value.strip():
-        raise _UnusableJob(f"missing {field}")
-    url = value.strip()
-    if not _is_absolute_https(url):
-        raise _UnusableJob(f"{field} is not an absolute https URL")
-    return url
-
-
-def _is_absolute_https(value: str) -> bool:
-    try:
-        parts = urlsplit(value)
-    except ValueError:
-        # ``urlsplit`` rejects malformed URLs itself, for example an unmatched IPv6 bracket. A
-        # provider value like that is a bad record, not a reason to abort the whole board.
-        return False
-    return parts.scheme == "https" and bool(parts.netloc)
-
-
 def _locations(categories: Mapping[str, object]) -> list[str]:
     """The display location followed by every listed site, deduplicated case-insensitively."""
     candidates: list[object] = [categories.get("location")]
@@ -359,13 +343,6 @@ def _locations(categories: Mapping[str, object]) -> list[str]:
             seen.add(key)
             locations.append(text)
     return locations
-
-
-def _optional_text(value: object) -> str | None:
-    if isinstance(value, bool) or not isinstance(value, (int, str)):
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _millis_timestamp(value: object, field: str) -> datetime | None:
@@ -390,7 +367,7 @@ def _plain_text(value: object) -> str | None:
 def _raw_metadata(record: Mapping[str, object], categories: object) -> dict[str, object]:
     """Provider bookkeeping kept for diagnosis; not part of job identity."""
     return {
-        "country": _optional_text(record.get("country")),
+        "country": optional_text(record.get("country")),
         "categories": dict(categories) if isinstance(categories, Mapping) else {},
         "created_at_millis": record.get("createdAt"),
     }
