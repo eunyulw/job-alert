@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import hashlib
+import json
+import unicodedata
+from collections.abc import Mapping
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 # Only these parameters are stripped from a job URL. Everything else is preserved, because an
@@ -20,16 +23,24 @@ TRACKING_PARAMETERS = frozenset(
 
 
 def _normalize_text(value: str) -> str:
-    """Casefold and collapse whitespace so cosmetic edits do not change identity."""
-    return " ".join(value.split()).casefold()
+    """NFKC, casefold, and collapse whitespace so cosmetic edits do not change identity."""
+    return " ".join(unicodedata.normalize("NFKC", value).casefold().split())
 
 
 def _normalize_locations(locations: list[str]) -> list[str]:
-    return sorted(_normalize_text(location) for location in locations)
+    """Sorted, deduplicated locations; deduplication happens after normalization."""
+    return sorted({_normalize_text(location) for location in locations})
 
 
-def _digest(parts: list[str]) -> str:
-    return hashlib.sha256("\n".join(parts).encode("utf-8")).hexdigest()
+def _digest(fields: Mapping[str, object]) -> str:
+    """Hash named fields as canonical JSON so one field cannot impersonate another.
+
+    Free text such as a job description may contain any characters, including the delimiters a
+    naive join would use. JSON quotes, escapes, and names every field, so distinct field content
+    always produces distinct input to SHA-256.
+    """
+    payload = json.dumps(fields, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
 def canonicalize_url(url: str) -> str:
@@ -60,12 +71,12 @@ def build_job_key(
     if source_job_id:
         return f"{provider}:{tenant}:{source_job_id}"
     fingerprint = _digest(
-        [
-            company_id,
-            _normalize_text(title),
-            *_normalize_locations(locations),
-            canonicalize_url(apply_url),
-        ]
+        {
+            "company_id": company_id,
+            "title": _normalize_text(title),
+            "locations": _normalize_locations(locations),
+            "apply_url": canonicalize_url(apply_url),
+        }
     )
     return f"sha256:{fingerprint}"
 
@@ -85,12 +96,12 @@ def build_dedupe_key(
     if apply_url:
         return f"url:{company_id}:{canonicalize_url(apply_url)}"
     fingerprint = _digest(
-        [
-            company_id,
-            _normalize_text(title),
-            *_normalize_locations(locations),
-            _normalize_text(department) if department is not None else "",
-        ]
+        {
+            "company_id": company_id,
+            "title": _normalize_text(title),
+            "locations": _normalize_locations(locations),
+            "department": _normalize_text(department) if department is not None else "",
+        }
     )
     return f"sha256:{fingerprint}"
 
@@ -98,9 +109,9 @@ def build_dedupe_key(
 def content_hash(title: str, locations: list[str], description_text: str | None) -> str:
     """Content digest used to detect real edits; absent description hashes as empty text."""
     return _digest(
-        [
-            _normalize_text(title),
-            *_normalize_locations(locations),
-            "" if description_text is None else description_text,
-        ]
+        {
+            "title": _normalize_text(title),
+            "locations": _normalize_locations(locations),
+            "description": "" if description_text is None else description_text,
+        }
     )

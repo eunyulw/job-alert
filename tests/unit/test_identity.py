@@ -126,3 +126,25 @@ def test_content_hash_tracks_real_edits_and_ignores_cosmetics() -> None:
     assert content_hash("Robotics Engineer", ["Tokyo"], None) == content_hash(
         "Robotics Engineer", ["Tokyo"], ""
     )
+
+
+def test_content_hash_does_not_collide_across_field_boundaries() -> None:
+    # Reviewer reproduction: with newline-joined fields both inputs hashed to
+    # 299094e81edd9b58335b3555e3ba8d849ae32cb6e13689bb116d177a0ea1e87b, so a real change to the
+    # locations array was invisible because a multiline description absorbed the boundary.
+    two_locations = content_hash("Role", ["Austin", "Remote"], "First\nsecond")
+    one_location = content_hash("Role", ["Austin"], "remote\nFirst\nsecond")
+    assert two_locations != one_location
+
+
+def test_content_hash_does_not_collide_between_title_and_description() -> None:
+    assert content_hash("Role\nRemote", [], "text") != content_hash("Role", [], "Remote\ntext")
+    assert content_hash("Role", [], 'a"b') != content_hash('Role"a', [], "b")
+
+
+def test_content_hash_deduplicates_locations_and_folds_unicode() -> None:
+    assert content_hash("Role", ["Austin", "austin", " AUSTIN "], "text") == content_hash(
+        "Role", ["Austin"], "text"
+    )
+    # NFKC composes the combining acute accent, so the two titles are the same text.
+    assert content_hash("Ro\u0301le", [], "text") == content_hash("R\u00f3le", [], "text")
