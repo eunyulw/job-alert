@@ -591,7 +591,7 @@ sources:
     provider: discovery
     source_class: fallback
     support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.unitree.com/
+    endpoint: https://www.unitree.com/position/
     interval_minutes: 30
     enabled: false
   - id: pudu-robotics-discovery
@@ -625,6 +625,8 @@ sources:
     support_status: NEEDS_MANUAL_REVIEW
     endpoint: https://www.zhiyuan-robot.com/
     interval_minutes: 30
+    parameters:
+      audit_note: careers landing page unresolved; resolve in Task 11 audit
     enabled: false
   - id: nimble-discovery
     company_id: nimble
@@ -703,7 +705,7 @@ sources:
     provider: discovery
     source_class: fallback
     support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.yaskawa.com/
+    endpoint: https://www.motoman.com/en-us/about/company/careers
     interval_minutes: 30
     enabled: false
   - id: universal-robots-discovery
@@ -847,7 +849,7 @@ sources:
     provider: discovery
     source_class: fallback
     support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.daifuku.com/
+    endpoint: https://www.daifuku.com/careers/
     interval_minutes: 30
     enabled: false
   - id: denso-robotics-discovery
@@ -855,7 +857,7 @@ sources:
     provider: discovery
     source_class: fallback
     support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.denso-robotics.com/
+    endpoint: https://www.denso.com/global/en/careers/
     interval_minutes: 30
     enabled: false
   - id: epson-robots-discovery
@@ -1031,7 +1033,7 @@ sources:
     provider: discovery
     source_class: fallback
     support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://global.geely.com/
+    endpoint: https://job.geely.com/
     interval_minutes: 30
     enabled: false
   - id: saic-motor-discovery
@@ -1041,6 +1043,8 @@ sources:
     support_status: NEEDS_MANUAL_REVIEW
     endpoint: https://www.saicmotor.com/english/
     interval_minutes: 30
+    parameters:
+      audit_note: careers landing page unresolved; resolve in Task 11 audit
     enabled: false
   - id: chery-automobile-discovery
     company_id: chery-automobile
@@ -1049,6 +1053,8 @@ sources:
     support_status: NEEDS_MANUAL_REVIEW
     endpoint: https://www.cheryinternational.com/
     interval_minutes: 30
+    parameters:
+      audit_note: careers landing page unresolved; resolve in Task 11 audit
     enabled: false
   - id: volvo-cars-discovery
     company_id: volvo-cars
@@ -1063,7 +1069,7 @@ sources:
     provider: discovery
     source_class: fallback
     support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.mazda.com/en/
+    endpoint: https://www.mazdausa.com/site/careers
     interval_minutes: 30
     enabled: false
   - id: subaru-discovery
