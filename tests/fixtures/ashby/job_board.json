@@ -1,0 +1,83 @@
+{
+  "apiVersion": "1",
+  "jobs": [
+    {
+      "id": "f873dd71-46c9-4be1-8580-bc67c56b4cad",
+      "title": "Full-Stack Software Engineer, Applied Foundations",
+      "department": "Applied AI",
+      "team": "Applied AI Engineering",
+      "employmentType": "FullTime",
+      "location": "San Francisco",
+      "secondaryLocations": [
+        {
+          "location": "Mountain View",
+          "address": {
+            "postalAddress": {
+              "addressRegion": "California",
+              "addressCountry": "United States",
+              "addressLocality": "Mountain View"
+            }
+          }
+        }
+      ],
+      "publishedAt": "2026-05-07T19:45:42.110+00:00",
+      "isListed": true,
+      "isRemote": true,
+      "workplaceType": "Hybrid",
+      "address": {
+        "postalAddress": {
+          "addressRegion": "California",
+          "addressCountry": "United States",
+          "addressLocality": "San Francisco"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/openai/f873dd71-46c9-4be1-8580-bc67c56b4cad",
+      "applyUrl": "https://jobs.ashbyhq.com/openai/f873dd71-46c9-4be1-8580-bc67c56b4cad/application",
+      "descriptionHtml": "<p style=\"min-height:1.5em\"><strong>About the Team</strong></p><p style=\"min-height:1.5em\">OpenAI’s Applications Engineering organization builds and operates the products (such as ChatGPT &amp; Codex) that bring our cutting-edge research to millions of users and developers worldwide. </p><p style=\"min-height:1.5em\">The Applied Foundations team owns the core product and platform layers that make those experiences possible — from identity &amp; access, to safety to payments &amp; commerce across all of our apps. Our teams span product engineering, infrastructure, and safety, working together to deliver technology that is reliable, secure, and trusted at global scale.</p><p style=\"min-height:1.5em\"><strong>About the Role</strong></p><p style=\"min-height:1.5em\">We’re hiring Full-Stack Software Engineers to design and implement safe services, systems and infrastructure that power our core products.</p><p style=\"min-height:1.5em\"><strong>In this role, you will:</strong></p><ul style=\"min-height:1.5em\"><li><p style=\"min-height:1.5em\">Architect, build, and improve frontend and backend systems.</p></li><li><p style=\"min-height:1.5em\">Work across the full stack to build products and systems from initial exploration through launch readiness.</p></li><li><p style=\"min-height:1.5em\">Participate in long-term architectural planning and technical design reviews.</p>",
+      "descriptionPlain": "About the Team\n\nOpenAI’s Applications Engineering organization builds and operates the products (such as ChatGPT & Codex) that bring our cutting-edge research to millions of users and developers worldwide. \n\nThe Applied Foundations team owns the core product and platform layers that make those experiences possible — from identity & access, to safety to payments & commerce across all of our apps. Our teams span product engineering, infrastructure, and safety, working together to deliver technology that is reliable, secure, and trusted at global scale.\n\nAbout the Role\n\nWe’re hiring Full-Stack Software Engineers to design and implement safe services, systems and infrastructure that power our core products.\n\nIn this role, you will:\n\n - Architect, build, and improve frontend and backend systems.\n\n - Work across the full stack to build products and systems from initial exploration through launch readiness.\n\n - Participate in long-term architectural planning and technical design reviews.\n\n - Collaborate with cross-functional teams to design solutions that protect against and mitigate adversarial attacks without compromising user experience."
+    },
+    {
+      "id": "b60d3040-38e4-4abe-8af8-881286b10d50",
+      "title": "Researcher, Safety Training, National Security",
+      "department": "Safety Systems",
+      "team": "Safety Systems",
+      "employmentType": "FullTime",
+      "location": "San Francisco",
+      "secondaryLocations": [
+        {
+          "location": "Washington, DC",
+          "address": {
+            "postalAddress": {
+              "addressRegion": "District of Columbia",
+              "addressCountry": "United States",
+              "addressLocality": "Washington"
+            }
+          }
+        },
+        {
+          "location": "US - Remote",
+          "address": {
+            "postalAddress": {
+              "addressCountry": "United States"
+            }
+          }
+        }
+      ],
+      "publishedAt": "2026-09-12T03:21:15.873+00:00",
+      "isListed": true,
+      "isRemote": null,
+      "workplaceType": null,
+      "address": {
+        "postalAddress": {
+          "addressRegion": "California",
+          "addressCountry": "United States",
+          "addressLocality": "San Francisco"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/openai/b60d3040-38e4-4abe-8af8-881286b10d50",
+      "applyUrl": "https://jobs.ashbyhq.com/openai/b60d3040-38e4-4abe-8af8-881286b10d50/application",
+      "descriptionHtml": "<h2><strong>About the Team</strong></h2><p style=\"min-height:1.5em\">The Safety Training research team aims to fundamentally advance our capabilities for precisely implementing safe behavior in AI models, and to leverage these advances to make OpenAI’s deployed models safe and beneficial. This requires a breadth of new ML research to address the growing set of safety challenges as AI becomes more powerful and used in more settings. Key focus areas include how to train nuanced safety behaviors, how to make the model robust to bad actors, how to address privacy and security risks, and how to make the model trustworthy in safety-critical situations.</p><p style=\"min-height:1.5em\">We seek to learn from deployment and distribute the benefits of AI, while ensuring that this powerful tool is used responsibly and safely.</p><p style=\"min-height:1.5em\"></p><h2><strong>About the Role</strong></h2><p style=\"min-height:1.5em\">We’re seeking a researcher to train and evaluate models for U.S. government use, with a focus on national security applications. You’ll advance safety post-training and robustness, helping models follow nuanced policies while preserving their usefulness and capabilities.</p><p style=\"min-height:1.5em\"></p><h2><strong>In this role, you will:</strong></h2><ul style=\"min-height:1.5em\"><li><p style=\"min-height:1.5em\">Research and implement methods for safety training, reinforcement learning, and adversarial robustness.</p>",
+      "descriptionPlain": "ABOUT THE TEAM\n\nThe Safety Training research team aims to fundamentally advance our capabilities for precisely implementing safe behavior in AI models, and to leverage these advances to make OpenAI’s deployed models safe and beneficial. This requires a breadth of new ML research to address the growing set of safety challenges as AI becomes more powerful and used in more settings. Key focus areas include how to train nuanced safety behaviors, how to make the model robust to bad actors, how to address privacy and security risks, and how to make the model trustworthy in safety-critical situations.\n\nWe seek to learn from deployment and distribute the benefits of AI, while ensuring that this powerful tool is used responsibly and safely.\n\n\n\n\nABOUT THE ROLE\n\nWe’re seeking a researcher to train and evaluate models for U.S. government use, with a focus on national security applications. You’ll advance safety post-training and robustness, helping models follow nuanced policies while preserving their usefulness and capabilities."
+    }
+  ]
+}

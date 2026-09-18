@@ -15,8 +15,9 @@ Mapping decisions the payload does not spell out:
 - ``department`` is the first listed department name. ``team``, ``employment_type`` and
   ``workplace_type`` stay empty: the list endpoint exposes them only through board-specific
   ``metadata`` labels, which are preserved in ``raw_metadata`` instead of being guessed.
-- ``content`` is an HTML document that becomes deterministic plain text, and the shared
-  ``content_hash()`` digests title, locations and that text.
+- ``content`` is an HTML document that becomes deterministic plain text through the shared
+  ``html_to_text()`` helper, and the shared ``content_hash()`` digests title, locations and that
+  text.
 - ``apply_url`` is ``absolute_url`` unless the registry supplies an ``apply_url_template``
   parameter. Templates come from the reviewed registry, and one that does not render an absolute
   HTTPS URL is a configuration error rather than a silent fallback.
@@ -27,18 +28,16 @@ body, so a challenge is never mistaken for an empty board.
 
 from __future__ import annotations
 
-import html
 import json
 import re
 from collections.abc import Callable, Mapping
 from datetime import UTC, datetime
-from html.parser import HTMLParser
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from pydantic import HttpUrl, ValidationError
 
 from job_alert.adapters.base import AdapterError
-from job_alert.adapters.common import https_url, is_absolute_https, optional_text
+from job_alert.adapters.common import html_to_text, https_url, is_absolute_https, optional_text
 from job_alert.fetch import HttpFetcher, HttpPayload, RequestSpec
 from job_alert.identity import build_dedupe_key, build_job_key, content_hash
 from job_alert.models import CollectionResult, NormalizedJob, SourceConfig
@@ -49,53 +48,6 @@ APPLY_URL_TEMPLATE_PARAMETER = "apply_url_template"
 
 _BOARD_PATH = re.compile(r"/boards/(?P<token>[^/]+)/jobs/?$")
 
-_BLOCK_TAGS = frozenset(
-    {
-        "address",
-        "article",
-        "aside",
-        "blockquote",
-        "br",
-        "dd",
-        "div",
-        "dl",
-        "dt",
-        "fieldset",
-        "figcaption",
-        "figure",
-        "footer",
-        "form",
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "header",
-        "hr",
-        "li",
-        "main",
-        "nav",
-        "ol",
-        "p",
-        "pre",
-        "section",
-        "table",
-        "tbody",
-        "td",
-        "tfoot",
-        "th",
-        "thead",
-        "tr",
-        "ul",
-    }
-)
-
-# Element content that is markup or styling, not description text.
-_DISCARDED_TAGS = frozenset({"script", "style", "noscript", "template"})
-
-_WHITESPACE = re.compile(r"\s+")
-
 
 def _utcnow() -> datetime:
     return datetime.now(UTC)
@@ -103,38 +55,6 @@ def _utcnow() -> datetime:
 
 class _UnusableJob(ValueError):
     """One provider record cannot be normalized, so the collection is incomplete."""
-
-
-class _PlainTextExtractor(HTMLParser):
-    """Flatten HTML to text, treating block elements as line breaks and list items as bullets."""
-
-    def __init__(self) -> None:
-        super().__init__(convert_charrefs=True)
-        self._chunks: list[str] = []
-        self._discarded_depth = 0
-
-    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        if tag in _DISCARDED_TAGS:
-            self._discarded_depth += 1
-        elif tag == "li":
-            self._chunks.append("\n- ")
-        elif tag in _BLOCK_TAGS:
-            self._chunks.append("\n")
-
-    def handle_endtag(self, tag: str) -> None:
-        if tag in _DISCARDED_TAGS:
-            self._discarded_depth = max(0, self._discarded_depth - 1)
-        elif tag in _BLOCK_TAGS:
-            self._chunks.append("\n")
-
-    def handle_data(self, data: str) -> None:
-        if self._discarded_depth == 0:
-            # Source line wrapping is not a paragraph break; block tags are the only line breaks.
-            self._chunks.append(_WHITESPACE.sub(" ", data))
-
-    def text(self) -> str | None:
-        lines = [" ".join(line.split()) for line in "".join(self._chunks).splitlines()]
-        return "\n".join(line for line in lines if line) or None
 
 
 class GreenhouseAdapter:
@@ -260,7 +180,7 @@ def _normalize_job(
     locations = _locations(record)
     department = _first_name(record.get("departments"))
     requisition_id = optional_text(record.get("requisition_id"))
-    description_text = _plain_text(record.get("content"))
+    description_text = html_to_text(record.get("content"))
     apply_url = _apply_url(
         source, tenant=tenant, source_job_id=source_job_id, posting_url=posting_url
     )
@@ -369,21 +289,6 @@ def _timestamp(value: object, field: str) -> datetime | None:
     if parsed.tzinfo is None:
         raise _UnusableJob(f"{field} has no UTC offset")
     return parsed
-
-
-def _plain_text(content: object) -> str | None:
-    if not isinstance(content, str) or not content.strip():
-        return None
-    document = content
-    if "<" not in document and "&lt;" in document:
-        # Some boards store the description as an escaped HTML document, so every tag arrives as
-        # ``&lt;div&gt;``. One pass rehydrates the markup; entities inside the text are decoded
-        # again by the parser, which is what those boards mean.
-        document = html.unescape(document)
-    extractor = _PlainTextExtractor()
-    extractor.feed(document)
-    extractor.close()
-    return extractor.text()
 
 
 def _apply_url(

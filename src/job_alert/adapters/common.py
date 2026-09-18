@@ -2,7 +2,90 @@
 
 from __future__ import annotations
 
+import html
+import re
+from html.parser import HTMLParser
 from urllib.parse import urlsplit
+
+# Element content that is markup or styling, not description text.
+_DISCARDED_TAGS = frozenset({"script", "style", "noscript", "template"})
+
+# Block elements separate lines; list items also get a bullet so a flattened list stays readable.
+_BLOCK_TAGS = frozenset(
+    {
+        "address",
+        "article",
+        "aside",
+        "blockquote",
+        "br",
+        "dd",
+        "div",
+        "dl",
+        "dt",
+        "fieldset",
+        "figcaption",
+        "figure",
+        "footer",
+        "form",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "header",
+        "hr",
+        "li",
+        "main",
+        "nav",
+        "ol",
+        "p",
+        "pre",
+        "section",
+        "table",
+        "tbody",
+        "td",
+        "tfoot",
+        "th",
+        "thead",
+        "tr",
+        "ul",
+    }
+)
+
+_WHITESPACE = re.compile(r"\s+")
+
+
+class _PlainTextExtractor(HTMLParser):
+    """Flatten HTML to text, treating block elements as line breaks and list items as bullets."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self._chunks: list[str] = []
+        self._discarded_depth = 0
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag in _DISCARDED_TAGS:
+            self._discarded_depth += 1
+        elif tag == "li":
+            self._chunks.append("\n- ")
+        elif tag in _BLOCK_TAGS:
+            self._chunks.append("\n")
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in _DISCARDED_TAGS:
+            self._discarded_depth = max(0, self._discarded_depth - 1)
+        elif tag in _BLOCK_TAGS:
+            self._chunks.append("\n")
+
+    def handle_data(self, data: str) -> None:
+        if self._discarded_depth == 0:
+            # Source line wrapping is not a paragraph break; block tags are the only line breaks.
+            self._chunks.append(_WHITESPACE.sub(" ", data))
+
+    def text(self) -> str | None:
+        lines = [" ".join(line.split()) for line in "".join(self._chunks).splitlines()]
+        return "\n".join(line for line in lines if line) or None
 
 
 def https_url(value: object, *, field: str) -> str:
@@ -35,3 +118,23 @@ def optional_text(value: object) -> str | None:
         return None
     text = str(value).strip()
     return text or None
+
+
+def html_to_text(value: object) -> str | None:
+    """Flatten provider markup into deterministic plain text, or `None` when it holds none.
+
+    Block elements become line breaks and list items become a \n- bullet, so the same document
+    always produces the same text no matter how the provider wrapped its source lines. A document
+    that carries no tag at all but escaped ones (`&lt;p&gt;`) is rehydrated first, because some
+    boards store the description as an escaped HTML document; entities inside the text are decoded
+    by the parser, which is what those boards mean.
+    """
+    if not isinstance(value, str) or not value.strip():
+        return None
+    document = value
+    if "<" not in document and "&lt;" in document:
+        document = html.unescape(document)
+    extractor = _PlainTextExtractor()
+    extractor.feed(document)
+    extractor.close()
+    return extractor.text()

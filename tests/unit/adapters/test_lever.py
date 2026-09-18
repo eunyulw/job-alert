@@ -459,7 +459,10 @@ async def test_lever_rejects_records_without_usable_urls_or_a_publish_timestamp(
 @pytest.mark.asyncio
 async def test_lever_hashes_a_posting_without_a_description_or_categories() -> None:
     respx.get(ENDPOINT).mock(
-        side_effect=[page(record("1", categories={}, descriptionPlain="", workplaceType=None)), page()]
+        side_effect=[
+            page(record("1", categories={}, descriptionPlain="", workplaceType=None)),
+            page(),
+        ]
     )
 
     async with HttpFetcher() as fetcher:
