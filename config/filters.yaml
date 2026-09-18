@@ -1,0 +1,9 @@
+filters:
+  - id: all-jobs-dry-run
+    enabled: true
+    notify: false
+    include_companies: []
+    include_title_keywords: []
+    exclude_title_keywords: []
+    include_locations: []
+    workplace_types: []

@@ -1,0 +1,812 @@
+# Canonical company registry for the job alert monitor.
+#
+# Ordering is by first appearance across the canonical category lists. Every
+# company appears exactly once and carries every category it belongs to;
+# recognizable alternate names are recorded as aliases instead of extra records.
+categories:
+  - big-tech-ai
+  - robotics-autonomy-physical-ai
+  - industrial-automation-advanced-manufacturing
+  - automotive-ev-autonomous-mobility
+  - aerospace-defense
+  - medical-robotics
+companies:
+  - id: nvidia
+    name: "NVIDIA"
+    categories:
+      - big-tech-ai
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: apple
+    name: "Apple"
+    categories:
+      - big-tech-ai
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: alphabet-google
+    name: "Alphabet/Google"
+    categories:
+      - big-tech-ai
+      - robotics-autonomy-physical-ai
+    aliases:
+      - "Google"
+  - id: amazon
+    name: "Amazon"
+    categories:
+      - big-tech-ai
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: meta
+    name: "Meta"
+    categories:
+      - big-tech-ai
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: microsoft
+    name: "Microsoft"
+    categories:
+      - big-tech-ai
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: tesla
+    name: "Tesla"
+    categories:
+      - big-tech-ai
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: samsung
+    name: "Samsung"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: asml
+    name: "ASML"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: qualcomm
+    name: "Qualcomm"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: netflix
+    name: "Netflix"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: oracle
+    name: "Oracle"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: salesforce
+    name: "Salesforce"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: adobe
+    name: "Adobe"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: cisco
+    name: "Cisco"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: palantir
+    name: "Palantir"
+    categories:
+      - big-tech-ai
+      - aerospace-defense
+    aliases: []
+  - id: uber
+    name: "Uber"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: airbnb
+    name: "Airbnb"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: stripe
+    name: "Stripe"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: databricks
+    name: "Databricks"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: snowflake
+    name: "Snowflake"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: openai
+    name: "OpenAI"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: anthropic
+    name: "Anthropic"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: amd
+    name: "AMD"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: intel
+    name: "Intel"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: broadcom
+    name: "Broadcom"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: tsmc
+    name: "TSMC"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: servicenow
+    name: "ServiceNow"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: sap
+    name: "SAP"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: ibm
+    name: "IBM"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: bytedance
+    name: "ByteDance"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: tencent
+    name: "Tencent"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: alibaba
+    name: "Alibaba"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: baidu
+    name: "Baidu"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: xiaomi
+    name: "Xiaomi"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: arm
+    name: "Arm"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: micron-technology
+    name: "Micron Technology"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: synopsys
+    name: "Synopsys"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: cadence
+    name: "Cadence"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: crowdstrike
+    name: "CrowdStrike"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: cloudflare
+    name: "Cloudflare"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: coreweave
+    name: "CoreWeave"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: mistral-ai
+    name: "Mistral AI"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: xai
+    name: "xAI"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: cohere
+    name: "Cohere"
+    categories:
+      - big-tech-ai
+    aliases: []
+  - id: spacex
+    name: "SpaceX"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: blue-origin
+    name: "Blue Origin"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: waymo
+    name: "Waymo"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: zoox
+    name: "Zoox"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: intuitive-surgical
+    name: "Intuitive Surgical"
+    categories:
+      - robotics-autonomy-physical-ai
+      - medical-robotics
+    aliases: []
+  - id: skydio
+    name: "Skydio"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: aurora-innovation
+    name: "Aurora Innovation"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: nuro
+    name: "Nuro"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: zipline
+    name: "Zipline"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: symbotic
+    name: "Symbotic"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: apptronik
+    name: "Apptronik"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: dexterity
+    name: "Dexterity"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: locus-robotics
+    name: "Locus Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: intrinsic
+    name: "Intrinsic"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: physical-intelligence
+    name: "Physical Intelligence"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: serve-robotics
+    name: "Serve Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: sanctuary-ai
+    name: "Sanctuary AI"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: boston-dynamics
+    name: "Boston Dynamics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: gecko-robotics
+    name: "Gecko Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: kuka
+    name: "KUKA"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: bosch
+    name: "Bosch"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: lucid-motors
+    name: "Lucid Motors"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: joby-aviation
+    name: "Joby Aviation"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: hyundai-motor-group
+    name: "Hyundai Motor Group"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases:
+      - "Hyundai USA"
+  - id: toyota-research-institute
+    name: "Toyota Research Institute"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: 1x
+    name: "1X"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases:
+      - "1X Technology"
+  - id: engineered-arts
+    name: "Engineered Arts"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: agility-robotics
+    name: "Agility Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: unitree
+    name: "Unitree"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases:
+      - "UniTree IT"
+  - id: pudu-robotics
+    name: "Pudu Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: agile-robots
+    name: "Agile Robots"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases:
+      - "Agile Robots SE"
+  - id: neura-robotics
+    name: "NEURA Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: agibot
+    name: "AGIBOT"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: nimble
+    name: "Nimble"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: standard-bots
+    name: "Standard Bots"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: matic
+    name: "Matic"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: geek-plus
+    name: "Geek+"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: greyorange
+    name: "GreyOrange"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: honeywell
+    name: "Honeywell"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+      - aerospace-defense
+    aliases: []
+  - id: abb
+    name: "ABB"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: neuralink
+    name: "Neuralink"
+    categories:
+      - robotics-autonomy-physical-ai
+      - medical-robotics
+    aliases:
+      - "Neuralinks"
+      - "Neuralink Network"
+  - id: fanuc
+    name: "FANUC"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases:
+      - "FANUC America Corporation"
+  - id: yaskawa
+    name: "Yaskawa"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases:
+      - "Yaskawa America"
+  - id: universal-robots
+    name: "Universal Robots"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: kawasaki-robotics
+    name: "Kawasaki Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: mitsubishi-electric
+    name: "Mitsubishi Electric"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: omron
+    name: "OMRON"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases:
+      - "OMRON Group"
+  - id: rockwell-automation
+    name: "Rockwell Automation"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: teradyne
+    name: "Teradyne"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: keyence
+    name: "Keyence"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: siemens
+    name: "Siemens"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: schneider-electric
+    name: "Schneider Electric"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: stryker
+    name: "Stryker"
+    categories:
+      - robotics-autonomy-physical-ai
+      - medical-robotics
+    aliases: []
+  - id: medtronic
+    name: "Medtronic"
+    categories:
+      - robotics-autonomy-physical-ai
+      - medical-robotics
+    aliases: []
+  - id: cmr-surgical
+    name: "CMR Surgical"
+    categories:
+      - robotics-autonomy-physical-ai
+      - medical-robotics
+    aliases: []
+  - id: figure-ai
+    name: "Figure AI"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: skild-ai
+    name: "Skild AI"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: covariant
+    name: "Covariant"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: right-hand-robotics
+    name: "RightHand Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: zebra-technologies
+    name: "Zebra Technologies"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: daifuku
+    name: "Daifuku"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: denso-robotics
+    name: "DENSO Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: epson-robots
+    name: "Epson Robots"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: anybotics
+    name: "ANYbotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: doosan-robotics
+    name: "Doosan Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: johnson-johnson
+    name: "Johnson & Johnson"
+    categories:
+      - robotics-autonomy-physical-ai
+      - medical-robotics
+    aliases: []
+  - id: anduril
+    name: "Anduril"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: john-deere
+    name: "John Deere"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases:
+      - "John Deere USA"
+  - id: caterpillar
+    name: "Caterpillar"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: emerson
+    name: "Emerson"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: general-motors
+    name: "General Motors"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: rivian
+    name: "Rivian"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: ford-motor-company
+    name: "Ford Motor Company"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: toyota-motor
+    name: "Toyota Motor"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: volkswagen-group
+    name: "Volkswagen Group"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: byd
+    name: "BYD"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: kia
+    name: "Kia"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: honda-motor
+    name: "Honda Motor"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: mercedes-benz-group
+    name: "Mercedes-Benz Group"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: bmw-group
+    name: "BMW Group"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: stellantis
+    name: "Stellantis"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: renault-group
+    name: "Renault Group"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: nissan-motor
+    name: "Nissan Motor"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: geely-holding
+    name: "Geely Holding"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: saic-motor
+    name: "SAIC Motor"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: chery-automobile
+    name: "Chery Automobile"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: volvo-cars
+    name: "Volvo Cars"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: mazda
+    name: "Mazda"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: subaru
+    name: "Subaru"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: tata-motors-jlr
+    name: "Tata Motors/JLR"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: ferrari
+    name: "Ferrari"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: porsche
+    name: "Porsche"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: mobileye
+    name: "Mobileye"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: aptiv
+    name: "Aptiv"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: magna-international
+    name: "Magna International"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: continental
+    name: "Continental"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: zf
+    name: "ZF"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: denso
+    name: "DENSO"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: aisin
+    name: "Aisin"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: borgwarner
+    name: "BorgWarner"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: boeing
+    name: "Boeing"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: lockheed-martin
+    name: "Lockheed Martin"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: rtx
+    name: "RTX"
+    categories:
+      - aerospace-defense
+    aliases:
+      - "Raytheon"
+      - "Raytheon Technologies"

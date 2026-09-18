@@ -17,6 +17,7 @@ dev = [
   "pytest-asyncio>=1.1,<2",
   "respx>=0.22,<1",
   "ruff>=0.12,<1",
+  "types-pyyaml>=6.0.12,<7",
 ]
 
 [project.scripts]

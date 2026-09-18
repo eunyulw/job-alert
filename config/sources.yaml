@@ -1,0 +1,1188 @@
+# Provisional discovery sources: one disabled NEEDS_MANUAL_REVIEW record per
+# canonical company. The Task 11 source audit replaces each record with verified
+# provider endpoints; the endpoint here is only the company careers landing page.
+sources:
+  - id: nvidia-discovery
+    company_id: nvidia
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.nvidia.com/en-us/about-nvidia/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: apple-discovery
+    company_id: apple
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.apple.com/careers/us/
+    interval_minutes: 30
+    enabled: false
+  - id: alphabet-google-discovery
+    company_id: alphabet-google
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.google.com/about/careers/applications/
+    interval_minutes: 30
+    enabled: false
+  - id: amazon-discovery
+    company_id: amazon
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.amazon.jobs/en/
+    interval_minutes: 30
+    enabled: false
+  - id: meta-discovery
+    company_id: meta
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.metacareers.com/
+    interval_minutes: 30
+    enabled: false
+  - id: microsoft-discovery
+    company_id: microsoft
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.microsoft.com/
+    interval_minutes: 30
+    enabled: false
+  - id: tesla-discovery
+    company_id: tesla
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.tesla.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: samsung-discovery
+    company_id: samsung
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.samsung.com/us/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: asml-discovery
+    company_id: asml
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.asml.com/en/careers
+    interval_minutes: 30
+    enabled: false
+  - id: qualcomm-discovery
+    company_id: qualcomm
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.qualcomm.com/
+    interval_minutes: 30
+    enabled: false
+  - id: netflix-discovery
+    company_id: netflix
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://explore.jobs.netflix.net/careers
+    interval_minutes: 30
+    enabled: false
+  - id: oracle-discovery
+    company_id: oracle
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.oracle.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: salesforce-discovery
+    company_id: salesforce
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.salesforce.com/en/jobs/
+    interval_minutes: 30
+    enabled: false
+  - id: adobe-discovery
+    company_id: adobe
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.adobe.com/us/en
+    interval_minutes: 30
+    enabled: false
+  - id: cisco-discovery
+    company_id: cisco
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://jobs.cisco.com/
+    interval_minutes: 30
+    enabled: false
+  - id: palantir-discovery
+    company_id: palantir
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.palantir.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: uber-discovery
+    company_id: uber
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.uber.com/us/en/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: airbnb-discovery
+    company_id: airbnb
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.airbnb.com/
+    interval_minutes: 30
+    enabled: false
+  - id: stripe-discovery
+    company_id: stripe
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://stripe.com/jobs
+    interval_minutes: 30
+    enabled: false
+  - id: databricks-discovery
+    company_id: databricks
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.databricks.com/company/careers
+    interval_minutes: 30
+    enabled: false
+  - id: snowflake-discovery
+    company_id: snowflake
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.snowflake.com/us/en
+    interval_minutes: 30
+    enabled: false
+  - id: openai-discovery
+    company_id: openai
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://openai.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: anthropic-discovery
+    company_id: anthropic
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.anthropic.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: amd-discovery
+    company_id: amd
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.amd.com/en/corporate/careers.html
+    interval_minutes: 30
+    enabled: false
+  - id: intel-discovery
+    company_id: intel
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.intel.com/content/www/us/en/jobs/jobs-at-intel.html
+    interval_minutes: 30
+    enabled: false
+  - id: broadcom-discovery
+    company_id: broadcom
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.broadcom.com/company/careers
+    interval_minutes: 30
+    enabled: false
+  - id: tsmc-discovery
+    company_id: tsmc
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.tsmc.com/static/english/careers/index.htm
+    interval_minutes: 30
+    enabled: false
+  - id: servicenow-discovery
+    company_id: servicenow
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.servicenow.com/
+    interval_minutes: 30
+    enabled: false
+  - id: sap-discovery
+    company_id: sap
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://jobs.sap.com/
+    interval_minutes: 30
+    enabled: false
+  - id: ibm-discovery
+    company_id: ibm
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.ibm.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: bytedance-discovery
+    company_id: bytedance
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://jobs.bytedance.com/en/
+    interval_minutes: 30
+    enabled: false
+  - id: tencent-discovery
+    company_id: tencent
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.tencent.com/en-us/home.html
+    interval_minutes: 30
+    enabled: false
+  - id: alibaba-discovery
+    company_id: alibaba
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://talent.alibaba.com/en/home
+    interval_minutes: 30
+    enabled: false
+  - id: baidu-discovery
+    company_id: baidu
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://talent.baidu.com/jobs/list
+    interval_minutes: 30
+    enabled: false
+  - id: xiaomi-discovery
+    company_id: xiaomi
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.mi.com/
+    interval_minutes: 30
+    enabled: false
+  - id: arm-discovery
+    company_id: arm
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.arm.com/
+    interval_minutes: 30
+    enabled: false
+  - id: micron-technology-discovery
+    company_id: micron-technology
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.micron.com/
+    interval_minutes: 30
+    enabled: false
+  - id: synopsys-discovery
+    company_id: synopsys
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.synopsys.com/careers.html
+    interval_minutes: 30
+    enabled: false
+  - id: cadence-discovery
+    company_id: cadence
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.cadence.com/en_US/home/company/careers.html
+    interval_minutes: 30
+    enabled: false
+  - id: crowdstrike-discovery
+    company_id: crowdstrike
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.crowdstrike.com/en-us/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: cloudflare-discovery
+    company_id: cloudflare
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.cloudflare.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: coreweave-discovery
+    company_id: coreweave
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.coreweave.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: mistral-ai-discovery
+    company_id: mistral-ai
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://mistral.ai/careers
+    interval_minutes: 30
+    enabled: false
+  - id: xai-discovery
+    company_id: xai
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://x.ai/careers
+    interval_minutes: 30
+    enabled: false
+  - id: cohere-discovery
+    company_id: cohere
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://cohere.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: spacex-discovery
+    company_id: spacex
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.spacex.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: blue-origin-discovery
+    company_id: blue-origin
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.blueorigin.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: waymo-discovery
+    company_id: waymo
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://waymo.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: zoox-discovery
+    company_id: zoox
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://zoox.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: intuitive-surgical-discovery
+    company_id: intuitive-surgical
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.intuitive.com/en-us/about-us/careers
+    interval_minutes: 30
+    enabled: false
+  - id: skydio-discovery
+    company_id: skydio
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.skydio.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: aurora-innovation-discovery
+    company_id: aurora-innovation
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://aurora.tech/careers
+    interval_minutes: 30
+    enabled: false
+  - id: nuro-discovery
+    company_id: nuro
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.nuro.ai/careers
+    interval_minutes: 30
+    enabled: false
+  - id: zipline-discovery
+    company_id: zipline
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.flyzipline.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: symbotic-discovery
+    company_id: symbotic
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.symbotic.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: apptronik-discovery
+    company_id: apptronik
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.apptronik.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: dexterity-discovery
+    company_id: dexterity
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.dexterity.ai/careers
+    interval_minutes: 30
+    enabled: false
+  - id: locus-robotics-discovery
+    company_id: locus-robotics
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://locusrobotics.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: intrinsic-discovery
+    company_id: intrinsic
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.intrinsic.ai/careers
+    interval_minutes: 30
+    enabled: false
+  - id: physical-intelligence-discovery
+    company_id: physical-intelligence
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.physicalintelligence.company/jobs
+    interval_minutes: 30
+    enabled: false
+  - id: serve-robotics-discovery
+    company_id: serve-robotics
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://serverobotics.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: sanctuary-ai-discovery
+    company_id: sanctuary-ai
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.sanctuary.ai/careers
+    interval_minutes: 30
+    enabled: false
+  - id: boston-dynamics-discovery
+    company_id: boston-dynamics
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://bostondynamics.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: gecko-robotics-discovery
+    company_id: gecko-robotics
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.geckorobotics.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: kuka-discovery
+    company_id: kuka
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.kuka.com/en-us/career
+    interval_minutes: 30
+    enabled: false
+  - id: bosch-discovery
+    company_id: bosch
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.bosch.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: lucid-motors-discovery
+    company_id: lucid-motors
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://lucidmotors.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: joby-aviation-discovery
+    company_id: joby-aviation
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.jobyaviation.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: hyundai-motor-group-discovery
+    company_id: hyundai-motor-group
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.hyundai.com/worldwide/en/careers
+    interval_minutes: 30
+    enabled: false
+  - id: toyota-research-institute-discovery
+    company_id: toyota-research-institute
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.tri.global/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: 1x-discovery
+    company_id: 1x
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.1x.tech/careers
+    interval_minutes: 30
+    enabled: false
+  - id: engineered-arts-discovery
+    company_id: engineered-arts
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.engineeredarts.co.uk/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: agility-robotics-discovery
+    company_id: agility-robotics
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://agilityrobotics.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: unitree-discovery
+    company_id: unitree
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.unitree.com/
+    interval_minutes: 30
+    enabled: false
+  - id: pudu-robotics-discovery
+    company_id: pudu-robotics
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.pudurobotics.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: agile-robots-discovery
+    company_id: agile-robots
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.agile-robots.com/career
+    interval_minutes: 30
+    enabled: false
+  - id: neura-robotics-discovery
+    company_id: neura-robotics
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://neura-robotics.com/career/
+    interval_minutes: 30
+    enabled: false
+  - id: agibot-discovery
+    company_id: agibot
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.zhiyuan-robot.com/
+    interval_minutes: 30
+    enabled: false
+  - id: nimble-discovery
+    company_id: nimble
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.nimble.ai/careers
+    interval_minutes: 30
+    enabled: false
+  - id: standard-bots-discovery
+    company_id: standard-bots
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://standardbots.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: matic-discovery
+    company_id: matic
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.maticrobots.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: geek-plus-discovery
+    company_id: geek-plus
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.geekplus.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: greyorange-discovery
+    company_id: greyorange
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.greyorange.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: honeywell-discovery
+    company_id: honeywell
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.honeywell.com/
+    interval_minutes: 30
+    enabled: false
+  - id: abb-discovery
+    company_id: abb
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.abb/
+    interval_minutes: 30
+    enabled: false
+  - id: neuralink-discovery
+    company_id: neuralink
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://neuralink.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: fanuc-discovery
+    company_id: fanuc
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.fanucamerica.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: yaskawa-discovery
+    company_id: yaskawa
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.yaskawa.com/
+    interval_minutes: 30
+    enabled: false
+  - id: universal-robots-discovery
+    company_id: universal-robots
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.universal-robots.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: kawasaki-robotics-discovery
+    company_id: kawasaki-robotics
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://kawasakirobotics.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: mitsubishi-electric-discovery
+    company_id: mitsubishi-electric
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.mitsubishielectric.com/en/careers/index.html
+    interval_minutes: 30
+    enabled: false
+  - id: omron-discovery
+    company_id: omron
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.omron.com/global/en/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: rockwell-automation-discovery
+    company_id: rockwell-automation
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.rockwellautomation.com/en-us/company/careers.html
+    interval_minutes: 30
+    enabled: false
+  - id: teradyne-discovery
+    company_id: teradyne
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.teradyne.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: keyence-discovery
+    company_id: keyence
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.keyence.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: siemens-discovery
+    company_id: siemens
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://jobs.siemens.com/
+    interval_minutes: 30
+    enabled: false
+  - id: schneider-electric-discovery
+    company_id: schneider-electric
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.se.com/ww/en/about-us/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: stryker-discovery
+    company_id: stryker
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.stryker.com/
+    interval_minutes: 30
+    enabled: false
+  - id: medtronic-discovery
+    company_id: medtronic
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://jobs.medtronic.com/
+    interval_minutes: 30
+    enabled: false
+  - id: cmr-surgical-discovery
+    company_id: cmr-surgical
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.cmrsurgical.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: figure-ai-discovery
+    company_id: figure-ai
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.figure.ai/careers
+    interval_minutes: 30
+    enabled: false
+  - id: skild-ai-discovery
+    company_id: skild-ai
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.skild.ai/careers
+    interval_minutes: 30
+    enabled: false
+  - id: covariant-discovery
+    company_id: covariant
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://covariant.ai/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: right-hand-robotics-discovery
+    company_id: right-hand-robotics
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.righthandrobotics.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: zebra-technologies-discovery
+    company_id: zebra-technologies
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.zebra.com/
+    interval_minutes: 30
+    enabled: false
+  - id: daifuku-discovery
+    company_id: daifuku
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.daifuku.com/
+    interval_minutes: 30
+    enabled: false
+  - id: denso-robotics-discovery
+    company_id: denso-robotics
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.denso-robotics.com/
+    interval_minutes: 30
+    enabled: false
+  - id: epson-robots-discovery
+    company_id: epson-robots
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://epson.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: anybotics-discovery
+    company_id: anybotics
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.anybotics.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: doosan-robotics-discovery
+    company_id: doosan-robotics
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.doosanrobotics.com/en/careers
+    interval_minutes: 30
+    enabled: false
+  - id: johnson-johnson-discovery
+    company_id: johnson-johnson
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.careers.jnj.com/
+    interval_minutes: 30
+    enabled: false
+  - id: anduril-discovery
+    company_id: anduril
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.anduril.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: john-deere-discovery
+    company_id: john-deere
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.deere.com/
+    interval_minutes: 30
+    enabled: false
+  - id: caterpillar-discovery
+    company_id: caterpillar
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.caterpillar.com/en/careers.html
+    interval_minutes: 30
+    enabled: false
+  - id: emerson-discovery
+    company_id: emerson
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.emerson.com/en-us/careers
+    interval_minutes: 30
+    enabled: false
+  - id: general-motors-discovery
+    company_id: general-motors
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.gm.com/
+    interval_minutes: 30
+    enabled: false
+  - id: rivian-discovery
+    company_id: rivian
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.rivian.com/
+    interval_minutes: 30
+    enabled: false
+  - id: ford-motor-company-discovery
+    company_id: ford-motor-company
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.ford.com/
+    interval_minutes: 30
+    enabled: false
+  - id: toyota-motor-discovery
+    company_id: toyota-motor
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.toyota.com/
+    interval_minutes: 30
+    enabled: false
+  - id: volkswagen-group-discovery
+    company_id: volkswagen-group
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.volkswagen-group.com/en/career-2682
+    interval_minutes: 30
+    enabled: false
+  - id: byd-discovery
+    company_id: byd
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.byd.com/
+    interval_minutes: 30
+    enabled: false
+  - id: kia-discovery
+    company_id: kia
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.kia.com/
+    interval_minutes: 30
+    enabled: false
+  - id: honda-motor-discovery
+    company_id: honda-motor
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.honda.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: mercedes-benz-group-discovery
+    company_id: mercedes-benz-group
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://group.mercedes-benz.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: bmw-group-discovery
+    company_id: bmw-group
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.bmwgroup.jobs/
+    interval_minutes: 30
+    enabled: false
+  - id: stellantis-discovery
+    company_id: stellantis
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.stellantis.com/
+    interval_minutes: 30
+    enabled: false
+  - id: renault-group-discovery
+    company_id: renault-group
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.renaultgroup.com/en/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: nissan-motor-discovery
+    company_id: nissan-motor
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.nissan-global.com/
+    interval_minutes: 30
+    enabled: false
+  - id: geely-holding-discovery
+    company_id: geely-holding
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://global.geely.com/
+    interval_minutes: 30
+    enabled: false
+  - id: saic-motor-discovery
+    company_id: saic-motor
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.saicmotor.com/english/
+    interval_minutes: 30
+    enabled: false
+  - id: chery-automobile-discovery
+    company_id: chery-automobile
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.cheryinternational.com/
+    interval_minutes: 30
+    enabled: false
+  - id: volvo-cars-discovery
+    company_id: volvo-cars
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.volvocars.com/
+    interval_minutes: 30
+    enabled: false
+  - id: mazda-discovery
+    company_id: mazda
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.mazda.com/en/
+    interval_minutes: 30
+    enabled: false
+  - id: subaru-discovery
+    company_id: subaru
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.subaru.com/
+    interval_minutes: 30
+    enabled: false
+  - id: tata-motors-jlr-discovery
+    company_id: tata-motors-jlr
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.tatamotors.com/
+    interval_minutes: 30
+    enabled: false
+  - id: ferrari-discovery
+    company_id: ferrari
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.ferrari.com/en-EN/corporate/careers
+    interval_minutes: 30
+    enabled: false
+  - id: porsche-discovery
+    company_id: porsche
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://careers.porsche.com/
+    interval_minutes: 30
+    enabled: false
+  - id: mobileye-discovery
+    company_id: mobileye
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.mobileye.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: aptiv-discovery
+    company_id: aptiv
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.aptiv.com/en/careers
+    interval_minutes: 30
+    enabled: false
+  - id: magna-international-discovery
+    company_id: magna-international
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.magna.com/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: continental-discovery
+    company_id: continental
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.continental.com/en/career/
+    interval_minutes: 30
+    enabled: false
+  - id: zf-discovery
+    company_id: zf
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.zf.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: denso-discovery
+    company_id: denso
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.denso.com/global/en/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: aisin-discovery
+    company_id: aisin
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.aisin.com/en/careers/
+    interval_minutes: 30
+    enabled: false
+  - id: borgwarner-discovery
+    company_id: borgwarner
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.borgwarner.com/careers
+    interval_minutes: 30
+    enabled: false
+  - id: boeing-discovery
+    company_id: boeing
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://jobs.boeing.com/
+    interval_minutes: 30
+    enabled: false
+  - id: lockheed-martin-discovery
+    company_id: lockheed-martin
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.lockheedmartinjobs.com/
+    interval_minutes: 30
+    enabled: false
+  - id: rtx-discovery
+    company_id: rtx
+    provider: discovery
+    source_class: fallback
+    support_status: NEEDS_MANUAL_REVIEW
+    endpoint: https://www.rtx.com/careers
+    interval_minutes: 30
+    enabled: false
