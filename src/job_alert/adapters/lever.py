@@ -208,7 +208,9 @@ def _page_size(source: SourceConfig) -> int:
             f"lever source {source.id} has an unusable {PAGE_SIZE_PARAMETER}: expected a positive "
             f"integer, got {value!r}"
         )
-    return value
+    # ``SourceConfig.parameters`` is an untyped registry dictionary; the checks above make this a
+    # positive ``int``, so the conversion only tells the type checker what is already true.
+    return int(value)
 
 
 def _parse_page(payload: HttpPayload) -> list[object]:
