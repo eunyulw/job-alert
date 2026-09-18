@@ -1,0 +1,261 @@
+{
+  "offset": 2,
+  "limit": 2,
+  "totalFound": 300,
+  "content": [
+    {
+      "id": "744000150333355",
+      "name": "Problem Management Specialist",
+      "uuid": "b6e81659-ddb3-4756-a0f0-f3a13768fe43",
+      "jobAdId": "4dfb6123-c349-433c-a622-ca1ada38dd7a",
+      "defaultJobAd": true,
+      "refNumber": "REF31953N",
+      "company": {
+        "identifier": "Ubisoft2",
+        "name": "Ubisoft"
+      },
+      "releasedDate": "2026-09-18T10:29:48.227Z",
+      "location": {
+        "city": "Newcastle upon Tyne",
+        "region": "England",
+        "country": "gb",
+        "remote": false,
+        "hybrid": false,
+        "latitude": "54.978252",
+        "longitude": "-1.61778",
+        "fullLocation": "Newcastle upon Tyne, England, United Kingdom"
+      },
+      "industry": {
+        "id": "entertainment",
+        "label": "Entertainment"
+      },
+      "department": {
+        "id": "13847731",
+        "label": "Ubisoft"
+      },
+      "function": {
+        "id": "information_technology",
+        "label": "Information Technology"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "mid_senior_level",
+        "label": "Mid-Senior Level"
+      },
+      "customField": [
+        {
+          "fieldId": "56c253c2e4b0cabf01d19d37",
+          "fieldLabel": "Organizational Unit",
+          "valueId": "8c9e34a8-4cfc-4312-a13a-0661a7276a7a",
+          "valueLabel": "CRC Newcastle"
+        },
+        {
+          "fieldId": "56c2539de4b0cabf01d19d36",
+          "fieldLabel": "Recruitment Programs",
+          "valueId": "cb9660da-dde8-48ec-ba09-d33d9bb77edc",
+          "valueLabel": "N/A"
+        },
+        {
+          "fieldId": "5bb3995c6d8bc56bc081b87d",
+          "fieldLabel": "Contract",
+          "valueId": "b5a86fc0-2681-4b3c-98b6-b73a4be23ef1",
+          "valueLabel": "Permanent"
+        },
+        {
+          "fieldId": "68e4ce369c52964c7125078a",
+          "fieldLabel": "Job Family",
+          "valueId": "5efa8624-8cd0-46d1-aaf5-1e8f973e3259",
+          "valueLabel": "Game Quality & Player Satisfaction"
+        },
+        {
+          "fieldId": "56d1aa7ae4b0a07f777a4ef4",
+          "fieldLabel": "Brands",
+          "valueId": "default",
+          "valueLabel": "Ubisoft"
+        },
+        {
+          "fieldId": "6904811aa8fa2db78e2ee2ed",
+          "fieldLabel": "Job  Function",
+          "valueId": "1a196faa-5bc3-4dfb-9b39-452bd74a63f0",
+          "valueLabel": "Player Experience Interactions"
+        },
+        {
+          "fieldId": "691ca2ee342dfb96e5364508",
+          "fieldLabel": "Reference Job",
+          "valueId": "9d987104-7bfd-4c26-9414-cf990825f33c",
+          "valueLabel": "CRC Live Operations Specialist"
+        },
+        {
+          "fieldId": "6a158e3c77b1f5657b57af9d",
+          "fieldLabel": "Management Unit (New)",
+          "valueId": "f0bd3708-c5ff-47b1-9104-b83a1b4071d2",
+          "valueLabel": "UBISOFT"
+        },
+        {
+          "fieldId": "58b7e4d0e4b09a6d37a0cd8b",
+          "fieldLabel": "Department",
+          "valueId": "13847731",
+          "valueLabel": "Ubisoft"
+        },
+        {
+          "fieldId": "COUNTRY",
+          "fieldLabel": "Country/Region",
+          "valueId": "gb",
+          "valueLabel": "United Kingdom"
+        },
+        {
+          "fieldId": "6904797c56f594d5ed50988d",
+          "fieldLabel": "Work flexibility",
+          "valueId": "ccb10278-8410-4710-b0e7-698fc2195139",
+          "valueLabel": "Office-based"
+        },
+        {
+          "fieldId": "5def94650389ad3cc4be9d17",
+          "fieldLabel": "OU sub location (select when applicable)",
+          "valueId": "ac8ae7ad-70a6-491d-b848-4625c10b9609",
+          "valueLabel": "N/A"
+        }
+      ],
+      "visibility": "PUBLIC",
+      "ref": "https://api.smartrecruiters.com/v1/companies/Ubisoft2/postings/744000150333355",
+      "creator": {
+        "name": "Alex Cheyne"
+      },
+      "language": {
+        "code": "en-GB",
+        "label": "English (UK)",
+        "labelNative": "English (UK)"
+      }
+    },
+    {
+      "id": "744000150335344",
+      "name": "Application Specialist (ERP Finance)",
+      "uuid": "e1b5c739-8b2e-4370-9349-bba20e09195e",
+      "jobAdId": "85685c11-57a1-474d-b78a-61a2464d0b6e",
+      "defaultJobAd": true,
+      "refNumber": "REF31918T",
+      "company": {
+        "identifier": "Ubisoft2",
+        "name": "Ubisoft"
+      },
+      "releasedDate": "2026-09-18T10:28:37.121Z",
+      "location": {
+        "city": "Bucharest",
+        "region": "Bucharest",
+        "country": "ro",
+        "remote": false,
+        "hybrid": false,
+        "latitude": "44.4267674",
+        "longitude": "26.1025384",
+        "fullLocation": "Bucharest, Bucharest, Romania"
+      },
+      "industry": {
+        "id": "entertainment",
+        "label": "Entertainment"
+      },
+      "department": {
+        "id": "13847731",
+        "label": "Ubisoft"
+      },
+      "function": {
+        "id": "information_technology",
+        "label": "Information Technology"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "mid_senior_level",
+        "label": "Mid-Senior Level"
+      },
+      "customField": [
+        {
+          "fieldId": "56c253c2e4b0cabf01d19d37",
+          "fieldLabel": "Organizational Unit",
+          "valueId": "721c58b3-5e0f-4dca-baba-1c5580c3f39b",
+          "valueLabel": "Ubisoft IT"
+        },
+        {
+          "fieldId": "56c2539de4b0cabf01d19d36",
+          "fieldLabel": "Recruitment Programs",
+          "valueId": "cb9660da-dde8-48ec-ba09-d33d9bb77edc",
+          "valueLabel": "N/A"
+        },
+        {
+          "fieldId": "5bb3995c6d8bc56bc081b87d",
+          "fieldLabel": "Contract",
+          "valueId": "13fc9592-054a-487d-9188-bae103fb70af",
+          "valueLabel": "Fixed Term"
+        },
+        {
+          "fieldId": "68e4ce369c52964c7125078a",
+          "fieldLabel": "Job Family",
+          "valueId": "e3c9e4f4-a983-42c1-acfb-15a77c35f610",
+          "valueLabel": "Information & Systems"
+        },
+        {
+          "fieldId": "56d1aa7ae4b0a07f777a4ef4",
+          "fieldLabel": "Brands",
+          "valueId": "default",
+          "valueLabel": "Ubisoft"
+        },
+        {
+          "fieldId": "6904811aa8fa2db78e2ee2ed",
+          "fieldLabel": "Job  Function",
+          "valueId": "8108a000-6fd1-4d33-9ca6-854a8dbc051d",
+          "valueLabel": "IT Functional"
+        },
+        {
+          "fieldId": "691ca2ee342dfb96e5364508",
+          "fieldLabel": "Reference Job",
+          "valueId": "947eb6f2-16d8-4f37-b683-b5f3616f2419",
+          "valueLabel": "Functional Support Analyst"
+        },
+        {
+          "fieldId": "6a158e3c77b1f5657b57af9d",
+          "fieldLabel": "Management Unit (New)",
+          "valueId": "f0bd3708-c5ff-47b1-9104-b83a1b4071d2",
+          "valueLabel": "UBISOFT"
+        },
+        {
+          "fieldId": "58b7e4d0e4b09a6d37a0cd8b",
+          "fieldLabel": "Department",
+          "valueId": "13847731",
+          "valueLabel": "Ubisoft"
+        },
+        {
+          "fieldId": "COUNTRY",
+          "fieldLabel": "Country/Region",
+          "valueId": "ro",
+          "valueLabel": "Romania"
+        },
+        {
+          "fieldId": "6904797c56f594d5ed50988d",
+          "fieldLabel": "Work flexibility",
+          "valueId": "ccb10278-8410-4710-b0e7-698fc2195139",
+          "valueLabel": "Office-based"
+        },
+        {
+          "fieldId": "5def94650389ad3cc4be9d17",
+          "fieldLabel": "OU sub location (select when applicable)",
+          "valueId": "ca20a399-bb63-491c-9d12-ee438870465d",
+          "valueLabel": "Romania"
+        }
+      ],
+      "visibility": "PUBLIC",
+      "ref": "https://api.smartrecruiters.com/v1/companies/Ubisoft2/postings/744000150335344",
+      "creator": {
+        "name": "Alex Cheyne"
+      },
+      "language": {
+        "code": "en-GB",
+        "label": "English (UK)",
+        "labelNative": "English (UK)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "offset": 0,
+  "limit": 2,
+  "totalFound": 300,
+  "content": [
+    {
+      "id": "744000150454779",
+      "name": "Team Lead Level Designer [Splinter Cell Remake]",
+      "uuid": "e3e08bf5-c6dc-4ca6-b6f2-0ce4ca50b2b8",
+      "jobAdId": "a4872f75-e88d-480c-8934-6fabce9db926",
+      "defaultJobAd": true,
+      "refNumber": "REF31466O",
+      "company": {
+        "identifier": "Ubisoft2",
+        "name": "Ubisoft"
+      },
+      "releasedDate": "2026-09-18T20:43:37.105Z",
+      "location": {
+        "city": "Toronto",
+        "region": "ON",
+        "country": "ca",
+        "remote": false,
+        "hybrid": false,
+        "latitude": "43.6548253",
+        "longitude": "-79.388447",
+        "fullLocation": "Toronto, ON, Canada"
+      },
+      "industry": {
+        "id": "entertainment",
+        "label": "Entertainment"
+      },
+      "department": {
+        "id": "13847731",
+        "label": "Ubisoft"
+      },
+      "function": {
+        "id": "design",
+        "label": "Design"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "mid_senior_level",
+        "label": "Mid-Senior Level"
+      },
+      "customField": [
+        {
+          "fieldId": "56c253c2e4b0cabf01d19d37",
+          "fieldLabel": "Organizational Unit",
+          "valueId": "442b6238-0850-48f6-b773-ae0052b3c6ff",
+          "valueLabel": "Toronto studio"
+        },
+        {
+          "fieldId": "5bb3995c6d8bc56bc081b87d",
+          "fieldLabel": "Contract",
+          "valueId": "b5a86fc0-2681-4b3c-98b6-b73a4be23ef1",
+          "valueLabel": "Permanent"
+        },
+        {
+          "fieldId": "68e4ce369c52964c7125078a",
+          "fieldLabel": "Job Family",
+          "valueId": "7e77a2d9-aaf8-4ca7-b0bd-8c1ce4a9de00",
+          "valueLabel": "Design"
+        },
+        {
+          "fieldId": "56d1aa7ae4b0a07f777a4ef4",
+          "fieldLabel": "Brands",
+          "valueId": "default",
+          "valueLabel": "Ubisoft"
+        },
+        {
+          "fieldId": "6904811aa8fa2db78e2ee2ed",
+          "fieldLabel": "Job  Function",
+          "valueId": "8af67924-6338-458e-ac77-3a89564e0a54",
+          "valueLabel": "Level Design"
+        },
+        {
+          "fieldId": "691ca2ee342dfb96e5364508",
+          "fieldLabel": "Reference Job",
+          "valueId": "bac8a5ee-8fb1-4647-9de2-813455781b1f",
+          "valueLabel": "Level Designer"
+        },
+        {
+          "fieldId": "6a158e3c77b1f5657b57af9d",
+          "fieldLabel": "Management Unit (New)",
+          "valueId": "bcf70a0a-6bfc-42f2-9485-c329726bcba6",
+          "valueLabel": "CREATIVE HOUSE 2"
+        },
+        {
+          "fieldId": "58b7e4d0e4b09a6d37a0cd8b",
+          "fieldLabel": "Department",
+          "valueId": "13847731",
+          "valueLabel": "Ubisoft"
+        },
+        {
+          "fieldId": "COUNTRY",
+          "fieldLabel": "Country/Region",
+          "valueId": "ca",
+          "valueLabel": "Canada"
+        },
+        {
+          "fieldId": "6904797c56f594d5ed50988d",
+          "fieldLabel": "Work flexibility",
+          "valueId": "ccb10278-8410-4710-b0e7-698fc2195139",
+          "valueLabel": "Office-based"
+        },
+        {
+          "fieldId": "5def94650389ad3cc4be9d17",
+          "fieldLabel": "OU sub location (select when applicable)",
+          "valueId": "8282aec3-a755-4c6d-b27f-88e4344879af",
+          "valueLabel": "Canada"
+        }
+      ],
+      "visibility": "PUBLIC",
+      "ref": "https://api.smartrecruiters.com/v1/companies/Ubisoft2/postings/744000150454779",
+      "language": {
+        "code": "fr",
+        "label": "French",
+        "labelNative": "français"
+      }
+    },
+    {
+      "id": "744000150453690",
+      "name": "Paie Maître",
+      "uuid": "47b117f9-6aa9-4da6-b404-ce4f244e60f5",
+      "jobAdId": "f6b8099a-4e08-45f8-8391-41bd18ac7581",
+      "defaultJobAd": true,
+      "refNumber": "REF31908V",
+      "company": {
+        "identifier": "Ubisoft2",
+        "name": "Ubisoft"
+      },
+      "releasedDate": "2026-09-18T20:41:01.702Z",
+      "location": {
+        "city": "Montreal",
+        "region": "QC",
+        "country": "ca",
+        "remote": false,
+        "hybrid": false,
+        "latitude": "45.5018869",
+        "longitude": "-73.56739189999999",
+        "fullLocation": "Montreal, QC, Canada"
+      },
+      "industry": {
+        "id": "computer_games",
+        "label": "Computer Games"
+      },
+      "department": {
+        "id": "13847731",
+        "label": "Ubisoft"
+      },
+      "function": {
+        "id": "finance",
+        "label": "Finance"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "mid_senior_level",
+        "label": "Mid-Senior Level"
+      },
+      "customField": [
+        {
+          "fieldId": "56c253c2e4b0cabf01d19d37",
+          "fieldLabel": "Organizational Unit",
+          "valueId": "21cb51c2-24e9-4088-8f65-52ce10f74bcf",
+          "valueLabel": "Montréal studio"
+        },
+        {
+          "fieldId": "5bb3995c6d8bc56bc081b87d",
+          "fieldLabel": "Contract",
+          "valueId": "b5a86fc0-2681-4b3c-98b6-b73a4be23ef1",
+          "valueLabel": "Permanent"
+        },
+        {
+          "fieldId": "68e4ce369c52964c7125078a",
+          "fieldLabel": "Job Family",
+          "valueId": "f5a5b196-f3b6-4543-be0d-043cc06c7023",
+          "valueLabel": "Finance"
+        },
+        {
+          "fieldId": "56d1aa7ae4b0a07f777a4ef4",
+          "fieldLabel": "Brands",
+          "valueId": "default",
+          "valueLabel": "Ubisoft"
+        },
+        {
+          "fieldId": "6904811aa8fa2db78e2ee2ed",
+          "fieldLabel": "Job  Function",
+          "valueId": "ffa5e975-934b-472f-b8bd-0b5c6051cde8",
+          "valueLabel": "Corporate & Financial Expertises"
+        },
+        {
+          "fieldId": "691ca2ee342dfb96e5364508",
+          "fieldLabel": "Reference Job",
+          "valueId": "7d336f4d-43d1-4067-8f70-9ccd729144d1",
+          "valueLabel": "Payroll Partner"
+        },
+        {
+          "fieldId": "6a158e3c77b1f5657b57af9d",
+          "fieldLabel": "Management Unit (New)",
+          "valueId": "f0bd3708-c5ff-47b1-9104-b83a1b4071d2",
+          "valueLabel": "UBISOFT"
+        },
+        {
+          "fieldId": "58b7e4d0e4b09a6d37a0cd8b",
+          "fieldLabel": "Department",
+          "valueId": "13847731",
+          "valueLabel": "Ubisoft"
+        },
+        {
+          "fieldId": "COUNTRY",
+          "fieldLabel": "Country/Region",
+          "valueId": "ca",
+          "valueLabel": "Canada"
+        },
+        {
+          "fieldId": "6904797c56f594d5ed50988d",
+          "fieldLabel": "Work flexibility",
+          "valueId": "ccb10278-8410-4710-b0e7-698fc2195139",
+          "valueLabel": "Office-based"
+        },
+        {
+          "fieldId": "5def94650389ad3cc4be9d17",
+          "fieldLabel": "OU sub location (select when applicable)",
+          "valueId": "8282aec3-a755-4c6d-b27f-88e4344879af",
+          "valueLabel": "Canada"
+        }
+      ],
+      "visibility": "PUBLIC",
+      "ref": "https://api.smartrecruiters.com/v1/companies/Ubisoft2/postings/744000150453690",
+      "creator": {
+        "name": "Thomas Létourneau-Hudon"
+      },
+      "language": {
+        "code": "fr-CA",
+        "label": "French (Canada)",
+        "labelNative": "français (Canada)"
+      }
+    }
+  ]
+}
