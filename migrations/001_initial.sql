@@ -89,3 +89,11 @@ CREATE TABLE IF NOT EXISTS source_state (
   backoff_until TEXT,
   health_alert_open INTEGER NOT NULL DEFAULT 0
 );
+
+-- Single-use marker: a finalized complete run may apply its absence and reopening decisions
+-- once, and the primary key makes every repeat application a no-op.
+CREATE TABLE IF NOT EXISTS snapshot_applications (
+  run_id INTEGER PRIMARY KEY REFERENCES poll_runs(id),
+  source_id TEXT NOT NULL,
+  applied_at TEXT NOT NULL
+);

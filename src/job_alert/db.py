@@ -107,16 +107,17 @@ def _job_from_row(row: sqlite3.Row) -> NormalizedJob:
     )
 
 
-# A later sighting refreshes the mutable fields, keeps the earliest first_seen_at, and leaves
-# closed_at alone: reopening is a diff decision, not an upsert side effect.
+# A later sighting refreshes the mutable descriptive fields and keeps the earliest first_seen_at.
+# It touches neither missing_complete_runs nor closed_at: a sighting is staged evidence, and only
+# a finalized complete run may change absence counts or reopen a job.
 UPSERT_JOB_SQL = """
 INSERT INTO jobs (
   canonical_job_key, dedupe_key, company_id, source_id, source_job_id, requisition_id,
   title, locations_json, department, team, employment_type, workplace_type, description_text,
   content_hash, posting_url, apply_url, source_published_at, source_updated_at, first_seen_at,
-  last_seen_at, missing_complete_runs, raw_metadata_json
+  last_seen_at, raw_metadata_json
 ) VALUES (
-  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?
+  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 )
 ON CONFLICT(canonical_job_key) DO UPDATE SET
   dedupe_key = excluded.dedupe_key,
@@ -138,7 +139,6 @@ ON CONFLICT(canonical_job_key) DO UPDATE SET
   source_updated_at = excluded.source_updated_at,
   first_seen_at = MIN(jobs.first_seen_at, excluded.first_seen_at),
   last_seen_at = excluded.last_seen_at,
-  missing_complete_runs = 0,
   raw_metadata_json = excluded.raw_metadata_json
 """
 
@@ -156,7 +156,7 @@ UPSERT_SOURCE_STATE_SQL = (
 
 LAST_COMPLETE_RUN_SQL = """
 SELECT id FROM poll_runs
-WHERE source_id = ? AND outcome = ?
+WHERE source_id = ? AND outcome = ? AND finished_at IS NOT NULL
 ORDER BY COALESCE(finished_at, started_at) DESC, id DESC
 LIMIT 1
 """
@@ -213,17 +213,17 @@ class Repository:
         self,
         source_id: str,
         started_at: datetime,
-        outcome: RunOutcome = RunOutcome.PARTIAL,
     ) -> int:
         """Open a poll run and return its id.
 
-        A run that is never finished stays non-complete, so a crashed or abandoned run can
-        never close jobs.
+        Every run starts as `partial`, the only outcome an in-flight run may hold. A run that is
+        never finished therefore stays non-complete and can never close jobs or become the last
+        complete snapshot.
         """
         with self._transaction() as connection:
             cursor = connection.execute(
                 "INSERT INTO poll_runs (source_id, started_at, outcome) VALUES (?, ?, ?)",
-                (source_id, _utc_isoformat(started_at), str(outcome)),
+                (source_id, _utc_isoformat(started_at), RunOutcome.PARTIAL.value),
             )
             if cursor.lastrowid is None:
                 raise RuntimeError(f"failed to insert poll run for source {source_id}")
@@ -293,16 +293,16 @@ class Repository:
         run_id: int,
         jobs: Sequence[NormalizedJob],
         *,
-        reopened_keys: Iterable[str] = (),
         observed_at: datetime | None = None,
     ) -> None:
-        """Record one observation per job for a poll run.
+        """Stage one observation per job for a poll run.
 
-        The earliest `first_seen_at` is preserved. `closed_at` is cleared only for keys the
-        caller classified as reopened.
+        The earliest `first_seen_at` is preserved and the mutable descriptive fields are
+        refreshed. `missing_complete_runs` and `closed_at` are left untouched, because a run that
+        may still fail must not change absence or closure state; a complete run applies those
+        decisions later through `apply_complete_snapshot()`.
         """
         observations = list(jobs)
-        reopening = list(dict.fromkeys(reopened_keys))
         with self._transaction() as connection:
             run = connection.execute(
                 "SELECT source_id, started_at FROM poll_runs WHERE id = ?", (run_id,)
@@ -327,48 +327,83 @@ class Repository:
                     for job in observations
                 ],
             )
-            connection.executemany(
-                "UPDATE jobs SET closed_at = NULL, missing_complete_runs = 0"
-                " WHERE canonical_job_key = ? AND source_id = ?",
-                [(key, source_id) for key in reopening],
-            )
 
-    def apply_absent_jobs(
+    @staticmethod
+    def _require_finished_complete_run(
+        connection: sqlite3.Connection, run_id: int
+    ) -> tuple[str, str]:
+        """Return `(source_id, finished_at)` for a finalized complete run, else fail closed."""
+        run = connection.execute(
+            "SELECT source_id, outcome, finished_at FROM poll_runs WHERE id = ?",
+            (run_id,),
+        ).fetchone()
+        if run is None:
+            raise ValueError(f"unknown poll run {run_id}")
+        outcome = str(run["outcome"])
+        finished_at = run["finished_at"]
+        if outcome != RunOutcome.COMPLETE.value or finished_at is None:
+            raise IncompleteRunError(
+                f"poll run {run_id} is {outcome} with finished_at={finished_at}; an"
+                " unfinished or non-complete run cannot change job absence state"
+            )
+        return str(run["source_id"]), str(finished_at)
+
+    def apply_complete_snapshot(
         self,
         run_id: int,
-        missing_keys: Iterable[str],
         *,
+        missing_keys: Iterable[str] = (),
+        reopened_keys: Iterable[str] = (),
         close_after: int = DEFAULT_CLOSE_AFTER,
     ) -> list[str]:
-        """Count jobs absent from a complete snapshot and close them at the threshold.
+        """Apply the absence and reopening decisions of one finalized complete snapshot.
 
-        The referenced poll run must have finished as `complete`; any other outcome raises
-        `IncompleteRunError` so that a partial, failed, challenged, or quarantined run can
-        never change absence state or close a job.
+        The referenced run must have finished as `complete` and must not have been applied
+        before: the run is claimed in `snapshot_applications` inside this transaction, so a
+        repeated call for the same run is a no-op that increments nothing. Jobs observed by the
+        run start a fresh absence streak, `reopened_keys` clear `closed_at` for jobs this run
+        actually observed, and `missing_keys` increment `missing_complete_runs` and close the job
+        once the streak reaches `close_after`. Returns the keys closed by this application.
         """
         if close_after < 1:
             raise ValueError(f"close_after must be at least 1, got {close_after}")
+        missing = list(dict.fromkeys(missing_keys))
+        reopening = list(dict.fromkeys(reopened_keys))
         with self._transaction() as connection:
-            run = connection.execute(
-                "SELECT source_id, outcome, finished_at, started_at FROM poll_runs WHERE id = ?",
-                (run_id,),
-            ).fetchone()
-            if run is None:
-                raise ValueError(f"unknown poll run {run_id}")
-            outcome = str(run["outcome"])
-            if outcome != RunOutcome.COMPLETE.value:
-                raise IncompleteRunError(
-                    f"poll run {run_id} finished as {outcome}; an incomplete run cannot change"
-                    " job absence state"
+            source_id, finished_at = self._require_finished_complete_run(connection, run_id)
+            applied_at = _utc_isoformat(_parse_timestamp(finished_at) or datetime.now(UTC))
+            observed = {
+                str(row["canonical_job_key"])
+                for row in connection.execute(
+                    "SELECT canonical_job_key FROM job_observations WHERE run_id = ?", (run_id,)
                 )
-            source_id = str(run["source_id"])
-            detected_at = _utc_isoformat(
-                _parse_timestamp(run["finished_at"])
-                or _parse_timestamp(run["started_at"])
-                or datetime.now(UTC)
+            }
+            contradictory = sorted(observed.intersection(missing))
+            if contradictory:
+                raise ValueError(
+                    f"poll run {run_id} reports {contradictory} as both observed and missing"
+                )
+            claim = connection.execute(
+                "INSERT OR IGNORE INTO snapshot_applications (run_id, source_id, applied_at)"
+                " VALUES (?, ?, ?)",
+                (run_id, source_id, applied_at),
+            )
+            if claim.rowcount == 0:
+                return []
+            connection.execute(
+                "UPDATE jobs SET missing_complete_runs = 0 WHERE source_id = ?"
+                " AND canonical_job_key IN (SELECT canonical_job_key FROM job_observations"
+                " WHERE run_id = ?)",
+                (source_id, run_id),
+            )
+            connection.executemany(
+                "UPDATE jobs SET closed_at = NULL, missing_complete_runs = 0"
+                " WHERE canonical_job_key = ? AND source_id = ? AND canonical_job_key IN"
+                " (SELECT canonical_job_key FROM job_observations WHERE run_id = ?)",
+                [(key, source_id, run_id) for key in reopening],
             )
             closed: list[str] = []
-            for key in dict.fromkeys(missing_keys):
+            for key in missing:
                 job = connection.execute(
                     "SELECT missing_complete_runs FROM jobs WHERE canonical_job_key = ?"
                     " AND source_id = ? AND closed_at IS NULL",
@@ -383,9 +418,21 @@ class Repository:
                 connection.execute(
                     "UPDATE jobs SET missing_complete_runs = ?, closed_at = ?"
                     " WHERE canonical_job_key = ?",
-                    (missing_complete_runs, detected_at if closing else None, key),
+                    (missing_complete_runs, applied_at if closing else None, key),
                 )
             return closed
+
+    def apply_absent_jobs(
+        self,
+        run_id: int,
+        missing_keys: Iterable[str],
+        *,
+        close_after: int = DEFAULT_CLOSE_AFTER,
+    ) -> list[str]:
+        """Absence-only convenience wrapper around `apply_complete_snapshot()`."""
+        return self.apply_complete_snapshot(
+            run_id, missing_keys=missing_keys, close_after=close_after
+        )
 
     def record_events(self, run_id: int, events: Sequence[JobEvent]) -> list[int]:
         """Persist durable job events for a run and return their ids, newest call wins."""
