@@ -127,7 +127,16 @@ async def test_fetcher_retries_three_times_with_exponential_fallback(
 @respx.mock
 @pytest.mark.asyncio
 async def test_fetcher_honors_http_date_retry_after(monkeypatch: pytest.MonkeyPatch) -> None:
-    retry_at = datetime.now(UTC) + timedelta(seconds=45)
+    frozen_now = datetime(2026, 9, 18, 12, 0, tzinfo=UTC)
+    retry_at = frozen_now + timedelta(seconds=45)
+
+    class FrozenDatetime(datetime):
+        @classmethod
+        def now(cls, tz: object | None = None) -> datetime:
+            assert tz == UTC
+            return frozen_now
+
+    monkeypatch.setattr("job_alert.fetch.datetime", FrozenDatetime)
     route = respx.get("https://example.com/jobs").mock(
         side_effect=[
             httpx.Response(429, headers={"Retry-After": format_datetime(retry_at, usegmt=True)}),
@@ -144,7 +153,7 @@ async def test_fetcher_honors_http_date_retry_after(monkeypatch: pytest.MonkeyPa
         await fetcher.get(RequestSpec(url="https://example.com/jobs", expected="json"))
 
     assert route.call_count == 2
-    assert waits[0] == pytest.approx(45.0, abs=1.0)
+    assert waits == [45.0]
 
 
 @respx.mock
