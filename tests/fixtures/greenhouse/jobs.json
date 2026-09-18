@@ -1,0 +1,123 @@
+{
+  "jobs": [
+    {
+      "id": 6199608004,
+      "internal_job_id": 4904996004,
+      "title": "Software Engineer, Agentic Infrastructure",
+      "updated_at": "2026-09-17T18:07:49-04:00",
+      "first_published": "2026-09-17T17:56:20-04:00",
+      "requisition_id": "824",
+      "location": {
+        "name": "Hybrid - San Francisco, New York City"
+      },
+      "absolute_url": "https://job-boards.greenhouse.io/vercel/jobs/6199608004",
+      "departments": [
+        {
+          "id": 4042495004,
+          "name": "Engineering",
+          "child_ids": [],
+          "parent_id": null
+        }
+      ],
+      "offices": [
+        {
+          "id": 4035428004,
+          "name": "Remote - United States",
+          "location": "San Francisco, California, United States",
+          "child_ids": [],
+          "parent_id": 4014159004
+        }
+      ],
+      "content": "&lt;div class=&quot;content-intro&quot;&gt;&lt;h2&gt;About Vercel:&lt;/h2&gt;\n&lt;p&gt;&lt;span data-sheets-root=&quot;1&quot;&gt;Vercel is the agentic infrastructure company. We free people and agents to ship what’s next.&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;span data-sheets-root=&quot;1&quot;&gt;For more than a decade, Vercel has shaped how the web is built. As the team behind Next.js, v0, and AI SDK, we create products that help builders move from idea to production with speed, security, and exceptional developer experience.&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;span data-sheets-root=&quot;1&quot;&gt;Now, software is entering a new era, and the next generation of products will not just be used by people. They will be built, extended, and operated by agents.&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;span data-sheets-root=&quot;1&quot;&gt;We are building the platform for that future, trusted by companies like&amp;nbsp;&lt;strong&gt;OpenAI, PayPal, Ramp, Supreme, and millions of developers worldwide&lt;/strong&gt;. Whether you’re building our products, supporting our customers, growing our community, or shaping our story, you’ll help define what comes next.&lt;/span&gt;&lt;/p&gt;&lt;/div&gt;&lt;h2&gt;About the Role:&lt;/h2&gt;\n&lt;p&gt;The next generation of software won’t just be used by people — it’ll be built and shipped by agents. Builds are where that happens, and they’re the beating heart of Vercel. Whether an idea starts in v0, in an agent, or in an engineer’s editor, every customer builds — and millions of builds flow through our systems every day.&lt;/p&gt;\n&lt;p&gt;As an engineer on the Agentic Infrastructure team, you’ll take ownership of the systems that carry that work at scale. You won’t just contribute features — you’ll be responsible for the design, reliability, and evolution of the platform itself. You’ll make decisions that shape performance, define best practices, and ensure the workflows that Vercel, our customers, and their agents depend on are fast, resilient, and secure.&lt;/p&gt;\n&lt;p&gt;This role blends product thinking with deep systems ownership. You’ll partner with teams across Vercel to build and operate the agentic infrastructure that determines how software actually ships.&lt;/p&gt;\n&lt;p&gt;We’re looking for engineers who want to own high-scale systems end-to-end, thrive on improving the developer/agent experience, and are driven to have a lasting impact on how modern software gets built and delivered.&lt;/p&gt;",
+      "metadata": [
+        {
+          "id": 18783104004,
+          "name": "Career Site Categories",
+          "value": "Engineering",
+          "value_type": "single_select"
+        }
+      ],
+      "data_compliance": [
+        {
+          "type": "gdpr",
+          "requires_consent": false,
+          "requires_processing_consent": false,
+          "requires_retention_consent": false,
+          "retention_period": null,
+          "demographic_data_consent_applies": false
+        }
+      ],
+      "company_name": "Vercel",
+      "language": "en",
+      "application_deadline": null
+    },
+    {
+      "id": 6142097004,
+      "internal_job_id": 5199363004,
+      "title": "Scaled Commercial Account Executive, Install base ",
+      "updated_at": "2026-09-17T16:40:14-04:00",
+      "first_published": "2026-08-12T12:23:41-04:00",
+      "requisition_id": "1318",
+      "location": {
+        "name": "Hybrid - San Francisco, New York City, Austin"
+      },
+      "absolute_url": "https://job-boards.greenhouse.io/vercel/jobs/6142097004",
+      "departments": [
+        {
+          "id": 4085775004,
+          "name": "Account Executive",
+          "child_ids": [],
+          "parent_id": null
+        }
+      ],
+      "offices": [
+        {
+          "id": 4091067004,
+          "name": "Office - Austin",
+          "location": "Austin, Texas, United States",
+          "child_ids": [],
+          "parent_id": 4014159004
+        },
+        {
+          "id": 4091066004,
+          "name": "Office - New York City",
+          "location": "New York, New York, United States",
+          "child_ids": [],
+          "parent_id": 4014159004
+        },
+        {
+          "id": 4091065004,
+          "name": "Office - San Francisco",
+          "location": "San Francisco, California, United States",
+          "child_ids": [],
+          "parent_id": 4014159004
+        }
+      ],
+      "content": "&lt;div class=&quot;content-intro&quot;&gt;&lt;h2&gt;About Vercel:&lt;/h2&gt;\n&lt;p&gt;&lt;span data-sheets-root=&quot;1&quot;&gt;Vercel is the agentic infrastructure company. We free people and agents to ship what’s next.&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;span data-sheets-root=&quot;1&quot;&gt;For more than a decade, Vercel has shaped how the web is built. As the team behind Next.js, v0, and AI SDK, we create products that help builders move from idea to production with speed, security, and exceptional developer experience.&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;span data-sheets-root=&quot;1&quot;&gt;Now, software is entering a new era, and the next generation of products will not just be used by people. They will be built, extended, and operated by agents.&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;span data-sheets-root=&quot;1&quot;&gt;We are building the platform for that future, trusted by companies like&amp;nbsp;&lt;strong&gt;OpenAI, PayPal, Ramp, Supreme, and millions of developers worldwide&lt;/strong&gt;. Whether you’re building our products, supporting our customers, growing our community, or shaping our story, you’ll help define what comes next.&lt;/span&gt;&lt;/p&gt;&lt;/div&gt;&lt;h2&gt;About the Role:&lt;/h2&gt;\n&lt;p&gt;As an Account Executive on the Commercial Scaled Install Base team, you will own a broad portfolio of existing Vercel customers and be responsible for both retaining and growing their business.&lt;/p&gt;\n&lt;p&gt;You will manage a high-volume book of accounts, balancing renewals, customer engagement, pipeline generation, and expansion opportunities. You will learn to recognize which customers need immediate attention, which signals point to growth, and where proactive outreach can create new commercial opportunites.&lt;/p&gt;\n&lt;p&gt;This is a true closing role. You will own revenue outcomes, run sales cycles, negotiate renewals and expansions, and build pipeline within your portfolio. You will also learn how to operate at scale, using customer data, automation, AI, and repeatable workflows to focus your effort where it can have the greatest impact.&lt;/p&gt;\n&lt;p&gt;This role is an ideal next step for an emerging seller who is ready to move into full-cycle account ownership. You may have developed your skills in an SDR or BDR role, renewals, account management, customer success, or another customer-facing position. What matters most is that you are commercially driven, eager to learn, and ready to take ownership of a number.&lt;/p&gt;\n&lt;p&gt;&lt;/p&gt;\n&lt;p&gt;If you’re based within a pre-determined commuting distance of one of our offices (SF, NY, London, or Berlin), the role includes in-office anchor days on Monday, Tuesday, and Friday. If you&#39;re located beyond that distance, the role is fully remote. For location-specific details, please connect with our recruiting team.&lt;/p&gt;",
+      "metadata": [
+        {
+          "id": 18783104004,
+          "name": "Career Site Categories",
+          "value": "Sales",
+          "value_type": "single_select"
+        }
+      ],
+      "data_compliance": [
+        {
+          "type": "gdpr",
+          "requires_consent": false,
+          "requires_processing_consent": false,
+          "requires_retention_consent": false,
+          "retention_period": null,
+          "demographic_data_consent_applies": false
+        }
+      ],
+      "company_name": "Vercel",
+      "language": "en",
+      "application_deadline": null
+    }
+  ],
+  "meta": {
+    "total": 2
+  }
+}
