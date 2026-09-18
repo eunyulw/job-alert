@@ -187,10 +187,13 @@ class GreenhouseAdapter:
 
 
 def _list_url(endpoint: str) -> str:
-    """The configured endpoint, forced to ask for posting descriptions.
+    """The configured endpoint with exactly one ``content=true`` query parameter.
 
     A board recorded without ``content=true`` would silently lose every description, so the
-    parameter is set explicitly. An endpoint that already asks for content keeps its exact URL.
+    parameter is always set: an existing ``content`` value is replaced rather than duplicated and
+    every other query parameter is kept. The query string is rebuilt through ``urlencode``, so an
+    already content-enabled endpoint is preserved semantically rather than byte for byte (parameter
+    order and percent-encoding may differ).
     """
     parts = urlsplit(endpoint)
     query = [
@@ -326,7 +329,12 @@ def _https_url(record: Mapping[str, object], field: str) -> str:
 
 
 def _is_absolute_https(value: str) -> bool:
-    parts = urlsplit(value)
+    try:
+        parts = urlsplit(value)
+    except ValueError:
+        # ``urlsplit`` rejects malformed URLs itself, for example an unmatched IPv6 bracket. A
+        # provider value like that is a bad record, not a reason to abort the whole board.
+        return False
     return parts.scheme == "https" and bool(parts.netloc)
 
 

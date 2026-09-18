@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from datetime import UTC, datetime
 from pathlib import Path
+from urllib.parse import parse_qsl, urlsplit
 
 import httpx
 import pytest
@@ -85,6 +86,10 @@ def make_source(**overrides: object) -> SourceConfig:
 
 def adapter() -> GreenhouseAdapter:
     return GreenhouseAdapter(now=lambda: NOW)
+
+
+def request_params(request: httpx.Request) -> list[tuple[str, str]]:
+    return parse_qsl(urlsplit(str(request.url)).query, keep_blank_values=True)
 
 
 @respx.mock
@@ -254,6 +259,31 @@ async def test_greenhouse_rejects_a_record_without_a_postable_url() -> None:
     assert result.warnings == [
         "skipped malformed job record at index 0: absolute_url is not an absolute https URL"
     ]
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_greenhouse_marks_a_record_incomplete_when_the_url_is_malformed() -> None:
+    respx.get(ENDPOINT).mock(
+        return_value=httpx.Response(
+            200,
+            json=board(
+                record(id=1, title="Good job"),
+                record(id=2, title="Broken job", absolute_url="https://[::1"),
+            ),
+        )
+    )
+
+    async with HttpFetcher() as fetcher:
+        result = await adapter().collect(make_source(), fetcher)
+
+    assert result.complete is False
+    assert [job.source_job_id for job in result.jobs] == ["1"]
+    assert result.warnings == [
+        "skipped malformed job record at index 1: absolute_url is not an absolute https URL"
+    ]
+    with pytest.raises(PartialCollectionError, match="incomplete collection"):
+        validate_collection(result)
 
 
 @respx.mock
@@ -444,6 +474,13 @@ async def test_greenhouse_rejects_an_unsafe_application_url_template() -> None:
         with pytest.raises(AdapterError, match="apply_url_template"):
             await adapter().collect(broken, fetcher)
 
+    malformed = make_source(
+        parameters={"apply_url_template": "https://[::1/apply/{job_id}"}
+    )
+    async with HttpFetcher() as fetcher:
+        with pytest.raises(AdapterError, match="apply_url_template"):
+            await adapter().collect(malformed, fetcher)
+
 
 @respx.mock
 @pytest.mark.asyncio
@@ -458,7 +495,29 @@ async def test_greenhouse_requests_descriptions_when_the_endpoint_omits_content(
     async with HttpFetcher() as fetcher:
         await adapter().collect(source, fetcher)
 
-    assert str(route.calls[0].request.url) == ENDPOINT
+    params = request_params(route.calls[0].request)
+    assert dict(params) == {"content": "true"}
+    assert [name for name, _ in params].count("content") == 1
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_greenhouse_keeps_content_enabled_endpoints_and_their_parameters() -> None:
+    board_url = "https://boards-api.greenhouse.io/v1/boards/example/jobs"
+    route = respx.get(url__startswith=board_url).mock(
+        return_value=httpx.Response(200, json=board(record()))
+    )
+
+    for endpoint in (f"{board_url}?foo=bar&content=true", f"{board_url}?content=true&foo=bar"):
+        async with HttpFetcher() as fetcher:
+            await adapter().collect(make_source(endpoint=endpoint), fetcher)
+
+    assert route.call_count == 2
+    for call in route.calls:
+        assert str(call.request.url).startswith(f"{board_url}?")
+        params = request_params(call.request)
+        assert dict(params) == {"foo": "bar", "content": "true"}
+        assert [name for name, _ in params].count("content") == 1
 
 
 @respx.mock
