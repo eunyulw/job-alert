@@ -2,9 +2,9 @@
 
 ``https://api.lever.co/v0/postings/{site}?mode=json`` answers with a JSON array of at most
 ``limit`` postings per request, so one collection walks the board page by page with ``skip`` until a
-page comes back shorter than ``limit``. Lever's list endpoint publishes no total, so
-``declared_total`` stays ``None`` and completeness rests on that short-page rule, the pagination
-loop guard, and the page cap described below.
+page comes back empty. Lever's list endpoint publishes no total, so ``declared_total`` stays
+``None`` and completeness rests on that empty-page rule, the pagination loop guard, and the page
+cap described below.
 
 Mapping decisions the payload does not spell out:
 
@@ -29,9 +29,12 @@ Pagination rules:
 - Every request asks for ``mode=json``, the current ``skip`` and the ``limit`` taken from the
   source's ``page_size`` parameter (default ``100``). Other parameters of the configured endpoint,
   such as a ``team`` filter, are preserved; ``mode``, ``skip`` and ``limit`` belong to the adapter.
-- The walk ends as soon as a page holds fewer than ``page_size`` postings. ``skip`` advances by the
-  number of postings actually returned, which keeps pages from overlapping if a provider answers a
-  full page with more postings than it was asked for.
+- The walk ends only when a page holds zero postings, so a short page is followed by another
+  request: Lever answers with fewer postings than ``limit`` whenever it caps the response, and that
+  short page is not by itself evidence that the board ends there. The terminating empty page is
+  counted in ``page_count``. ``skip`` advances by the number of postings actually returned, which
+  keeps pages from overlapping if a provider answers a full page with more postings than it was
+  asked for.
 - A page whose job ids are exactly a page already seen is a loop: the adapter keeps the jobs it
   already has and reports ``complete=False`` with a warning instead of following the loop or
   truncating the collection silently.
@@ -140,7 +143,7 @@ class LeverAdapter:
                 jobs.append(job)
             records_read += len(records)
 
-            if len(records) < page_size:
+            if not records:
                 break
             if page_count >= MAX_PAGES:
                 warnings.append(

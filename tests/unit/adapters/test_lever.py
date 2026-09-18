@@ -127,7 +127,7 @@ def test_lever_fixture_keeps_two_captured_postings_with_one_synthetic_timestamp_
 
 @respx.mock
 @pytest.mark.asyncio
-async def test_lever_collects_until_short_page_and_deduplicates_locations() -> None:
+async def test_lever_collects_until_empty_page_and_deduplicates_locations() -> None:
     first_page = [fixture_job("1"), fixture_job("2")]
     respx.get(
         "https://api.lever.co/v0/postings/example",
@@ -158,17 +158,17 @@ async def test_lever_collects_until_short_page_and_deduplicates_locations() -> N
 @pytest.mark.asyncio
 async def test_lever_maps_the_captured_board_into_normalized_jobs() -> None:
     captured = fixture_payload()
-    route = respx.get(ENDPOINT).mock(return_value=page(fixture_job("1"), fixture_job("2")))
+    route = respx.get(ENDPOINT).mock(side_effect=[page(fixture_job("1"), fixture_job("2")), page()])
 
     async with HttpFetcher() as fetcher:
         result = validate_collection(await adapter().collect(make_lever_source(), fetcher))
 
     first, second = result.jobs
     assert result.source_id == "example-lever"
-    assert result.page_count == 1
+    assert result.page_count == 2
     assert result.declared_total is None
     assert result.warnings == []
-    assert route.call_count == 1
+    assert route.call_count == 2
 
     assert first.source_job_id == "1"
     assert first.canonical_job_key == "lever:example:1"
@@ -229,20 +229,28 @@ async def test_lever_repeats_the_same_pages_as_stable_normalized_jobs() -> None:
 
 @respx.mock
 @pytest.mark.asyncio
-async def test_lever_stops_on_the_first_short_page() -> None:
-    route = respx.get(ENDPOINT).mock(return_value=page(record("1")))
-    source = make_lever_source(parameters={"page_size": 2})
+async def test_lever_collects_past_short_pages_when_the_server_caps_the_response() -> None:
+    route = respx.get(ENDPOINT).mock(
+        side_effect=[
+            page(record("1")),
+            page(record("2"), record("3")),
+            page(record("4")),
+            page(),
+        ]
+    )
+    source = make_lever_source(parameters={"page_size": 1000})
 
     async with HttpFetcher() as fetcher:
         result = await adapter().collect(source, fetcher)
 
     assert result.complete is True
-    assert result.page_count == 1
-    assert route.call_count == 1
-    assert request_params(route.calls[0].request) == [
-        ("mode", "json"),
-        ("skip", "0"),
-        ("limit", "2"),
+    assert [job.source_job_id for job in result.jobs] == ["1", "2", "3", "4"]
+    assert result.page_count == 4
+    assert [request_params(call.request) for call in route.calls] == [
+        [("mode", "json"), ("skip", "0"), ("limit", "1000")],
+        [("mode", "json"), ("skip", "1"), ("limit", "1000")],
+        [("mode", "json"), ("skip", "3"), ("limit", "1000")],
+        [("mode", "json"), ("skip", "4"), ("limit", "1000")],
     ]
 
 
@@ -250,7 +258,7 @@ async def test_lever_stops_on_the_first_short_page() -> None:
 @pytest.mark.asyncio
 async def test_lever_advances_skip_by_the_postings_it_already_read() -> None:
     route = respx.get(ENDPOINT).mock(
-        side_effect=[page(record("1"), record("2")), page(record("3"))]
+        side_effect=[page(record("1"), record("2")), page(record("3")), page()]
     )
     source = make_lever_source(parameters={"page_size": 2})
 
@@ -258,18 +266,19 @@ async def test_lever_advances_skip_by_the_postings_it_already_read() -> None:
         result = await adapter().collect(source, fetcher)
 
     assert [job.source_job_id for job in result.jobs] == ["1", "2", "3"]
-    assert result.page_count == 2
-    assert route.call_count == 2
+    assert result.page_count == 3
+    assert route.call_count == 3
     assert [request_params(call.request) for call in route.calls] == [
         [("mode", "json"), ("skip", "0"), ("limit", "2")],
         [("mode", "json"), ("skip", "2"), ("limit", "2")],
+        [("mode", "json"), ("skip", "3"), ("limit", "2")],
     ]
 
 
 @respx.mock
 @pytest.mark.asyncio
 async def test_lever_uses_the_default_page_size_when_the_source_sets_none() -> None:
-    route = respx.get(ENDPOINT).mock(return_value=page(record("1")))
+    route = respx.get(ENDPOINT).mock(side_effect=[page(record("1")), page()])
 
     async with HttpFetcher() as fetcher:
         result = await adapter().collect(make_lever_source(), fetcher)
@@ -278,6 +287,12 @@ async def test_lever_uses_the_default_page_size_when_the_source_sets_none() -> N
     assert request_params(route.calls[0].request) == [
         ("mode", "json"),
         ("skip", "0"),
+        ("limit", str(DEFAULT_PAGE_SIZE)),
+    ]
+    assert route.call_count == 2
+    assert request_params(route.calls[1].request) == [
+        ("mode", "json"),
+        ("skip", "1"),
         ("limit", str(DEFAULT_PAGE_SIZE)),
     ]
 
@@ -394,7 +409,7 @@ async def test_lever_accepts_an_empty_board() -> None:
 @respx.mock
 @pytest.mark.asyncio
 async def test_lever_marks_an_unusable_record_incomplete_but_keeps_the_page() -> None:
-    respx.get(ENDPOINT).mock(return_value=page(record("1"), record("2", text=None)))
+    respx.get(ENDPOINT).mock(side_effect=[page(record("1"), record("2", text=None)), page()])
 
     async with HttpFetcher() as fetcher:
         result = await adapter().collect(make_lever_source(), fetcher)
@@ -412,8 +427,11 @@ async def test_lever_rejects_records_without_usable_urls_or_a_publish_timestamp(
     respx.get(ENDPOINT).mock(
         side_effect=[
             page(record("1", hostedUrl=None)),
+            page(),
             page(record("1", applyUrl="http://jobs.lever.co/example/1/apply")),
+            page(),
             page(record("1", createdAt="yesterday")),
+            page(),
         ]
     )
 
@@ -441,7 +459,7 @@ async def test_lever_rejects_records_without_usable_urls_or_a_publish_timestamp(
 @pytest.mark.asyncio
 async def test_lever_hashes_a_posting_without_a_description_or_categories() -> None:
     respx.get(ENDPOINT).mock(
-        return_value=page(record("1", categories={}, descriptionPlain="", workplaceType=None))
+        side_effect=[page(record("1", categories={}, descriptionPlain="", workplaceType=None)), page()]
     )
 
     async with HttpFetcher() as fetcher:
@@ -518,7 +536,7 @@ async def test_lever_rejects_a_not_modified_response() -> None:
 @respx.mock
 @pytest.mark.asyncio
 async def test_lever_sends_the_configured_source_headers() -> None:
-    route = respx.get(ENDPOINT).mock(return_value=page(record("1")))
+    route = respx.get(ENDPOINT).mock(side_effect=[page(record("1")), page()])
     source = make_lever_source(
         headers={"Accept": "application/json", "X-Source-Audit": "2026-09-18"}
     )
@@ -534,7 +552,7 @@ async def test_lever_sends_the_configured_source_headers() -> None:
 @respx.mock
 @pytest.mark.asyncio
 async def test_lever_falls_back_to_the_site_token_for_the_tenant() -> None:
-    respx.get(ENDPOINT).mock(return_value=page(record("1")))
+    respx.get(ENDPOINT).mock(side_effect=[page(record("1")), page()])
 
     async with HttpFetcher() as fetcher:
         result = await adapter().collect(make_lever_source(tenant=None), fetcher)
