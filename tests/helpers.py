@@ -20,22 +20,13 @@ PLACEHOLDER_URL_MARKERS = (
     "yourcompany",
 )
 
-CORE_FIELDS = (
-    "source_job_id",
-    "canonical_job_key",
-    "dedupe_key",
-    "requisition_id",
-    "title",
-    "locations",
-    "department",
-    "team",
-    "employment_type",
-    "workplace_type",
-    "content_hash",
-    "posting_url",
-    "apply_url",
-    "source_published_at",
-    "source_updated_at",
+# Volatile fields change between two collections of the same provider state: `first_seen_at` is a
+# fresh clock read per collection, and `raw_metadata` may carry provider-specific bookkeeping.
+# Everything else the model declares is compared, so a new field is covered by default.
+VOLATILE_FIELDS = frozenset({"first_seen_at", "raw_metadata"})
+
+STABLE_FIELDS = tuple(
+    name for name in NormalizedJob.model_fields if name not in VOLATILE_FIELDS
 )
 
 
@@ -95,7 +86,7 @@ def assert_repeat_is_stable(first: CollectionResult, second: CollectionResult) -
     for key in first_keys:
         changed = [
             field
-            for field in CORE_FIELDS
+            for field in STABLE_FIELDS
             if getattr(first_by_key[key], field) != getattr(second_by_key[key], field)
         ]
         _require(
