@@ -168,6 +168,13 @@ def test_smartrecruiters_fixture_keeps_two_captured_pages_of_one_board() -> None
         assert "applyUrl" not in item
 
 
+def test_smartrecruiters_fixture_carries_no_personal_metadata() -> None:
+    """``creator`` names the employee who posted the job, so it must not be committed."""
+    for path in (PAGE_1, PAGE_2):
+        for item in fixture_records(path):
+            assert "creator" not in item
+
+
 @respx.mock
 @pytest.mark.asyncio
 async def test_smartrecruiters_walks_two_pages_of_three_jobs_and_maps_them() -> None:

@@ -121,9 +121,6 @@
       ],
       "visibility": "PUBLIC",
       "ref": "https://api.smartrecruiters.com/v1/companies/Ubisoft2/postings/744000150333355",
-      "creator": {
-        "name": "Alex Cheyne"
-      },
       "language": {
         "code": "en-GB",
         "label": "English (UK)",
@@ -248,9 +245,6 @@
       ],
       "visibility": "PUBLIC",
       "ref": "https://api.smartrecruiters.com/v1/companies/Ubisoft2/postings/744000150335344",
-      "creator": {
-        "name": "Alex Cheyne"
-      },
       "language": {
         "code": "en-GB",
         "label": "English (UK)",

@@ -233,9 +233,6 @@
       ],
       "visibility": "PUBLIC",
       "ref": "https://api.smartrecruiters.com/v1/companies/Ubisoft2/postings/744000150453690",
-      "creator": {
-        "name": "Thomas Létourneau-Hudon"
-      },
       "language": {
         "code": "fr-CA",
         "label": "French (Canada)",

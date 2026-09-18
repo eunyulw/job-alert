@@ -34,9 +34,10 @@ company and may replace these files with responses from an enabled SmartRecruite
 | `postings-page-1.json` | 0 | 2 | 300 | `744000150454779` Team Lead Level Designer [Splinter Cell Remake]; `744000150453690` Paie Maître |
 | `postings-page-2.json` | 2 | 2 | 300 | `744000150333355` Problem Management Specialist; `744000150335344` Application Specialist (ERP Finance) |
 
-Each file is exactly what the provider returned for its URL: the two records of that page in board
-order, inside the live `offset`/`limit`/`totalFound`/`content` envelope. The pages do not overlap,
-which is what lets the unit tests walk them as two steps of one board. Every kept record carries a
+Each file is what the provider returned for its URL — the two records of that page in board order,
+inside the live `offset`/`limit`/`totalFound`/`content` envelope — with one sanitization applied
+(the `creator` object is removed; see Sanitization). The pages do not overlap, which is what lets
+the unit tests walk them as two steps of one board. Every kept record carries a
 structured `location` with `city`, `region` and a lower-case ISO 3166-1 alpha-2 `country`, and
 every kept record publishes `department.label: "Ubisoft"` with
 `typeOfEmployment.label: "Full-time"`.
@@ -63,17 +64,28 @@ evidence for the derivation and is not committed. The list endpoint also publish
 
 ## What changed from the live responses
 
-- Nothing inside the two committed pages was added, replaced, shortened, or removed. Each file is
-  the provider's own response for its `offset`/`limit`, rendered with two-space indentation and a
-  trailing newline; every key and value is otherwise byte-identical, including the provider's
-  UTF-8 text (`Paie Maître`).
+- `creator` was removed from the three committed records that carried it (see Sanitization). That
+  is the only difference from the captures: each file is otherwise the provider's own response for
+  its `offset`/`limit`, rendered with two-space indentation and a trailing newline, so every
+  remaining key and value is byte-identical to the capture, including the provider's UTF-8 text
+  (`Paie Maître`). As a whole the two files are therefore **not** byte-identical to the live
+  responses.
 - The board's other 296 postings are simply not part of these two pages.
 
 ## Sanitization
 
-- A scan of both pages for e-mail addresses and telephone numbers returned no matches. Every
-  candidate from a broad digit pattern was a posting id, a UUID, a latitude/longitude, a
-  cost-centre code, or an ISO timestamp.
-- Nothing was redacted, because the records contain no personal data.
+- `creator` was removed from `postings-page-1.json` (one record) and `postings-page-2.json` (two
+  records). In this schema `creator` is `{"name": "<employee>"}`, which names a natural person:
+  across the wider 100-record capture of the same board it appeared on 12 records and named 6
+  distinct employees. No adapter field and no test reads it, so the key was deleted rather than
+  replaced with a placeholder. That is the same convention the committed Greenhouse, Lever and
+  Ashby fixtures follow: none of them carries a `creator`, `author`, `hiringManager`, `recruiter`,
+  `contact` or `owner` key.
+- Both pages were scanned for e-mail addresses, telephone numbers and personal names. After the
+  three removals there are no personal names left: every candidate from a broad digit pattern is a
+  posting id, a UUID, a latitude/longitude, a cost-centre code, or an ISO timestamp, and every
+  name-like string is a job title, department, team, office, location, board label, or a company
+  name.
+- Nothing else was redacted or replaced.
 - The captures were unauthenticated public GETs. No request credentials, cookies, session
   identifiers, or identifying headers were recorded or committed.
