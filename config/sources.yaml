@@ -386,14 +386,14 @@ sources:
   tenant: anthropic
   parameters:
     audit_status: SUPPORTED
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_http_status: 200
     audit_final_url: https://www.anthropic.com/careers
     audit_notes:
     - greenhouse adapter collected 609 postings twice with identical canonical keys across 1 page(s)
-    audit_evidence: the official careers page links to https://www.anthropic.com/careers/jobs, which resolves to https://www.anthropic.com/careers/jobs
+    audit_evidence: the official careers page links to https://www.anthropic.com/careers/jobs, which resolves to https://www.anthropic.com/careers/jobs (careers page links to https://job-boards.greenhouse.io/anthropic/jobs/4980436008)
   enabled: true
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: amd-discovery
   company_id: amd
   provider: discovery
@@ -1109,15 +1109,15 @@ sources:
   tenant: BoschGroup
   parameters:
     audit_status: SUPPORTED
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_http_status: 200
     audit_final_url: https://www.bosch.com/careers/
     audit_notes:
     - smartrecruiters adapter collected 4819 postings twice with identical canonical keys across 49 page(s)
     - derived SmartRecruiters posting URL https://jobs.smartrecruiters.com/BoschGroup/744000150470642 returned HTTP 200
-    audit_evidence: the official careers page links to https://jobs.bosch.com/en/, which resolves to https://jobs.bosch.com/en/
+    audit_evidence: the official careers page links to https://jobs.bosch.com/en/, which resolves to https://jobs.bosch.com/en/ (careers page links to https://careers.smartrecruiters.com/BoschGroup/chinahongkong)
   enabled: true
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: lucid-motors-discovery
   company_id: lucid-motors
   provider: discovery
@@ -1413,12 +1413,12 @@ sources:
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
     audit_probed_at: '2026-09-19'
-    audit_evidence: the official careers page links to https://www.honeywell.com/us/en/careers, which resolves to https://www.honeywell.com/us/en/careers
+    audit_evidence: the official careers page links to https://www.honeywell.com/us/en/careers, which resolves to https://www.honeywell.com/us/en/careers (careers page links to https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/Honeywell/jobs)
     audit_provider: oracle
     audit_http_status: 200
     audit_final_url: https://careers.honeywell.com/en/sites/Honeywell
     audit_notes:
-    - oracle provider evidence found (the official careers page links to https://www.honeywell.com/us/en/careers, which resolves to https://www.honeywell.com/us/en/careers); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    - oracle provider evidence found (the official careers page links to https://www.honeywell.com/us/en/careers, which resolves to https://www.honeywell.com/us/en/careers (careers page links to https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/Honeywell/jobs)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
   audit_date: '2026-09-19'
 - id: abb-discovery
@@ -1446,14 +1446,14 @@ sources:
   tenant: neuralink
   parameters:
     audit_status: SUPPORTED
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_http_status: 200
     audit_final_url: https://neuralink.com/careers/
     audit_notes:
     - greenhouse adapter collected 77 postings twice with identical canonical keys across 1 page(s)
-    audit_evidence: the official careers page links to https://neuralink.com/assets/entries/pages_careers_index.page.Bl0f9Mzg.js, which resolves to https://neuralink.com/assets/entries/pages_careers_index.page.Bl0f9Mzg.js
+    audit_evidence: the official careers page links to https://neuralink.com/assets/entries/pages_careers_index.page.Bl0f9Mzg.js, which resolves to https://neuralink.com/assets/entries/pages_careers_index.page.Bl0f9Mzg.js (careers page links to https://boards-api.greenhouse.io/v1/boards/neuralink/jobs)
   enabled: true
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: fanuc-discovery
   company_id: fanuc
   provider: discovery
@@ -1605,8 +1605,8 @@ sources:
     audit_http_status: 200
     audit_final_url: https://www.keyence.com/ss/careers/?ad_local=item0705ka
     audit_notes:
-    - successfactors provider evidence found (the official careers page links to https://careers.keyence.com/go/View-All-Careers/7816100/, which resolves to https://careers.keyence.com/go/View-All-Careers/7816100/); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-    audit_evidence: the official careers page links to https://careers.keyence.com/go/View-All-Careers/7816100/, which resolves to https://careers.keyence.com/go/View-All-Careers/7816100/
+    - successfactors provider evidence found (the official careers page links to https://careers.keyence.com/go/View-All-Careers/7816100/, which resolves to https://careers.keyence.com/go/View-All-Careers/7816100/ (careers page links to https://career4.successfactors.com)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://careers.keyence.com/go/View-All-Careers/7816100/, which resolves to https://careers.keyence.com/go/View-All-Careers/7816100/ (careers page links to https://career4.successfactors.com)
     audit_provider: successfactors
   enabled: false
   audit_date: '2026-09-19'
@@ -1793,8 +1793,8 @@ sources:
     audit_final_url: https://www.daifuku.com/careers/
     audit_notes:
     - linked careers page https://www.daifukuoccareers.com/ served an access challenge
-    - icims provider evidence found (the official careers page links to https://www.daifuku.com/careers/ca/, which resolves to https://www.daifuku.com/us/careers/dmca/); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-    audit_evidence: the official careers page links to https://www.daifuku.com/careers/ca/, which resolves to https://www.daifuku.com/us/careers/dmca/
+    - icims provider evidence found (the official careers page links to https://www.daifuku.com/careers/ca/, which resolves to https://www.daifuku.com/us/careers/dmca/ (careers page links to https://careers-daifuku-canada.icims.com/jobs/search?ss=1&in_iframe=1)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://www.daifuku.com/careers/ca/, which resolves to https://www.daifuku.com/us/careers/dmca/ (careers page links to https://careers-daifuku-canada.icims.com/jobs/search?ss=1&in_iframe=1)
     audit_provider: icims
   enabled: false
   audit_date: '2026-09-19'
@@ -1828,8 +1828,8 @@ sources:
     audit_http_status: 200
     audit_final_url: https://epson.com/careers
     audit_notes:
-    - successfactors provider evidence found (the official careers page links to https://jobs.epson.com/, which resolves to https://jobs.epson.com/); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-    audit_evidence: the official careers page links to https://jobs.epson.com/, which resolves to https://jobs.epson.com/
+    - successfactors provider evidence found (the official careers page links to https://jobs.epson.com/, which resolves to https://jobs.epson.com/ (careers page links to https://career4.successfactors.com/career?site=&amp;company=epsonameri&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://jobs.epson.com/, which resolves to https://jobs.epson.com/ (careers page links to https://career4.successfactors.com/career?site=&amp;company=epsonameri&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE)
     audit_provider: successfactors
   enabled: false
   audit_date: '2026-09-19'
@@ -1862,8 +1862,8 @@ sources:
     audit_http_status: 200
     audit_final_url: https://www.doosanrobotics.com/en/
     audit_notes:
-    - successfactors provider evidence found (the official careers page links to https://jobs.doosan.com/, which resolves to https://jobs.doosan.com/); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-    audit_evidence: the official careers page links to https://jobs.doosan.com/, which resolves to https://jobs.doosan.com/
+    - successfactors provider evidence found (the official careers page links to https://jobs.doosan.com/, which resolves to https://jobs.doosan.com/ (careers page links to https://career4.successfactors.com/career?site=&amp;company=doosancorp&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://jobs.doosan.com/, which resolves to https://jobs.doosan.com/ (careers page links to https://career4.successfactors.com/career?site=&amp;company=doosancorp&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE)
     audit_provider: successfactors
   enabled: false
   audit_date: '2026-09-19'
@@ -2103,8 +2103,8 @@ sources:
     audit_http_status: 200
     audit_final_url: https://www.bmwgroup.jobs/en.html
     audit_notes:
-    - successfactors provider evidence found (the official careers page links to https://www.bmwgroup.jobs/de/de.html, which resolves to https://www.bmwgroup.jobs/de/de.html); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-    audit_evidence: the official careers page links to https://www.bmwgroup.jobs/de/de.html, which resolves to https://www.bmwgroup.jobs/de/de.html
+    - successfactors provider evidence found (the official careers page links to https://www.bmwgroup.jobs/de/de.html, which resolves to https://www.bmwgroup.jobs/de/de.html (careers page links to https://career5.successfactors.eu/career?company=bmwag&lang=de_DE&site=&loginFlowRequired=true)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://www.bmwgroup.jobs/de/de.html, which resolves to https://www.bmwgroup.jobs/de/de.html (careers page links to https://career5.successfactors.eu/career?company=bmwag&lang=de_DE&site=&loginFlowRequired=true)
     audit_provider: successfactors
   enabled: false
   audit_date: '2026-09-19'
@@ -2323,7 +2323,7 @@ sources:
     audit_final_url: https://careers.mobileye.com/
     audit_notes:
     - 'lever list request failed: non-retryable HTTP 404 for https://api.lever.co/v0/postings/mobileye?mode=json&skip=0&limit=100'
-    audit_evidence: the official careers page links to https://careers.mobileye.com/jobs, which resolves to https://careers.mobileye.com/jobs
+    audit_evidence: the official careers page links to https://careers.mobileye.com/jobs, which resolves to https://careers.mobileye.com/jobs (careers page links to https://jobs.eu.lever.co/mobileye/bb661a53-79b8-459d-a8df-5dd419d62596/apply)
     audit_provider: lever
     audit_endpoint: https://api.lever.co/v0/postings/mobileye?mode=json
   enabled: false
@@ -2394,8 +2394,8 @@ sources:
     audit_http_status: 200
     audit_final_url: https://www.zf.com/mobile/en/careers/careers.html
     audit_notes:
-    - successfactors provider evidence found (the official careers page links to https://jobs.zf.com/, which resolves to https://jobs.zf.com/); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-    audit_evidence: the official careers page links to https://jobs.zf.com/, which resolves to https://jobs.zf.com/
+    - successfactors provider evidence found (the official careers page links to https://jobs.zf.com/, which resolves to https://jobs.zf.com/ (careers page links to https://career5.successfactors.eu)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://jobs.zf.com/, which resolves to https://jobs.zf.com/ (careers page links to https://career5.successfactors.eu)
     audit_provider: successfactors
   enabled: false
   audit_date: '2026-09-19'
@@ -2480,8 +2480,8 @@ sources:
     audit_http_status: 200
     audit_final_url: https://www.lockheedmartinjobs.com/cgi-bin/ext_redir.pl
     audit_notes:
-    - eightfold provider evidence found (the official careers page links to https://www.lockheedmartin.com/en-us/careers/index.html, which resolves to https://www.lockheedmartin.com/en-us/careers/index.html); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-    audit_evidence: the official careers page links to https://www.lockheedmartin.com/en-us/careers/index.html, which resolves to https://www.lockheedmartin.com/en-us/careers/index.html
+    - eightfold provider evidence found (the official careers page links to https://www.lockheedmartin.com/en-us/careers/index.html, which resolves to https://www.lockheedmartin.com/en-us/careers/index.html (careers page links to https://lockheedmartin.eightfold.ai/careers)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://www.lockheedmartin.com/en-us/careers/index.html, which resolves to https://www.lockheedmartin.com/en-us/careers/index.html (careers page links to https://lockheedmartin.eightfold.ai/careers)
     audit_provider: eightfold
   enabled: false
   audit_date: '2026-09-19'
