@@ -1,0 +1,35 @@
+{
+  "page": 1,
+  "pageSize": 25,
+  "totalJobs": 2,
+  "results": {
+    "jobs": [
+      {
+        "jobId": "NW-1001",
+        "name": "Senior Robotics Software Engineer",
+        "department": "Autonomy",
+        "locations": [
+          "Pittsburgh, PA",
+          "Remote, US"
+        ],
+        "url": "https://careers.northwind.example/postings/NW-1001",
+        "applyUrl": "https://careers.northwind.example/postings/NW-1001/apply",
+        "description": "<div><p>Design and ship motion-planning software for warehouse robots.</p><ul><li>Own the planner</li><li>Mentor two engineers</li></ul></div>",
+        "postedAt": "2026-09-15T13:30:00+00:00"
+      },
+      {
+        "jobId": "NW-1002",
+        "name": "Field Reliability Technician",
+        "department": "Field Operations",
+        "locations": [
+          "Austin, TX"
+        ],
+        "url": "https://careers.northwind.example/postings/NW-1002",
+        "applyUrl": "https://careers.northwind.example/postings/NW-1002/apply",
+        "description": "<p>Keep deployed fleets running.</p>",
+        "postedAt": "2026-09-16T08:05:00+00:00"
+      }
+    ]
+  },
+  "nextPageUrl": null
+}

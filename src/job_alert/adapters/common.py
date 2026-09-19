@@ -5,7 +5,7 @@ from __future__ import annotations
 import html
 import re
 from html.parser import HTMLParser
-from urllib.parse import urlsplit
+from urllib.parse import urljoin, urlsplit
 
 # Element content that is markup or styling, not description text.
 _DISCARDED_TAGS = frozenset({"script", "style", "noscript", "template"})
@@ -110,6 +110,41 @@ def is_absolute_https(value: str) -> bool:
         # ``urlsplit`` rejects malformed URLs itself, for example an unmatched IPv6 bracket.
         return False
     return parts.scheme == "https" and bool(parts.netloc)
+
+
+def https_origin(url: str) -> str:
+    """The scheme and host of ``url``, without path, query, or fragment.
+
+    A fallback adapter resolves the relative links a page publishes against the origin of the
+    audited endpoint, so this is the only base such an adapter may use.
+    """
+    parts = urlsplit(url)
+    return f"{parts.scheme}://{parts.netloc}"
+
+
+def resolve_https_url(value: object, *, origin: str, field: str) -> str:
+    """Resolve one published URL reference against the audited source origin.
+
+    An absolute HTTPS reference is returned as published. A relative reference is resolved against
+    ``origin`` and nothing else, so a payload cannot move a stored link, or a request, onto a host
+    it names itself: a protocol-relative reference (``//mirror.example/jobs``) is refused rather
+    than resolved, and anything that is not an absolute HTTPS URL afterwards is refused too. The
+    generic ``ValueError`` leaves each adapter responsible for turning a bad reference into its own
+    error type, exactly like ``https_url()``.
+    """
+    reference = optional_text(value)
+    if reference is None:
+        raise ValueError(f"missing {field}")
+    if reference.startswith("//"):
+        raise ValueError(f"{field} is a protocol-relative URL, not a relative path")
+    if urlsplit(reference).scheme:
+        if not is_absolute_https(reference):
+            raise ValueError(f"{field} is not an absolute https URL")
+        return reference
+    resolved = urljoin(origin.rstrip("/") + "/", reference)
+    if not is_absolute_https(resolved):
+        raise ValueError(f"{field} does not resolve to an absolute https URL")
+    return resolved
 
 
 def optional_text(value: object) -> str | None:

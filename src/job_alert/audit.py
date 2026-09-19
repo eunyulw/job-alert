@@ -53,7 +53,9 @@ from job_alert.adapters.base import (
     SourceAdapter,
     validate_collection,
 )
+from job_alert.adapters.generic_json import GenericJsonAdapter
 from job_alert.adapters.greenhouse import GreenhouseAdapter
+from job_alert.adapters.jsonld import JsonLdAdapter
 from job_alert.adapters.lever import LeverAdapter
 from job_alert.adapters.smartrecruiters import SmartRecruitersAdapter
 from job_alert.config import AppConfig, load_app_config
@@ -82,6 +84,8 @@ PROVIDER_ADAPTERS: dict[str, SourceAdapter] = {
     "lever": LeverAdapter(),
     "ashby": AshbyAdapter(),
     "smartrecruiters": SmartRecruitersAdapter(),
+    "generic-json": GenericJsonAdapter(),
+    "json-ld": JsonLdAdapter(),
 }
 
 # Public endpoints that a provider documents earn SUPPORTED; a public endpoint the provider does
@@ -97,6 +101,7 @@ PROVIDER_SOURCE_CLASSES: dict[str, SourceClass] = {
     "icims": SourceClass.PUBLIC_ATS,
     "eightfold": SourceClass.PUBLIC_ATS,
     "oracle": SourceClass.PUBLIC_ATS,
+    "generic-json": SourceClass.COMPANY_JSON,
     "json-ld": SourceClass.HTML,
 }
 

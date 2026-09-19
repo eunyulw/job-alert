@@ -95,8 +95,17 @@ def test_coverage_prefers_the_best_status_of_every_company_source() -> None:
     assert summary.broad_activation_allowed is False
 
 
-def test_provider_adapters_cover_the_four_documented_providers() -> None:
-    assert sorted(PROVIDER_ADAPTERS) == ["ashby", "greenhouse", "lever", "smartrecruiters"]
+def test_provider_adapters_cover_every_registered_provider() -> None:
+    # The four documented providers plus the two audited fallbacks; every adapter answers to the
+    # provider name it is registered under, which is what the registry dispatches on.
+    assert sorted(PROVIDER_ADAPTERS) == [
+        "ashby",
+        "generic-json",
+        "greenhouse",
+        "json-ld",
+        "lever",
+        "smartrecruiters",
+    ]
     for provider, adapter in PROVIDER_ADAPTERS.items():
         assert adapter.provider == provider
 
