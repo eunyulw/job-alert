@@ -44,9 +44,11 @@ Field mapping
 
 Duplicates and completeness
 ---------------------------
-Two documents that publish one identity and identical normalized content collapse to one job. Two
-documents that publish one identity and different content make the collection fail outright: the
-page disagrees with itself about what that posting is, so neither record can be trusted. A page
+Two documents that publish one identity and identical content collapse to one job. Content means
+every field the adapter maps, including the supported values it keeps in ``raw_metadata``
+(``validThrough``, ``hiringOrganization``, ``jobLocationType``), so two documents that publish one
+identity and differ anywhere in that set make the collection fail outright: the page disagrees with
+itself about what that posting is, so neither record can be trusted. A page
 that publishes no `JobPosting` document at all, a challenge page (which the shared ``HttpFetcher``
 raises ``ChallengeDetected`` for), an HTTP failure, and a 304 are all errors rather than an empty
 successful board.
@@ -271,8 +273,15 @@ class JsonLdAdapter:
 
 
 def _stable_payload(job: NormalizedJob) -> dict[str, Any]:
-    """Every normalized field except the volatile ones, so two records can be compared."""
-    return job.model_dump(exclude={"first_seen_at", "raw_metadata"})
+    """Every field a repeat collection has to reproduce, so two records can be compared.
+
+    ``raw_metadata`` is included because every key this adapter writes there comes from a supported
+    schema.org field (``validThrough``, ``hiringOrganization``, ``jobLocationType``). Two postings
+    that share an identity but disagree about one of them are conflicting records rather than
+    duplicates, and collapsing them would lose a supported field without a warning. Only
+    ``first_seen_at``, this collection's clock reading, is left out.
+    """
+    return job.model_dump(exclude={"first_seen_at"})
 
 
 def _tenant(source: SourceConfig) -> str:

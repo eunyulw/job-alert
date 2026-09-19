@@ -197,6 +197,50 @@ def test_extract_records_treats_a_present_but_empty_collection_as_an_empty_board
     assert extract_records({"results": {"jobs": []}}, "results.jobs[]") == []
 
 
+@pytest.mark.parametrize(
+    ("document", "selector"),
+    [
+        ({"results": []}, "results.jobs[]"),
+        ({"a": {"b": []}}, "a.b.c"),
+    ],
+)
+def test_extract_records_rejects_an_empty_intermediate_list(
+    document: dict[str, object], selector: str
+) -> None:
+    # An empty list one level above the collection is a payload that no longer publishes the
+    # collected key, not a board with no openings.
+    with pytest.raises(AdapterError, match="does not publish"):
+        extract_records(document, selector)
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_generic_json_rejects_a_payload_whose_intermediate_list_is_empty() -> None:
+    route = respx.get(ENDPOINT).mock(return_value=httpx.Response(200, json={"results": []}))
+
+    async with HttpFetcher() as fetcher:
+        with pytest.raises(AdapterError, match="results.jobs"):
+            await adapter().collect(make_source(), fetcher)
+
+    assert route.call_count == 1
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_generic_json_accepts_an_explicitly_empty_terminal_collection() -> None:
+    # The terminal key is published and holds an empty list, which is an empty board. Only the
+    # terminal segment may resolve this way: an empty intermediate list fails above.
+    respx.get(ENDPOINT).mock(return_value=httpx.Response(200, json={"results": {"jobs": []}}))
+
+    async with HttpFetcher() as fetcher:
+        result = validate_collection(await adapter().collect(make_source(), fetcher))
+
+    assert result.complete is True
+    assert result.jobs == []
+    assert result.page_count == 1
+    assert result.warnings == []
+
+
 # --------------------------------------------------------------------------------------------
 # Field mapping
 # --------------------------------------------------------------------------------------------
@@ -498,6 +542,90 @@ async def test_generic_json_owns_the_token_parameter_but_keeps_other_endpoint_pa
 
     assert result.complete is True
     assert request_params(route.calls[0].request) == [("team", "robotics")]
+
+
+@respx.mock
+@pytest.mark.asyncio
+@pytest.mark.parametrize("reference", [None, "", "   "])
+async def test_generic_json_ends_the_walk_on_a_blank_next_page_reference(
+    reference: object,
+) -> None:
+    route = respx.get(ENDPOINT).mock(
+        return_value=httpx.Response(
+            200, json={"results": {"jobs": [record("1")]}, "nextPageUrl": reference}
+        )
+    )
+    source = make_source(parameters={**PARAMETERS, "next_page_url": "nextPageUrl"})
+
+    async with HttpFetcher() as fetcher:
+        result = await adapter().collect(source, fetcher)
+
+    assert result.complete is True
+    assert result.warnings == []
+    assert result.page_count == 1
+    assert route.call_count == 1
+    assert [job.source_job_id for job in result.jobs] == ["1"]
+
+
+@respx.mock
+@pytest.mark.asyncio
+@pytest.mark.parametrize("token", [None, "", "   "])
+async def test_generic_json_ends_the_walk_on_a_blank_next_page_token(token: object) -> None:
+    route = respx.get(ENDPOINT).mock(
+        return_value=httpx.Response(
+            200, json={"results": {"jobs": [record("1")]}, "nextPageToken": token}
+        )
+    )
+    source = make_source(parameters={**PARAMETERS, "next_page_token": "nextPageToken"})
+
+    async with HttpFetcher() as fetcher:
+        result = await adapter().collect(source, fetcher)
+
+    assert result.complete is True
+    assert result.page_count == 1
+    assert route.call_count == 1
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_generic_json_rejects_a_non_https_next_page_reference() -> None:
+    route = respx.get(ENDPOINT).mock(
+        return_value=httpx.Response(
+            200,
+            json={
+                "results": {"jobs": [record("1")]},
+                "nextPageUrl": "http://api.northwind.example/v1/jobs?page=2",
+            },
+        )
+    )
+    source = make_source(parameters={**PARAMETERS, "next_page_url": "nextPageUrl"})
+
+    async with HttpFetcher() as fetcher:
+        with pytest.raises(AdapterError, match="is not an absolute https URL"):
+            await adapter().collect(source, fetcher)
+
+    assert route.call_count == 1
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_generic_json_rejects_a_next_page_reference_that_is_not_a_url_string() -> None:
+    route = respx.get(ENDPOINT).mock(
+        return_value=httpx.Response(
+            200,
+            json={
+                "results": {"jobs": [record("1")]},
+                "nextPageUrl": {"href": "https://api.northwind.example/v1/jobs?page=2"},
+            },
+        )
+    )
+    source = make_source(parameters={**PARAMETERS, "next_page_url": "nextPageUrl"})
+
+    async with HttpFetcher() as fetcher:
+        with pytest.raises(AdapterError, match="is not a URL string"):
+            await adapter().collect(source, fetcher)
+
+    assert route.call_count == 1
 
 
 @respx.mock

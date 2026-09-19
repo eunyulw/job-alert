@@ -330,6 +330,32 @@ async def test_jsonld_fails_when_two_records_claim_one_identity_with_different_c
 
 @respx.mock
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "override",
+    [
+        {"validThrough": "2026-12-31T23:59:59+00:00"},
+        {"hiringOrganization": {"@type": "Organization", "name": "Northwind Field Services"}},
+        {"jobLocationType": "TELECOMMUTE"},
+    ],
+)
+async def test_jsonld_fails_when_two_records_share_an_identity_but_differ_in_metadata(
+    override: dict[str, object],
+) -> None:
+    # Every supported field this adapter maps counts, including the ones it keeps in raw_metadata:
+    # a posting whose validThrough or hiringOrganization disagrees with its twin is a conflict, not
+    # a duplicate to collapse.
+    first = posting("NW-6001", url="/postings/6001", validThrough="2026-11-30T23:59:59+00:00")
+    second = posting("NW-6001", url="/postings/6001", validThrough="2026-11-30T23:59:59+00:00")
+    second.update(override)
+    respx.get(ENDPOINT).mock(return_value=html_response(jsonld_page(first, second)))
+
+    async with HttpFetcher() as fetcher:
+        with pytest.raises(AdapterError, match="conflicting"):
+            await adapter().collect(make_source(), fetcher)
+
+
+@respx.mock
+@pytest.mark.asyncio
 async def test_jsonld_marks_a_posting_with_unusable_urls_or_timestamps_incomplete() -> None:
     respx.get(ENDPOINT).mock(
         return_value=html_response(

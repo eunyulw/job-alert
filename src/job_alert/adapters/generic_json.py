@@ -35,7 +35,8 @@ the shared ``html_to_text()``), ``department``, ``published_at`` (ISO 8601 with 
 Pagination parameters, mutually exclusive: ``next_page_url`` (a selector for the next page's URL,
 absolute or relative to the audited origin) or ``next_page_token`` (a selector for an opaque cursor)
 with ``token_parameter`` naming the query parameter it is sent as (default ``token``). A page whose
-next-page reference is absent, ``null``, or blank ends the walk.
+next-page reference is absent, ``null``, blank, or only whitespace ends the walk; a reference
+published as something that is not a usable URL is an error rather than a quiet end.
 
 Missing mapped fields
 ---------------------
@@ -344,9 +345,12 @@ def _resolve(document: object, selector: tuple[SelectorSegment, ...]) -> _Resolu
     """Every value a compiled selector names, in document order.
 
     A key is read from a mapping. A key applied to a list is read from each mapping the list holds,
-    which is what a selector such as ``locations[].name`` needs. ``present`` is false only when the
-    selector matched nothing: a segment whose containers were all empty lists matched nothing
-    because there was nothing to read, which is not the same as a key that disappeared.
+    which is what a selector such as ``locations[].name`` needs.
+
+    ``present`` is decided per segment by whether that segment found anything at all. An empty list
+    one level above the collection therefore cannot stand in for the collected key -- ``{"results":
+    []}`` no longer publishes ``results.jobs[]`` -- while a terminal key that holds an empty list
+    still resolves, because the lookup itself found that list, and reads as an empty board.
     """
     current: list[object] = [document]
     present = True
@@ -354,9 +358,7 @@ def _resolve(document: object, selector: tuple[SelectorSegment, ...]) -> _Resolu
         found: list[object] = []
         for value in current:
             found.extend(_lookup(value, segment.name))
-        present = bool(found) or bool(current) and all(
-            isinstance(value, list) and not value for value in current
-        )
+        present = bool(found)
         if segment.expand:
             found = _flatten(found)
         current = found
@@ -545,9 +547,18 @@ def _next_target(
         value = _first(_resolve(document, mapping.next_page_url.segments).values)
         if value is None:
             return None
+        reference = optional_text(value)
+        if reference is None:
+            if isinstance(value, str):
+                # Published but blank or whitespace-only: the page ended its walk.
+                return None
+            raise AdapterError(
+                f"generic-json next page reference is unusable: {mapping.next_page_url.text} is "
+                "not a URL string"
+            )
         try:
             return resolve_https_url(
-                value, origin=origin, field=mapping.next_page_url.text
+                reference, origin=origin, field=mapping.next_page_url.text
             )
         except ValueError as exc:
             raise AdapterError(f"generic-json next page reference is unusable: {exc}") from exc
