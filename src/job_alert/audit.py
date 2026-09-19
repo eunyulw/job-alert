@@ -1289,7 +1289,10 @@ def audit_record(
         "support_status": str(source.support_status),
         "careers_url": careers_url,
         "audited_at": result.evidence_at.date().isoformat(),
-        "probe": result.model_dump(mode="json"),
+        # The probe's identity fields must name the source being recorded, not the pre-rename
+        # source the probe was handed, so no persisted value can cite an id absent from the
+        # registry. Every other ProbeResult field is evidence observed at the probed URL.
+        "probe": result.model_copy(update={"source_id": source.id}).model_dump(mode="json"),
     }
 
 

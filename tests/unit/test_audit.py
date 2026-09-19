@@ -764,6 +764,7 @@ def test_provider_change_reprobe_persists_the_renamed_source_id(tmp_path: Path) 
     updated = load_source_records(tmp_path / "sources.yaml")[0]
     stored = load_audit_store(results)["acme"]
     assert stored["source_id"] == updated.id == "acme-ashby"
+    assert stored["probe"]["source_id"] == updated.id == "acme-ashby"
     assert stored["provider"] == updated.provider == "ashby"
     assert stored["support_status"] == str(updated.support_status)
     assert stored["probe"]["provider_feed_url"] == (
