@@ -147,6 +147,34 @@ CAREER_LINK_MARKERS = (
     "hiring",
     "recruit",
 )
+# Shared asset hosts and paths never prove a provider. `*.successfactors.*` serves UI bundles and
+# `*.oraclecloud.com` serves images, and the audit only records positive careers-site evidence.
+ASSET_HOST_LABELS = frozenset(
+    {"assets", "static", "cdn", "img", "images", "errors", "vs-errors", "fonts", "js"}
+)
+ASSET_PATH_SUFFIXES = (
+    ".js",
+    ".css",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".svg",
+    ".gif",
+    ".ico",
+    ".map",
+    ".woff",
+    ".woff2",
+)
+ASSET_PATH_SEGMENTS = (
+    "/images",
+    "/img/",
+    "/assets/",
+    "/static/",
+    "/fonts/",
+    "/extlib/",
+    "/resources/",
+    "/verp/",
+)
 SECOND_HOP_LIMIT = 2
 _JSONLD_JOB_POSTING = re.compile(rb"\"@type\"\s*:\s*\"JobPosting\"", re.IGNORECASE)
 
@@ -417,19 +445,34 @@ def _classify_url(url: str) -> ProviderFingerprint | None:
     if workday is not None:
         return workday
 
+    # The enterprise markers below name a careers site, so a generic host suffix or a shared asset
+    # path is not evidence: `*.successfactors.com` serves jQuery bundles and `*.oraclecloud.com`
+    # serves images, and neither says anything about where the company publishes postings.
+    if _is_asset_url(host, path):
+        return None
     if re.search(r"^career[a-z0-9-]*\.successfactors\.(com|eu)$", host) is not None or (
-        host.endswith(".successfactors.com") or host.endswith(".successfactors.eu")
+        "careersitecompanyid" in url.lower()
     ):
         return _fingerprint("successfactors", host, f"final URL host {host}")
-    if host.endswith(".icims.com") and re.search(r"/jobs/", path) is not None:
+    if host.endswith(".icims.com") and "/jobs/" in path:
         return _fingerprint("icims", host, f"final URL host {host}")
-    if host.endswith(".eightfold.ai") or (host == "eightfold.ai" and path.startswith("/careers")):
+    if (host == "eightfold.ai" or host.endswith(".eightfold.ai")) and "/careers" in path:
         return _fingerprint("eightfold", host, f"final URL host {host}")
     if host.endswith(".oraclecloud.com") and "/hcmUI/CandidateExperience" in path:
         return _fingerprint("oracle", host, f"final URL host {host}")
-    if host.endswith(".taleo.net"):
+    if host.endswith(".taleo.net") and re.search(r"/(careersection|ats|careers)/", path, re.I):
         return _fingerprint("oracle", host, f"final URL host {host}")
     return None
+
+
+def _is_asset_url(host: str, path: str) -> bool:
+    """Whether a URL names a shared asset rather than a careers page."""
+    if host.split(".")[0] in ASSET_HOST_LABELS:
+        return True
+    lowered = path.lower()
+    if lowered.endswith(ASSET_PATH_SUFFIXES):
+        return True
+    return any(segment in lowered for segment in ASSET_PATH_SEGMENTS)
 
 
 def _classify_workday(host: str, path: str) -> ProviderFingerprint | None:
@@ -676,7 +719,7 @@ async def _second_hop_fingerprint(
             update={
                 "evidence": (
                     f"the official careers page links to {link}, which resolves to "
-                    f"{hop.final_url}"
+                    f"{hop.final_url} ({hop_fingerprint.evidence})"
                 )
             }
         ), notes
@@ -853,9 +896,12 @@ async def _verify_workday(
     """Walk a Workday CXS feed without a Workday adapter.
 
     Workday serves one page of ``jobPostings`` per POST and declares the board's size as ``total``.
-    The audit walks up to ``WORKDAY_PAGE_CAP`` pages twice and compares the posting identities, so a
-    verified Workday source rests on the provider's own total, stable ``externalPath`` values, and
-    a derived application link rather than on a 200 response.
+    The audit walks up to ``WORKDAY_PAGE_CAP`` pages twice and compares the posting identities. A
+    listing alone is not support: the CXS list payload publishes posting ids (``externalPath``) and
+    no application link, so the walk also looks for a per-posting HTTPS application URL, and a
+    Workday source only earns ``SUPPORTED_UNDOCUMENTED`` when that evidence is present. It normally
+    is not, which is why a Workday sources stays ``NEEDS_MANUAL_REVIEW`` until Task 13's adapter
+    supplies the real link shape. Nothing here derives or guesses an application URL.
     """
     feed_url = fingerprint.feed_url
     if feed_url is None or fingerprint.host is None or fingerprint.board is None:
@@ -884,11 +930,12 @@ async def _verify_workday(
             notes=[f"workday CXS response could not be interpreted: {exc}"],
         )
 
-    ids, total, capped = first
-    repeated = ids == second[0]
+    postings, total, capped = first
+    ids = [posting_id for posting_id, _ in postings]
+    repeated = ids == [posting_id for posting_id, _ in second[0]]
     complete = total is not None and len(ids) == total and not capped
     stable_id_percent = 100.0 if ids else None
-    direct_url_percent = 100.0 if ids else None
+    direct_url_percent = _direct_url_percent(postings)
     status = SupportStatus.NEEDS_MANUAL_REVIEW
     if not ids:
         notes.append("workday board returned no postings, so stable identity is unproven")
@@ -900,10 +947,17 @@ async def _verify_workday(
         )
     elif not repeated:
         notes.append("repeating the workday walk changed the posting identities")
+    elif direct_url_percent != 100.0:
+        notes.append(
+            "workday CXS publishes posting ids but no direct application URL for any posting, so "
+            "the per-posting application-link evidence the audit requires is missing until the "
+            "Workday adapter exists"
+        )
     else:
         status = SupportStatus.SUPPORTED_UNDOCUMENTED
         notes.append(
-            f"workday CXS declared total={total} and served {len(ids)} unique postings twice"
+            f"workday CXS declared total={total} and served {len(ids)} unique postings twice, "
+            "each with a direct HTTPS application URL"
         )
 
     return _Verification(
@@ -918,8 +972,8 @@ async def _verify_workday(
 
 async def _walk_workday(
     feed_url: str, fingerprint: ProviderFingerprint, fetcher: HttpFetcher
-) -> tuple[list[str], int | None, bool]:
-    ids: list[str] = []
+) -> tuple[list[tuple[str, str | None]], int | None, bool]:
+    postings: list[tuple[str, str | None]] = []
     total: int | None = None
     capped = False
     for page in range(WORKDAY_PAGE_CAP):
@@ -943,24 +997,44 @@ async def _walk_workday(
         declared = document.get("total")
         if page == 0 and isinstance(declared, int):
             total = int(declared)
-        postings = document.get("jobPostings")
-        if not isinstance(postings, list):
+        records = document.get("jobPostings")
+        if not isinstance(records, list):
             raise ValueError("CXS response has no jobPostings list")
-        if not postings:
+        if not records:
             break
-        for posting in postings:
-            if not isinstance(posting, dict):
+        for record in records:
+            if not isinstance(record, dict):
                 raise ValueError("CXS posting is not a JSON object")
-            path = posting.get("externalPath")
+            path = record.get("externalPath")
             if not isinstance(path, str) or not path.strip():
                 raise ValueError("CXS posting has no externalPath")
-            ids.append(path)
-        if total is not None and len(set(ids)) >= total:
+            postings.append((path, _posting_url(record)))
+        if total is not None and len({posting_id for posting_id, _ in postings}) >= total:
             break
         if page == WORKDAY_PAGE_CAP - 1:
             capped = True
-    unique = list(dict.fromkeys(ids))
-    return unique, total, capped and (total is None or len(unique) < total)
+    unique: dict[str, tuple[str, str | None]] = {}
+    for posting in postings:
+        unique.setdefault(posting[0], posting)
+    ordered = list(unique.values())
+    return ordered, total, capped and (total is None or len(ordered) < total)
+
+
+def _posting_url(record: Mapping[str, Any]) -> str | None:
+    """A direct application URL the Workday payload itself published, never a derived one."""
+    for name in ("externalUrl", "applyUrl", "jobPostingUrl", "url"):
+        value = record.get(name)
+        if isinstance(value, str) and value.startswith("https://"):
+            return value
+    return None
+
+
+def _direct_url_percent(postings: Sequence[tuple[str, str | None]]) -> float | None:
+    """Share of postings with a real, provider-published HTTPS application link."""
+    if not postings:
+        return None
+    with_url = sum(1 for _, url in postings if url is not None and url.startswith("https://"))
+    return round(100.0 * with_url / len(postings), 2)
 
 
 # --------------------------------------------------------------------------------------------
@@ -1162,8 +1236,19 @@ def save_audit_store(path: Path, companies: Mapping[str, Any], *, generated_at: 
 
 
 def audit_record(
-    company: CompanyTarget, source: SourceConfig, result: ProbeResult
+    company: CompanyTarget,
+    source: SourceConfig,
+    result: ProbeResult,
+    *,
+    previous: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
+    careers_url = str(source.endpoint)
+    if previous is not None and _classify_url(careers_url) is not None:
+        # Re-probing a verified source reads the official landing page, never its provider feed, and
+        # a stored landing page is never replaced by an API endpoint.
+        stored = previous.get("careers_url")
+        if isinstance(stored, str) and stored:
+            careers_url = stored
     return {
         "company_id": company.id,
         "name": company.name,
@@ -1171,10 +1256,39 @@ def audit_record(
         "source_id": source.id,
         "provider": result.provider_fingerprint or source.provider,
         "support_status": str(result.support_status),
-        "careers_url": str(source.endpoint),
+        "careers_url": careers_url,
         "audited_at": result.evidence_at.date().isoformat(),
         "probe": result.model_dump(mode="json"),
     }
+
+
+def probe_target(source: SourceConfig, record: Mapping[str, Any] | None) -> SourceConfig:
+    """The source a probe should read: the official careers landing page the audit recorded.
+
+    A verified registry record points at the provider's list endpoint, so re-probing that record
+    would send an ordinary GET to an API. The recorded landing page is what the probe reads instead.
+    """
+    if record is None:
+        return source
+    careers_url = record.get("careers_url")
+    if not isinstance(careers_url, str) or not careers_url.strip():
+        return source
+    if careers_url == str(source.endpoint):
+        return source
+    return SourceConfig(
+        id=source.id,
+        company_id=source.company_id,
+        provider=source.provider,
+        source_class=source.source_class,
+        support_status=source.support_status,
+        endpoint=to_https_url(careers_url),
+        interval_minutes=source.interval_minutes,
+        tenant=source.tenant,
+        parameters=dict(source.parameters),
+        headers=dict(source.headers),
+        enabled=source.enabled,
+        audit_date=source.audit_date,
+    )
 
 
 def _updated_source(
@@ -1294,13 +1408,18 @@ async def run_audit(
     category: str | None = None,
     concurrency: int = DEFAULT_AUDIT_CONCURRENCY,
     budget_seconds: float = COMPANY_PROBE_BUDGET_SECONDS,
+    force: bool = False,
+    retry_failed: bool = False,
     on_result: Callable[[ProbeResult], None] | None = None,
 ) -> list[str]:
     """Probe unaudited companies in bounded, resumable chunks.
 
     Each company that finishes is written to the results file and folded into
     ``config/sources.yaml`` immediately, so re-running continues with the companies that are still
-    missing. ``limit`` bounds one chunk and ``company_ids``/``category`` select a slice.
+    missing. ``limit`` bounds one chunk and ``company_ids``/``category`` select a slice. ``force``
+    re-probes companies that already have a record, and ``retry_failed`` re-probes the recorded
+    companies whose verdict was a failure (blocked or needing manual review), which is how a later
+    run revisits access challenges and transient network errors.
     """
     if concurrency < 1:
         raise AuditError("concurrency must be at least one")
@@ -1317,7 +1436,8 @@ async def run_audit(
 
     selected: list[CompanyTarget] = []
     for company in companies:
-        if company.id in store:
+        recorded = store.get(company.id)
+        if recorded is not None and not (force or (retry_failed and _failed_record(recorded))):
             continue
         if company_ids and company.id not in company_ids:
             continue
@@ -1336,12 +1456,16 @@ async def run_audit(
     async with HttpFetcher() as fetcher:
 
         async def probe_company(company: CompanyTarget) -> None:
+            recorded = store.get(company.id)
             source = sources_by_company[company.id]
+            target = probe_target(source, recorded)
             async with semaphore:
-                result = await _probe_with_budget(source, fetcher, budget_seconds)
+                result = await _probe_with_budget(target, fetcher, budget_seconds)
             async with lock:
                 probed.append(company.id)
-                store[company.id] = audit_record(company, source, result)
+                store[company.id] = audit_record(
+                    company, target, result, previous=store.get(company.id)
+                )
                 records[:] = [
                     _updated_source(
                         record,
@@ -1361,6 +1485,16 @@ async def run_audit(
         await asyncio.gather(*(probe_company(company) for company in selected))
 
     return probed
+
+
+def _failed_record(record: Mapping[str, Any]) -> bool:
+    """Whether a recorded verdict is a failure worth re-probing."""
+    status = str(record.get("support_status"))
+    if status in {SupportStatus.BLOCKED, SupportStatus.NEEDS_MANUAL_REVIEW}:
+        return True
+    notes = record.get("probe", {}).get("notes", [])
+    failure_markers = ("request failed", "timed out", "access challenge", "could not be read")
+    return any(marker in str(note) for note in notes for marker in failure_markers)
 
 
 async def _probe_with_budget(
@@ -1407,6 +1541,8 @@ def record_probe(
     sources_path = config_dir / "sources.yaml"
     records = load_source_records(sources_path)
     taken_ids = [record.id for record in records if record.company_id != company.id]
+    previous = load_audit_store(results_path).get(company.id)
+    target = probe_target(source, previous)
     updated = [
         _updated_source(record, company, result, taken_ids=taken_ids)
         if record.company_id == company.id
@@ -1414,7 +1550,7 @@ def record_probe(
         for record in records
     ]
     store = load_audit_store(results_path)
-    store[company.id] = audit_record(company, source, result)
+    store[company.id] = audit_record(company, target, result, previous=previous)
     save_audit_store(results_path, store, generated_at=now_utc())
     write_sources_yaml(sources_path, updated)
 
@@ -1575,7 +1711,14 @@ def render_report(
         evidence_date = str(record.get("audited_at")) if record is not None else ""
         class_name = str(source.source_class) if source is not None else ""
         interval = source.interval_minutes if source is not None else ""
+        # The Careers URL column is the official landing page the company publishes, which is what
+        # `audit_record` stores. A verified source's own endpoint is the provider feed, so it must
+        # never replace the landing page here.
         careers_url = str(source.endpoint) if source is not None else ""
+        if isinstance(record, Mapping):
+            stored = record.get("careers_url") or record.get("probe", {}).get("final_url")
+            if stored:
+                careers_url = str(stored)
         if not notes:
             notes = ["not yet audited"] if record is None else []
         rows.append(

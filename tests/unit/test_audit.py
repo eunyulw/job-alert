@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from datetime import UTC, datetime
 from pathlib import Path
 
 import httpx
@@ -18,6 +19,8 @@ from job_alert.audit import (
     fingerprint_provider,
     load_source_records,
     probe_source,
+    render_report,
+    run_audit,
     write_sources_yaml,
 )
 from job_alert.config import AppConfig
@@ -236,6 +239,102 @@ def test_disable_source_record_rejects_an_unknown_source(tmp_path: Path) -> None
         )
 
 
+def _write_config_dir(directory: Path) -> None:
+    (directory / "company_targets.yaml").write_text(
+        "companies:\n  - id: acme\n    name: Acme\n    categories: [big-tech-ai]\n",
+        encoding="utf-8",
+    )
+    (directory / "sources.yaml").write_text(
+        "sources:\n"
+        "  - id: acme-discovery\n"
+        "    company_id: acme\n"
+        "    provider: discovery\n"
+        "    source_class: fallback\n"
+        "    support_status: NEEDS_MANUAL_REVIEW\n"
+        "    endpoint: https://careers.acme.example/\n"
+        "    interval_minutes: 30\n"
+        "    enabled: false\n",
+        encoding="utf-8",
+    )
+    (directory / "filters.yaml").write_text("filters: []\n", encoding="utf-8")
+
+
+@respx.mock
+def test_set_source_derives_enabled_from_the_status(tmp_path: Path) -> None:
+    from typer.testing import CliRunner
+
+    from job_alert.cli import app
+
+    _write_config_dir(tmp_path)
+    payload = json.loads(GREENHOUSE_FIXTURE.read_text(encoding="utf-8"))
+    respx.get(
+        url__regex=r"https://boards-api\.greenhouse\.io/v1/boards/acme/jobs.*"
+    ).mock(return_value=httpx.Response(200, json=payload))
+    runner = CliRunner()
+    arguments = [
+        "audit",
+        "set-source",
+        "--company",
+        "acme",
+        "--provider",
+        "greenhouse",
+        "--endpoint",
+        "https://boards-api.greenhouse.io/v1/boards/acme/jobs",
+        "--class",
+        "documented_api",
+        "--config-dir",
+        str(tmp_path),
+    ]
+
+    downgrade = runner.invoke(app, [*arguments, "--status", "NEEDS_MANUAL_REVIEW"])
+    assert downgrade.exit_code == 0, downgrade.output
+    assert "written disabled" in downgrade.output
+    record = load_source_records(tmp_path / "sources.yaml")[0]
+    assert record.support_status is SupportStatus.NEEDS_MANUAL_REVIEW
+    assert record.enabled is False
+
+    supported = runner.invoke(app, [*arguments, "--status", "SUPPORTED"])
+    assert supported.exit_code == 0, supported.output
+    assert "written disabled" not in supported.output
+    promoted = load_source_records(tmp_path / "sources.yaml")[0]
+    assert promoted.support_status is SupportStatus.SUPPORTED
+    assert promoted.enabled is True
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_run_audit_retry_failed_reprobes_a_recorded_failure(tmp_path: Path) -> None:
+    _write_config_dir(tmp_path)
+    results = tmp_path / "reports" / "source-audit.json"
+    results.parent.mkdir(parents=True)
+    results.write_text(
+        json.dumps(
+            {
+                "generated_at": "2026-09-18T00:00:00Z",
+                "companies": {
+                    "acme": {
+                        "company_id": "acme",
+                        "support_status": "BLOCKED",
+                        "probe": {"notes": ["access challenge detected"]},
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    respx.get("https://careers.acme.example/").mock(
+        return_value=httpx.Response(
+            200, headers={"Content-Type": "text/html"}, text="<html>Careers</html>"
+        )
+    )
+
+    probed = await run_audit(tmp_path, results, retry_failed=True)
+
+    assert probed == ["acme"]
+    store = json.loads(results.read_text(encoding="utf-8"))["companies"]
+    assert store["acme"]["support_status"] == "FALLBACK_ONLY"
+
+
 @respx.mock
 @pytest.mark.asyncio
 async def test_probe_verifies_a_board_that_the_careers_page_links_to() -> None:
@@ -304,3 +403,135 @@ async def test_probe_records_a_plain_careers_page_as_fallback_only() -> None:
     assert result.http_status == 200
     assert result.media_type == "text/html"
     assert result.provider_fingerprint is None
+
+
+def test_fingerprint_rejects_successfactors_and_oracle_assets() -> None:
+    jquery = fingerprint_provider(
+        final_url=(
+            "https://performancemanager5.successfactors.eu/verp/vmod_v1/ui/extlib/"
+            "jquery_3.5.1/jquery.js"
+        ),
+        media_type="text/javascript",
+        body=b"",
+    )
+    assert jquery.provider is None
+
+    image = fingerprint_provider(
+        final_url=(
+            "https://ibqbjb.fa.ocs.oraclecloud.com:443/hcmUI/CandidateExperience/images"
+            "?imageId=F6FFEC9C-0349-4FF4-BC8E-34EA5672CC7A"
+        ),
+        media_type="text/html",
+        body=b"",
+    )
+    assert image.provider is None
+
+    errors_host = fingerprint_provider(
+        final_url="https://77e708048c4747e1a801fa2ef5557ca6@vs-errors.eightfold.ai/10",
+        media_type="text/html",
+        body=b"",
+    )
+    assert errors_host.provider is None
+
+
+def test_fingerprint_still_accepts_the_listed_enterprise_markers() -> None:
+    successfactors = fingerprint_provider(
+        final_url="https://career4.successfactors.com/career?company=example",
+        media_type="text/html",
+        body=b"",
+    )
+    assert successfactors.provider == "successfactors"
+
+    oracle = fingerprint_provider(
+        final_url=(
+            "https://hdjq.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs"
+        ),
+        media_type="text/html",
+        body=b"",
+    )
+    assert oracle.provider == "oracle"
+
+    eightfold = fingerprint_provider(
+        final_url="https://example.eightfold.ai/careers",
+        media_type="text/html",
+        body=b"",
+    )
+    assert eightfold.provider == "eightfold"
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_workday_without_application_links_is_not_supported() -> None:
+    """A Workday walk that yields ids but no application URL must not earn support."""
+    respx.get("https://careers.example.com/").mock(
+        return_value=httpx.Response(
+            200,
+            headers={"Content-Type": "text/html"},
+            text='<a href="https://acme.wd1.myworkdayjobs.com/en-US/External">Jobs</a>',
+        )
+    )
+    route = respx.post(
+        url__regex=r"https://acme\.wd1\.myworkdayjobs\.com/wday/cxs/acme/External/jobs"
+    ).mock(
+        return_value=httpx.Response(
+            200,
+            json={
+                "total": 1,
+                "jobPostings": [{"title": "Engineer", "externalPath": "/job/Engineer_R1"}],
+            },
+        )
+    )
+    source = _source("acme-discovery", "acme", SupportStatus.NEEDS_MANUAL_REVIEW)
+    source = source.model_copy(update={"endpoint": "https://careers.example.com/"})
+
+    async with HttpFetcher() as fetcher:
+        result = await probe_source(source, fetcher)
+
+    assert result.provider_fingerprint == "workday"
+    assert result.support_status is SupportStatus.NEEDS_MANUAL_REVIEW
+    assert result.pagination_complete is True
+    assert result.stable_id_percent == 100.0
+    assert result.direct_url_percent == 0.0
+    assert any("direct application URL" in note for note in result.notes)
+    assert route.call_count == 2
+
+
+def test_report_renders_the_careers_landing_page_for_a_verified_source() -> None:
+    feed = "https://api.lever.co/v0/postings/acme?mode=json"
+    landing = "https://www.acme.example/careers"
+    config = AppConfig(
+        companies=[CompanyTarget(id="acme", name="Acme", categories=["big-tech-ai"])],
+        sources=[
+            SourceConfig(
+                id="acme-lever",
+                company_id="acme",
+                provider="lever",
+                source_class=SourceClass.DOCUMENTED_API,
+                support_status=SupportStatus.SUPPORTED,
+                endpoint=feed,
+                interval_minutes=30,
+                tenant="acme",
+                enabled=True,
+                audit_date="2026-09-18",
+            )
+        ],
+        filters=[],
+    )
+    store = {
+        "acme": {
+            "company_id": "acme",
+            "source_id": "acme-lever",
+            "provider": "lever",
+            "support_status": "SUPPORTED",
+            "careers_url": landing,
+            "audited_at": "2026-09-18",
+            "probe": {"final_url": landing, "parsed_job_count": 12, "notes": []},
+        }
+    }
+
+    text, payload = render_report(config, store, generated_at=datetime(2026, 9, 18, tzinfo=UTC))
+
+    row = next(line for line in text.splitlines() if line.startswith("| Acme |"))
+    assert landing in row
+    assert feed not in row
+    assert payload["rows"][0]["careers_url"] == landing

@@ -136,16 +136,16 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_evidence: careers page links to https://sec.wd3.myworkdayjobs.com/Samsung_Careers
     audit_http_status: 200
     audit_final_url: https://www.samsung.com/us/careers/
     audit_notes:
-    - workday CXS confirmed 100 unique postings of 692 declared, so pagination completeness is unproven until the Workday adapter exists
+    - workday CXS confirmed 99 unique postings of 693 declared, so pagination completeness is unproven until the Workday adapter exists
     audit_provider: workday
     audit_endpoint: https://sec.wd3.myworkdayjobs.com/wday/cxs/sec/Samsung_Careers/jobs
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: asml-discovery
   company_id: asml
   provider: discovery
@@ -172,14 +172,15 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
-    audit_evidence: careers page links to https://77e708048c4747e1a801fa2ef5557ca6@vs-errors.eightfold.ai/10
+    audit_probed_at: '2026-09-19'
+    audit_evidence: careers page links to https://app.eightfold.ai/careers?domain=qualcomm.com
     audit_http_status: 200
     audit_final_url: https://careers.qualcomm.com/careers
     audit_notes:
-    - eightfold provider evidence found (careers page links to https://77e708048c4747e1a801fa2ef5557ca6@vs-errors.eightfold.ai/10); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    - eightfold provider evidence found (careers page links to https://app.eightfold.ai/careers?domain=qualcomm.com); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_provider: eightfold
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: netflix-discovery
   company_id: netflix
   provider: discovery
@@ -417,16 +418,16 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_evidence: careers page links to https://intel.wd1.myworkdayjobs.com/External/page/6042070b79e01001f04fa9b468070000
     audit_http_status: 200
     audit_final_url: https://www.intel.com/content/www/us/en/jobs/life-at-intel.html
     audit_notes:
-    - 'workday CXS request failed: non-retryable HTTP 404 for https://intel.wd1.myworkdayjobs.com/wday/cxs/intel/6042070b79e01001f04fa9b468070000/jobs'
+    - workday CXS confirmed 100 unique postings of 613 declared, so pagination completeness is unproven until the Workday adapter exists
     audit_provider: workday
-    audit_endpoint: https://intel.wd1.myworkdayjobs.com/wday/cxs/intel/6042070b79e01001f04fa9b468070000/jobs
+    audit_endpoint: https://intel.wd1.myworkdayjobs.com/wday/cxs/intel/External/jobs
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: broadcom-discovery
   company_id: broadcom
   provider: discovery
@@ -483,14 +484,15 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
-    audit_evidence: careers page links to https://performancemanager5.successfactors.eu/verp/vmod_v1/ui/extlib/jquery_3.5.1/jquery.js
+    audit_probed_at: '2026-09-19'
+    audit_evidence: careers page links to https://career5.successfactors.eu/career?career_company=SAP&lang=en_US&company=SAP&site=&loginFlowRequired=true&_s.crb=FPX8lbWGt3yk6uxsmGyYBKLyRl2Q6jqtQoTRBxl4aco%3d
     audit_http_status: 200
     audit_final_url: https://jobs.sap.com/
     audit_notes:
-    - successfactors provider evidence found (careers page links to https://performancemanager5.successfactors.eu/verp/vmod_v1/ui/extlib/jquery_3.5.1/jquery.js); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    - successfactors provider evidence found (careers page links to https://career5.successfactors.eu/career?career_company=SAP&lang=en_US&company=SAP&site=&loginFlowRequired=true&_s.crb=FPX8lbWGt3yk6uxsmGyYBKLyRl2Q6jqtQoTRBxl4aco%3d); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_provider: successfactors
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: ibm-discovery
   company_id: ibm
   provider: discovery
@@ -602,14 +604,15 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_evidence: careers page links to https://earlycareers-arm.icims.com/jobs/login?loginOnly=1&redirect=dashboard
     audit_http_status: 200
     audit_final_url: https://careers.arm.com/
     audit_notes:
     - icims provider evidence found (careers page links to https://earlycareers-arm.icims.com/jobs/login?loginOnly=1&redirect=dashboard); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_provider: icims
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: micron-technology-discovery
   company_id: micron-technology
   provider: discovery
@@ -666,7 +669,7 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_evidence: careers page links to https://crowdstrike.wd5.myworkdayjobs.com/crowdstrikecareers
     audit_http_status: 200
     audit_final_url: https://www.crowdstrike.com/en-us/careers/
@@ -675,7 +678,7 @@ sources:
     audit_provider: workday
     audit_endpoint: https://crowdstrike.wd5.myworkdayjobs.com/wday/cxs/crowdstrike/crowdstrikecareers/jobs
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: cloudflare-discovery
   company_id: cloudflare
   provider: discovery
@@ -1045,27 +1048,25 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: boston-dynamics-workday
+- id: boston-dynamics-discovery
   company_id: boston-dynamics
   provider: workday
-  source_class: public_ats
-  support_status: SUPPORTED_UNDOCUMENTED
-  endpoint: https://bostondynamics.wd1.myworkdayjobs.com/wday/cxs/bostondynamics/Boston_Dynamics/jobs
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://bostondynamics.com/careers/
   interval_minutes: 30
-  tenant: bostondynamics
   parameters:
-    audit_status: SUPPORTED_UNDOCUMENTED
-    audit_probed_at: '2026-09-18'
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
     audit_evidence: careers page links to https://bostondynamics.wd1.myworkdayjobs.com/en-US/Boston_Dynamics/introduceYourself
+    audit_provider: workday
+    audit_endpoint: https://bostondynamics.wd1.myworkdayjobs.com/wday/cxs/bostondynamics/Boston_Dynamics/jobs
     audit_http_status: 200
     audit_final_url: https://bostondynamics.com/careers/
     audit_notes:
-    - workday CXS declared total=77 and served 77 unique postings twice
-    page_size: 20
-    locale: en-US
-    detail_base_url: https://bostondynamics.wd1.myworkdayjobs.com/en-US/Boston_Dynamics
-  enabled: true
-  audit_date: '2026-09-18'
+    - workday CXS publishes posting ids but no direct application URL for any posting, so the per-posting application-link evidence the audit requires is missing until the Workday adapter exists
+  enabled: false
+  audit_date: '2026-09-19'
 - id: gecko-robotics-discovery
   company_id: gecko-robotics
   provider: discovery
@@ -1411,15 +1412,15 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
-    audit_evidence: careers page links to https://ibqbjb.fa.ocs.oraclecloud.com:443/hcmUI/CandidateExperience/images?imageId=F6FFEC9C-0349-4FF4-BC8E-34EA5672CC7A
+    audit_probed_at: '2026-09-19'
+    audit_evidence: the official careers page links to https://www.honeywell.com/us/en/careers, which resolves to https://www.honeywell.com/us/en/careers
     audit_provider: oracle
     audit_http_status: 200
     audit_final_url: https://careers.honeywell.com/en/sites/Honeywell
     audit_notes:
-    - oracle provider evidence found (careers page links to https://ibqbjb.fa.ocs.oraclecloud.com:443/hcmUI/CandidateExperience/images?imageId=F6FFEC9C-0349-4FF4-BC8E-34EA5672CC7A); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    - oracle provider evidence found (the official careers page links to https://www.honeywell.com/us/en/careers, which resolves to https://www.honeywell.com/us/en/careers); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: abb-discovery
   company_id: abb
   provider: discovery
@@ -1491,20 +1492,21 @@ sources:
   company_id: universal-robots
   provider: successfactors
   source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
+  support_status: FALLBACK_ONLY
   endpoint: https://www.universal-robots.com/careers/
   interval_minutes: 30
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-19'
     audit_http_status: 200
     audit_final_url: https://www.universal-robots.com/about-us/careers/
     audit_notes:
-    - successfactors provider evidence found (the official careers page links to https://jobs.teradyne.com/, which resolves to https://jobs.teradyne.com/); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
     audit_evidence: the official careers page links to https://jobs.teradyne.com/, which resolves to https://jobs.teradyne.com/
     audit_provider: successfactors
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: kawasaki-robotics-discovery
   company_id: kawasaki-robotics
   provider: discovery
@@ -1564,7 +1566,7 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_evidence: careers page links to https://rockwellautomation.wd1.myworkdayjobs.com/en-US/External_Rockwell_Automation/introduceYourself
     audit_provider: workday
     audit_http_status: 200
@@ -1573,7 +1575,7 @@ sources:
     - workday CXS confirmed 100 unique postings of 425 declared, so pagination completeness is unproven until the Workday adapter exists
     audit_endpoint: https://rockwellautomation.wd1.myworkdayjobs.com/wday/cxs/rockwellautomation/External_Rockwell_Automation/jobs
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: teradyne-discovery
   company_id: teradyne
   provider: discovery
@@ -1599,7 +1601,7 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_http_status: 200
     audit_final_url: https://www.keyence.com/ss/careers/?ad_local=item0705ka
     audit_notes:
@@ -1607,7 +1609,7 @@ sources:
     audit_evidence: the official careers page links to https://careers.keyence.com/go/View-All-Careers/7816100/, which resolves to https://careers.keyence.com/go/View-All-Careers/7816100/
     audit_provider: successfactors
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: siemens-discovery
   company_id: siemens
   provider: discovery
@@ -1652,7 +1654,7 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_evidence: careers page links to https://stryker.wd1.myworkdayjobs.com/StrykerCareers/login
     audit_provider: workday
     audit_http_status: 200
@@ -1661,7 +1663,7 @@ sources:
     - workday CXS confirmed 100 unique postings of 1464 declared, so pagination completeness is unproven until the Workday adapter exists
     audit_endpoint: https://stryker.wd1.myworkdayjobs.com/wday/cxs/stryker/StrykerCareers/jobs
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: medtronic-discovery
   company_id: medtronic
   provider: discovery
@@ -1767,16 +1769,16 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_evidence: careers page links to https://zebra.wd501.myworkdayjobs.com/Zebra_careers
     audit_provider: workday
     audit_http_status: 200
     audit_final_url: https://www.zebra.com/us/en/about-zebra/careers.html
     audit_notes:
-    - workday CXS confirmed 100 unique postings of 249 declared, so pagination completeness is unproven until the Workday adapter exists
+    - workday CXS confirmed 100 unique postings of 248 declared, so pagination completeness is unproven until the Workday adapter exists
     audit_endpoint: https://zebra.wd501.myworkdayjobs.com/wday/cxs/zebra/Zebra_careers/jobs
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: daifuku-discovery
   company_id: daifuku
   provider: icims
@@ -1786,7 +1788,7 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_http_status: 200
     audit_final_url: https://www.daifuku.com/careers/
     audit_notes:
@@ -1795,7 +1797,7 @@ sources:
     audit_evidence: the official careers page links to https://www.daifuku.com/careers/ca/, which resolves to https://www.daifuku.com/us/careers/dmca/
     audit_provider: icims
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: denso-robotics-discovery
   company_id: denso-robotics
   provider: discovery
@@ -1822,7 +1824,7 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_http_status: 200
     audit_final_url: https://epson.com/careers
     audit_notes:
@@ -1830,7 +1832,7 @@ sources:
     audit_evidence: the official careers page links to https://jobs.epson.com/, which resolves to https://jobs.epson.com/
     audit_provider: successfactors
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: anybotics-discovery
   company_id: anybotics
   provider: discovery
@@ -1856,7 +1858,7 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_http_status: 200
     audit_final_url: https://www.doosanrobotics.com/en/
     audit_notes:
@@ -1864,7 +1866,7 @@ sources:
     audit_evidence: the official careers page links to https://jobs.doosan.com/, which resolves to https://jobs.doosan.com/
     audit_provider: successfactors
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: johnson-johnson-discovery
   company_id: johnson-johnson
   provider: discovery
@@ -1937,7 +1939,7 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_evidence: careers page links to https://hdjq.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs
     audit_provider: oracle
     audit_http_status: 200
@@ -1945,7 +1947,7 @@ sources:
     audit_notes:
     - oracle provider evidence found (careers page links to https://hdjq.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: general-motors-discovery
   company_id: general-motors
   provider: discovery
@@ -2097,7 +2099,7 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_http_status: 200
     audit_final_url: https://www.bmwgroup.jobs/en.html
     audit_notes:
@@ -2105,7 +2107,7 @@ sources:
     audit_evidence: the official careers page links to https://www.bmwgroup.jobs/de/de.html, which resolves to https://www.bmwgroup.jobs/de/de.html
     audit_provider: successfactors
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: stellantis-discovery
   company_id: stellantis
   provider: discovery
@@ -2270,8 +2272,8 @@ sources:
     audit_probed_at: '2026-09-19'
     audit_final_url: https://careers.tatamotors.com/
     audit_notes:
-    - successfactors provider evidence found (careers page links to https://performancemanager5.successfactors.eu/verp/vmod_v1/ui/extlib/jquery_3.5.1/jquery.js); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-    audit_evidence: careers page links to https://performancemanager5.successfactors.eu/verp/vmod_v1/ui/extlib/jquery_3.5.1/jquery.js
+    - successfactors provider evidence found (careers page links to https://career5.successfactors.eu/career?company=tataindiaP&amp;navBarLevel=MY_PROFILE); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: careers page links to https://career5.successfactors.eu/career?company=tataindiaP&amp;navBarLevel=MY_PROFILE
     audit_provider: successfactors
     audit_http_status: 200
   enabled: false
@@ -2455,16 +2457,16 @@ sources:
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
+    audit_probed_at: '2026-09-19'
     audit_evidence: careers page links to https://boeing.wd1.myworkdayjobs.com/en-US/EXTERNAL_CAREERS/login
     audit_provider: workday
     audit_http_status: 200
     audit_final_url: https://jobs.boeing.com/
     audit_notes:
-    - workday CXS confirmed 100 unique postings of 731 declared, so pagination completeness is unproven until the Workday adapter exists
+    - workday CXS confirmed 100 unique postings of 733 declared, so pagination completeness is unproven until the Workday adapter exists
     audit_endpoint: https://boeing.wd1.myworkdayjobs.com/wday/cxs/boeing/EXTERNAL_CAREERS/jobs
   enabled: false
-  audit_date: '2026-09-18'
+  audit_date: '2026-09-19'
 - id: lockheed-martin-discovery
   company_id: lockheed-martin
   provider: eightfold

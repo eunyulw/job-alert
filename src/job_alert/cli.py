@@ -17,6 +17,7 @@ import typer
 from job_alert.audit import (
     DEFAULT_AUDIT_CONCURRENCY,
     DEFAULT_RESULTS_PATH,
+    DIRECT_STATUSES,
     MAX_AUDIT_CONCURRENCY,
     AuditError,
     ProbeResult,
@@ -25,6 +26,7 @@ from job_alert.audit import (
     load_audit_store,
     now_utc,
     probe_source,
+    probe_target,
     record_probe,
     render_report,
     replace_source_record,
@@ -101,14 +103,16 @@ def audit_probe(
     except AuditError as exc:
         _fail(str(exc))
         return
+    store = load_audit_store(results)
+    target = probe_target(source_config, store.get(source_config.company_id))
 
     async def run() -> ProbeResult:
         async with HttpFetcher() as fetcher:
-            return await probe_source(source_config, fetcher)
+            return await probe_source(target, fetcher)
 
     result = asyncio.run(run())
     try:
-        record_probe(config_dir, results, source_config, result)
+        record_probe(config_dir, results, target, result)
     except AuditError as exc:
         _fail(str(exc))
         return
@@ -130,6 +134,15 @@ def audit_run(
     concurrency: Annotated[
         int, typer.Option("--concurrency", help="Companies probed at once (maximum 4)")
     ] = DEFAULT_AUDIT_CONCURRENCY,
+    force: Annotated[
+        bool, typer.Option("--force", help="Re-probe companies that already have a record")
+    ] = False,
+    retry_failed: Annotated[
+        bool,
+        typer.Option(
+            "--retry-failed", help="Re-probe recorded blocked and manual-review companies"
+        ),
+    ] = False,
     config_dir: ConfigDirOption = DEFAULT_CONFIG_DIR,
     results: ResultsOption = DEFAULT_RESULTS_PATH,
 ) -> None:
@@ -145,6 +158,8 @@ def audit_run(
                 company_ids=tuple(company or ()),
                 category=category,
                 concurrency=concurrency,
+                force=force,
+                retry_failed=retry_failed,
                 on_result=lambda result: typer.echo(_summary_line(result)),
             )
         )
@@ -183,7 +198,9 @@ def audit_set_source(
         interval_minutes=interval,
         tenant=tenant,
         parameters={},
-        enabled=True,
+        # `enabled` follows the status: only a direct source (SUPPORTED or SUPPORTED_UNDOCUMENTED)
+        # is polled, and an operator may still record a downgrade without enabling it.
+        enabled=status in DIRECT_STATUSES,
         audit_date=now_utc().date().isoformat(),
     )
 
@@ -205,6 +222,8 @@ def audit_set_source(
     typer.echo(
         f"validated {candidate.id}: {len(collection.jobs)} jobs from {candidate.endpoint}"
     )
+    if not candidate.enabled:
+        typer.echo(f"{candidate.id} written disabled because {status} is not a direct source")
 
 
 @audit_app.command("disable-source")
