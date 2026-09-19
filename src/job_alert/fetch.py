@@ -3,6 +3,10 @@
 `RequestSpec.idempotent` controls automatic retry behavior. When omitted, GET requests are
 idempotent and POST requests are not. A read-only POST, such as Workday's CXS query, must opt in
 with ``idempotent=True`` before it is retried.
+
+`HttpFetcher.send_once` serves the other kind of POST: a delivery endpoint that creates a message
+is never replayed by this client, so the caller receives the status, headers, and body of one
+attempt and classifies that answer itself.
 """
 
 from __future__ import annotations
@@ -14,6 +18,7 @@ from dataclasses import dataclass, field, replace
 from datetime import UTC, datetime
 from email.utils import parsedate_to_datetime
 from typing import Any, Literal
+from urllib.parse import urlencode
 
 import httpx
 
@@ -55,6 +60,9 @@ class RequestSpec:
     last_modified: str | None = None
     method: Literal["GET", "POST"] = "GET"
     json_body: dict[str, Any] | None = None
+    #: Form-encoded POST body for endpoints that reject a JSON document; mutually exclusive with
+    #: ``json_body``.
+    form_body: Mapping[str, str] | None = None
     idempotent: bool | None = None
 
 
@@ -120,7 +128,7 @@ class HttpFetcher:
                         return await self._not_modified_payload(response)
 
                     if _is_retryable_status(response.status_code):
-                        retry_after = _retry_after_seconds(response.headers.get("Retry-After"))
+                        retry_after = retry_after_seconds(response.headers.get("Retry-After"))
                         await response.aclose()
                         if not _can_retry(spec, attempt):
                             raise _retry_exhausted_failure(spec, response.status_code)
@@ -145,6 +153,18 @@ class HttpFetcher:
 
         raise AssertionError("unreachable")
 
+    async def send_once(self, spec: RequestSpec) -> HttpPayload:
+        """Send exactly one attempt and return its response whatever status it carries.
+
+        :meth:`request` reports a retryable status by raising, which is right when the caller only
+        wants a usable payload. A delivery call is different: a POST that creates a message is not
+        idempotent, so this client must never replay it, and the caller needs the status code, the
+        headers, and the body to decide whether a later attempt is allowed.
+        """
+        async with asyncio.timeout(spec.timeout_seconds):
+            response = await self._client.send(self._build_request(spec), stream=True)
+            return await self._payload_from_response(response, spec)
+
     def _build_request(self, spec: RequestSpec) -> httpx.Request:
         headers = dict(spec.headers)
         if spec.method == "GET":
@@ -153,10 +173,16 @@ class HttpFetcher:
             if spec.last_modified is not None:
                 headers.setdefault("If-Modified-Since", spec.last_modified)
         if spec.method == "POST":
+            if spec.json_body is not None and spec.form_body is not None:
+                raise ValueError("a request cannot carry both a JSON and a form body")
             _discard_header(headers, "If-None-Match")
             _discard_header(headers, "If-Modified-Since")
             _discard_header(headers, "Content-Type")
-            headers["Content-Type"] = "application/json"
+            headers["Content-Type"] = (
+                "application/x-www-form-urlencoded"
+                if spec.form_body is not None
+                else "application/json"
+            )
 
         timeout = httpx.Timeout(
             timeout=spec.timeout_seconds,
@@ -167,7 +193,8 @@ class HttpFetcher:
             spec.method,
             spec.url,
             headers=headers,
-            json=spec.json_body if spec.method == "POST" else None,
+            json=spec.json_body if spec.method == "POST" and spec.form_body is None else None,
+            content=urlencode(spec.form_body) if spec.form_body is not None else None,
             timeout=timeout,
         )
 
@@ -251,7 +278,8 @@ def _request_failure(spec: RequestSpec, exc: BaseException) -> FetchFailure:
     return FetchFailure(f"request failed after {MAX_ATTEMPTS} attempts for {spec.url}")
 
 
-def _retry_after_seconds(value: str | None) -> float | None:
+def retry_after_seconds(value: str | None) -> float | None:
+    """A ``Retry-After`` value as a delay in seconds, whether it is a delta or an HTTP date."""
     if value is None:
         return None
     try:

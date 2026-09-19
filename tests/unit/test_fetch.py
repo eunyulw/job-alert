@@ -297,3 +297,48 @@ async def test_post_sends_json_without_conditional_headers() -> None:
     assert "If-None-Match" not in request.headers
     assert "If-Modified-Since" not in request.headers
     assert request.content == b'{"limit":20}'
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_post_sends_a_form_body_when_asked_for_one() -> None:
+    route = respx.post("https://api.example.com/messages").mock(
+        return_value=httpx.Response(200, json={"status": 1})
+    )
+    async with HttpFetcher() as fetcher:
+        await fetcher.post(
+            RequestSpec(
+                url="https://api.example.com/messages",
+                expected="json",
+                form_body={"title": "New job", "url_title": "Open and apply"},
+            )
+        )
+
+    request = route.calls[0].request
+    assert request.headers["Content-Type"] == "application/x-www-form-urlencoded"
+    assert request.content == b"title=New+job&url_title=Open+and+apply"
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_send_once_returns_a_retryable_status_without_replaying_it() -> None:
+    route = respx.post("https://api.example.com/messages").mock(
+        return_value=httpx.Response(429, headers={"Retry-After": "7", "X-Limit-App-Reset": "99"})
+    )
+    async with HttpFetcher() as fetcher:
+        payload = await fetcher.send_once(
+            RequestSpec(
+                url="https://api.example.com/messages",
+                method="POST",
+                expected="json",
+                form_body={"token": "secret"},
+                idempotent=False,
+            )
+        )
+
+    assert route.call_count == 1
+    assert payload.status == 429
+    # httpx lower-cases header names, so callers match them case-insensitively.
+    assert payload.headers["retry-after"] == "7"
+    assert payload.headers["x-limit-app-reset"] == "99"
+    assert payload.body == b""
