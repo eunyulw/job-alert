@@ -1,1194 +1,2500 @@
-# Provisional discovery sources: one disabled NEEDS_MANUAL_REVIEW record per
-# canonical company. The Task 11 source audit replaces each record with verified
-# provider endpoints; the endpoint here is only the company careers landing page.
+# Audited company job sources.
+#
+# One record per canonical company. A record the Task 11 source audit verified carries the
+# provider, the public list endpoint, the evidence date, and the support status that earned
+# it; a record still awaiting audit stays on provider `discovery` with
+# support_status NEEDS_MANUAL_REVIEW, no audit_date, and enabled: false.
 sources:
-  - id: nvidia-discovery
-    company_id: nvidia
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.nvidia.com/en-us/about-nvidia/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: apple-discovery
-    company_id: apple
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.apple.com/careers/us/
-    interval_minutes: 30
-    enabled: false
-  - id: alphabet-google-discovery
-    company_id: alphabet-google
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.google.com/about/careers/applications/
-    interval_minutes: 30
-    enabled: false
-  - id: amazon-discovery
-    company_id: amazon
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.amazon.jobs/en/
-    interval_minutes: 30
-    enabled: false
-  - id: meta-discovery
-    company_id: meta
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.metacareers.com/
-    interval_minutes: 30
-    enabled: false
-  - id: microsoft-discovery
-    company_id: microsoft
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.microsoft.com/
-    interval_minutes: 30
-    enabled: false
-  - id: tesla-discovery
-    company_id: tesla
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.tesla.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: samsung-discovery
-    company_id: samsung
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.samsung.com/us/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: asml-discovery
-    company_id: asml
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.asml.com/en/careers
-    interval_minutes: 30
-    enabled: false
-  - id: qualcomm-discovery
-    company_id: qualcomm
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.qualcomm.com/
-    interval_minutes: 30
-    enabled: false
-  - id: netflix-discovery
-    company_id: netflix
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://explore.jobs.netflix.net/careers
-    interval_minutes: 30
-    enabled: false
-  - id: oracle-discovery
-    company_id: oracle
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.oracle.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: salesforce-discovery
-    company_id: salesforce
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.salesforce.com/en/jobs/
-    interval_minutes: 30
-    enabled: false
-  - id: adobe-discovery
-    company_id: adobe
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.adobe.com/us/en
-    interval_minutes: 30
-    enabled: false
-  - id: cisco-discovery
-    company_id: cisco
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://jobs.cisco.com/
-    interval_minutes: 30
-    enabled: false
-  - id: palantir-discovery
-    company_id: palantir
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.palantir.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: uber-discovery
-    company_id: uber
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.uber.com/us/en/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: airbnb-discovery
-    company_id: airbnb
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.airbnb.com/
-    interval_minutes: 30
-    enabled: false
-  - id: stripe-discovery
-    company_id: stripe
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://stripe.com/jobs
-    interval_minutes: 30
-    enabled: false
-  - id: databricks-discovery
-    company_id: databricks
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.databricks.com/company/careers
-    interval_minutes: 30
-    enabled: false
-  - id: snowflake-discovery
-    company_id: snowflake
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.snowflake.com/us/en
-    interval_minutes: 30
-    enabled: false
-  - id: openai-discovery
-    company_id: openai
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://openai.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: anthropic-discovery
-    company_id: anthropic
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.anthropic.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: amd-discovery
-    company_id: amd
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.amd.com/en/corporate/careers.html
-    interval_minutes: 30
-    enabled: false
-  - id: intel-discovery
-    company_id: intel
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.intel.com/content/www/us/en/jobs/jobs-at-intel.html
-    interval_minutes: 30
-    enabled: false
-  - id: broadcom-discovery
-    company_id: broadcom
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.broadcom.com/company/careers
-    interval_minutes: 30
-    enabled: false
-  - id: tsmc-discovery
-    company_id: tsmc
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.tsmc.com/static/english/careers/index.htm
-    interval_minutes: 30
-    enabled: false
-  - id: servicenow-discovery
-    company_id: servicenow
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.servicenow.com/
-    interval_minutes: 30
-    enabled: false
-  - id: sap-discovery
-    company_id: sap
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://jobs.sap.com/
-    interval_minutes: 30
-    enabled: false
-  - id: ibm-discovery
-    company_id: ibm
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.ibm.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: bytedance-discovery
-    company_id: bytedance
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://jobs.bytedance.com/en/
-    interval_minutes: 30
-    enabled: false
-  - id: tencent-discovery
-    company_id: tencent
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.tencent.com/en-us/home.html
-    interval_minutes: 30
-    enabled: false
-  - id: alibaba-discovery
-    company_id: alibaba
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://talent.alibaba.com/en/home
-    interval_minutes: 30
-    enabled: false
-  - id: baidu-discovery
-    company_id: baidu
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://talent.baidu.com/jobs/list
-    interval_minutes: 30
-    enabled: false
-  - id: xiaomi-discovery
-    company_id: xiaomi
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.mi.com/
-    interval_minutes: 30
-    enabled: false
-  - id: arm-discovery
-    company_id: arm
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.arm.com/
-    interval_minutes: 30
-    enabled: false
-  - id: micron-technology-discovery
-    company_id: micron-technology
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.micron.com/
-    interval_minutes: 30
-    enabled: false
-  - id: synopsys-discovery
-    company_id: synopsys
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.synopsys.com/careers.html
-    interval_minutes: 30
-    enabled: false
-  - id: cadence-discovery
-    company_id: cadence
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.cadence.com/en_US/home/company/careers.html
-    interval_minutes: 30
-    enabled: false
-  - id: crowdstrike-discovery
-    company_id: crowdstrike
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.crowdstrike.com/en-us/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: cloudflare-discovery
-    company_id: cloudflare
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.cloudflare.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: coreweave-discovery
-    company_id: coreweave
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.coreweave.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: mistral-ai-discovery
-    company_id: mistral-ai
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://mistral.ai/careers
-    interval_minutes: 30
-    enabled: false
-  - id: xai-discovery
-    company_id: xai
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://x.ai/careers
-    interval_minutes: 30
-    enabled: false
-  - id: cohere-discovery
-    company_id: cohere
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://cohere.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: spacex-discovery
-    company_id: spacex
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.spacex.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: blue-origin-discovery
-    company_id: blue-origin
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.blueorigin.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: waymo-discovery
-    company_id: waymo
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://waymo.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: zoox-discovery
-    company_id: zoox
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://zoox.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: intuitive-surgical-discovery
-    company_id: intuitive-surgical
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.intuitive.com/en-us/about-us/careers
-    interval_minutes: 30
-    enabled: false
-  - id: skydio-discovery
-    company_id: skydio
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.skydio.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: aurora-innovation-discovery
-    company_id: aurora-innovation
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://aurora.tech/careers
-    interval_minutes: 30
-    enabled: false
-  - id: nuro-discovery
-    company_id: nuro
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.nuro.ai/careers
-    interval_minutes: 30
-    enabled: false
-  - id: zipline-discovery
-    company_id: zipline
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.flyzipline.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: symbotic-discovery
-    company_id: symbotic
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.symbotic.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: apptronik-discovery
-    company_id: apptronik
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.apptronik.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: dexterity-discovery
-    company_id: dexterity
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.dexterity.ai/careers
-    interval_minutes: 30
-    enabled: false
-  - id: locus-robotics-discovery
-    company_id: locus-robotics
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://locusrobotics.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: intrinsic-discovery
-    company_id: intrinsic
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.intrinsic.ai/careers
-    interval_minutes: 30
-    enabled: false
-  - id: physical-intelligence-discovery
-    company_id: physical-intelligence
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.physicalintelligence.company/jobs
-    interval_minutes: 30
-    enabled: false
-  - id: serve-robotics-discovery
-    company_id: serve-robotics
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://serverobotics.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: sanctuary-ai-discovery
-    company_id: sanctuary-ai
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.sanctuary.ai/careers
-    interval_minutes: 30
-    enabled: false
-  - id: boston-dynamics-discovery
-    company_id: boston-dynamics
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://bostondynamics.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: gecko-robotics-discovery
-    company_id: gecko-robotics
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.geckorobotics.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: kuka-discovery
-    company_id: kuka
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.kuka.com/en-us/career
-    interval_minutes: 30
-    enabled: false
-  - id: bosch-discovery
-    company_id: bosch
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.bosch.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: lucid-motors-discovery
-    company_id: lucid-motors
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://lucidmotors.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: joby-aviation-discovery
-    company_id: joby-aviation
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.jobyaviation.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: hyundai-motor-group-discovery
-    company_id: hyundai-motor-group
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.hyundai.com/worldwide/en/careers
-    interval_minutes: 30
-    enabled: false
-  - id: toyota-research-institute-discovery
-    company_id: toyota-research-institute
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.tri.global/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: 1x-discovery
-    company_id: 1x
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.1x.tech/careers
-    interval_minutes: 30
-    enabled: false
-  - id: engineered-arts-discovery
-    company_id: engineered-arts
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.engineeredarts.co.uk/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: agility-robotics-discovery
-    company_id: agility-robotics
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://agilityrobotics.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: unitree-discovery
-    company_id: unitree
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.unitree.com/position/
-    interval_minutes: 30
-    enabled: false
-  - id: pudu-robotics-discovery
-    company_id: pudu-robotics
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.pudurobotics.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: agile-robots-discovery
-    company_id: agile-robots
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.agile-robots.com/career
-    interval_minutes: 30
-    enabled: false
-  - id: neura-robotics-discovery
-    company_id: neura-robotics
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://neura-robotics.com/career/
-    interval_minutes: 30
-    enabled: false
-  - id: agibot-discovery
-    company_id: agibot
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.zhiyuan-robot.com/
-    interval_minutes: 30
-    parameters:
-      audit_note: careers landing page unresolved; resolve in Task 11 audit
-    enabled: false
-  - id: nimble-discovery
-    company_id: nimble
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.nimble.ai/careers
-    interval_minutes: 30
-    enabled: false
-  - id: standard-bots-discovery
-    company_id: standard-bots
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://standardbots.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: matic-discovery
-    company_id: matic
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.maticrobots.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: geek-plus-discovery
-    company_id: geek-plus
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.geekplus.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: greyorange-discovery
-    company_id: greyorange
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.greyorange.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: honeywell-discovery
-    company_id: honeywell
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.honeywell.com/
-    interval_minutes: 30
-    enabled: false
-  - id: abb-discovery
-    company_id: abb
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.abb/
-    interval_minutes: 30
-    enabled: false
-  - id: neuralink-discovery
-    company_id: neuralink
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://neuralink.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: fanuc-discovery
-    company_id: fanuc
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.fanucamerica.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: yaskawa-discovery
-    company_id: yaskawa
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.motoman.com/en-us/about/company/careers
-    interval_minutes: 30
-    enabled: false
-  - id: universal-robots-discovery
-    company_id: universal-robots
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.universal-robots.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: kawasaki-robotics-discovery
-    company_id: kawasaki-robotics
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://kawasakirobotics.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: mitsubishi-electric-discovery
-    company_id: mitsubishi-electric
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.mitsubishielectric.com/en/careers/index.html
-    interval_minutes: 30
-    enabled: false
-  - id: omron-discovery
-    company_id: omron
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.omron.com/global/en/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: rockwell-automation-discovery
-    company_id: rockwell-automation
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.rockwellautomation.com/en-us/company/careers.html
-    interval_minutes: 30
-    enabled: false
-  - id: teradyne-discovery
-    company_id: teradyne
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.teradyne.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: keyence-discovery
-    company_id: keyence
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.keyence.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: siemens-discovery
-    company_id: siemens
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://jobs.siemens.com/
-    interval_minutes: 30
-    enabled: false
-  - id: schneider-electric-discovery
-    company_id: schneider-electric
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.se.com/ww/en/about-us/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: stryker-discovery
-    company_id: stryker
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.stryker.com/
-    interval_minutes: 30
-    enabled: false
-  - id: medtronic-discovery
-    company_id: medtronic
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://jobs.medtronic.com/
-    interval_minutes: 30
-    enabled: false
-  - id: cmr-surgical-discovery
-    company_id: cmr-surgical
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.cmrsurgical.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: figure-ai-discovery
-    company_id: figure-ai
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.figure.ai/careers
-    interval_minutes: 30
-    enabled: false
-  - id: skild-ai-discovery
-    company_id: skild-ai
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.skild.ai/careers
-    interval_minutes: 30
-    enabled: false
-  - id: covariant-discovery
-    company_id: covariant
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://covariant.ai/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: right-hand-robotics-discovery
-    company_id: right-hand-robotics
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.righthandrobotics.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: zebra-technologies-discovery
-    company_id: zebra-technologies
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.zebra.com/
-    interval_minutes: 30
-    enabled: false
-  - id: daifuku-discovery
-    company_id: daifuku
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.daifuku.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: denso-robotics-discovery
-    company_id: denso-robotics
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.denso.com/global/en/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: epson-robots-discovery
-    company_id: epson-robots
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://epson.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: anybotics-discovery
-    company_id: anybotics
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.anybotics.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: doosan-robotics-discovery
-    company_id: doosan-robotics
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.doosanrobotics.com/en/careers
-    interval_minutes: 30
-    enabled: false
-  - id: johnson-johnson-discovery
-    company_id: johnson-johnson
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.careers.jnj.com/
-    interval_minutes: 30
-    enabled: false
-  - id: anduril-discovery
-    company_id: anduril
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.anduril.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: john-deere-discovery
-    company_id: john-deere
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.deere.com/
-    interval_minutes: 30
-    enabled: false
-  - id: caterpillar-discovery
-    company_id: caterpillar
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.caterpillar.com/en/careers.html
-    interval_minutes: 30
-    enabled: false
-  - id: emerson-discovery
-    company_id: emerson
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.emerson.com/en-us/careers
-    interval_minutes: 30
-    enabled: false
-  - id: general-motors-discovery
-    company_id: general-motors
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.gm.com/
-    interval_minutes: 30
-    enabled: false
-  - id: rivian-discovery
-    company_id: rivian
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.rivian.com/
-    interval_minutes: 30
-    enabled: false
-  - id: ford-motor-company-discovery
-    company_id: ford-motor-company
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.ford.com/
-    interval_minutes: 30
-    enabled: false
-  - id: toyota-motor-discovery
-    company_id: toyota-motor
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.toyota.com/
-    interval_minutes: 30
-    enabled: false
-  - id: volkswagen-group-discovery
-    company_id: volkswagen-group
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.volkswagen-group.com/en/career-2682
-    interval_minutes: 30
-    enabled: false
-  - id: byd-discovery
-    company_id: byd
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.byd.com/
-    interval_minutes: 30
-    enabled: false
-  - id: kia-discovery
-    company_id: kia
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.kia.com/
-    interval_minutes: 30
-    enabled: false
-  - id: honda-motor-discovery
-    company_id: honda-motor
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.honda.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: mercedes-benz-group-discovery
-    company_id: mercedes-benz-group
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://group.mercedes-benz.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: bmw-group-discovery
-    company_id: bmw-group
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.bmwgroup.jobs/
-    interval_minutes: 30
-    enabled: false
-  - id: stellantis-discovery
-    company_id: stellantis
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.stellantis.com/
-    interval_minutes: 30
-    enabled: false
-  - id: renault-group-discovery
-    company_id: renault-group
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.renaultgroup.com/en/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: nissan-motor-discovery
-    company_id: nissan-motor
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.nissan-global.com/
-    interval_minutes: 30
-    enabled: false
-  - id: geely-holding-discovery
-    company_id: geely-holding
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://job.geely.com/
-    interval_minutes: 30
-    enabled: false
-  - id: saic-motor-discovery
-    company_id: saic-motor
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.saicmotor.com/english/
-    interval_minutes: 30
-    parameters:
-      audit_note: careers landing page unresolved; resolve in Task 11 audit
-    enabled: false
-  - id: chery-automobile-discovery
-    company_id: chery-automobile
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.cheryinternational.com/
-    interval_minutes: 30
-    parameters:
-      audit_note: careers landing page unresolved; resolve in Task 11 audit
-    enabled: false
-  - id: volvo-cars-discovery
-    company_id: volvo-cars
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.volvocars.com/
-    interval_minutes: 30
-    enabled: false
-  - id: mazda-discovery
-    company_id: mazda
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.mazdausa.com/site/careers
-    interval_minutes: 30
-    enabled: false
-  - id: subaru-discovery
-    company_id: subaru
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.subaru.com/
-    interval_minutes: 30
-    enabled: false
-  - id: tata-motors-jlr-discovery
-    company_id: tata-motors-jlr
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.tatamotors.com/
-    interval_minutes: 30
-    enabled: false
-  - id: ferrari-discovery
-    company_id: ferrari
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.ferrari.com/en-EN/corporate/careers
-    interval_minutes: 30
-    enabled: false
-  - id: porsche-discovery
-    company_id: porsche
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://careers.porsche.com/
-    interval_minutes: 30
-    enabled: false
-  - id: mobileye-discovery
-    company_id: mobileye
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.mobileye.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: aptiv-discovery
-    company_id: aptiv
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.aptiv.com/en/careers
-    interval_minutes: 30
-    enabled: false
-  - id: magna-international-discovery
-    company_id: magna-international
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.magna.com/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: continental-discovery
-    company_id: continental
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.continental.com/en/career/
-    interval_minutes: 30
-    enabled: false
-  - id: zf-discovery
-    company_id: zf
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.zf.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: denso-discovery
-    company_id: denso
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.denso.com/global/en/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: aisin-discovery
-    company_id: aisin
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.aisin.com/en/careers/
-    interval_minutes: 30
-    enabled: false
-  - id: borgwarner-discovery
-    company_id: borgwarner
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.borgwarner.com/careers
-    interval_minutes: 30
-    enabled: false
-  - id: boeing-discovery
-    company_id: boeing
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://jobs.boeing.com/
-    interval_minutes: 30
-    enabled: false
-  - id: lockheed-martin-discovery
-    company_id: lockheed-martin
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.lockheedmartinjobs.com/
-    interval_minutes: 30
-    enabled: false
-  - id: rtx-discovery
-    company_id: rtx
-    provider: discovery
-    source_class: fallback
-    support_status: NEEDS_MANUAL_REVIEW
-    endpoint: https://www.rtx.com/careers
-    interval_minutes: 30
-    enabled: false
+- id: nvidia-discovery
+  company_id: nvidia
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.nvidia.com/en-us/about-nvidia/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.nvidia.com/en-us/about-nvidia/careers/
+    audit_notes:
+    - linked careers page https://jobs.nvidia.com/careers served an access challenge
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: apple-discovery
+  company_id: apple
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.apple.com/careers/us/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.apple.com/careers/us/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: alphabet-google-discovery
+  company_id: alphabet-google
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.google.com/about/careers/applications/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.google.com/about/careers/applications/
+    audit_notes:
+    - 'linked careers page https://www.gstatic.com/_/boq-hiring/_/r/ could not be read: non-retryable HTTP 404 for https://www.gstatic.com/_/boq-hiring/_/r/'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: amazon-discovery
+  company_id: amazon
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.amazon.jobs/en/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.amazon.jobs/en/
+    audit_notes:
+    - linked careers page https://passport.amazon.jobs/accountInfo served an access challenge
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: meta-discovery
+  company_id: meta
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.metacareers.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.metacareers.com/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: microsoft-discovery
+  company_id: microsoft
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://careers.microsoft.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://careers.microsoft.com/v2/global/en/home.html
+    audit_notes:
+    - linked careers page https://apply.careers.microsoft.com/careers served an access challenge
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: tesla-discovery
+  company_id: tesla
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.tesla.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.tesla.com/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.tesla.com/careers'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: samsung-discovery
+  company_id: samsung
+  provider: workday
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.samsung.com/us/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://sec.wd3.myworkdayjobs.com/Samsung_Careers
+    audit_http_status: 200
+    audit_final_url: https://www.samsung.com/us/careers/
+    audit_notes:
+    - workday CXS confirmed 100 unique postings of 692 declared, so pagination completeness is unproven until the Workday adapter exists
+    audit_provider: workday
+    audit_endpoint: https://sec.wd3.myworkdayjobs.com/wday/cxs/sec/Samsung_Careers/jobs
+  enabled: false
+  audit_date: '2026-09-18'
+- id: asml-discovery
+  company_id: asml
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.asml.com/en/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.asml.com/en/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: qualcomm-discovery
+  company_id: qualcomm
+  provider: eightfold
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.qualcomm.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://77e708048c4747e1a801fa2ef5557ca6@vs-errors.eightfold.ai/10
+    audit_http_status: 200
+    audit_final_url: https://careers.qualcomm.com/careers
+    audit_notes:
+    - eightfold provider evidence found (careers page links to https://77e708048c4747e1a801fa2ef5557ca6@vs-errors.eightfold.ai/10); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+  enabled: false
+  audit_date: '2026-09-18'
+- id: netflix-discovery
+  company_id: netflix
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://explore.jobs.netflix.net/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://explore.jobs.netflix.net/careers
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: oracle-discovery
+  company_id: oracle
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.oracle.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.oracle.com/careers/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: salesforce-discovery
+  company_id: salesforce
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://careers.salesforce.com/en/jobs/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.salesforce.com/company/careers/jobs/?bc=HL
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: adobe-discovery
+  company_id: adobe
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.adobe.com/us/en
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://careers.adobe.com/us/en
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: cisco-discovery
+  company_id: cisco
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://jobs.cisco.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://jobs.cisco.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: palantir-lever
+  company_id: palantir
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/palantir?mode=json
+  interval_minutes: 30
+  tenant: palantir
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://jobs.lever.co/palantir/61eaa54c-e1b7-4064-afad-f7df3d48d652
+    audit_http_status: 200
+    audit_final_url: https://www.palantir.com/careers/
+    audit_notes:
+    - lever adapter collected 313 postings twice with identical canonical keys across 5 page(s)
+  enabled: true
+  audit_date: '2026-09-18'
+- id: uber-discovery
+  company_id: uber
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.uber.com/us/en/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 406
+    audit_final_url: https://www.uber.com/us/en/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 406 for https://www.uber.com/us/en/careers/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: airbnb-discovery
+  company_id: airbnb
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://careers.airbnb.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://careers.airbnb.com/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: stripe-discovery
+  company_id: stripe
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://stripe.com/jobs
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://stripe.com/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: databricks-discovery
+  company_id: databricks
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.databricks.com/company/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.databricks.com/company/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: snowflake-discovery
+  company_id: snowflake
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.snowflake.com/us/en
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://careers.snowflake.com/us/en
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: openai-discovery
+  company_id: openai
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://openai.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://openai.com/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://openai.com/careers/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: anthropic-greenhouse
+  company_id: anthropic
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/anthropic/jobs?content=true
+  interval_minutes: 30
+  tenant: anthropic
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.anthropic.com/careers
+    audit_notes:
+    - greenhouse adapter collected 609 postings twice with identical canonical keys across 1 page(s)
+    audit_evidence: the official careers page links to https://www.anthropic.com/careers/jobs, which resolves to https://www.anthropic.com/careers/jobs
+  enabled: true
+  audit_date: '2026-09-18'
+- id: amd-discovery
+  company_id: amd
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.amd.com/en/corporate/careers.html
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://www.amd.com/en/corporate/careers.html
+    audit_notes:
+    - 'careers landing page request failed: request timed out after 12.0 seconds for https://www.amd.com/en/corporate/careers.html'
+  enabled: false
+  audit_date: '2026-09-19'
+- id: intel-discovery
+  company_id: intel
+  provider: workday
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.intel.com/content/www/us/en/jobs/jobs-at-intel.html
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://intel.wd1.myworkdayjobs.com/External/page/6042070b79e01001f04fa9b468070000
+    audit_http_status: 200
+    audit_final_url: https://www.intel.com/content/www/us/en/jobs/life-at-intel.html
+    audit_notes:
+    - 'workday CXS request failed: non-retryable HTTP 404 for https://intel.wd1.myworkdayjobs.com/wday/cxs/intel/6042070b79e01001f04fa9b468070000/jobs'
+    audit_provider: workday
+    audit_endpoint: https://intel.wd1.myworkdayjobs.com/wday/cxs/intel/6042070b79e01001f04fa9b468070000/jobs
+  enabled: false
+  audit_date: '2026-09-18'
+- id: broadcom-discovery
+  company_id: broadcom
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.broadcom.com/company/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://www.broadcom.com/company/careers
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: tsmc-discovery
+  company_id: tsmc
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.tsmc.com/static/english/careers/index.htm
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.tsmc.com/static/english/careers/index.htm
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.tsmc.com/static/english/careers/index.htm'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: servicenow-discovery
+  company_id: servicenow
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.servicenow.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://careers.servicenow.com/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://careers.servicenow.com/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: sap-discovery
+  company_id: sap
+  provider: successfactors
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://jobs.sap.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://performancemanager5.successfactors.eu/verp/vmod_v1/ui/extlib/jquery_3.5.1/jquery.js
+    audit_http_status: 200
+    audit_final_url: https://jobs.sap.com/
+    audit_notes:
+    - successfactors provider evidence found (careers page links to https://performancemanager5.successfactors.eu/verp/vmod_v1/ui/extlib/jquery_3.5.1/jquery.js); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+  enabled: false
+  audit_date: '2026-09-18'
+- id: ibm-discovery
+  company_id: ibm
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.ibm.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.ibm.com/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: bytedance-discovery
+  company_id: bytedance
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://jobs.bytedance.com/en/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://joinbytedance.com
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: tencent-discovery
+  company_id: tencent
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://careers.tencent.com/en-us/home.html
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://careers.tencent.com/en-us/home.html
+    audit_notes:
+    - 'linked careers page https://cdn.multilingualres.hr.tencent.com/careersmlr/Home_en-us.js could not be read: non-retryable HTTP 403 for https://cdn.multilingualres.hr.tencent.com/careersmlr/Home_en-us.js'
+    - 'linked careers page https://cdn.multilingualres.hr.tencent.com/careersmlr/HostMsg_en-us.js could not be read: non-retryable HTTP 403 for https://cdn.multilingualres.hr.tencent.com/careersmlr/HostMsg_en-us.js'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: alibaba-discovery
+  company_id: alibaba
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://talent.alibaba.com/en/home
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://talent.alibaba.com/en/home
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: baidu-discovery
+  company_id: baidu
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://talent.baidu.com/jobs/list
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://talent.baidu.com/jobs/list
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: xiaomi-discovery
+  company_id: xiaomi
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.mi.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://careers.mi.com/
+    audit_notes:
+    - 'careers landing page request failed: request failed after 4 attempts for https://careers.mi.com/'
+  enabled: false
+  audit_date: '2026-09-19'
+- id: arm-discovery
+  company_id: arm
+  provider: icims
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.arm.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://earlycareers-arm.icims.com/jobs/login?loginOnly=1&redirect=dashboard
+    audit_http_status: 200
+    audit_final_url: https://careers.arm.com/
+    audit_notes:
+    - icims provider evidence found (careers page links to https://earlycareers-arm.icims.com/jobs/login?loginOnly=1&redirect=dashboard); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+  enabled: false
+  audit_date: '2026-09-18'
+- id: micron-technology-discovery
+  company_id: micron-technology
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.micron.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://careers.micron.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: synopsys-discovery
+  company_id: synopsys
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.synopsys.com/careers.html
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.synopsys.com/careers.html
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.synopsys.com/careers.html'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: cadence-discovery
+  company_id: cadence
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.cadence.com/en_US/home/company/careers.html
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.cadence.com/en_US/home/company/careers.html
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.cadence.com/en_US/home/company/careers.html'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: crowdstrike-discovery
+  company_id: crowdstrike
+  provider: workday
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.crowdstrike.com/en-us/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://crowdstrike.wd5.myworkdayjobs.com/crowdstrikecareers
+    audit_http_status: 200
+    audit_final_url: https://www.crowdstrike.com/en-us/careers/
+    audit_notes:
+    - workday CXS confirmed 100 unique postings of 371 declared, so pagination completeness is unproven until the Workday adapter exists
+    audit_provider: workday
+    audit_endpoint: https://crowdstrike.wd5.myworkdayjobs.com/wday/cxs/crowdstrike/crowdstrikecareers/jobs
+  enabled: false
+  audit_date: '2026-09-18'
+- id: cloudflare-discovery
+  company_id: cloudflare
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.cloudflare.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://www.cloudflare.com/careers/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: coreweave-discovery
+  company_id: coreweave
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.coreweave.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.coreweave.com/careers
+    audit_notes:
+    - 'linked careers page https://www.coreweave.com/job.url could not be read: non-retryable HTTP 404 for https://www.coreweave.com/job.url'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: mistral-ai-ashby
+  company_id: mistral-ai
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/mistral.ai
+  interval_minutes: 30
+  tenant: mistral.ai
+  parameters:
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://jobs.ashbyhq.com/mistral.ai
+    audit_http_status: 200
+    audit_final_url: https://mistral.ai/careers/
+    audit_notes:
+    - ashby adapter collected 199 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-09-18'
+- id: xai-discovery
+  company_id: xai
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://x.ai/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://x.ai/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://x.ai/careers'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: cohere-ashby
+  company_id: cohere
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/cohere
+  interval_minutes: 30
+  tenant: cohere
+  parameters:
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://jobs.ashbyhq.com/cohere
+    audit_http_status: 200
+    audit_final_url: https://cohere.com/careers
+    audit_notes:
+    - ashby adapter collected 142 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-09-18'
+- id: spacex-discovery
+  company_id: spacex
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.spacex.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.spacex.com/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: blue-origin-discovery
+  company_id: blue-origin
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.blueorigin.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_http_status: 429
+    audit_final_url: https://www.blueorigin.com/careers
+    audit_notes:
+    - 'careers landing page request failed: request failed after 4 attempts: HTTP 429 for https://www.blueorigin.com/careers'
+  enabled: false
+  audit_date: '2026-09-19'
+- id: waymo-discovery
+  company_id: waymo
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://waymo.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://careers.withwaymo.com
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: zoox-discovery
+  company_id: zoox
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://zoox.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://zoox.com/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: intuitive-surgical-discovery
+  company_id: intuitive-surgical
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.intuitive.com/en-us/about-us/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.intuitive.com/en-us/about-us/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: skydio-discovery
+  company_id: skydio
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.skydio.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://www.skydio.com/careers
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: aurora-innovation-discovery
+  company_id: aurora-innovation
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://aurora.tech/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://aurora.tech/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: nuro-discovery
+  company_id: nuro
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.nuro.ai/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.nuro.ai/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: zipline-discovery
+  company_id: zipline
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.flyzipline.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.zipline.com/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: symbotic-discovery
+  company_id: symbotic
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.symbotic.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.symbotic.com/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.symbotic.com/careers/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: apptronik-discovery
+  company_id: apptronik
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.apptronik.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 404
+    audit_final_url: https://www.apptronik.com/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.apptronik.com/careers'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: dexterity-discovery
+  company_id: dexterity
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.dexterity.ai/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 404
+    audit_final_url: https://www.dexterity.ai/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.dexterity.ai/careers'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: locus-robotics-discovery
+  company_id: locus-robotics
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://locusrobotics.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://locusrobotics.com/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://locusrobotics.com/careers'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: intrinsic-greenhouse
+  company_id: intrinsic
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/intrinsicrobotics/jobs?content=true
+  interval_minutes: 30
+  tenant: intrinsicrobotics
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://boards.greenhouse.io/intrinsicrobotics/jobs/4215463004?gh_jid=4215463004
+    audit_http_status: 200
+    audit_final_url: https://www.intrinsic.ai/careers
+    audit_notes:
+    - greenhouse adapter collected 25 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-09-18'
+- id: physical-intelligence-discovery
+  company_id: physical-intelligence
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.physicalintelligence.company/jobs
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 404
+    audit_final_url: https://www.physicalintelligence.company/jobs
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.physicalintelligence.company/jobs'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: serve-robotics-ashby
+  company_id: serve-robotics
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/serverobotics
+  interval_minutes: 30
+  tenant: serverobotics
+  parameters:
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://jobs.ashbyhq.com/serverobotics/embed?version=2
+    audit_http_status: 200
+    audit_final_url: https://serverobotics.com/careers/
+    audit_notes:
+    - ashby adapter collected 30 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-09-18'
+- id: sanctuary-ai-discovery
+  company_id: sanctuary-ai
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.sanctuary.ai/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://sanctuary.ai/careers/
+    audit_notes:
+    - 'linked careers page https://sanctuary.ai/wp-content/uploads/2026/06/2026_June-Career-Sizzle-Video.mp4 could not be read: response exceeds 15728640 byte limit'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: boston-dynamics-workday
+  company_id: boston-dynamics
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://bostondynamics.wd1.myworkdayjobs.com/wday/cxs/bostondynamics/Boston_Dynamics/jobs
+  interval_minutes: 30
+  tenant: bostondynamics
+  parameters:
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://bostondynamics.wd1.myworkdayjobs.com/en-US/Boston_Dynamics/introduceYourself
+    audit_http_status: 200
+    audit_final_url: https://bostondynamics.com/careers/
+    audit_notes:
+    - workday CXS declared total=77 and served 77 unique postings twice
+    page_size: 20
+    locale: en-US
+    detail_base_url: https://bostondynamics.wd1.myworkdayjobs.com/en-US/Boston_Dynamics
+  enabled: true
+  audit_date: '2026-09-18'
+- id: gecko-robotics-discovery
+  company_id: gecko-robotics
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.geckorobotics.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://www.geckorobotics.com/careers
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: kuka-discovery
+  company_id: kuka
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.kuka.com/en-us/career
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.kuka.com/en-us/career
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: bosch-smartrecruiters
+  company_id: bosch
+  provider: smartrecruiters
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.smartrecruiters.com/v1/companies/BoschGroup/postings
+  interval_minutes: 30
+  tenant: BoschGroup
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.bosch.com/careers/
+    audit_notes:
+    - smartrecruiters adapter collected 4819 postings twice with identical canonical keys across 49 page(s)
+    - derived SmartRecruiters posting URL https://jobs.smartrecruiters.com/BoschGroup/744000150470642 returned HTTP 200
+    audit_evidence: the official careers page links to https://jobs.bosch.com/en/, which resolves to https://jobs.bosch.com/en/
+  enabled: true
+  audit_date: '2026-09-18'
+- id: lucid-motors-discovery
+  company_id: lucid-motors
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://lucidmotors.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://lucidmotors.com/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: joby-aviation-discovery
+  company_id: joby-aviation
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.jobyaviation.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.jobyaviation.com/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: hyundai-motor-group-discovery
+  company_id: hyundai-motor-group
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.hyundai.com/worldwide/en/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.hyundai.com/worldwide/en
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: toyota-research-institute-discovery
+  company_id: toyota-research-institute
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.tri.global/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.tri.global/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: 1x-ashby
+  company_id: 1x
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/1x
+  interval_minutes: 30
+  tenant: 1x
+  parameters:
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://jobs.ashbyhq.com/1x/2d0f6eec-6e64-403f-baf7-330fe81b1473
+    audit_http_status: 200
+    audit_final_url: https://www.1x.tech/careers
+    audit_notes:
+    - ashby adapter collected 88 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-09-18'
+- id: engineered-arts-discovery
+  company_id: engineered-arts
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.engineeredarts.co.uk/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://engineeredarts.com
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: agility-robotics-discovery
+  company_id: agility-robotics
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://agilityrobotics.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://agilityrobotics.com/careers
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: unitree-discovery
+  company_id: unitree
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.unitree.com/position/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.unitree.com/position/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: pudu-robotics-discovery
+  company_id: pudu-robotics
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.pudurobotics.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 404
+    audit_final_url: https://www.pudurobotics.com/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.pudurobotics.com/careers'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: agile-robots-discovery
+  company_id: agile-robots
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.agile-robots.com/career
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 404
+    audit_final_url: https://www.agile-robots.com/career
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.agile-robots.com/career'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: neura-robotics-discovery
+  company_id: neura-robotics
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://neura-robotics.com/career/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 404
+    audit_final_url: https://neura-robotics.com/career/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 404 for https://neura-robotics.com/career/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: agibot-discovery
+  company_id: agibot
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.zhiyuan-robot.com/
+  interval_minutes: 30
+  parameters:
+    audit_note: 'resolved 2026-09-18: zhiyuan-robot.com redirects to https://www.agibot.com.cn/ (HTTP 200) with no careers path, provider feed, or JobPosting JSON-LD in the served HTML; classified FALLBACK_ONLY and left disabled'
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.agibot.com.cn/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: nimble-discovery
+  company_id: nimble
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.nimble.ai/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://www.nimble.ai/careers
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: standard-bots-ashby
+  company_id: standard-bots
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/StandardBots
+  interval_minutes: 30
+  tenant: StandardBots
+  parameters:
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://jobs.ashbyhq.com/StandardBots/e854f171-eb29-4749-ab8c-1585580ace3d
+    audit_http_status: 200
+    audit_final_url: https://standardbots.com/careers
+    audit_notes:
+    - ashby adapter collected 34 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-09-18'
+- id: matic-discovery
+  company_id: matic
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.maticrobots.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://maticrobots.com/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: geek-plus-discovery
+  company_id: geek-plus
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.geekplus.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 404
+    audit_final_url: https://www.geekplus.com/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.geekplus.com/careers'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: greyorange-discovery
+  company_id: greyorange
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.greyorange.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.greyorange.com/company/careers/
+    audit_notes:
+    - 'linked careers page https://www.greyorange.com/company/careers/{{src}} could not be read: non-retryable HTTP 404 for https://www.greyorange.com/company/careers/{{src}}'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: honeywell-discovery
+  company_id: honeywell
+  provider: oracle
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.honeywell.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://ibqbjb.fa.ocs.oraclecloud.com:443/hcmUI/CandidateExperience/images?imageId=F6FFEC9C-0349-4FF4-BC8E-34EA5672CC7A
+    audit_provider: oracle
+    audit_http_status: 200
+    audit_final_url: https://careers.honeywell.com/en/sites/Honeywell
+    audit_notes:
+    - oracle provider evidence found (careers page links to https://ibqbjb.fa.ocs.oraclecloud.com:443/hcmUI/CandidateExperience/images?imageId=F6FFEC9C-0349-4FF4-BC8E-34EA5672CC7A); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+  enabled: false
+  audit_date: '2026-09-18'
+- id: abb-discovery
+  company_id: abb
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.abb/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://careers.abb/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: neuralink-greenhouse
+  company_id: neuralink
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/neuralink/jobs?content=true
+  interval_minutes: 30
+  tenant: neuralink
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://neuralink.com/careers/
+    audit_notes:
+    - greenhouse adapter collected 77 postings twice with identical canonical keys across 1 page(s)
+    audit_evidence: the official careers page links to https://neuralink.com/assets/entries/pages_careers_index.page.Bl0f9Mzg.js, which resolves to https://neuralink.com/assets/entries/pages_careers_index.page.Bl0f9Mzg.js
+  enabled: true
+  audit_date: '2026-09-18'
+- id: fanuc-discovery
+  company_id: fanuc
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.fanucamerica.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.fanucamerica.com/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: yaskawa-discovery
+  company_id: yaskawa
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.motoman.com/en-us/about/company/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.motoman.com/en-us/about/company/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: universal-robots-discovery
+  company_id: universal-robots
+  provider: successfactors
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.universal-robots.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.universal-robots.com/about-us/careers/
+    audit_notes:
+    - successfactors provider evidence found (the official careers page links to https://jobs.teradyne.com/, which resolves to https://jobs.teradyne.com/); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://jobs.teradyne.com/, which resolves to https://jobs.teradyne.com/
+    audit_provider: successfactors
+  enabled: false
+  audit_date: '2026-09-18'
+- id: kawasaki-robotics-discovery
+  company_id: kawasaki-robotics
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://kawasakirobotics.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 404
+    audit_final_url: https://kawasakirobotics.com/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 404 for https://kawasakirobotics.com/careers/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: mitsubishi-electric-discovery
+  company_id: mitsubishi-electric
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.mitsubishielectric.com/en/careers/index.html
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.mitsubishielectric.com/en/careers/
+    audit_notes:
+    - 'linked careers page https://careers.mitsubishielectric.co.th/ could not be read: request timed out after 12.0 seconds for https://careers.mitsubishielectric.co.th/'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: omron-discovery
+  company_id: omron
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.omron.com/global/en/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.omron.com/global/en/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.omron.com/global/en/careers/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: rockwell-automation-discovery
+  company_id: rockwell-automation
+  provider: workday
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.rockwellautomation.com/en-us/company/careers.html
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://rockwellautomation.wd1.myworkdayjobs.com/en-US/External_Rockwell_Automation/introduceYourself
+    audit_provider: workday
+    audit_http_status: 200
+    audit_final_url: https://www.rockwellautomation.com/en-us/careers.html
+    audit_notes:
+    - workday CXS confirmed 100 unique postings of 425 declared, so pagination completeness is unproven until the Workday adapter exists
+    audit_endpoint: https://rockwellautomation.wd1.myworkdayjobs.com/wday/cxs/rockwellautomation/External_Rockwell_Automation/jobs
+  enabled: false
+  audit_date: '2026-09-18'
+- id: teradyne-discovery
+  company_id: teradyne
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.teradyne.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.teradyne.com/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.teradyne.com/careers/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: keyence-discovery
+  company_id: keyence
+  provider: successfactors
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.keyence.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.keyence.com/ss/careers/?ad_local=item0705ka
+    audit_notes:
+    - successfactors provider evidence found (the official careers page links to https://careers.keyence.com/go/View-All-Careers/7816100/, which resolves to https://careers.keyence.com/go/View-All-Careers/7816100/); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://careers.keyence.com/go/View-All-Careers/7816100/, which resolves to https://careers.keyence.com/go/View-All-Careers/7816100/
+    audit_provider: successfactors
+  enabled: false
+  audit_date: '2026-09-18'
+- id: siemens-discovery
+  company_id: siemens
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://jobs.siemens.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://jobs.siemens.com/en_US/externaljobs
+    audit_notes:
+    - 'linked careers page https://jobs.siemens.com/portal/144 could not be read: non-retryable HTTP 404 for https://jobs.siemens.com/portal/144'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: schneider-electric-discovery
+  company_id: schneider-electric
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.se.com/ww/en/about-us/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-19'
+    audit_http_status: 200
+    audit_final_url: https://www.se.com/ww/en/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-19'
+- id: stryker-discovery
+  company_id: stryker
+  provider: workday
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.stryker.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://stryker.wd1.myworkdayjobs.com/StrykerCareers/login
+    audit_provider: workday
+    audit_http_status: 200
+    audit_final_url: https://careers.stryker.com/
+    audit_notes:
+    - workday CXS confirmed 100 unique postings of 1464 declared, so pagination completeness is unproven until the Workday adapter exists
+    audit_endpoint: https://stryker.wd1.myworkdayjobs.com/wday/cxs/stryker/StrykerCareers/jobs
+  enabled: false
+  audit_date: '2026-09-18'
+- id: medtronic-discovery
+  company_id: medtronic
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://jobs.medtronic.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://jobs.medtronic.com/
+    audit_notes:
+    - 'careers landing page request failed: request failed after 4 attempts for https://jobs.medtronic.com/'
+  enabled: false
+  audit_date: '2026-09-19'
+- id: cmr-surgical-discovery
+  company_id: cmr-surgical
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.cmrsurgical.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.cmrsurgical.com/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.cmrsurgical.com/careers'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: figure-ai-discovery
+  company_id: figure-ai
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.figure.ai/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://www.figure.ai/careers
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: skild-ai-discovery
+  company_id: skild-ai
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.skild.ai/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 404
+    audit_final_url: https://www.skild.ai/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.skild.ai/careers'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: covariant-discovery
+  company_id: covariant
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://covariant.ai/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 404
+    audit_final_url: https://covariant.ai/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 404 for https://covariant.ai/careers/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: right-hand-robotics-discovery
+  company_id: right-hand-robotics
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.righthandrobotics.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://righthandrobotics.com/careers
+    audit_notes:
+    - 'linked careers page https://rh-robotics.transforms.svdcdn.com/production/assets/img/heroes/careers_herobg.png?w=1600&amp;h=451&amp;auto=compress%2Cformat&amp;fit=crop&amp;dm=1674855919&amp;s=3f949f5407cd77003051dbae3a2f4799 could not be read: non-retryable HTTP 401 for https://rh-robotics.transforms.svdcdn.com/production/assets/img/heroes/careers_herobg.png?w=1600&amp;h=451&amp;auto=compress%2Cformat&amp;fit=crop&amp;dm=1674855919&amp;s=3f949f5407cd77003051dbae3a2f4799'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: zebra-technologies-discovery
+  company_id: zebra-technologies
+  provider: workday
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.zebra.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://zebra.wd501.myworkdayjobs.com/Zebra_careers
+    audit_provider: workday
+    audit_http_status: 200
+    audit_final_url: https://www.zebra.com/us/en/about-zebra/careers.html
+    audit_notes:
+    - workday CXS confirmed 100 unique postings of 249 declared, so pagination completeness is unproven until the Workday adapter exists
+    audit_endpoint: https://zebra.wd501.myworkdayjobs.com/wday/cxs/zebra/Zebra_careers/jobs
+  enabled: false
+  audit_date: '2026-09-18'
+- id: daifuku-discovery
+  company_id: daifuku
+  provider: icims
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.daifuku.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.daifuku.com/careers/
+    audit_notes:
+    - linked careers page https://www.daifukuoccareers.com/ served an access challenge
+    - icims provider evidence found (the official careers page links to https://www.daifuku.com/careers/ca/, which resolves to https://www.daifuku.com/us/careers/dmca/); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://www.daifuku.com/careers/ca/, which resolves to https://www.daifuku.com/us/careers/dmca/
+    audit_provider: icims
+  enabled: false
+  audit_date: '2026-09-18'
+- id: denso-robotics-discovery
+  company_id: denso-robotics
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.denso.com/global/en/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.denso.com/global/en/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.denso.com/global/en/careers/'
+    audit_note: 'resolved 2026-09-18: https://www.denso.com/global/en/careers/ answers HTTP 403 to an ordinary GET, so access is refused at audit time; classified BLOCKED and left disabled'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: epson-robots-discovery
+  company_id: epson-robots
+  provider: successfactors
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://epson.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://epson.com/careers
+    audit_notes:
+    - successfactors provider evidence found (the official careers page links to https://jobs.epson.com/, which resolves to https://jobs.epson.com/); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://jobs.epson.com/, which resolves to https://jobs.epson.com/
+    audit_provider: successfactors
+  enabled: false
+  audit_date: '2026-09-18'
+- id: anybotics-discovery
+  company_id: anybotics
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.anybotics.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.anybotics.com/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.anybotics.com/careers/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: doosan-robotics-discovery
+  company_id: doosan-robotics
+  provider: successfactors
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.doosanrobotics.com/en/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.doosanrobotics.com/en/
+    audit_notes:
+    - successfactors provider evidence found (the official careers page links to https://jobs.doosan.com/, which resolves to https://jobs.doosan.com/); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://jobs.doosan.com/, which resolves to https://jobs.doosan.com/
+    audit_provider: successfactors
+  enabled: false
+  audit_date: '2026-09-18'
+- id: johnson-johnson-discovery
+  company_id: johnson-johnson
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.careers.jnj.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.careers.jnj.com/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.careers.jnj.com/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: anduril-discovery
+  company_id: anduril
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.anduril.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.anduril.com/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: john-deere-discovery
+  company_id: john-deere
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.deere.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://careers.deere.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: caterpillar-discovery
+  company_id: caterpillar
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.caterpillar.com/en/careers.html
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://www.caterpillar.com/en/careers.html
+    audit_notes:
+    - 'careers landing page request failed: request timed out after 12.0 seconds for https://www.caterpillar.com/en/careers.html'
+  enabled: false
+  audit_date: '2026-09-19'
+- id: emerson-discovery
+  company_id: emerson
+  provider: oracle
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.emerson.com/en-us/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://hdjq.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs
+    audit_provider: oracle
+    audit_http_status: 200
+    audit_final_url: https://www.emerson.com/en/corporate/careers
+    audit_notes:
+    - oracle provider evidence found (careers page links to https://hdjq.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+  enabled: false
+  audit_date: '2026-09-18'
+- id: general-motors-discovery
+  company_id: general-motors
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.gm.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://careers.gm.com/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://careers.gm.com/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: rivian-discovery
+  company_id: rivian
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.rivian.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://careers.rivian.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-19'
+- id: ford-motor-company-discovery
+  company_id: ford-motor-company
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.ford.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://careers.ford.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: toyota-motor-discovery
+  company_id: toyota-motor
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.toyota.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://careers.toyota.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
+- id: volkswagen-group-discovery
+  company_id: volkswagen-group
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.volkswagen-group.com/en/career-2682
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 404
+    audit_final_url: https://www.volkswagen-group.com/en/career-2682
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.volkswagen-group.com/en/career-2682'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: byd-discovery
+  company_id: byd
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://careers.byd.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://careers.byd.com/
+    audit_notes:
+    - 'linked careers page https://careers.byd.com/vite.svg could not be read: non-retryable HTTP 404 for https://careers.byd.com/vite.svg'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: kia-discovery
+  company_id: kia
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.kia.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://careers.kia.com/
+    audit_notes:
+    - 'careers landing page request failed: request failed after 4 attempts for https://careers.kia.com/'
+  enabled: false
+  audit_date: '2026-09-19'
+- id: honda-motor-discovery
+  company_id: honda-motor
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.honda.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.honda.com/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.honda.com/careers/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: mercedes-benz-group-discovery
+  company_id: mercedes-benz-group
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://group.mercedes-benz.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://group.mercedes-benz.com/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://group.mercedes-benz.com/careers/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: bmw-group-discovery
+  company_id: bmw-group
+  provider: successfactors
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.bmwgroup.jobs/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.bmwgroup.jobs/en.html
+    audit_notes:
+    - successfactors provider evidence found (the official careers page links to https://www.bmwgroup.jobs/de/de.html, which resolves to https://www.bmwgroup.jobs/de/de.html); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://www.bmwgroup.jobs/de/de.html, which resolves to https://www.bmwgroup.jobs/de/de.html
+    audit_provider: successfactors
+  enabled: false
+  audit_date: '2026-09-18'
+- id: stellantis-discovery
+  company_id: stellantis
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://careers.stellantis.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://careers.stellantis.com/
+    audit_notes:
+    - 'linked careers page https://jobsapi-google.m-cloud.io/api/ could not be read: non-retryable HTTP 404 for https://jobsapi-google.m-cloud.io/api/'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+    audit_http_status: 200
+  enabled: false
+  audit_date: '2026-09-19'
+- id: renault-group-discovery
+  company_id: renault-group
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.renaultgroup.com/en/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://www.renaultgroup.com/en/careers/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+    audit_http_status: 200
+  enabled: false
+  audit_date: '2026-09-19'
+- id: nissan-motor-discovery
+  company_id: nissan-motor
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.nissan-global.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://careers.nissan-global.com/
+    audit_notes:
+    - 'careers landing page request failed: request failed after 4 attempts for https://careers.nissan-global.com/'
+  enabled: false
+  audit_date: '2026-09-19'
+- id: geely-holding-discovery
+  company_id: geely-holding
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://job.geely.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://job.geely.com/social-recruitment/geely/96123/
+    audit_notes:
+    - 'linked careers page https://job.zeekrlife.com/social-recruitment/geely/102003 could not be read: request timed out after 12.0 seconds for https://job.zeekrlife.com/social-recruitment/geely/102003'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+    audit_note: 'resolved 2026-09-18: https://job.geely.com/ redirects to the Geely social-recruitment page https://job.geely.com/social-recruitment/geely/96123/ (HTTP 200) whose listings are rendered client-side with no provider feed or JobPosting JSON-LD; classified FALLBACK_ONLY and left disabled'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: saic-motor-discovery
+  company_id: saic-motor
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.saicmotor.com/english/
+  interval_minutes: 30
+  parameters:
+    audit_note: 'resolved 2026-09-18: https://www.saicmotor.com/english/ answers HTTP 200 with no careers path, provider feed, or JobPosting JSON-LD in the served HTML; classified FALLBACK_ONLY and left disabled'
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://www.saicmotor.com/english/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+    audit_http_status: 200
+  enabled: false
+  audit_date: '2026-09-19'
+- id: chery-automobile-discovery
+  company_id: chery-automobile
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.cheryinternational.com/
+  interval_minutes: 30
+  parameters:
+    audit_note: 'resolved 2026-09-18: https://www.cheryinternational.com/ answers HTTP 200 with no careers path, provider feed, or JobPosting JSON-LD in the served HTML; classified FALLBACK_ONLY and left disabled'
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.cheryinternational.com/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: volvo-cars-discovery
+  company_id: volvo-cars
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.volvocars.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://careers.volvocars.com/
+    audit_notes:
+    - 'careers landing page request failed: request failed after 4 attempts for https://careers.volvocars.com/'
+  enabled: false
+  audit_date: '2026-09-19'
+- id: mazda-discovery
+  company_id: mazda
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.mazdausa.com/site/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-19'
+    audit_http_status: 200
+    audit_final_url: https://www.mazdausa.com/site/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-19'
+- id: subaru-discovery
+  company_id: subaru
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.subaru.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://careers.subaru.com/
+    audit_notes:
+    - 'careers landing page request failed: request failed after 4 attempts for https://careers.subaru.com/'
+  enabled: false
+  audit_date: '2026-09-19'
+- id: tata-motors-jlr-discovery
+  company_id: tata-motors-jlr
+  provider: successfactors
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.tatamotors.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://careers.tatamotors.com/
+    audit_notes:
+    - successfactors provider evidence found (careers page links to https://performancemanager5.successfactors.eu/verp/vmod_v1/ui/extlib/jquery_3.5.1/jquery.js); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: careers page links to https://performancemanager5.successfactors.eu/verp/vmod_v1/ui/extlib/jquery_3.5.1/jquery.js
+    audit_provider: successfactors
+    audit_http_status: 200
+  enabled: false
+  audit_date: '2026-09-19'
+- id: ferrari-discovery
+  company_id: ferrari
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.ferrari.com/en-EN/corporate/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.ferrari.com/en-EN/corporate/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.ferrari.com/en-EN/corporate/careers'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: porsche-discovery
+  company_id: porsche
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.porsche.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_final_url: https://careers.porsche.com/
+    audit_notes:
+    - 'careers landing page request failed: request failed after 4 attempts for https://careers.porsche.com/'
+  enabled: false
+  audit_date: '2026-09-19'
+- id: mobileye-discovery
+  company_id: mobileye
+  provider: lever
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.mobileye.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_http_status: 200
+    audit_final_url: https://careers.mobileye.com/
+    audit_notes:
+    - 'lever list request failed: non-retryable HTTP 404 for https://api.lever.co/v0/postings/mobileye?mode=json&skip=0&limit=100'
+    audit_evidence: the official careers page links to https://careers.mobileye.com/jobs, which resolves to https://careers.mobileye.com/jobs
+    audit_provider: lever
+    audit_endpoint: https://api.lever.co/v0/postings/mobileye?mode=json
+  enabled: false
+  audit_date: '2026-09-19'
+- id: aptiv-discovery
+  company_id: aptiv
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.aptiv.com/en/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.aptiv.com/en/jobs
+    audit_notes:
+    - 'linked careers page https://aptivcareers.searchapi-na.hawksearch.com/api/v2/search/&quot;,&quot;EventTrackingUrl&quot;:&quot;https://aptivcareers.tracking-na.hawksearch.com/api/trackevent/&quot;,&quot;EventTrackingEnabled&quot;:true,&quot;CssClass&quot;:null} could not be read: non-retryable HTTP 400 for https://aptivcareers.searchapi-na.hawksearch.com/api/v2/search/&quot;,&quot;EventTrackingUrl&quot;:&quot;https://aptivcareers.tracking-na.hawksearch.com/api/trackevent/&quot;,&quot;EventTrackingEnabled&quot;:true,&quot;CssClass&quot;:null}'
+    - 'linked careers page https://aptivcareers.searchapi-na.hawksearch.com/api/v2/search/&quot;,&quot;EventTrackingUrl&quot;:&quot;https://aptivcareers.tracking-na.hawksearch.com/api/trackevent/&quot;,&quot;EventTrackingEnabled&quot;:true,&quot;PageLabels&quot;:{&quot;CountryLabel&quot;:&quot;Country&quot;,&quot;SearchButtonLabel&quot;:&quot;Search could not be read: non-retryable HTTP 400 for https://aptivcareers.searchapi-na.hawksearch.com/api/v2/search/&quot;,&quot;EventTrackingUrl&quot;:&quot;https://aptivcareers.tracking-na.hawksearch.com/api/trackevent/&quot;,&quot;EventTrackingEnabled&quot;:true,&quot;PageLabels&quot;:{&quot;CountryLabel&quot;:&quot;Country&quot;,&quot;SearchButtonLabel&quot;:&quot;Search'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: magna-international-discovery
+  company_id: magna-international
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.magna.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://www.magna.com/careers/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+    audit_http_status: 200
+  enabled: false
+  audit_date: '2026-09-18'
+- id: continental-discovery
+  company_id: continental
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.continental.com/en/career/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.continental.com/en/career/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: zf-discovery
+  company_id: zf
+  provider: successfactors
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.zf.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_http_status: 200
+    audit_final_url: https://www.zf.com/mobile/en/careers/careers.html
+    audit_notes:
+    - successfactors provider evidence found (the official careers page links to https://jobs.zf.com/, which resolves to https://jobs.zf.com/); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://jobs.zf.com/, which resolves to https://jobs.zf.com/
+    audit_provider: successfactors
+  enabled: false
+  audit_date: '2026-09-19'
+- id: denso-discovery
+  company_id: denso
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.denso.com/global/en/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.denso.com/global/en/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.denso.com/global/en/careers/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: aisin-discovery
+  company_id: aisin
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.aisin.com/en/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 404
+    audit_final_url: https://www.aisin.com/en/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.aisin.com/en/careers/'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: borgwarner-discovery
+  company_id: borgwarner
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.borgwarner.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 200
+    audit_final_url: https://www.borgwarner.com/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-09-18'
+- id: boeing-discovery
+  company_id: boeing
+  provider: workday
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://jobs.boeing.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-18'
+    audit_evidence: careers page links to https://boeing.wd1.myworkdayjobs.com/en-US/EXTERNAL_CAREERS/login
+    audit_provider: workday
+    audit_http_status: 200
+    audit_final_url: https://jobs.boeing.com/
+    audit_notes:
+    - workday CXS confirmed 100 unique postings of 731 declared, so pagination completeness is unproven until the Workday adapter exists
+    audit_endpoint: https://boeing.wd1.myworkdayjobs.com/wday/cxs/boeing/EXTERNAL_CAREERS/jobs
+  enabled: false
+  audit_date: '2026-09-18'
+- id: lockheed-martin-discovery
+  company_id: lockheed-martin
+  provider: eightfold
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.lockheedmartinjobs.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-09-19'
+    audit_http_status: 200
+    audit_final_url: https://www.lockheedmartinjobs.com/cgi-bin/ext_redir.pl
+    audit_notes:
+    - eightfold provider evidence found (the official careers page links to https://www.lockheedmartin.com/en-us/careers/index.html, which resolves to https://www.lockheedmartin.com/en-us/careers/index.html); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+    audit_evidence: the official careers page links to https://www.lockheedmartin.com/en-us/careers/index.html, which resolves to https://www.lockheedmartin.com/en-us/careers/index.html
+    audit_provider: eightfold
+  enabled: false
+  audit_date: '2026-09-19'
+- id: rtx-discovery
+  company_id: rtx
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.rtx.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_final_url: https://www.rtx.com/careers
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-09-18'
