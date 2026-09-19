@@ -101,8 +101,24 @@ PROVIDER_SOURCE_CLASSES: dict[str, SourceClass] = {
 }
 
 DOCUMENTED_PROVIDERS = frozenset({"greenhouse", "lever", "smartrecruiters"})
+DISCOVERY_PROVIDER = "discovery"
 WORKDAY_PROVIDER = "workday"
 JSONLD_PROVIDER = "json-ld"
+
+# Parameters a probe writes. They describe one probe's verdict, so a re-probe drops all of them
+# before writing its own and a superseded provider can never survive as evidence. `audit_note` (a
+# human resolution carried into the audit) and `audit_reason` (an operator's disable reason) are not
+# probe output and are kept.
+PROBE_EVIDENCE_PARAMETERS: tuple[str, ...] = (
+    "audit_status",
+    "audit_probed_at",
+    "audit_evidence",
+    "audit_provider",
+    "audit_endpoint",
+    "audit_http_status",
+    "audit_final_url",
+    "audit_notes",
+)
 
 # Every status a company can end the audit with, best first. A company with several sources is
 # counted once, by the best status any of its sources earned.
@@ -1254,7 +1270,9 @@ def audit_record(
         "name": company.name,
         "categories": list(company.categories),
         "source_id": source.id,
-        "provider": result.provider_fingerprint or source.provider,
+        # The stored provider is the fresh verdict, never the superseded record's provider: a probe
+        # that found no evidence reports the neutral discovery provider.
+        "provider": result.provider_fingerprint or DISCOVERY_PROVIDER,
         "support_status": str(result.support_status),
         "careers_url": careers_url,
         "audited_at": result.evidence_at.date().isoformat(),
@@ -1298,34 +1316,57 @@ def _updated_source(
     *,
     taken_ids: Iterable[str] = (),
 ) -> SourceConfig:
-    """Fold one probe verdict back into the company's registry record."""
+    """Fold one probe verdict back into the company's registry record.
+
+    A fresh probe replaces the earlier verdict instead of merging with it: every probe-derived
+    parameter is dropped first, and a probe with no positive provider evidence resets the record to
+    the neutral discovery shape. A stale provider can therefore never survive a re-probe in either
+    direction.
+    """
+    fresh = result.provider_fingerprint
     verified = (
-        result.support_status in DIRECT_STATUSES and result.provider_feed_url is not None
+        result.support_status in DIRECT_STATUSES
+        and fresh is not None
+        and result.provider_feed_url is not None
     )
-    provider = result.provider_fingerprint or source.provider
-    source_id = source.id
-    endpoint = str(source.endpoint)
-    source_class = source.source_class
-    tenant = source.tenant
     parameters: dict[str, Any] = dict(source.parameters)
-    if verified and result.provider_fingerprint is not None:
-        provider = result.provider_fingerprint
-        endpoint = result.provider_feed_url or endpoint
+    for key in PROBE_EVIDENCE_PARAMETERS:
+        parameters.pop(key, None)
+
+    source_id = source.id
+    endpoint = _registry_endpoint(source, result, verified=verified)
+    source_class = source.source_class
+    provider = fresh or DISCOVERY_PROVIDER
+    tenant = source.tenant if source.provider == provider else None
+    if fresh is None:
+        # No positive provider evidence: the record goes back to the neutral discovery shape and
+        # keeps only the landing page it was just probed at.
+        source_class = SourceClass.FALLBACK
+        candidate = f"{company.id}-discovery"
+        if candidate != source.id and candidate not in set(taken_ids):
+            source_id = candidate
+    elif verified:
         source_class = PROVIDER_SOURCE_CLASSES.get(provider, SourceClass.PUBLIC_ATS)
         tenant = source.tenant or _fingerprint_tenant(result)
         if source.id.endswith("-discovery"):
             candidate = f"{company.id}-{provider}"
             if candidate != source.id and candidate not in set(taken_ids):
                 source_id = candidate
+    else:
+        # A provider the probe recognised but could not verify keeps the landing page as its
+        # endpoint, so the registry still names where the evidence came from.
+        source_class = (
+            source.source_class if source.provider == provider else SourceClass.FALLBACK
+        )
 
     parameters["audit_status"] = str(result.support_status)
     parameters["audit_probed_at"] = result.evidence_at.date().isoformat()
     if result.provider_evidence:
         parameters["audit_evidence"] = result.provider_evidence
-    if result.provider_fingerprint and not verified:
+    if fresh is not None and not verified:
         # A provider the probe recognised but could not yet verify still belongs in the registry,
         # as evidence for the adapter task that will finish the job.
-        parameters["audit_provider"] = result.provider_fingerprint
+        parameters["audit_provider"] = fresh
         if result.provider_feed_url:
             parameters["audit_endpoint"] = result.provider_feed_url
     if result.http_status is not None:
@@ -1351,9 +1392,24 @@ def _updated_source(
         tenant=tenant,
         parameters=parameters,
         headers=dict(source.headers),
-        enabled=result.support_status in DIRECT_STATUSES,
+        enabled=verified,
         audit_date=result.evidence_at.date().isoformat(),
     )
+
+
+def _registry_endpoint(source: SourceConfig, result: ProbeResult, *, verified: bool) -> str:
+    """The endpoint a record should carry after a probe.
+
+    A verified source points at its provider feed. Otherwise the record keeps the official careers
+    page the registry already audited, and only a record that still pointed at a provider endpoint
+    (one an earlier probe verified) is reset to the landing page the probe just read.
+    """
+    if verified:
+        return result.provider_feed_url or str(source.endpoint)
+    current = str(source.endpoint)
+    if _classify_url(current) is None:
+        return current
+    return result.final_url or current
 
 
 def _fingerprint_tenant(result: ProbeResult) -> str | None:

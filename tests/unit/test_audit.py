@@ -14,16 +14,19 @@ import yaml
 from job_alert.audit import (
     PROVIDER_ADAPTERS,
     AuditError,
+    ProbeResult,
     coverage_summary,
     disable_source_record,
     fingerprint_provider,
+    load_audit_store,
     load_source_records,
     probe_source,
+    record_probe,
     render_report,
     run_audit,
     write_sources_yaml,
 )
-from job_alert.config import AppConfig
+from job_alert.config import AppConfig, load_app_config
 from job_alert.fetch import HttpFetcher
 from job_alert.models import (
     CompanyTarget,
@@ -33,6 +36,7 @@ from job_alert.models import (
 )
 
 GREENHOUSE_FIXTURE = Path("tests/fixtures/greenhouse/jobs.json")
+PROBE_TIME = datetime(2026, 9, 19, tzinfo=UTC)
 
 
 def _source(
@@ -535,3 +539,167 @@ def test_report_renders_the_careers_landing_page_for_a_verified_source() -> None
     assert landing in row
     assert feed not in row
     assert payload["rows"][0]["careers_url"] == landing
+
+
+def _probe_result(source_id: str, status: SupportStatus, **overrides: object) -> ProbeResult:
+    fields: dict[str, object] = {
+        "source_id": source_id,
+        "support_status": status,
+        "evidence_at": PROBE_TIME,
+        "http_status": 200,
+        "final_url": "https://careers.acme.example/",
+        "media_type": "text/html",
+    }
+    fields.update(overrides)
+    return ProbeResult.model_validate(fields)
+
+
+def _seed_store(path: Path, company_id: str, record: dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "generated_at": "2026-09-18T00:00:00Z",
+                "companies": {company_id: {"company_id": company_id, **record}},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+
+def test_reprobe_without_provider_evidence_clears_the_previous_provider(
+    tmp_path: Path,
+) -> None:
+    _write_config_dir(tmp_path)
+    write_sources_yaml(
+        tmp_path / "sources.yaml",
+        [
+            SourceConfig(
+                id="acme-successfactors",
+                company_id="acme",
+                provider="successfactors",
+                source_class=SourceClass.PUBLIC_ATS,
+                support_status=SupportStatus.NEEDS_MANUAL_REVIEW,
+                endpoint="https://careers.acme.example/",
+                interval_minutes=30,
+                parameters={
+                    "audit_provider": "successfactors",
+                    "audit_endpoint": "https://career4.successfactors.com/career",
+                    "audit_evidence": "careers page links to career4.successfactors.com",
+                    "audit_notes": ["stale note"],
+                    "audit_note": "human resolution carried into the audit",
+                },
+                enabled=False,
+                audit_date="2026-09-18",
+            )
+        ],
+    )
+    results = tmp_path / "reports" / "source-audit.json"
+    _seed_store(
+        results,
+        "acme",
+        {
+            "support_status": "NEEDS_MANUAL_REVIEW",
+            "probe": {"provider_fingerprint": "successfactors"},
+        },
+    )
+    source = load_source_records(tmp_path / "sources.yaml")[0]
+
+    record_probe(
+        tmp_path,
+        results,
+        source,
+        _probe_result(
+            "acme-successfactors",
+            SupportStatus.FALLBACK_ONLY,
+            notes=["no positive provider evidence on the official careers landing page"],
+        ),
+    )
+
+    updated = load_source_records(tmp_path / "sources.yaml")[0]
+    assert updated.provider == "discovery"
+    assert updated.id == "acme-discovery"
+    assert updated.source_class is SourceClass.FALLBACK
+    assert updated.support_status is SupportStatus.FALLBACK_ONLY
+    assert updated.enabled is False
+    assert "audit_provider" not in updated.parameters
+    assert "audit_endpoint" not in updated.parameters
+    assert "audit_evidence" not in updated.parameters
+    assert updated.parameters["audit_notes"] == [
+        "no positive provider evidence on the official careers landing page"
+    ]
+    assert "stale note" not in updated.parameters["audit_notes"]
+    assert updated.parameters["audit_note"] == "human resolution carried into the audit"
+
+    stored = load_audit_store(results)["acme"]
+    assert stored["provider"] == "discovery"
+    text, _ = render_report(
+        load_app_config(tmp_path), load_audit_store(results), generated_at=PROBE_TIME
+    )
+    row = next(line for line in text.splitlines() if line.startswith("| Acme |"))
+    assert "| discovery |" in row
+
+
+def test_reprobe_with_a_different_provider_overwrites_the_previous_evidence(
+    tmp_path: Path,
+) -> None:
+    _write_config_dir(tmp_path)
+    write_sources_yaml(
+        tmp_path / "sources.yaml",
+        [
+            SourceConfig(
+                id="acme-greenhouse",
+                company_id="acme",
+                provider="greenhouse",
+                source_class=SourceClass.DOCUMENTED_API,
+                support_status=SupportStatus.SUPPORTED,
+                endpoint="https://boards-api.greenhouse.io/v1/boards/acme/jobs",
+                interval_minutes=30,
+                tenant="acme",
+                parameters={
+                    "audit_provider": "greenhouse",
+                    "audit_endpoint": "https://boards-api.greenhouse.io/v1/boards/acme/jobs",
+                    "audit_evidence": "careers page links to boards.greenhouse.io/acme",
+                },
+                enabled=True,
+                audit_date="2026-09-18",
+            )
+        ],
+    )
+    results = tmp_path / "reports" / "source-audit.json"
+    _seed_store(
+        results,
+        "acme",
+        {"support_status": "SUPPORTED", "probe": {"provider_fingerprint": "greenhouse"}},
+    )
+    source = load_source_records(tmp_path / "sources.yaml")[0]
+
+    record_probe(
+        tmp_path,
+        results,
+        source,
+        _probe_result(
+            "acme-greenhouse",
+            SupportStatus.SUPPORTED_UNDOCUMENTED,
+            final_url="https://jobs.ashbyhq.com/acme",
+            provider_fingerprint="ashby",
+            provider_evidence="final URL host jobs.ashbyhq.com",
+            provider_feed_url="https://api.ashbyhq.com/posting-api/job-board/acme",
+            parsed_job_count=3,
+            pagination_complete=True,
+            stable_id_percent=100.0,
+            direct_url_percent=100.0,
+            notes=["ashby adapter collected 3 postings twice"],
+        ),
+    )
+
+    updated = load_source_records(tmp_path / "sources.yaml")[0]
+    assert updated.provider == "ashby"
+    assert updated.tenant == "acme"
+    assert str(updated.endpoint) == "https://api.ashbyhq.com/posting-api/job-board/acme"
+    assert updated.source_class is SourceClass.PUBLIC_ATS
+    assert updated.support_status is SupportStatus.SUPPORTED_UNDOCUMENTED
+    assert updated.enabled is True
+    assert "audit_provider" not in updated.parameters
+    assert updated.parameters["audit_evidence"] == "final URL host jobs.ashbyhq.com"
+    assert not any("greenhouse" in str(value) for value in updated.parameters.values())
