@@ -1,8 +1,9 @@
 from pathlib import Path
 
 import pytest
+from pydantic import ValidationError
 
-from job_alert.config import ConfigError, load_app_config
+from job_alert.config import AppConfig, ConfigError, FilterConfig, FilterPriority, load_app_config
 
 
 def test_load_config_rejects_unknown_company_reference(tmp_path: Path) -> None:
@@ -32,3 +33,68 @@ def test_load_config_requires_every_target_to_have_source_or_review_status(tmp_p
     (tmp_path / "filters.yaml").write_text("filters: []\n")
     with pytest.raises(ConfigError, match="missing source entry: openai"):
         load_app_config(tmp_path)
+
+
+def test_filter_config_defaults_keep_the_new_production_fields_inert() -> None:
+    record = FilterConfig(id="unused")
+    assert record.priority is FilterPriority.NORMAL
+    assert record.categories == []
+    assert record.departments == []
+    assert record.description_keywords == []
+    assert record.employment_types == []
+    assert record.quiet_hours_start is None
+    assert record.quiet_hours_end is None
+    assert record.timezone is None
+
+
+def test_filter_config_rejects_a_priority_outside_the_vocabulary() -> None:
+    with pytest.raises(ValidationError, match="priority"):
+        FilterConfig(id="urgent-alerts", priority="emergency")
+
+
+def test_filter_config_rejects_blank_terms() -> None:
+    with pytest.raises(ValidationError, match="must not be blank"):
+        FilterConfig(id="blank", include_title_keywords=["engineer", "   "])
+
+
+def test_filter_config_requires_quiet_hours_to_be_paired() -> None:
+    with pytest.raises(ValidationError, match="must be set together"):
+        FilterConfig(id="half-window", quiet_hours_start="22:00")
+    with pytest.raises(ValidationError, match="must be set together"):
+        FilterConfig(id="half-window", quiet_hours_end="07:00")
+
+
+def test_filter_config_rejects_equal_or_unparsable_quiet_hours() -> None:
+    with pytest.raises(ValidationError, match="must differ"):
+        FilterConfig(id="empty-window", quiet_hours_start="07:00", quiet_hours_end="07:00:00")
+    with pytest.raises(ValidationError, match="HH:MM"):
+        FilterConfig(id="bad-clock", quiet_hours_start="22:00", quiet_hours_end="7am")
+
+
+def test_filter_config_rejects_an_unknown_timezone() -> None:
+    with pytest.raises(ValidationError, match="unknown IANA timezone"):
+        FilterConfig(id="bad-zone", timezone="Mars/Phobos")
+    with pytest.raises(ValidationError, match="unknown IANA timezone"):
+        FilterConfig(id="bad-zone", quiet_hours_start="22:00", quiet_hours_end="07:00", timezone="")
+
+
+def test_repository_filters_stay_disabled_and_restriction_free(app_config: AppConfig) -> None:
+    records = {record.id: record for record in app_config.filters}
+    assert set(records) == {"all-jobs-dry-run", "production-matches"}
+    for record in records.values():
+        assert record.notify is False
+        assert record.include_companies == []
+        assert record.include_title_keywords == []
+        assert record.exclude_title_keywords == []
+        assert record.include_locations == []
+        assert record.workplace_types == []
+        assert record.categories == []
+        assert record.departments == []
+        assert record.description_keywords == []
+        assert record.employment_types == []
+        assert record.priority is FilterPriority.NORMAL
+        assert record.quiet_hours_start is None
+        assert record.quiet_hours_end is None
+        assert record.timezone is None
+    assert records["all-jobs-dry-run"].enabled is True
+    assert records["production-matches"].enabled is False
