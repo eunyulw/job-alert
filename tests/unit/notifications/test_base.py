@@ -155,6 +155,52 @@ def test_grouped_message_links_the_highest_priority_posting(
     assert batch.message.body.splitlines()[0] == "• Top Match — Santa Clara, CA · hybrid"
 
 
+def test_grouped_bullets_keep_a_long_job_title_intact(engineering_job: JobBuilder) -> None:
+    long_title = "Robotics " * 25 + "Engineer"
+    events = [
+        alert(1, posting(engineering_job, 1, title=long_title)),
+        alert(2, posting(engineering_job, 2, title="Perception Engineer")),
+    ]
+
+    body = group_job_events(events)[0].message.body
+
+    assert len(long_title) > 120
+    assert f"• {long_title}" in body
+    assert len(body) <= BODY_LIMIT
+
+
+def test_a_grouped_body_too_long_for_every_bullet_drops_lines(engineering_job: JobBuilder) -> None:
+    title = "R" * 400
+    events = [
+        alert(index, posting(engineering_job, index, title=f"{title} {index}"))
+        for index in range(1, 6)
+    ]
+
+    body = group_job_events(events)[0].message.body
+
+    bullets = [line for line in body.splitlines() if line.startswith("• ")]
+    assert len(bullets) < 5
+    assert len(body) <= BODY_LIMIT
+    for index in range(1, len(bullets) + 1):
+        # Every listed title is present in full; only whole lines are dropped.
+        assert f"{title} {index}" in body
+    assert f"…and {5 - len(bullets)} more" in body
+
+
+def test_a_single_huge_bullet_drops_its_location_tail_but_keeps_its_title(
+    engineering_job: JobBuilder,
+) -> None:
+    title = "R" * 1000
+    events = [alert(index, posting(engineering_job, index, title=title)) for index in range(1, 6)]
+
+    body = group_job_events(events)[0].message.body
+
+    assert len(body) <= BODY_LIMIT
+    assert body.startswith(f"• {title}")
+    assert "Santa Clara" not in body
+    assert "…and 4 more" in body
+
+
 def test_overflowing_group_states_the_remaining_count(engineering_job: JobBuilder) -> None:
     events = [
         alert(

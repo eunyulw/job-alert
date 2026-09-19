@@ -127,11 +127,78 @@ async def test_ntfy_unreadable_success_body_is_not_a_delivery() -> None:
 
     assert result.delivered is False
     assert result.provider_request_id is None
+    assert result.retryable is True
+    assert result.uncertain is True
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_ntfy_transport_failure_is_uncertain_and_retryable() -> None:
+    route = respx.post(TOPIC).mock(side_effect=httpx.ReadTimeout("timed out"))
+
+    result = await build_notifier().send(message())
+
+    assert result.delivered is False
+    assert result.retryable is True
+    # ntfy may have accepted the message before the response was lost.
+    assert result.uncertain is True
+    assert route.call_count == 1
+
+
+@respx.mock
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("response", "delivered"),
+    [
+        (httpx.Response(200, json={"id": "msg-1"}), True),
+        (httpx.Response(403, text="forbidden"), False),
+        (httpx.Response(429, headers={"Retry-After": "12"}), False),
+        (httpx.Response(502), False),
+    ],
+)
+async def test_ntfy_definitive_answers_are_not_uncertain(
+    response: httpx.Response, delivered: bool
+) -> None:
+    respx.post(TOPIC).mock(return_value=response)
+
+    result = await build_notifier().send(message())
+
+    assert result.delivered is delivered
+    assert result.uncertain is False
 
 
 def test_ntfy_rejects_an_unauthenticated_public_topic() -> None:
     with pytest.raises(NotificationConfigurationError):
         NtfyNotifier(topic_url="https://ntfy.sh/job-alerts")
+
+
+def test_ntfy_treats_a_trailing_dot_public_host_as_public() -> None:
+    dotted = "https://ntfy.sh./job-alerts"
+
+    with pytest.raises(NotificationConfigurationError):
+        NtfyNotifier(topic_url=dotted)
+    assert NtfyNotifier(topic_url=dotted, access_token=ACCESS_TOKEN).provider == "ntfy"
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_ntfy_redacts_an_opted_in_public_topic_path_from_errors() -> None:
+    topic = "https://ntfy.sh/unguessable-topic-name"
+    respx.post(topic).mock(
+        return_value=httpx.Response(
+            200,
+            headers={"Content-Type": "text/html"},
+            text="<html><title>Just a moment...</title></html>",
+        )
+    )
+
+    result = await NtfyNotifier(topic, allow_public_topic=True).send(message())
+
+    assert result.delivered is False
+    assert result.uncertain is True
+    assert result.error is not None
+    assert "unguessable-topic-name" not in result.error
+    assert "ntfy.sh" not in result.error
 
 
 def test_ntfy_allows_a_public_topic_only_with_the_explicit_opt_in() -> None:

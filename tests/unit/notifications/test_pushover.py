@@ -140,6 +140,7 @@ async def test_pushover_treats_unreadable_success_body_as_undelivered() -> None:
     # The answer is unreadable, so the delivery is unconfirmed: the durable layer decides whether
     # one more attempt is worth the duplicate risk.
     assert result.retryable is True
+    assert result.uncertain is True
     assert result.provider_request_id is None
     assert result.error is not None
 
@@ -293,7 +294,44 @@ async def test_pushover_transport_failure_is_retryable_and_redacted() -> None:
 
     assert result.delivered is False
     assert result.retryable is True
+    assert result.uncertain is True
     assert result.error is not None and TOKEN not in result.error
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_pushover_timeout_is_uncertain_after_exactly_one_attempt() -> None:
+    route = respx.post(PUSHOVER_ENDPOINT).mock(side_effect=httpx.ReadTimeout("timed out"))
+
+    result = await build_notifier().send(message())
+
+    assert result.delivered is False
+    assert result.retryable is True
+    # Pushover may have accepted the message before the response was lost.
+    assert result.uncertain is True
+    assert route.call_count == 1
+
+
+@respx.mock
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("response", "delivered"),
+    [
+        (httpx.Response(200, json={"status": 1, "request": "req-1"}), True),
+        (httpx.Response(400, json={"status": 0, "errors": ["message cannot be blank"]}), False),
+        (httpx.Response(429, headers={"Retry-After": "7"}), False),
+        (httpx.Response(503), False),
+    ],
+)
+async def test_pushover_definitive_answers_are_not_uncertain(
+    response: httpx.Response, delivered: bool
+) -> None:
+    respx.post(PUSHOVER_ENDPOINT).mock(return_value=response)
+
+    result = await build_notifier().send(message())
+
+    assert result.delivered is delivered
+    assert result.uncertain is False
 
 
 @respx.mock

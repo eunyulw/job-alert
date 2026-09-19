@@ -7,6 +7,11 @@ sends one JSON body with a title, priority, tags, and a click URL, attaches a be
 has one, and classifies the answer the same way the Pushover notifier does: ``429`` and server
 failures are retryable, other ``4xx`` responses are permanent, and an unreadable success body is
 not a delivery.
+
+ntfy has no idempotency key on this endpoint either, so delivery is at-least-once: a timeout or
+transport failure leaves the outcome unknown, so the result is reported as ``uncertain`` and stays
+retryable. A rare duplicate alert is the accepted trade for never silently dropping a posting, and
+the durable layer caps how many attempts an uncertain result may consume.
 """
 
 from __future__ import annotations
@@ -79,6 +84,7 @@ class NtfyNotifier:
                 "refusing to publish to an unauthenticated public ntfy.sh topic; send an access"
                 " token or set allow_public_topic=True deliberately"
             )
+        self._public_topic = is_public_topic(self._topic_url)
         self._fetcher = fetcher
 
     async def send(self, message: NotificationMessage) -> DeliveryResult:
@@ -97,6 +103,7 @@ class NtfyNotifier:
                 provider=self.provider,
                 delivered=False,
                 retryable=True,
+                uncertain=True,
                 error=self._redact(f"{type(exc).__name__}: {exc}"),
             )
         return self._classify(payload)
@@ -132,6 +139,7 @@ class NtfyNotifier:
                 payload,
                 delivered=False,
                 retryable=True,
+                uncertain=True,
                 error="ntfy returned an unreadable success response",
             )
         if payload.status == 429:
@@ -176,11 +184,13 @@ class NtfyNotifier:
         request_id: str | None = None,
         retry_after_seconds: float | None = None,
         error: str | None = None,
+        uncertain: bool = False,
     ) -> DeliveryResult:
         return DeliveryResult(
             provider=self.provider,
             delivered=delivered,
             retryable=retryable,
+            uncertain=uncertain,
             http_status=payload.status,
             provider_request_id=request_id,
             retry_after_seconds=retry_after_seconds,
@@ -193,7 +203,15 @@ class NtfyNotifier:
         return self._redact(text)
 
     def _redact(self, text: str) -> str:
-        return redact_secrets(text, (self._access_token,))
+        return redact_secrets(text, self._sensitive())
+
+    def _sensitive(self) -> tuple[str | None, ...]:
+        """The access token, plus the topic URL when the topic is public.
+
+        On a public host the topic path is the only thing protecting the subscription, so it belongs
+        in the redaction set even though the notifier was allowed to publish there.
+        """
+        return (self._access_token, self._topic_url if self._public_topic else None)
 
 
 def validate_topic_url(value: str | None) -> str:
@@ -216,8 +234,12 @@ def validate_topic_url(value: str | None) -> str:
 
 
 def is_public_topic(value: str) -> bool:
-    """Whether a topic URL publishes to a host whose topics are readable by anyone."""
-    host = (urlsplit(value).hostname or "").lower()
+    """Whether a topic URL publishes to a host whose topics are readable by anyone.
+
+    A trailing dot is a legal way to write the same DNS name, so it is stripped before the host is
+    compared; ``ntfy.sh.`` is the same public host as ``ntfy.sh``.
+    """
+    host = (urlsplit(value).hostname or "").lower().rstrip(".")
     return any(host == public or host.endswith(f".{public}") for public in PUBLIC_NTFY_HOSTS)
 
 

@@ -10,6 +10,11 @@ The notifier never replays its own POST, because that call creates the notificat
 ``retryable`` and the earliest allowed delay, and the durable layer retries unsent events.
 Credentials come from the constructor or the environment and never appear in a message, an
 exception, or a log line.
+
+Pushover has no idempotency key on this endpoint, so delivery is at-least-once: when a timeout or
+transport failure leaves the outcome unknown, the result is reported as ``uncertain`` and stays
+retryable. A rare duplicate alert is the accepted trade for never silently dropping a posting, and
+the durable layer caps how many attempts an uncertain result may consume.
 """
 
 from __future__ import annotations
@@ -123,6 +128,7 @@ class PushoverNotifier:
                 payload,
                 delivered=False,
                 retryable=True,
+                uncertain=True,
                 error="Pushover returned an unreadable success response",
             )
         if payload.status == 429:
@@ -170,11 +176,13 @@ class PushoverNotifier:
         request_id: str | None = None,
         retry_after_seconds: float | None = None,
         error: str | None = None,
+        uncertain: bool = False,
     ) -> DeliveryResult:
         return DeliveryResult(
             provider=self.provider,
             delivered=delivered,
             retryable=retryable,
+            uncertain=uncertain,
             http_status=payload.status,
             provider_request_id=request_id,
             retry_after_seconds=retry_after_seconds,
@@ -185,11 +193,17 @@ class PushoverNotifier:
         )
 
     def _transport_failure(self, exc: BaseException) -> DeliveryResult:
-        """A request that never produced an answer is worth retrying, and never leaks a secret."""
+        """A request that produced no answer is worth retrying, and never leaks a secret.
+
+        The message may already have been accepted before the response was lost, so the result is
+        marked uncertain: retryable, but only within the retry budget the durable layer allows an
+        ambiguous delivery.
+        """
         return DeliveryResult(
             provider=self.provider,
             delivered=False,
             retryable=True,
+            uncertain=True,
             error=redact_secrets(f"{type(exc).__name__}: {exc}", self._secrets()),
         )
 

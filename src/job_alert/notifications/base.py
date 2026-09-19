@@ -8,6 +8,15 @@ does exactly one attempt through ``HttpFetcher.send_once`` and classifies the an
 :class:`DeliveryResult`. A retryable result says so and carries the earliest delay the provider's
 own signal allows, and the durable layer holds the unsent events and decides when to try again.
 
+At-least-once delivery
+----------------------
+Neither provider offers an idempotency key on its message endpoint, so a lost response cannot be
+proven to mean an undelivered message. An attempt whose outcome is ambiguous — a timeout or a
+transport failure, where the provider may already have accepted the alert -- is reported with
+``uncertain=True`` and stays retryable, because a rare duplicate beats a silently missed posting.
+The retry budget stays with the durable layer: it should cap the attempts it spends on an uncertain
+result (and should back off between them) instead of retrying such an alert forever.
+
 Message limits
 --------------
 Pushover accepts a 250-character title and a 1024-character body, so :class:`NotificationMessage`
@@ -43,9 +52,8 @@ from job_alert.models import JobEvent, JobEventType, NormalizedJob, StrictModel
 TITLE_LIMIT = 250
 BODY_LIMIT = 1024
 
-#: A grouped body lists at most this many postings, each bounded so the count line always fits.
+#: A grouped body lists at most this many postings, and never fewer than fit whole.
 GROUPED_TITLES_SHOWN = 5
-GROUPED_TITLE_LIMIT = 120
 
 #: Default burst window: events for one company detected this close together share one message.
 DEFAULT_GROUP_WINDOW_SECONDS = 120
@@ -66,17 +74,22 @@ class DeliveryResult:
     """What one provider attempt did, and whether another attempt is allowed.
 
     ``retryable`` is the delivery layer's verdict, not the HTTP client's: a notifier never replays
-    a non-idempotent POST on its own. ``retry_after_seconds`` is the earliest delay the provider's
-    own signal permits (``Retry-After``, a quota reset, or the five-second floor for a server
-    failure), and the durable layer decides how many attempts to spend. The quota fields mirror
-    Pushover's ``X-Limit-App-*`` headers: the monthly allowance, what is left of it, and the
-    instant it resets. ``error`` is a short, credential-free explanation, and it is only set when
-    the message was not delivered.
+    a non-idempotent POST on its own. ``uncertain`` separates a definitive answer from an ambiguous
+    one: it is true only when nothing came back that proves the provider never accepted the
+    message — a timeout, a transport failure, or a success status with an unreadable body — and
+    the durable layer uses it to cap the attempts it spends on a delivery that may already have
+    happened. ``retry_after_seconds`` is the earliest delay the provider's own signal permits
+    (``Retry-After``, a quota reset, or the five-second floor for a server failure), and the durable
+    layer decides how many attempts to spend. The quota fields mirror Pushover's
+    ``X-Limit-App-*`` headers: the monthly allowance, what is left of it, and the instant it
+    resets. ``error`` is a short, credential-free explanation, and it is only set when the message
+    was not delivered.
     """
 
     provider: str
     delivered: bool
     retryable: bool
+    uncertain: bool = False
     http_status: int | None = None
     provider_request_id: str | None = None
     retry_after_seconds: float | None = None
@@ -257,16 +270,9 @@ def _grouped_batch(burst: Sequence[AlertEvent]) -> AlertBatch:
     ordered = sorted(burst, key=_priority_order)
     top = ordered[0]
     priority = top.priority
-    lines = [
-        f"\u2022 {_elide_tail(_job_line(alert), GROUPED_TITLE_LIMIT)}"
-        for alert in ordered[:GROUPED_TITLES_SHOWN]
-    ]
-    remaining = len(ordered) - len(lines)
-    if remaining:
-        lines.append(f"\u2026and {remaining} more")
     message = NotificationMessage(
         title=f"{len(ordered)} new jobs \u2014 {top.company}",
-        body="\n".join(lines),
+        body=_burst_body(ordered),
         url=str(top.event.job.posting_url),
         url_title="Open top match",
         priority=priority,
@@ -307,9 +313,42 @@ def _individual_body(job: NormalizedJob) -> str:
     return "\n".join(lines)
 
 
-def _job_line(alert: AlertEvent) -> str:
-    detail = _location_summary(alert.event.job)
-    return f"{alert.event.job.title} \u2014 {detail}" if detail else alert.event.job.title
+def _burst_body(ordered: Sequence[AlertEvent]) -> str:
+    """A burst body assembled from whole job titles, never from a partly cut one.
+
+    Lines are added in priority order while they fit. When the body would grow past the provider's
+    limit the location tail is dropped first, and only then are whole lines left out, which is why
+    the remaining count grows: a shorter list is honest, a halved job title is not. The
+    :class:`NotificationMessage` body validator is the backstop for a title larger than the whole
+    body.
+    """
+    total = len(ordered)
+    listed = list(ordered[:GROUPED_TITLES_SHOWN])
+    with_location = True
+    while listed:
+        lines = [_bullet(alert, with_location=with_location) for alert in listed]
+        remaining = total - len(listed)
+        if remaining:
+            lines.append(_remaining_line(remaining))
+        body = "\n".join(lines)
+        if len(body) <= BODY_LIMIT:
+            return body
+        if with_location:
+            with_location = False
+        else:
+            listed.pop()
+    return _remaining_line(total)
+
+
+def _bullet(alert: AlertEvent, *, with_location: bool) -> str:
+    """One listed posting: the job title in full, with its location tail when there is room."""
+    title = alert.event.job.title
+    detail = _location_summary(alert.event.job) if with_location else ""
+    return f"\u2022 {title} \u2014 {detail}" if detail else f"\u2022 {title}"
+
+
+def _remaining_line(remaining: int) -> str:
+    return f"\u2026and {remaining} more"
 
 
 def _location_summary(job: NormalizedJob) -> str:
