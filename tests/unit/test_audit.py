@@ -713,6 +713,66 @@ def test_reprobe_with_a_different_provider_overwrites_the_previous_evidence(
     assert "greenhouse" not in str(updated.parameters)
 
 
+def test_provider_change_reprobe_persists_the_renamed_source_id(tmp_path: Path) -> None:
+    _write_config_dir(tmp_path)
+    write_sources_yaml(
+        tmp_path / "sources.yaml",
+        [
+            SourceConfig(
+                id="acme-greenhouse",
+                company_id="acme",
+                provider="greenhouse",
+                source_class=SourceClass.DOCUMENTED_API,
+                support_status=SupportStatus.SUPPORTED,
+                endpoint="https://boards-api.greenhouse.io/v1/boards/acme/jobs",
+                interval_minutes=30,
+                tenant="acme",
+                parameters={
+                    "audit_evidence": "careers page links to boards.greenhouse.io/acme",
+                },
+                enabled=True,
+                audit_date="2026-09-18",
+            )
+        ],
+    )
+    results = tmp_path / "reports" / "source-audit.json"
+    _seed_store(
+        results,
+        "acme",
+        {"support_status": "SUPPORTED", "probe": {"provider_fingerprint": "greenhouse"}},
+    )
+    source = load_source_records(tmp_path / "sources.yaml")[0]
+
+    record_probe(
+        tmp_path,
+        results,
+        source,
+        _probe_result(
+            "acme-greenhouse",
+            SupportStatus.SUPPORTED_UNDOCUMENTED,
+            final_url="https://jobs.ashbyhq.com/globex",
+            provider_fingerprint="ashby",
+            provider_evidence="final URL host jobs.ashbyhq.com",
+            provider_feed_url="https://api.ashbyhq.com/posting-api/job-board/globex",
+            parsed_job_count=3,
+            pagination_complete=True,
+            stable_id_percent=100.0,
+            direct_url_percent=100.0,
+        ),
+    )
+
+    updated = load_source_records(tmp_path / "sources.yaml")[0]
+    stored = load_audit_store(results)["acme"]
+    assert stored["source_id"] == updated.id == "acme-ashby"
+    assert stored["provider"] == updated.provider == "ashby"
+    assert stored["support_status"] == str(updated.support_status)
+    assert stored["probe"]["provider_feed_url"] == (
+        "https://api.ashbyhq.com/posting-api/job-board/globex"
+    )
+    assert "globex" in stored["probe"]["provider_feed_url"]
+    assert "acme" not in stored["probe"]["provider_feed_url"]
+
+
 def test_reprobe_with_the_same_provider_keeps_the_source_identity(tmp_path: Path) -> None:
     _write_config_dir(tmp_path)
     write_sources_yaml(

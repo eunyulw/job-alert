@@ -1269,8 +1269,9 @@ def audit_record(
     result: ProbeResult,
     *,
     previous: Mapping[str, Any] | None = None,
+    landing_source: SourceConfig | None = None,
 ) -> dict[str, Any]:
-    careers_url = str(source.endpoint)
+    careers_url = str((landing_source or source).endpoint)
     if previous is not None and _classify_url(careers_url) is not None:
         # Re-probing a verified source reads the official landing page, never its provider feed, and
         # a stored landing page is never replaced by an API endpoint.
@@ -1284,8 +1285,8 @@ def audit_record(
         "source_id": source.id,
         # The stored provider is the fresh verdict, never the superseded record's provider: a probe
         # that found no evidence reports the neutral discovery provider.
-        "provider": result.provider_fingerprint or DISCOVERY_PROVIDER,
-        "support_status": str(result.support_status),
+        "provider": source.provider,
+        "support_status": str(source.support_status),
         "careers_url": careers_url,
         "audited_at": result.evidence_at.date().isoformat(),
         "probe": result.model_dump(mode="json"),
@@ -1562,18 +1563,21 @@ async def run_audit(
                 result = await _probe_with_budget(target, fetcher, budget_seconds)
             async with lock:
                 probed.append(company.id)
+                taken_ids = [
+                    item.id for item in records if item.company_id != company.id
+                ]
+                updated_source = _updated_source(
+                    source, company, result, taken_ids=taken_ids
+                )
                 store[company.id] = audit_record(
-                    company, target, result, previous=store.get(company.id)
+                    company,
+                    updated_source,
+                    result,
+                    previous=store.get(company.id),
+                    landing_source=target,
                 )
                 records[:] = [
-                    _updated_source(
-                        record,
-                        company,
-                        result,
-                        taken_ids=[item.id for item in records if item.company_id != company.id],
-                    )
-                    if record.company_id == company.id
-                    else record
+                    updated_source if record.company_id == company.id else record
                     for record in records
                 ]
                 save_audit_store(results_path, store, generated_at=now_utc())
@@ -1642,14 +1646,22 @@ def record_probe(
     taken_ids = [record.id for record in records if record.company_id != company.id]
     previous = load_audit_store(results_path).get(company.id)
     target = probe_target(source, previous)
+    registry_source = next(
+        (record for record in records if record.company_id == company.id), source
+    )
+    updated_source = _updated_source(registry_source, company, result, taken_ids=taken_ids)
     updated = [
-        _updated_source(record, company, result, taken_ids=taken_ids)
-        if record.company_id == company.id
-        else record
+        updated_source if record.company_id == company.id else record
         for record in records
     ]
     store = load_audit_store(results_path)
-    store[company.id] = audit_record(company, target, result, previous=previous)
+    store[company.id] = audit_record(
+        company,
+        updated_source,
+        result,
+        previous=previous,
+        landing_source=target,
+    )
     save_audit_store(results_path, store, generated_at=now_utc())
     write_sources_yaml(sources_path, updated)
 
