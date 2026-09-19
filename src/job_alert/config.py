@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from datetime import time
 from enum import StrEnum
 from pathlib import Path
@@ -14,6 +15,11 @@ from job_alert.models import CompanyTarget, SourceConfig
 
 class ConfigError(ValueError):
     pass
+
+
+# Quiet hours are whole minutes: the window computation reads ``hour`` and ``minute`` only, so a
+# value it cannot honour (seconds, fractions, an offset) must never validate.
+_CLOCK_TIME = re.compile(r"^\d{2}:\d{2}$")
 
 
 class FilterPriority(StrEnum):
@@ -75,6 +81,8 @@ class FilterConfig(BaseModel):
     def _validate_clock_time(cls, value: str | None) -> str | None:
         if value is None:
             return None
+        if not _CLOCK_TIME.match(value):
+            raise ValueError("quiet hours must be HH:MM 24-hour clock times")
         try:
             time.fromisoformat(value)
         except ValueError as exc:

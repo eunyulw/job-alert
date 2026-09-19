@@ -1,9 +1,10 @@
 # Notification filters. Every posting is ingested and stored regardless of these rules; a filter
 # only decides whether a match produces a phone alert. `all-jobs-dry-run` matches everything and
 # never notifies, so the audit and dry-run paths have a record to report against.
-# `production-matches` carries the user-approved criteria and stays disabled with notifications
-# off until that filter set is approved and recorded; see the module docstring of
-# src/job_alert/filters.py for the criteria order, the workplace-type vocabulary, and quiet hours.
+# `production-matches` reserves the slot for the user-approved criteria. It holds none yet: every
+# array is empty, and it stays disabled with notifications off until that filter set is approved
+# and recorded. See the module docstring of src/job_alert/filters.py for the criteria order, the
+# workplace-type vocabulary, and quiet hours.
 filters:
   - id: all-jobs-dry-run
     enabled: true

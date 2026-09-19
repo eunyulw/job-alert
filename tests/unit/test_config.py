@@ -64,11 +64,31 @@ def test_filter_config_requires_quiet_hours_to_be_paired() -> None:
         FilterConfig(id="half-window", quiet_hours_end="07:00")
 
 
-def test_filter_config_rejects_equal_or_unparsable_quiet_hours() -> None:
+def test_filter_config_rejects_equal_quiet_hours_bounds() -> None:
     with pytest.raises(ValidationError, match="must differ"):
-        FilterConfig(id="empty-window", quiet_hours_start="07:00", quiet_hours_end="07:00:00")
-    with pytest.raises(ValidationError, match="HH:MM"):
-        FilterConfig(id="bad-clock", quiet_hours_start="22:00", quiet_hours_end="7am")
+        FilterConfig(id="empty-window", quiet_hours_start="07:00", quiet_hours_end="07:00")
+
+
+def test_filter_config_accepts_only_two_digit_hh_mm_quiet_hours() -> None:
+    record = FilterConfig(id="valid-clock", quiet_hours_start="07:00", quiet_hours_end="22:30")
+    assert record.quiet_hours_start == "07:00"
+    assert record.quiet_hours_end == "22:30"
+
+    # Seconds, fractions, offsets, and other shapes parse as clock times but cannot be honoured
+    # by the window computation, which reads whole minutes; accepting them would silently widen
+    # quiet hours and suppress real alerts.
+    for value in (
+        "07:00:30",
+        "07:00:45",
+        "07:00:00",
+        "07:00:00.500",
+        "07:00+01:00",
+        "7:00",
+        "0700",
+        "7am",
+    ):
+        with pytest.raises(ValidationError, match="HH:MM"):
+            FilterConfig(id="bad-clock", quiet_hours_start="22:00", quiet_hours_end=value)
 
 
 def test_filter_config_rejects_an_unknown_timezone() -> None:

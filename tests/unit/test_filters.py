@@ -321,6 +321,18 @@ def test_quiet_hours_without_a_timezone_use_utc(
     assert daytime.defer_until is None
 
 
+def test_naive_now_is_read_as_utc(
+    engineering_job: JobBuilder, filter_config: FilterBuilder
+) -> None:
+    rule = filter_config(notify=True, quiet_hours_start="22:00", quiet_hours_end="07:00")
+    aware = evaluate_filters(
+        engineering_job(), [rule], now=datetime(2026, 9, 19, 23, 0, tzinfo=UTC)
+    )[0]
+    naive = evaluate_filters(engineering_job(), [rule], now=datetime(2026, 9, 19, 23, 0))[0]
+    assert naive == aware
+    assert naive.defer_until == datetime(2026, 9, 20, 7, 0, tzinfo=UTC)
+
+
 def test_quiet_hours_deferral_crosses_a_spring_forward_transition(
     engineering_job: JobBuilder, filter_config: FilterBuilder
 ) -> None:

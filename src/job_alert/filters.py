@@ -155,7 +155,8 @@ def evaluate_filters(
 
     ``company_categories`` are the categories of ``job.company_id`` from the company registry,
     which the normalized job does not carry itself. ``now`` is the instant the event is created —
-    the runner passes the event's detection time — and defaults to the current UTC instant.
+    the runner passes the event's detection time — and defaults to the current UTC instant; a naive
+    value is read as UTC, matching the storage layer.
     """
     evaluated_at = _as_utc(now) if now is not None else datetime.now(UTC)
     categories = tuple(normalize_text(category) for category in company_categories)
