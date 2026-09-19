@@ -11,11 +11,14 @@ own signal allows, and the durable layer holds the unsent events and decides whe
 At-least-once delivery
 ----------------------
 Neither provider offers an idempotency key on its message endpoint, so a lost response cannot be
-proven to mean an undelivered message. An attempt whose outcome is ambiguous — a timeout or a
-transport failure, where the provider may already have accepted the alert -- is reported with
-``uncertain=True`` and stays retryable, because a rare duplicate beats a silently missed posting.
-The retry budget stays with the durable layer: it should cap the attempts it spends on an uncertain
-result (and should back off between them) instead of retrying such an alert forever.
+proven to mean an undelivered message. Transport failures are therefore split in two. A failure that
+provably never reached the provider -- ``ConnectError``, ``ConnectTimeout``, ``PoolTimeout``,
+``UnsupportedProtocol``, ``InvalidURL`` -- is certain, stays retryable, and cannot duplicate
+anything. Everything else -- a read or write timeout or error, a remote protocol error, a challenge
+page, an oversized body, or a bare timeout that may have fired after the request was sent -- is
+reported with ``uncertain=True`` and stays retryable, because a rare duplicate beats a silently
+missed posting. The retry budget stays with the durable layer: it should cap the attempts it spends
+on an uncertain result (and should back off between them) instead of retrying such an alert forever.
 
 Message limits
 --------------
@@ -42,6 +45,7 @@ from datetime import UTC, datetime, timedelta
 from typing import Protocol, runtime_checkable
 from urllib.parse import quote
 
+import httpx
 from pydantic import Field, field_validator
 
 from job_alert.config import FilterPriority
@@ -61,6 +65,16 @@ DEFAULT_GROUP_WINDOW_SECONDS = 120
 #: Server failures are retryable, but never sooner than this; see the Pushover requirements.
 SERVER_ERROR_MINIMUM_RETRY_SECONDS = 5.0
 
+#: Transport failures that provably never reached the provider: the connection, the pool slot, or
+#: the URL itself never produced a request, so retrying one cannot duplicate a message.
+DEFINITIVE_NO_SEND_ERRORS: tuple[type[BaseException], ...] = (
+    httpx.ConnectError,
+    httpx.ConnectTimeout,
+    httpx.PoolTimeout,
+    httpx.UnsupportedProtocol,
+    httpx.InvalidURL,
+)
+
 REDACTED = "[redacted]"
 ELLIPSIS = "\u2026"
 
@@ -75,10 +89,13 @@ class DeliveryResult:
 
     ``retryable`` is the delivery layer's verdict, not the HTTP client's: a notifier never replays
     a non-idempotent POST on its own. ``uncertain`` separates a definitive answer from an ambiguous
-    one: it is true only when nothing came back that proves the provider never accepted the
-    message — a timeout, a transport failure, or a success status with an unreadable body — and
-    the durable layer uses it to cap the attempts it spends on a delivery that may already have
-    happened. ``retry_after_seconds`` is the earliest delay the provider's own signal permits
+    one: it is false for a definitive provider answer (a parsed success body, a permanent ``4xx``,
+    a ``429``, a ``5xx``) and for a transport failure that provably never reached the provider, and
+    true when nothing came back that proves the provider never accepted the message — a read
+    or write timeout or error, a remote protocol error, a challenge page, an oversized body, or a
+    success status with an unreadable body. The durable layer uses it to cap the attempts it spends
+    on a delivery that may already have happened. ``retry_after_seconds`` is the earliest delay the
+    provider's own signal permits
     (``Retry-After``, a quota reset, or the five-second floor for a server failure), and the durable
     layer decides how many attempts to spend. The quota fields mirror Pushover's
     ``X-Limit-App-*`` headers: the monthly allowance, what is left of it, and the instant it
@@ -237,6 +254,19 @@ def retry_after_delay(headers: Mapping[str, str]) -> float | None:
     return retry_after_seconds(header_value(headers, "Retry-After"))
 
 
+def transport_is_uncertain(exc: BaseException) -> bool:
+    """Whether a transport failure leaves the delivery outcome unknown.
+
+    A connect, pool, or protocol-setup failure happens before any request can reach the provider,
+    so a retry cannot duplicate a message and the outcome is certain. Everything else -- a read or
+    write timeout or error, a remote protocol error, a challenge page, an oversized body, or a bare
+    timeout that may have fired after the request was sent -- may have happened after the provider
+    saw the request, so the conservative answer for a job alert is that it stays uncertain and the
+    durable layer caps how many attempts it spends on it.
+    """
+    return not isinstance(exc, DEFINITIVE_NO_SEND_ERRORS)
+
+
 def require_credential(value: str | None, name: str) -> str:
     """A credential that must be present and non-blank, or a configuration error without it."""
     if value is None or not value.strip():
@@ -318,26 +348,33 @@ def _burst_body(ordered: Sequence[AlertEvent]) -> str:
 
     Lines are added in priority order while they fit. When the body would grow past the provider's
     limit the location tail is dropped first, and only then are whole lines left out, which is why
-    the remaining count grows: a shorter list is honest, a halved job title is not. The
-    :class:`NotificationMessage` body validator is the backstop for a title larger than the whole
-    body.
+    the remaining count grows: a shorter list is honest, a halved job title is not. The one case
+    where a title is shortened is a single title larger than the whole body: that line is kept and
+    handed to the :class:`NotificationMessage` body validator, which holds on to the leading
+    characters of the title and drops the remaining-count line instead of the title.
     """
     total = len(ordered)
     listed = list(ordered[:GROUPED_TITLES_SHOWN])
     with_location = True
-    while listed:
-        lines = [_bullet(alert, with_location=with_location) for alert in listed]
-        remaining = total - len(listed)
-        if remaining:
-            lines.append(_remaining_line(remaining))
-        body = "\n".join(lines)
-        if len(body) <= BODY_LIMIT:
-            return body
+    body = _burst_lines(listed, total=total, with_location=with_location)
+    while len(body) > BODY_LIMIT:
         if with_location:
             with_location = False
-        else:
+        elif len(listed) > 1:
             listed.pop()
-    return _remaining_line(total)
+        else:
+            break
+        body = _burst_lines(listed, total=total, with_location=with_location)
+    return body
+
+
+def _burst_lines(listed: Sequence[AlertEvent], *, total: int, with_location: bool) -> str:
+    """The listed postings as bullet lines, with the remaining count when any were left out."""
+    lines = [_bullet(alert, with_location=with_location) for alert in listed]
+    remaining = total - len(listed)
+    if remaining:
+        lines.append(_remaining_line(remaining))
+    return "\n".join(lines)
 
 
 def _bullet(alert: AlertEvent, *, with_location: bool) -> str:

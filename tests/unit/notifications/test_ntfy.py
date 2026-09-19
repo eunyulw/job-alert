@@ -133,16 +133,30 @@ async def test_ntfy_unreadable_success_body_is_not_a_delivery() -> None:
 
 @respx.mock
 @pytest.mark.asyncio
-async def test_ntfy_transport_failure_is_uncertain_and_retryable() -> None:
-    route = respx.post(TOPIC).mock(side_effect=httpx.ReadTimeout("timed out"))
+@pytest.mark.parametrize(
+    ("failure", "uncertain"),
+    [
+        # Definitive no-send: the request never reached the server, so a retry cannot duplicate one.
+        (httpx.ConnectError(f"connection refused for {ACCESS_TOKEN}"), False),
+        (httpx.PoolTimeout("no connection available"), False),
+        (httpx.UnsupportedProtocol("unsupported protocol"), False),
+        # Ambiguous: ntfy may have accepted the message before the response was lost.
+        (httpx.ReadTimeout("timed out"), True),
+        (httpx.WriteTimeout("write timed out"), True),
+        (httpx.RemoteProtocolError("server disconnected"), True),
+        (TimeoutError("timed out"), True),
+    ],
+)
+async def test_ntfy_classifies_transport_failures(failure: Exception, uncertain: bool) -> None:
+    route = respx.post(TOPIC).mock(side_effect=failure)
 
     result = await build_notifier().send(message())
 
     assert result.delivered is False
     assert result.retryable is True
-    # ntfy may have accepted the message before the response was lost.
-    assert result.uncertain is True
+    assert result.uncertain is uncertain
     assert route.call_count == 1
+    assert result.error is not None and ACCESS_TOKEN not in result.error
 
 
 @respx.mock

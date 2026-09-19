@@ -8,10 +8,13 @@ has one, and classifies the answer the same way the Pushover notifier does: ``42
 failures are retryable, other ``4xx`` responses are permanent, and an unreadable success body is
 not a delivery.
 
-ntfy has no idempotency key on this endpoint either, so delivery is at-least-once: a timeout or
-transport failure leaves the outcome unknown, so the result is reported as ``uncertain`` and stays
-retryable. A rare duplicate alert is the accepted trade for never silently dropping a posting, and
-the durable layer caps how many attempts an uncertain result may consume.
+ntfy has no idempotency key on this endpoint either, so delivery is at-least-once. A transport
+failure that provably never reached the server (a connect, pool, or protocol-setup failure) stays
+certain and retryable, because a retry cannot duplicate anything. A failure that might have arrived
+first (a read or write timeout or error, a remote protocol error, a challenge page, an oversized
+body) is reported as ``uncertain`` and stays retryable: a rare duplicate alert is the accepted trade
+for never silently dropping a posting, and the durable layer caps how many attempts such a result
+may consume.
 """
 
 from __future__ import annotations
@@ -34,6 +37,7 @@ from job_alert.notifications.base import (
     optional_credential,
     redact_secrets,
     retry_after_delay,
+    transport_is_uncertain,
 )
 
 NTFY_TOPIC_URL_ENV = "NTFY_TOPIC_URL"
@@ -98,14 +102,8 @@ class NtfyNotifier:
         )
         try:
             payload = await self._send_once(spec)
-        except (FetchFailure, httpx.HTTPError, TimeoutError) as exc:
-            return DeliveryResult(
-                provider=self.provider,
-                delivered=False,
-                retryable=True,
-                uncertain=True,
-                error=self._redact(f"{type(exc).__name__}: {exc}"),
-            )
+        except (FetchFailure, httpx.HTTPError, TimeoutError, httpx.InvalidURL) as exc:
+            return self._transport_failure(exc)
         return self._classify(payload)
 
     def _body(self, message: NotificationMessage) -> dict[str, Any]:
@@ -195,6 +193,21 @@ class NtfyNotifier:
             provider_request_id=request_id,
             retry_after_seconds=retry_after_seconds,
             error=error,
+        )
+
+    def _transport_failure(self, exc: BaseException) -> DeliveryResult:
+        """A request that produced no answer is worth retrying, and never leaks a secret.
+
+        The result is uncertain only when the message may already have been accepted; a failure that
+        could not have reached the server is certain and retryable, because a retry cannot duplicate
+        anything.
+        """
+        return DeliveryResult(
+            provider=self.provider,
+            delivered=False,
+            retryable=True,
+            uncertain=transport_is_uncertain(exc),
+            error=self._redact(f"{type(exc).__name__}: {exc}"),
         )
 
     def _error(self, prefix: str, payload: HttpPayload) -> str:

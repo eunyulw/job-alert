@@ -201,6 +201,22 @@ def test_a_single_huge_bullet_drops_its_location_tail_but_keeps_its_title(
     assert "…and 4 more" in body
 
 
+def test_a_title_longer_than_the_whole_body_still_leads_it(engineering_job: JobBuilder) -> None:
+    oversize = 200
+    title = "R" * (BODY_LIMIT + oversize)
+    events = [
+        alert(index, posting(engineering_job, index, title=title)) for index in range(1, 6)
+    ]
+
+    body = group_job_events(events)[0].message.body
+
+    assert len(body) <= BODY_LIMIT
+    # Only a title larger than the whole body is shortened, and the body validator keeps its
+    # leading characters instead of dropping the line.
+    assert body.startswith(f"• {title[:200]}")
+    assert title[: BODY_LIMIT - 100] in body
+
+
 def test_overflowing_group_states_the_remaining_count(engineering_job: JobBuilder) -> None:
     events = [
         alert(

@@ -294,21 +294,44 @@ async def test_pushover_transport_failure_is_retryable_and_redacted() -> None:
 
     assert result.delivered is False
     assert result.retryable is True
-    assert result.uncertain is True
+    # A refused connection never reached Pushover, so nothing can have been delivered; the message
+    # still may not carry the token.
+    assert result.uncertain is False
     assert result.error is not None and TOKEN not in result.error
 
 
 @respx.mock
 @pytest.mark.asyncio
-async def test_pushover_timeout_is_uncertain_after_exactly_one_attempt() -> None:
-    route = respx.post(PUSHOVER_ENDPOINT).mock(side_effect=httpx.ReadTimeout("timed out"))
+@pytest.mark.parametrize(
+    ("failure", "uncertain"),
+    [
+        # Definitive no-send: the request never reached Pushover, so a retry cannot duplicate one.
+        (httpx.ConnectError("connection refused"), False),
+        (httpx.ConnectTimeout("connect timed out"), False),
+        (httpx.PoolTimeout("no connection available"), False),
+        (httpx.UnsupportedProtocol("unsupported protocol"), False),
+        (httpx.InvalidURL("invalid url"), False),
+        # Ambiguous: Pushover may have accepted the message before the response was lost.
+        (httpx.ReadTimeout("read timed out"), True),
+        (httpx.WriteTimeout("write timed out"), True),
+        (httpx.ReadError("read failed"), True),
+        (httpx.WriteError("write failed"), True),
+        (httpx.RemoteProtocolError("server disconnected"), True),
+        (TimeoutError("timed out"), True),
+    ],
+)
+async def test_pushover_classifies_transport_failures(
+    failure: Exception, uncertain: bool
+) -> None:
+    route = respx.post(PUSHOVER_ENDPOINT).mock(side_effect=failure)
 
     result = await build_notifier().send(message())
 
     assert result.delivered is False
     assert result.retryable is True
-    # Pushover may have accepted the message before the response was lost.
-    assert result.uncertain is True
+    assert result.uncertain is uncertain
+    assert type(failure).__name__ in (result.error or "")
+    # Either way the notifier itself sent exactly one message.
     assert route.call_count == 1
 
 

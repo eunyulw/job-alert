@@ -11,10 +11,13 @@ The notifier never replays its own POST, because that call creates the notificat
 Credentials come from the constructor or the environment and never appear in a message, an
 exception, or a log line.
 
-Pushover has no idempotency key on this endpoint, so delivery is at-least-once: when a timeout or
-transport failure leaves the outcome unknown, the result is reported as ``uncertain`` and stays
-retryable. A rare duplicate alert is the accepted trade for never silently dropping a posting, and
-the durable layer caps how many attempts an uncertain result may consume.
+Pushover has no idempotency key on this endpoint, so delivery is at-least-once. A transport failure
+that provably never reached Pushover (a connect, pool, or protocol-setup failure) stays certain and
+retryable, because a retry cannot duplicate anything. A failure that might have arrived first (a
+read or write timeout or error, a remote protocol error, a challenge page, an oversized body) is
+reported as ``uncertain`` and stays retryable: a rare duplicate alert is the accepted trade for
+never silently dropping a posting, and the durable layer caps how many attempts such a result may
+consume.
 """
 
 from __future__ import annotations
@@ -37,6 +40,7 @@ from job_alert.notifications.base import (
     redact_secrets,
     require_credential,
     retry_after_delay,
+    transport_is_uncertain,
 )
 
 PUSHOVER_ENDPOINT = "https://api.pushover.net/1/messages.json"
@@ -96,7 +100,7 @@ class PushoverNotifier:
         )
         try:
             payload = await self._send_once(spec)
-        except (FetchFailure, httpx.HTTPError, TimeoutError) as exc:
+        except (FetchFailure, httpx.HTTPError, TimeoutError, httpx.InvalidURL) as exc:
             return self._transport_failure(exc)
         return self._classify(payload)
 
@@ -195,15 +199,15 @@ class PushoverNotifier:
     def _transport_failure(self, exc: BaseException) -> DeliveryResult:
         """A request that produced no answer is worth retrying, and never leaks a secret.
 
-        The message may already have been accepted before the response was lost, so the result is
-        marked uncertain: retryable, but only within the retry budget the durable layer allows an
-        ambiguous delivery.
+        The result is uncertain only when the message may already have been accepted; a failure that
+        could not have reached Pushover is certain and retryable, because a retry cannot duplicate
+        anything.
         """
         return DeliveryResult(
             provider=self.provider,
             delivered=False,
             retryable=True,
-            uncertain=True,
+            uncertain=transport_is_uncertain(exc),
             error=redact_secrets(f"{type(exc).__name__}: {exc}", self._secrets()),
         )
 
