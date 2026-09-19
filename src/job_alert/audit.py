@@ -105,11 +105,10 @@ DISCOVERY_PROVIDER = "discovery"
 WORKDAY_PROVIDER = "workday"
 JSONLD_PROVIDER = "json-ld"
 
-# Parameters a probe writes. They describe one probe's verdict, so a re-probe drops all of them
-# before writing its own and a superseded provider can never survive as evidence. `audit_note` (a
-# human resolution carried into the audit) and `audit_reason` (an operator's disable reason) are not
-# probe output and are kept.
-PROBE_EVIDENCE_PARAMETERS: tuple[str, ...] = (
+# Parameters a probe writes about its own verdict. A re-probe drops them before writing its own, so
+# a superseded verdict can never survive as evidence. `audit_note` (a human resolution carried into
+# the audit) and `audit_reason` (an operator's disable reason) are not probe output and are kept.
+AUDIT_VERDICT_PARAMETERS: tuple[str, ...] = (
     "audit_status",
     "audit_probed_at",
     "audit_evidence",
@@ -119,6 +118,19 @@ PROBE_EVIDENCE_PARAMETERS: tuple[str, ...] = (
     "audit_final_url",
     "audit_notes",
 )
+
+# Adapter parameters the audit itself writes for a provider (Workday today). They belong to one
+# provider's source identity, so they are cleared wherever that identity is superseded and are
+# listed here with the rest of the probe-written keys.
+PROBE_ADAPTER_PARAMETERS: tuple[str, ...] = ("page_size", "locale", "detail_base_url")
+
+PROBE_EVIDENCE_PARAMETERS: tuple[str, ...] = (
+    *AUDIT_VERDICT_PARAMETERS,
+    *PROBE_ADAPTER_PARAMETERS,
+)
+
+# Parameters the audit never treats as probe output: a human resolution and an operator's reason.
+HUMAN_PARAMETERS: frozenset[str] = frozenset({"audit_note", "audit_reason"})
 
 # Every status a company can end the audit with, best first. A company with several sources is
 # counted once, by the best status any of its sources earned.
@@ -1318,10 +1330,11 @@ def _updated_source(
 ) -> SourceConfig:
     """Fold one probe verdict back into the company's registry record.
 
-    A fresh probe replaces the earlier verdict instead of merging with it: every probe-derived
-    parameter is dropped first, and a probe with no positive provider evidence resets the record to
-    the neutral discovery shape. A stale provider can therefore never survive a re-probe in either
-    direction.
+    A fresh probe replaces the earlier verdict instead of merging with it. When the provider is
+    unchanged the record keeps its identity and its non-audit parameters, so the only difference is
+    the audit fields; when the provider is superseded - a different provider, or no provider at all
+    - the whole source identity is replaced: provider, tenant, source id, source class, endpoint,
+    and a parameters mapping that carries only the new provider's keys plus the human notes.
     """
     fresh = result.provider_fingerprint
     verified = (
@@ -1329,35 +1342,44 @@ def _updated_source(
         and fresh is not None
         and result.provider_feed_url is not None
     )
-    parameters: dict[str, Any] = dict(source.parameters)
-    for key in PROBE_EVIDENCE_PARAMETERS:
-        parameters.pop(key, None)
+    superseded = fresh is None or fresh != source.provider
+    if superseded:
+        parameters: dict[str, Any] = {
+            key: value
+            for key, value in source.parameters.items()
+            if key in HUMAN_PARAMETERS and key not in PROBE_EVIDENCE_PARAMETERS
+        }
+    else:
+        parameters = {
+            key: value
+            for key, value in source.parameters.items()
+            if key not in AUDIT_VERDICT_PARAMETERS
+        }
 
     source_id = source.id
     endpoint = _registry_endpoint(source, result, verified=verified)
     source_class = source.source_class
     provider = fresh or DISCOVERY_PROVIDER
-    tenant = source.tenant if source.provider == provider else None
+    derived_tenant = _fingerprint_tenant(result) if fresh is not None else None
+    # A superseded identity always takes the tenant of the probe that just ran, so the previous
+    # provider's board token can never be resurrected; an unchanged provider keeps its own tenant
+    # untouched.
+    tenant = derived_tenant if superseded else source.tenant
     if fresh is None:
         # No positive provider evidence: the record goes back to the neutral discovery shape and
         # keeps only the landing page it was just probed at.
         source_class = SourceClass.FALLBACK
-        candidate = f"{company.id}-discovery"
-        if candidate != source.id and candidate not in set(taken_ids):
-            source_id = candidate
+        source_id = _renamed_source_id(company.id, DISCOVERY_PROVIDER, source.id, taken_ids)
     elif verified:
         source_class = PROVIDER_SOURCE_CLASSES.get(provider, SourceClass.PUBLIC_ATS)
-        tenant = source.tenant or _fingerprint_tenant(result)
-        if source.id.endswith("-discovery"):
-            candidate = f"{company.id}-{provider}"
-            if candidate != source.id and candidate not in set(taken_ids):
-                source_id = candidate
+        source_id = _renamed_source_id(company.id, provider, source.id, taken_ids, superseded)
     else:
         # A provider the probe recognised but could not verify keeps the landing page as its
         # endpoint, so the registry still names where the evidence came from.
         source_class = (
             source.source_class if source.provider == provider else SourceClass.FALLBACK
         )
+        source_id = _renamed_source_id(company.id, provider, source.id, taken_ids, superseded)
 
     parameters["audit_status"] = str(result.support_status)
     parameters["audit_probed_at"] = result.evidence_at.date().isoformat()
@@ -1410,6 +1432,27 @@ def _registry_endpoint(source: SourceConfig, result: ProbeResult, *, verified: b
     if _classify_url(current) is None:
         return current
     return result.final_url or current
+
+
+def _renamed_source_id(
+    company_id: str,
+    provider: str,
+    current_id: str,
+    taken_ids: Iterable[str],
+    superseded: bool = True,
+) -> str:
+    """The source id a probe verdict implies.
+
+    A superseded identity is renamed to ``<company-id>-<provider>`` whatever the previous id was, so
+    an id can never keep naming a provider the record no longer uses. An unchanged provider keeps
+    the id it already has.
+    """
+    if not superseded:
+        return current_id
+    candidate = f"{company_id}-{provider}"
+    if candidate == current_id or candidate in set(taken_ids):
+        return current_id
+    return candidate
 
 
 def _fingerprint_tenant(result: ProbeResult) -> str | None:

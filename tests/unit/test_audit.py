@@ -12,6 +12,7 @@ import respx
 import yaml
 
 from job_alert.audit import (
+    PROBE_EVIDENCE_PARAMETERS,
     PROVIDER_ADAPTERS,
     AuditError,
     ProbeResult,
@@ -660,6 +661,8 @@ def test_reprobe_with_a_different_provider_overwrites_the_previous_evidence(
                     "audit_provider": "greenhouse",
                     "audit_endpoint": "https://boards-api.greenhouse.io/v1/boards/acme/jobs",
                     "audit_evidence": "careers page links to boards.greenhouse.io/acme",
+                    "apply_url_template": "https://boards.greenhouse.io/acme/jobs/{id}",
+                    "page_size": 50,
                 },
                 enabled=True,
                 audit_date="2026-09-18",
@@ -681,10 +684,10 @@ def test_reprobe_with_a_different_provider_overwrites_the_previous_evidence(
         _probe_result(
             "acme-greenhouse",
             SupportStatus.SUPPORTED_UNDOCUMENTED,
-            final_url="https://jobs.ashbyhq.com/acme",
+            final_url="https://jobs.ashbyhq.com/globex",
             provider_fingerprint="ashby",
             provider_evidence="final URL host jobs.ashbyhq.com",
-            provider_feed_url="https://api.ashbyhq.com/posting-api/job-board/acme",
+            provider_feed_url="https://api.ashbyhq.com/posting-api/job-board/globex",
             parsed_job_count=3,
             pagination_complete=True,
             stable_id_percent=100.0,
@@ -695,11 +698,140 @@ def test_reprobe_with_a_different_provider_overwrites_the_previous_evidence(
 
     updated = load_source_records(tmp_path / "sources.yaml")[0]
     assert updated.provider == "ashby"
-    assert updated.tenant == "acme"
-    assert str(updated.endpoint) == "https://api.ashbyhq.com/posting-api/job-board/acme"
+    assert updated.id == "acme-ashby"
+    assert updated.tenant == "globex"
+    assert str(updated.endpoint) == "https://api.ashbyhq.com/posting-api/job-board/globex"
     assert updated.source_class is SourceClass.PUBLIC_ATS
     assert updated.support_status is SupportStatus.SUPPORTED_UNDOCUMENTED
     assert updated.enabled is True
     assert "audit_provider" not in updated.parameters
     assert updated.parameters["audit_evidence"] == "final URL host jobs.ashbyhq.com"
-    assert not any("greenhouse" in str(value) for value in updated.parameters.values())
+    # No tenant, board token, or adapter parameter of the superseded provider may survive.
+    assert "apply_url_template" not in updated.parameters
+    assert "page_size" not in updated.parameters
+    assert "acme" not in str(updated.parameters)
+    assert "greenhouse" not in str(updated.parameters)
+
+
+def test_reprobe_with_the_same_provider_keeps_the_source_identity(tmp_path: Path) -> None:
+    _write_config_dir(tmp_path)
+    write_sources_yaml(
+        tmp_path / "sources.yaml",
+        [
+            SourceConfig(
+                id="acme-greenhouse",
+                company_id="acme",
+                provider="greenhouse",
+                source_class=SourceClass.DOCUMENTED_API,
+                support_status=SupportStatus.SUPPORTED,
+                endpoint="https://boards-api.greenhouse.io/v1/boards/acme/jobs",
+                interval_minutes=30,
+                tenant="acme",
+                parameters={
+                    "audit_evidence": "careers page links to boards.greenhouse.io/acme",
+                    "apply_url_template": "https://boards.greenhouse.io/acme/jobs/{id}",
+                },
+                enabled=True,
+                audit_date="2026-09-18",
+            )
+        ],
+    )
+    results = tmp_path / "reports" / "source-audit.json"
+    _seed_store(
+        results,
+        "acme",
+        {"support_status": "SUPPORTED", "probe": {"provider_fingerprint": "greenhouse"}},
+    )
+    source = load_source_records(tmp_path / "sources.yaml")[0]
+
+    record_probe(
+        tmp_path,
+        results,
+        source,
+        _probe_result(
+            "acme-greenhouse",
+            SupportStatus.SUPPORTED,
+            final_url="https://www.acme.example/careers",
+            provider_fingerprint="greenhouse",
+            provider_evidence="careers page links to boards.greenhouse.io/acme",
+            provider_feed_url="https://boards-api.greenhouse.io/v1/boards/acme/jobs?content=true",
+            parsed_job_count=12,
+            pagination_complete=True,
+            stable_id_percent=100.0,
+            direct_url_percent=100.0,
+        ),
+    )
+
+    updated = load_source_records(tmp_path / "sources.yaml")[0]
+    assert updated.id == "acme-greenhouse"
+    assert updated.tenant == "acme"
+    assert updated.provider == "greenhouse"
+    assert updated.enabled is True
+    assert updated.parameters["apply_url_template"] == (
+        "https://boards.greenhouse.io/acme/jobs/{id}"
+    )
+
+
+def test_probe_evidence_parameters_cover_every_probe_written_key() -> None:
+    assert {"page_size", "locale", "detail_base_url"} <= set(PROBE_EVIDENCE_PARAMETERS)
+
+
+def test_reprobe_without_evidence_clears_verified_workday_parameters(tmp_path: Path) -> None:
+    _write_config_dir(tmp_path)
+    write_sources_yaml(
+        tmp_path / "sources.yaml",
+        [
+            SourceConfig(
+                id="acme-workday",
+                company_id="acme",
+                provider="workday",
+                source_class=SourceClass.PUBLIC_ATS,
+                support_status=SupportStatus.SUPPORTED_UNDOCUMENTED,
+                endpoint=(
+                    "https://acme.wd1.myworkdayjobs.com/wday/cxs/acme/External/jobs"
+                ),
+                interval_minutes=30,
+                tenant="acme",
+                parameters={
+                    "page_size": 20,
+                    "locale": "en-US",
+                    "detail_base_url": "https://acme.wd1.myworkdayjobs.com/en-US/External",
+                },
+                enabled=True,
+                audit_date="2026-09-18",
+            )
+        ],
+    )
+    results = tmp_path / "reports" / "source-audit.json"
+    _seed_store(
+        results,
+        "acme",
+        {
+            "support_status": "SUPPORTED_UNDOCUMENTED",
+            "probe": {"provider_fingerprint": "workday"},
+        },
+    )
+    source = load_source_records(tmp_path / "sources.yaml")[0]
+
+    record_probe(
+        tmp_path,
+        results,
+        source,
+        _probe_result(
+            "acme-workday",
+            SupportStatus.BLOCKED,
+            http_status=403,
+            challenge_detected=True,
+            notes=["access challenge detected on the official careers landing page"],
+        ),
+    )
+
+    updated = load_source_records(tmp_path / "sources.yaml")[0]
+    assert updated.provider == "discovery"
+    assert updated.id == "acme-discovery"
+    assert updated.enabled is False
+    for key in ("page_size", "locale", "detail_base_url"):
+        assert key not in updated.parameters
+    assert "audit_provider" not in updated.parameters
+    assert "audit_endpoint" not in updated.parameters
+    assert "workday" not in str(updated.parameters)
