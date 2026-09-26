@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from job_alert.db import IncompleteRunError, Repository
+from job_alert.db import DeliveryOutcome, IncompleteRunError, Repository
 from job_alert.models import JobEvent, JobEventType, NormalizedJob, RunOutcome
 
 
@@ -418,3 +418,159 @@ def test_snapshot_cannot_report_a_key_as_both_observed_and_missing(tmp_path: Pat
         with pytest.raises(ValueError, match="both observed and missing"):
             repo.apply_complete_snapshot(run_id, missing_keys=[JOB_KEY])
         assert stored_missing_complete_runs(path, JOB_KEY) == 0
+
+
+def test_transaction_commits_staged_state_and_events_as_one_unit(tmp_path: Path) -> None:
+    with Repository.open(tmp_path / "state.sqlite3") as repo:
+        repo.initialize()
+        run_id = repo.start_run("openai-greenhouse", datetime(2026, 9, 18, tzinfo=UTC))
+        job = make_job()
+        with repo.transaction():
+            repo.upsert_observations(run_id, [job])
+            repo.finish_run(
+                run_id, RunOutcome.COMPLETE, datetime(2026, 9, 18, tzinfo=UTC), jobs_seen=1
+            )
+            repo.apply_complete_snapshot(run_id)
+            event_ids = repo.record_events(
+                run_id,
+                [
+                    JobEvent(
+                        event_type=JobEventType.NEW,
+                        job=job,
+                        detected_at=datetime(2026, 9, 18, tzinfo=UTC),
+                    )
+                ],
+            )
+
+        assert event_ids == [1]
+        assert repo.last_complete_job_keys("openai-greenhouse") == {JOB_KEY}
+        applied = repo.last_applied_snapshot("openai-greenhouse")
+        assert applied is not None
+        assert applied.run_id == run_id
+        assert applied.canonical_job_keys == frozenset({JOB_KEY})
+        assert [event.event_id for event in repo.pending_events("openai-greenhouse")] == [1]
+
+
+def test_transaction_rolls_back_every_call_in_the_unit(tmp_path: Path) -> None:
+    path = tmp_path / "state.sqlite3"
+    with Repository.open(path) as repo:
+        repo.initialize()
+        run_id = repo.start_run("openai-greenhouse", datetime(2026, 9, 18, tzinfo=UTC))
+        with pytest.raises(ValueError, match="unknown poll run 999"), repo.transaction():
+            repo.upsert_observations(run_id, [make_job()])
+            # A nested repository call reuses the same unit rather than opening its own.
+            repo.finish_run(
+                999, RunOutcome.COMPLETE, datetime(2026, 9, 18, tzinfo=UTC), jobs_seen=1
+            )
+
+        assert repo.load_active_jobs("openai-greenhouse") == []
+        assert stored_run(path, run_id) == ("partial", None)
+        # The connection is still usable once the unit has been rolled back.
+        repo.finish_run(
+            run_id, RunOutcome.COMPLETE, datetime(2026, 9, 18, 1, tzinfo=UTC), jobs_seen=0
+        )
+        assert repo.source_health("openai-greenhouse").last_complete_at == datetime(
+            2026, 9, 18, 1, tzinfo=UTC
+        )
+
+
+def test_validators_are_replaced_and_can_be_cleared(tmp_path: Path) -> None:
+    with Repository.open(tmp_path / "state.sqlite3") as repo:
+        repo.initialize()
+        repo.start_run("openai-greenhouse", datetime(2026, 9, 18, tzinfo=UTC))
+        repo.record_conditional_state(
+            "openai-greenhouse", etag='"v1"', last_modified="Thu, 17 Sep 2026 12:00:00 GMT"
+        )
+        assert repo.source_health("openai-greenhouse").etag == '"v1"'
+
+        repo.record_conditional_state("openai-greenhouse", etag=None, last_modified=None)
+
+        health = repo.source_health("openai-greenhouse")
+        assert health.etag is None
+        assert health.last_modified is None
+
+
+def test_quarantine_records_one_pending_candidate_per_source(tmp_path: Path) -> None:
+    with Repository.open(tmp_path / "state.sqlite3") as repo:
+        repo.initialize()
+        first = repo.start_run("openai-greenhouse", datetime(2026, 9, 18, tzinfo=UTC))
+        second = repo.start_run("openai-greenhouse", datetime(2026, 9, 19, tzinfo=UTC))
+        repo.record_quarantine(
+            first,
+            source_id="openai-greenhouse",
+            previous_job_count=100,
+            candidate_keys=["b", "a", "a"],
+            quarantined_at=datetime(2026, 9, 18, tzinfo=UTC),
+        )
+        repo.record_quarantine(
+            second,
+            source_id="openai-greenhouse",
+            previous_job_count=100,
+            candidate_keys=["c"],
+            quarantined_at=datetime(2026, 9, 19, tzinfo=UTC),
+        )
+
+        pending = repo.pending_quarantine("openai-greenhouse")
+
+        assert pending is not None
+        assert pending.run_id == second
+        assert pending.candidate_keys == frozenset({"c"})
+        assert (pending.previous_job_count, pending.candidate_job_count) == (100, 1)
+        assert repo.pending_quarantine("other-source") is None
+
+        repo.clear_quarantine("openai-greenhouse")
+        assert repo.pending_quarantine("openai-greenhouse") is None
+
+
+def test_pending_events_stop_at_a_terminal_delivery_outcome(tmp_path: Path) -> None:
+    with Repository.open(tmp_path / "state.sqlite3") as repo:
+        repo.initialize()
+        run_id = repo.start_run("openai-greenhouse", datetime(2026, 9, 18, tzinfo=UTC))
+        job = make_job()
+        repo.upsert_observations(run_id, [job])
+        event_ids = repo.record_events(
+            run_id,
+            [
+                JobEvent(
+                    event_type=JobEventType.NEW,
+                    job=job,
+                    detected_at=datetime(2026, 9, 18, tzinfo=UTC),
+                ),
+                JobEvent(
+                    event_type=JobEventType.REOPENED,
+                    job=job,
+                    detected_at=datetime(2026, 9, 18, tzinfo=UTC),
+                ),
+                JobEvent(
+                    event_type=JobEventType.CLOSED,
+                    job=job,
+                    detected_at=datetime(2026, 9, 18, tzinfo=UTC),
+                ),
+            ],
+        )
+        deliverable = event_ids[:2]
+        # A closure event is durable history, never a delivery candidate.
+        assert (
+            [event.event_id for event in repo.pending_events("openai-greenhouse")] == deliverable
+        )
+        # A retryable failure leaves both events outstanding for the next cycle.
+        repo.record_notification(
+            "pushover", DeliveryOutcome.RETRYABLE.value, datetime(2026, 9, 18, tzinfo=UTC),
+            event_ids=deliverable,
+        )
+        assert len(repo.pending_events("openai-greenhouse")) == 2
+        assert repo.attempt_counts(deliverable, outcome=DeliveryOutcome.RETRYABLE) == {
+            deliverable[0]: 1,
+            deliverable[1]: 1,
+        }
+
+        repo.record_notification(
+            "pushover", DeliveryOutcome.DELIVERED.value, datetime(2026, 9, 18, tzinfo=UTC),
+            event_ids=[deliverable[0]],
+        )
+        repo.record_notification(
+            "pushover", DeliveryOutcome.ABANDONED.value, datetime(2026, 9, 18, tzinfo=UTC),
+            event_ids=[deliverable[1]],
+        )
+
+        assert repo.pending_events("openai-greenhouse") == []

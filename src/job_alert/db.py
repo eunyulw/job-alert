@@ -7,13 +7,41 @@ from collections.abc import Iterable, Iterator, Sequence
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from enum import StrEnum
 from pathlib import Path
 
-from job_alert.models import JobEvent, NormalizedJob, RunOutcome
+from job_alert.models import JobEvent, JobEventType, NormalizedJob, RunOutcome
 
 SCHEMA_ENV_VAR = "JOB_ALERT_SCHEMA_PATH"
 MIGRATION_NAME = "001_initial.sql"
 DEFAULT_CLOSE_AFTER = 2
+
+#: How many ambiguous delivery attempts one event may collect before the durable layer abandons it.
+DEFAULT_MAX_UNCERTAIN_RETRIES = 2
+
+
+class DeliveryOutcome(StrEnum):
+    """What one provider attempt did, as the durable layer records it.
+
+    ``DELIVERED`` links the event ids the message covered, ``RETRYABLE`` and ``UNCERTAIN`` leave
+    them pending for a later cycle, ``PERMANENT`` ends the question because the provider refused
+    the message for good, and ``ABANDONED`` ends it because an ambiguous outcome has been retried
+    as often as the service allows. Only the last two are terminal without a delivery.
+    """
+
+    DELIVERED = "delivered"
+    RETRYABLE = "retryable"
+    UNCERTAIN = "uncertain"
+    PERMANENT = "permanent"
+    ABANDONED = "abandoned"
+
+
+#: Outcomes that stop a cycle from ever re-attempting the events an attempt covered.
+TERMINAL_DELIVERY_OUTCOMES = (
+    DeliveryOutcome.DELIVERED,
+    DeliveryOutcome.PERMANENT,
+    DeliveryOutcome.ABANDONED,
+)
 
 
 class IncompleteRunError(RuntimeError):
@@ -31,6 +59,44 @@ class SourceState:
     last_complete_at: datetime | None
     backoff_until: datetime | None
     health_alert_open: bool
+
+
+@dataclass(frozen=True)
+class AppliedSnapshot:
+    """The last complete snapshot whose decisions actually reached job state.
+
+    This is not simply the last run that finished as ``complete``: a dry run finishes complete
+    without staging a single observation, so the snapshot absence inference, the quarantine
+    baseline, and ``304`` reconstruction have to reason about is the one job state reflects.
+    """
+
+    run_id: int
+    applied_at: datetime
+    page_count: int
+    canonical_job_keys: frozenset[str]
+
+
+@dataclass(frozen=True)
+class PendingEvent:
+    """One durable job event that no terminal delivery attempt has covered yet."""
+
+    event_id: int
+    event_type: JobEventType
+    canonical_job_key: str
+    detected_at: datetime
+    run_id: int
+
+
+@dataclass(frozen=True)
+class QuarantinedSnapshot:
+    """A complete candidate withheld because it dropped most of the previous complete snapshot."""
+
+    run_id: int
+    source_id: str
+    quarantined_at: datetime
+    previous_job_count: int
+    candidate_job_count: int
+    candidate_keys: frozenset[str]
 
 
 def _utc_isoformat(moment: datetime) -> str:
@@ -161,12 +227,47 @@ ORDER BY COALESCE(finished_at, started_at) DESC, id DESC
 LIMIT 1
 """
 
+SNAPSHOT_STATE_SQL = """
+SELECT canonical_job_key, content_hash, closed_at, missing_complete_runs
+FROM jobs WHERE source_id = ?
+"""
+
+LAST_APPLIED_RUN_SQL = """
+SELECT a.run_id, a.applied_at, r.page_count
+FROM snapshot_applications a JOIN poll_runs r ON r.id = a.run_id
+WHERE a.source_id = ?
+ORDER BY a.applied_at DESC, a.run_id DESC
+LIMIT 1
+"""
+
+RUN_OBSERVATIONS_SQL = "SELECT canonical_job_key FROM job_observations WHERE run_id = ?"
+
+# Every dedupe key storage already holds as an active job, plus every dedupe key a delivered
+# alert already covered. The service reads this before creating a deliverable event so one public
+# posting is announced once even when two boards publish it.
+ANNOUNCED_DEDUPE_SQL = """
+SELECT j.dedupe_key, j.canonical_job_key FROM jobs j WHERE j.closed_at IS NULL
+UNION
+SELECT j.dedupe_key, j.canonical_job_key FROM job_events e
+JOIN notification_event_links l ON l.event_id = e.id
+JOIN notification_attempts a ON a.id = l.notification_attempt_id
+JOIN jobs j ON j.canonical_job_key = e.canonical_job_key
+WHERE a.outcome = ?
+"""
+
+PENDING_QUARANTINE_SQL = """
+SELECT * FROM quarantined_snapshots WHERE source_id = ?
+ORDER BY quarantined_at DESC, run_id DESC
+LIMIT 1
+"""
+
 
 class Repository:
     """Transactional SQLite state store for poll runs, jobs, events, and notifications."""
 
     def __init__(self, connection: sqlite3.Connection) -> None:
         self._connection = connection
+        self._depth = 0
 
     @classmethod
     def open(cls, path: str | Path) -> Repository:
@@ -188,15 +289,43 @@ class Repository:
 
     @contextmanager
     def _transaction(self) -> Iterator[sqlite3.Connection]:
-        """Run a state change as one `BEGIN IMMEDIATE` transaction."""
+        """Run a state change as one transaction; see :meth:`transaction`."""
+        with self.transaction():
+            yield self._connection
+
+    @contextmanager
+    def transaction(self) -> Iterator[None]:
+        """Run several repository calls as one atomic unit.
+
+        The outermost call opens a `BEGIN IMMEDIATE` transaction; a call nested inside one only
+        marks a savepoint, so a caller can compose the reviewed state-changing methods (stage
+        observations, finish the run, apply the snapshot, record events) into the single commit a
+        collection cycle needs before it attempts any external delivery. An error rolls the whole
+        unit back, whichever depth it happened at.
+        """
         connection = self._connection
-        connection.execute("BEGIN IMMEDIATE")
+        depth = self._depth
+        savepoint = f"job_alert_{depth}"
+        if depth == 0:
+            connection.execute("BEGIN IMMEDIATE")
+        else:
+            connection.execute(f"SAVEPOINT {savepoint}")
+        self._depth = depth + 1
         try:
-            yield connection
+            yield
         except BaseException:
-            connection.execute("ROLLBACK")
+            self._depth = depth
+            if depth == 0:
+                connection.execute("ROLLBACK")
+            else:
+                connection.execute(f"ROLLBACK TO SAVEPOINT {savepoint}")
+                connection.execute(f"RELEASE SAVEPOINT {savepoint}")
             raise
-        connection.execute("COMMIT")
+        self._depth = depth
+        if depth == 0:
+            connection.execute("COMMIT")
+        else:
+            connection.execute(f"RELEASE SAVEPOINT {savepoint}")
 
     def initialize(self) -> None:
         """Apply the initial migration. Safe to call repeatedly; the DDL is idempotent."""
@@ -549,3 +678,207 @@ class Repository:
             backoff_until=_parse_timestamp(row["backoff_until"]),
             health_alert_open=bool(row["health_alert_open"]),
         )
+
+    def record_conditional_state(
+        self,
+        source_id: str,
+        *,
+        etag: str | None,
+        last_modified: str | None,
+    ) -> None:
+        """Replace the stored validators for a source with the ones a trustworthy body carried.
+
+        A caller writes this only after a valid response, so a validator never describes a body
+        the monitor refused to trust: ``None`` clears a validator the provider stopped sending
+        rather than leaving a stale one behind for the next conditional request.
+        """
+        with self._transaction() as connection:
+            connection.execute(UPSERT_SOURCE_STATE_SQL, (source_id,))
+            connection.execute(
+                "UPDATE source_state SET etag = ?, last_modified = ? WHERE source_id = ?",
+                (etag, last_modified, source_id),
+            )
+
+    def snapshot_state(self, source_id: str) -> dict[str, dict[str, object]]:
+        """Return the stored state a comparison needs, keyed by canonical job key.
+
+        Each value carries the ``content_hash``, ``closed_at``, and ``missing_complete_runs`` of
+        one job, which is exactly the shape ``compare_snapshot()`` reads. Closed jobs are
+        included, because that is how a reappearing posting is classified as reopened rather than
+        new.
+        """
+        rows = self._connection.execute(SNAPSHOT_STATE_SQL, (source_id,)).fetchall()
+        return {
+            str(row["canonical_job_key"]): {
+                "content_hash": row["content_hash"],
+                "closed_at": row["closed_at"],
+                "missing_complete_runs": int(row["missing_complete_runs"]),
+            }
+            for row in rows
+        }
+
+    def last_applied_snapshot(self, source_id: str) -> AppliedSnapshot | None:
+        """Return the most recent complete snapshot that actually changed job state.
+
+        ``None`` means no complete snapshot has ever been applied to this source, which is
+        different from an applied snapshot that observed no jobs at all.
+        """
+        row = self._connection.execute(LAST_APPLIED_RUN_SQL, (source_id,)).fetchone()
+        if row is None:
+            return None
+        applied_at = _parse_timestamp(row["applied_at"])
+        if applied_at is None:
+            raise ValueError(f"snapshot application for source {source_id} has no applied_at")
+        observed = self._connection.execute(
+            RUN_OBSERVATIONS_SQL, (int(row["run_id"]),)
+        ).fetchall()
+        return AppliedSnapshot(
+            run_id=int(row["run_id"]),
+            applied_at=applied_at,
+            page_count=int(row["page_count"]),
+            canonical_job_keys=frozenset(
+                str(observation["canonical_job_key"]) for observation in observed
+            ),
+        )
+
+    def load_job(self, canonical_job_key: str) -> NormalizedJob | None:
+        """Return one stored job, or `None` when the key is unknown."""
+        row = self._connection.execute(
+            "SELECT * FROM jobs WHERE canonical_job_key = ?", (canonical_job_key,)
+        ).fetchone()
+        return None if row is None else _job_from_row(row)
+
+    def announced_dedupe_keys(self) -> dict[str, frozenset[str]]:
+        """Dedupe keys a public posting is already represented by, with the job keys that do it.
+
+        A posting counts as represented when an active stored job carries its dedupe key or when a
+        delivered alert covered an event for one. Reading this before a cycle stages anything, and
+        comparing against the candidate's own canonical key, is what keeps one posting from being
+        announced twice across boards while still letting a job that reopened under its own key
+        be delivered again.
+        """
+        rows = self._connection.execute(
+            ANNOUNCED_DEDUPE_SQL, (DeliveryOutcome.DELIVERED.value,)
+        ).fetchall()
+        index: dict[str, set[str]] = {}
+        for row in rows:
+            index.setdefault(str(row["dedupe_key"]), set()).add(str(row["canonical_job_key"]))
+        return {dedupe_key: frozenset(keys) for dedupe_key, keys in index.items()}
+
+    def pending_events(
+        self,
+        source_id: str,
+        *,
+        event_types: Sequence[JobEventType] = (JobEventType.NEW, JobEventType.REOPENED),
+    ) -> list[PendingEvent]:
+        """Return the durable events of one source that still need a delivery decision.
+
+        An event stays pending until an attempt covering it ends the question — that is, until one
+        ends as ``delivered``, ``permanent``, or ``abandoned``. Pending events are returned oldest
+        first so a retry keeps the order the events were detected in.
+        """
+        types = [str(event_type) for event_type in event_types]
+        if not types:
+            return []
+        terminals = [outcome.value for outcome in TERMINAL_DELIVERY_OUTCOMES]
+        type_placeholders = ", ".join("?" for _ in types)
+        terminal_placeholders = ", ".join("?" for _ in terminals)
+        rows = self._connection.execute(
+            "SELECT e.id, e.event_type, e.detected_at, e.run_id, j.canonical_job_key"
+            " FROM job_events e JOIN jobs j ON j.canonical_job_key = e.canonical_job_key"
+            f" WHERE j.source_id = ? AND e.event_type IN ({type_placeholders})"
+            " AND NOT EXISTS (SELECT 1 FROM notification_event_links l"
+            " JOIN notification_attempts a ON a.id = l.notification_attempt_id"
+            f" WHERE l.event_id = e.id AND a.outcome IN ({terminal_placeholders}))"
+            " ORDER BY e.detected_at, e.id",
+            (source_id, *types, *terminals),
+        ).fetchall()
+        pending: list[PendingEvent] = []
+        for row in rows:
+            detected_at = _parse_timestamp(row["detected_at"])
+            if detected_at is None:
+                raise ValueError(f"event {row['id']} has no detected_at")
+            pending.append(
+                PendingEvent(
+                    event_id=int(row["id"]),
+                    event_type=JobEventType(str(row["event_type"])),
+                    canonical_job_key=str(row["canonical_job_key"]),
+                    detected_at=detected_at,
+                    run_id=int(row["run_id"]),
+                )
+            )
+        return pending
+
+    def attempt_counts(
+        self, event_ids: Iterable[int], *, outcome: DeliveryOutcome
+    ) -> dict[int, int]:
+        """How many recorded attempts with one outcome already cover each of these events."""
+        ids = list(dict.fromkeys(event_ids))
+        if not ids:
+            return {}
+        placeholders = ", ".join("?" for _ in ids)
+        rows = self._connection.execute(
+            "SELECT l.event_id AS event_id, COUNT(*) AS attempts FROM notification_event_links l"
+            " JOIN notification_attempts a ON a.id = l.notification_attempt_id"
+            f" WHERE a.outcome = ? AND l.event_id IN ({placeholders})"
+            " GROUP BY l.event_id",
+            (outcome.value, *ids),
+        ).fetchall()
+        return {int(row["event_id"]): int(row["attempts"]) for row in rows}
+
+    def record_quarantine(
+        self,
+        run_id: int,
+        *,
+        source_id: str,
+        previous_job_count: int,
+        candidate_keys: Iterable[str],
+        quarantined_at: datetime,
+    ) -> None:
+        """Persist a withheld candidate, replacing any quarantine already pending for the source.
+
+        One source holds at most one pending candidate: a later complete snapshot that drops just
+        as far is the new thing to confirm, not a second outstanding question.
+        """
+        keys = sorted(set(candidate_keys))
+        with self._transaction() as connection:
+            connection.execute(
+                "DELETE FROM quarantined_snapshots WHERE source_id = ?", (source_id,)
+            )
+            connection.execute(
+                "INSERT INTO quarantined_snapshots (run_id, source_id, quarantined_at,"
+                " previous_job_count, candidate_job_count, candidate_keys_json)"
+                " VALUES (?, ?, ?, ?, ?, ?)",
+                (
+                    run_id,
+                    source_id,
+                    _utc_isoformat(quarantined_at),
+                    previous_job_count,
+                    len(keys),
+                    json.dumps(keys),
+                ),
+            )
+
+    def pending_quarantine(self, source_id: str) -> QuarantinedSnapshot | None:
+        """Return the candidate a source is waiting to see confirmed, if any."""
+        row = self._connection.execute(PENDING_QUARANTINE_SQL, (source_id,)).fetchone()
+        if row is None:
+            return None
+        quarantined_at = _parse_timestamp(row["quarantined_at"])
+        if quarantined_at is None:
+            raise ValueError(f"quarantine for source {source_id} has no quarantined_at")
+        return QuarantinedSnapshot(
+            run_id=int(row["run_id"]),
+            source_id=str(row["source_id"]),
+            quarantined_at=quarantined_at,
+            previous_job_count=int(row["previous_job_count"]),
+            candidate_job_count=int(row["candidate_job_count"]),
+            candidate_keys=frozenset(json.loads(row["candidate_keys_json"])),
+        )
+
+    def clear_quarantine(self, source_id: str) -> None:
+        """Drop the pending candidate once a snapshot has been confirmed or superseded."""
+        with self._transaction() as connection:
+            connection.execute(
+                "DELETE FROM quarantined_snapshots WHERE source_id = ?", (source_id,)
+            )

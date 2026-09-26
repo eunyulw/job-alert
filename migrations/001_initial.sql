@@ -97,3 +97,16 @@ CREATE TABLE IF NOT EXISTS snapshot_applications (
   source_id TEXT NOT NULL,
   applied_at TEXT NOT NULL
 );
+
+-- A complete candidate withheld because it dropped more than half of the previous complete
+-- snapshot. The stored key set is the exact board a second, independently fetched collection has
+-- to reproduce before any absence or new-job transition from it may be applied. At most one
+-- candidate is pending per source.
+CREATE TABLE IF NOT EXISTS quarantined_snapshots (
+  run_id INTEGER PRIMARY KEY REFERENCES poll_runs(id),
+  source_id TEXT NOT NULL,
+  quarantined_at TEXT NOT NULL,
+  previous_job_count INTEGER NOT NULL,
+  candidate_job_count INTEGER NOT NULL,
+  candidate_keys_json TEXT NOT NULL
+);
