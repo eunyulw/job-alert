@@ -574,3 +574,74 @@ def test_pending_events_stop_at_a_terminal_delivery_outcome(tmp_path: Path) -> N
         )
 
         assert repo.pending_events("openai-greenhouse") == []
+
+
+# The schema a database created before Task 22 has: no incident record beyond the boolean, and no
+# place to keep a provider's quota or retry signal. `initialize()` must upgrade it in place.
+PRE_TASK_22_SCHEMA = """
+CREATE TABLE source_state (
+  source_id TEXT PRIMARY KEY,
+  etag TEXT,
+  last_modified TEXT,
+  consecutive_failures INTEGER NOT NULL DEFAULT 0,
+  last_complete_at TEXT,
+  backoff_until TEXT,
+  health_alert_open INTEGER NOT NULL DEFAULT 0
+);
+CREATE TABLE notification_attempts (
+  id INTEGER PRIMARY KEY,
+  provider TEXT NOT NULL,
+  attempted_at TEXT NOT NULL,
+  outcome TEXT NOT NULL,
+  provider_request_id TEXT,
+  http_status INTEGER,
+  error_message TEXT
+);
+"""
+
+
+def test_initialize_upgrades_an_existing_database_in_place(tmp_path: Path) -> None:
+    path = tmp_path / "state.sqlite3"
+    with sqlite3.connect(path) as connection:
+        connection.executescript(PRE_TASK_22_SCHEMA)
+        connection.execute(
+            "INSERT INTO source_state (source_id, consecutive_failures, last_complete_at)"
+            " VALUES ('openai-greenhouse', 2, '2026-09-18T12:00:00+00:00')"
+        )
+        connection.execute(
+            "INSERT INTO notification_attempts (provider, attempted_at, outcome)"
+            " VALUES ('pushover', '2026-09-18T12:00:00+00:00', 'delivered')"
+        )
+
+    with Repository.open(path) as repo:
+        repo.initialize()
+        repo.initialize()
+        stored = repo.source_health("openai-greenhouse")
+        assert stored is not None
+        assert stored.consecutive_failures == 2
+        assert stored.last_complete_at == datetime(2026, 9, 18, 12, tzinfo=UTC)
+        assert stored.last_run_at is None
+        assert stored.first_failure_at is None
+        assert repo.latest_quota("pushover") is None
+        with sqlite3.connect(path) as connection:
+            source_columns = {
+                str(row[1]) for row in connection.execute("PRAGMA table_info(source_state)")
+            }
+            attempt_columns = {
+                str(row[1])
+                for row in connection.execute("PRAGMA table_info(notification_attempts)")
+            }
+
+    assert {
+        "last_run_at",
+        "first_failure_at",
+        "last_error",
+        "health_opened_at",
+        "health_reason",
+    } <= source_columns
+    assert {
+        "retry_after_seconds",
+        "quota_limit",
+        "quota_remaining",
+        "quota_reset_at",
+    } <= attempt_columns

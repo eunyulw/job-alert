@@ -715,3 +715,78 @@ async def test_a_permanent_delivery_failure_ends_the_question(
     assert follow_up.notifications_sent == 0
     assert len(service_harness.notifier.messages) == 1
     assert service_harness.repo.pending_events(service_harness.source.id) == []
+
+
+@pytest.mark.asyncio
+async def test_three_dry_runs_leave_the_failure_streak_alone(
+    service_harness: ServiceHarness,
+) -> None:
+    """A diagnostic the operator asked for is not evidence that the source is failing."""
+    for _ in range(3):
+        diagnostic = await service_harness.service.collect_source(
+            service_harness.source, mode=RunMode.DRY_RUN
+        )
+        assert diagnostic.error_code == "dry_run"
+        assert diagnostic.outcome is RunOutcome.PARTIAL
+
+    healthy = service_harness.repo.source_health(service_harness.source.id)
+    assert healthy is not None
+    assert healthy.consecutive_failures == 0
+    assert healthy.first_failure_at is None
+    assert healthy.last_error is None
+    assert healthy.health_alert_open is False
+    # The dry runs are still recorded, so the operator can see what was checked and when.
+    assert healthy.last_run_at is not None
+
+    service_harness.adapter.set_fixture("challenge")
+    for _ in range(3):
+        challenged = await service_harness.service.collect_source(
+            service_harness.source, mode=RunMode.LIVE_SUPPRESSED
+        )
+        assert challenged.outcome is RunOutcome.CHALLENGED
+
+    failing = service_harness.repo.source_health(service_harness.source.id)
+    assert failing is not None
+    assert failing.consecutive_failures == 3
+    assert failing.first_failure_at is not None
+    assert failing.last_error is not None
+
+
+@pytest.mark.asyncio
+async def test_a_delivery_answer_carries_its_quota_and_retry_signal(
+    service_harness: ServiceHarness,
+) -> None:
+    """The provider's own quota and retry figures reach the database the digest reads."""
+    await service_harness.service.collect_source(service_harness.source, mode=RunMode.BASELINE)
+    service_harness.adapter.set_fixture("three-jobs")
+    reset_at = datetime(2026, 10, 1, tzinfo=UTC)
+    service_harness.notifier.queue(
+        DeliveryResult(
+            provider="recording",
+            delivered=False,
+            retryable=True,
+            uncertain=True,
+            http_status=429,
+            error="rate limited",
+            retry_after_seconds=90.0,
+            quota_limit=10000,
+            quota_remaining=0,
+            quota_reset_at=reset_at,
+        )
+    )
+
+    throttled = await service_harness.service.collect_source(
+        service_harness.source, mode=RunMode.LIVE
+    )
+
+    assert throttled.notifications_sent == 0
+    assert len(service_harness.repo.pending_events(service_harness.source.id)) == 1
+    quota = service_harness.repo.latest_quota("recording")
+    assert quota is not None
+    assert (quota.limit, quota.remaining) == (10000, 0)
+    assert quota.reset_at == reset_at
+    with sqlite3.connect(service_harness.db_path) as connection:
+        stored = connection.execute(
+            "SELECT retry_after_seconds FROM notification_attempts"
+        ).fetchone()
+    assert stored == (90.0,)

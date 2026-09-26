@@ -71,7 +71,11 @@ CREATE TABLE IF NOT EXISTS notification_attempts (
   outcome TEXT NOT NULL,
   provider_request_id TEXT,
   http_status INTEGER,
-  error_message TEXT
+  error_message TEXT,
+  retry_after_seconds REAL,
+  quota_limit INTEGER,
+  quota_remaining INTEGER,
+  quota_reset_at TEXT
 );
 
 CREATE TABLE IF NOT EXISTS notification_event_links (
@@ -87,7 +91,12 @@ CREATE TABLE IF NOT EXISTS source_state (
   consecutive_failures INTEGER NOT NULL DEFAULT 0,
   last_complete_at TEXT,
   backoff_until TEXT,
-  health_alert_open INTEGER NOT NULL DEFAULT 0
+  health_alert_open INTEGER NOT NULL DEFAULT 0,
+  last_run_at TEXT,
+  first_failure_at TEXT,
+  last_error TEXT,
+  health_opened_at TEXT,
+  health_reason TEXT
 );
 
 -- Single-use marker: a finalized complete run may apply its absence and reopening decisions
@@ -110,3 +119,17 @@ CREATE TABLE IF NOT EXISTS quarantined_snapshots (
   candidate_job_count INTEGER NOT NULL,
   candidate_keys_json TEXT NOT NULL
 );
+
+-- Columns added after the first release. A database created before them keeps its rows: the
+-- repository applies only the additions a table does not already have, so this file stays the
+-- single source of the DDL and initialize() stays idempotent on both fresh and existing files.
+-- The retry, quota, and incident figures live here because the digest reports them.
+ALTER TABLE notification_attempts ADD COLUMN retry_after_seconds REAL;
+ALTER TABLE notification_attempts ADD COLUMN quota_limit INTEGER;
+ALTER TABLE notification_attempts ADD COLUMN quota_remaining INTEGER;
+ALTER TABLE notification_attempts ADD COLUMN quota_reset_at TEXT;
+ALTER TABLE source_state ADD COLUMN last_run_at TEXT;
+ALTER TABLE source_state ADD COLUMN first_failure_at TEXT;
+ALTER TABLE source_state ADD COLUMN last_error TEXT;
+ALTER TABLE source_state ADD COLUMN health_opened_at TEXT;
+ALTER TABLE source_state ADD COLUMN health_reason TEXT;

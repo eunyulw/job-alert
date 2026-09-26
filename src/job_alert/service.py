@@ -862,7 +862,13 @@ class JobAlertService:
     def _record_delivery(
         self, batch: AlertBatch, result: DeliveryResult, *, now: datetime
     ) -> None:
-        """Persist one attempt, and abandon the events an ambiguous answer cannot keep retrying."""
+        """Persist one attempt, and abandon the events an ambiguous answer cannot keep retrying.
+
+        The attempt row carries everything the provider's answer said: its request id, status,
+        error, the earliest delay the provider itself allowed, and Pushover's ``X-Limit-App-*``
+        quota figures. The durable layer stores those rather than the caller, so the daily digest
+        can report the remaining allowance the last answer named.
+        """
         outcome = _delivery_outcome(result)
         self._repository.record_notification(
             result.provider,
@@ -871,6 +877,10 @@ class JobAlertService:
             provider_request_id=result.provider_request_id,
             http_status=result.http_status,
             error_message=result.error,
+            retry_after_seconds=result.retry_after_seconds,
+            quota_limit=result.quota_limit,
+            quota_remaining=result.quota_remaining,
+            quota_reset_at=result.quota_reset_at,
             event_ids=batch.event_ids,
         )
         if outcome is not DeliveryOutcome.UNCERTAIN:

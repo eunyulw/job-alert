@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sqlite3
 from collections.abc import Iterable, Iterator, Sequence
 from contextlib import contextmanager
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from enum import StrEnum
 from pathlib import Path
 
@@ -18,6 +19,30 @@ DEFAULT_CLOSE_AFTER = 2
 
 #: How many ambiguous delivery attempts one event may collect before the durable layer abandons it.
 DEFAULT_MAX_UNCERTAIN_RETRIES = 2
+
+#: Error codes that mark a run as a diagnostic an operator asked for rather than evidence about the
+#: source. A diagnostic neither advances the failure streak nor counts as a complete success.
+DIAGNOSTIC_ERROR_CODES: frozenset[str] = frozenset({"dry_run"})
+
+#: How many attempts one event may collect from a *certain* no-send failure (``RETRYABLE``) before
+#: the durable layer abandons it. The uncertain class is capped separately by the service's
+#: :data:`DEFAULT_MAX_UNCERTAIN_RETRIES`; this is the cap for the class nothing else bounded.
+DEFAULT_MAX_RETRYABLE_ATTEMPTS = 8
+
+#: Wait before the next attempt after a no-send failure: ``base * 2 ** (attempt - 1)``, capped.
+RETRY_BACKOFF_BASE_SECONDS = 60.0
+RETRY_BACKOFF_MAX_SECONDS = 3600.0
+
+#: Attempt rows this old with no terminal outcome are pruned; terminal rows are never pruned.
+NOTIFICATION_ATTEMPT_RETENTION_DAYS = 30
+
+#: An ``ALTER TABLE ... ADD COLUMN`` addition, recognized so an existing database only misses the
+#: columns it does not have. SQLite has no ``ADD COLUMN IF NOT EXISTS``.
+_ADD_COLUMN = re.compile(
+    r"^\s*ALTER\s+TABLE\s+(?P<table>[A-Za-z_][A-Za-z0-9_]*)\s+ADD\s+COLUMN\s+"
+    r"(?P<column>[A-Za-z_][A-Za-z0-9_]*)",
+    re.IGNORECASE,
+)
 
 
 class DeliveryOutcome(StrEnum):
@@ -43,6 +68,12 @@ TERMINAL_DELIVERY_OUTCOMES = (
     DeliveryOutcome.ABANDONED,
 )
 
+#: Outcomes that leave the events they cover pending for a later cycle.
+NON_TERMINAL_DELIVERY_OUTCOMES = (
+    DeliveryOutcome.RETRYABLE,
+    DeliveryOutcome.UNCERTAIN,
+)
+
 
 class IncompleteRunError(RuntimeError):
     """Raised when a run that is not `complete` is asked to change job absence state."""
@@ -50,7 +81,14 @@ class IncompleteRunError(RuntimeError):
 
 @dataclass(frozen=True)
 class SourceState:
-    """Persisted polling state for one source, including its failure streak and validators."""
+    """Persisted polling state for one source: validators, freshness, and health incident.
+
+    ``last_run_at`` is the finish time of the most recent run whatever its outcome, while
+    ``last_complete_at`` only moves for a complete success. The incident fields are written by the
+    health layer through :meth:`Repository.record_health_state`; ``consecutive_failures``,
+    ``first_failure_at``, ``last_error``, and ``last_run_at`` are also maintained by
+    :meth:`Repository.finish_run` so an unwired deployment still records what happened.
+    """
 
     source_id: str
     etag: str | None
@@ -59,6 +97,112 @@ class SourceState:
     last_complete_at: datetime | None
     backoff_until: datetime | None
     health_alert_open: bool
+    last_run_at: datetime | None = None
+    first_failure_at: datetime | None = None
+    last_error: str | None = None
+    health_opened_at: datetime | None = None
+    health_reason: str | None = None
+
+
+@dataclass(frozen=True)
+class SourceHealthState:
+    """The health policy's input record for one source: persisted incident fields plus config.
+
+    Build it with :meth:`from_source_state`, evaluate one run with
+    :func:`job_alert.health.evaluate_source_health`, and persist the result with
+    :meth:`Repository.record_health_state`. ``company_id``, ``company_name``, and
+    ``interval_minutes`` come from configuration and are carried here because the incident record
+    and the staleness branch both need them; persistence writes back only the rest.
+    """
+
+    source_id: str = ""
+    company_id: str = ""
+    company_name: str = ""
+    consecutive_failures: int = 0
+    health_alert_open: bool = False
+    health_opened_at: datetime | None = None
+    health_reason: str | None = None
+    first_failure_at: datetime | None = None
+    last_error: str | None = None
+    last_complete_at: datetime | None = None
+    interval_minutes: int | None = None
+
+    @classmethod
+    def from_source_state(
+        cls,
+        state: SourceState,
+        *,
+        company_id: str = "",
+        company_name: str = "",
+        interval_minutes: int | None = None,
+    ) -> SourceHealthState:
+        """Join one stored source state with the configuration values health reasoning needs."""
+        return cls(
+            source_id=state.source_id,
+            company_id=company_id,
+            company_name=company_name,
+            consecutive_failures=state.consecutive_failures,
+            health_alert_open=state.health_alert_open,
+            health_opened_at=state.health_opened_at,
+            health_reason=state.health_reason,
+            first_failure_at=state.first_failure_at,
+            last_error=state.last_error,
+            last_complete_at=state.last_complete_at,
+            interval_minutes=interval_minutes,
+        )
+
+
+@dataclass(frozen=True)
+class QuotaSnapshot:
+    """The provider quota figures the most recent attempt reported, when it reported any.
+
+    Pushover sends ``X-Limit-App-Limit``, ``X-Limit-App-Remaining``, and ``X-Limit-App-Reset`` on
+    every answer; ``limit`` or ``reset_at`` may still be missing if the provider omitted one.
+    """
+
+    provider: str
+    limit: int | None
+    remaining: int | None
+    reset_at: datetime | None
+    observed_at: datetime
+
+
+@dataclass(frozen=True)
+class WindowCounts:
+    """What one reporting window contains, counted from durable history rather than memory."""
+
+    new_jobs: int = 0
+    reopened_jobs: int = 0
+    attempts: int = 0
+    delivered: int = 0
+    retryable: int = 0
+    uncertain: int = 0
+    permanent: int = 0
+    abandoned: int = 0
+
+    @property
+    def matched_alerts(self) -> int:
+        """Alerts the provider accepted inside the window."""
+        return self.delivered
+
+    @property
+    def failed_deliveries(self) -> int:
+        """Recorded attempts that did not deliver, whatever their reason."""
+        return self.attempts - self.delivered
+
+
+def retry_backoff_seconds(attempt_number: int) -> float:
+    """How long to wait before the next attempt after this many certain no-send failures.
+
+    The wait doubles from :data:`RETRY_BACKOFF_BASE_SECONDS` and never exceeds
+    :data:`RETRY_BACKOFF_MAX_SECONDS`, so one unreachable provider costs a bounded number of sends
+    spread over a bounded schedule instead of one attempt at every poll forever. The recording
+    layer stores this value on the attempt row it belongs to, which is what makes the schedule
+    visible to an operator instead of implicit in the poll cadence.
+    """
+    if attempt_number < 1:
+        raise ValueError(f"attempt_number must be at least 1, got {attempt_number}")
+    return min(RETRY_BACKOFF_BASE_SECONDS * 2.0 ** (attempt_number - 1), RETRY_BACKOFF_MAX_SECONDS)
 
 
 @dataclass(frozen=True)
@@ -112,11 +256,73 @@ def _parse_timestamp(value: object) -> datetime | None:
     return datetime.fromisoformat(str(value))
 
 
+def _optional_isoformat(moment: datetime | None) -> str | None:
+    """A timestamp serialized the same way as every other one, or ``None`` when there is none."""
+    return None if moment is None else _utc_isoformat(moment)
+
+
+def _source_state_from_row(row: sqlite3.Row) -> SourceState:
+    """One stored source state, read the way both `source_health` and `source_states` need it."""
+    return SourceState(
+        source_id=str(row["source_id"]),
+        etag=row["etag"],
+        last_modified=row["last_modified"],
+        consecutive_failures=int(row["consecutive_failures"]),
+        last_complete_at=_parse_timestamp(row["last_complete_at"]),
+        backoff_until=_parse_timestamp(row["backoff_until"]),
+        health_alert_open=bool(row["health_alert_open"]),
+        last_run_at=_parse_timestamp(row["last_run_at"]),
+        first_failure_at=_parse_timestamp(row["first_failure_at"]),
+        last_error=row["last_error"],
+        health_opened_at=_parse_timestamp(row["health_opened_at"]),
+        health_reason=row["health_reason"],
+    )
+
+
+def _attempt_counts(
+    connection: sqlite3.Connection, event_ids: Iterable[int], outcomes: Sequence[str]
+) -> dict[int, int]:
+    """How many recorded attempts with any of these outcomes cover each of these events."""
+    ids = list(dict.fromkeys(event_ids))
+    if not ids or not outcomes:
+        return {}
+    id_placeholders = ", ".join("?" for _ in ids)
+    outcome_placeholders = ", ".join("?" for _ in outcomes)
+    rows = connection.execute(
+        "SELECT l.event_id AS event_id, COUNT(*) AS attempts FROM notification_event_links l"
+        " JOIN notification_attempts a ON a.id = l.notification_attempt_id"
+        f" WHERE a.outcome IN ({outcome_placeholders}) AND l.event_id IN ({id_placeholders})"
+        " GROUP BY l.event_id",
+        (*outcomes, *ids),
+    ).fetchall()
+    return {int(row["event_id"]): int(row["attempts"]) for row in rows}
+
+
 def _schema_path() -> Path:
     override = os.environ.get(SCHEMA_ENV_VAR)
     if override:
         return Path(override)
     return Path(__file__).resolve().parents[2] / "migrations" / MIGRATION_NAME
+
+
+def _schema_statements(schema: str) -> list[str]:
+    """The migration's statements, with full-line comments removed and empty pieces dropped.
+
+    The repository applies them one at a time so an ``ALTER TABLE ... ADD COLUMN`` whose column an
+    existing database already has can be skipped; SQLite offers no ``ADD COLUMN IF NOT EXISTS``.
+    """
+    without_comments = "\n".join(
+        line for line in schema.splitlines() if not line.lstrip().startswith("--")
+    )
+    pieces = (piece.strip() for piece in without_comments.split(";"))
+    return [statement for statement in pieces if statement]
+
+
+def _column_exists(connection: sqlite3.Connection, table: str, column: str) -> bool:
+    """Whether a table already has a column, read from the schema rather than guessed."""
+    return any(
+        str(row["name"]) == column for row in connection.execute(f"PRAGMA table_info({table})")
+    )
 
 
 def _job_parameters(job: NormalizedJob, observed_at: str) -> tuple[object, ...]:
@@ -328,7 +534,12 @@ class Repository:
             connection.execute(f"RELEASE SAVEPOINT {savepoint}")
 
     def initialize(self) -> None:
-        """Apply the initial migration. Safe to call repeatedly; the DDL is idempotent."""
+        """Apply the initial migration to a fresh or an existing database.
+
+        Safe to call repeatedly. Statements run one at a time so an ``ALTER TABLE ... ADD COLUMN``
+        this file adds for a database created before the column existed is applied once and then
+        skipped, which is how an existing file upgrades on ``initialize()`` without losing rows.
+        """
         path = _schema_path()
         if not path.is_file():
             raise RuntimeError(f"schema migration file not found: {path}")
@@ -336,7 +547,13 @@ class Repository:
             schema = path.read_text(encoding="utf-8")
         except OSError as exc:
             raise RuntimeError(f"unable to read schema migration {path}: {exc}") from exc
-        self._connection.executescript(schema)
+        for statement in _schema_statements(schema):
+            addition = _ADD_COLUMN.match(statement)
+            if addition is not None and _column_exists(
+                self._connection, addition["table"], addition["column"]
+            ):
+                continue
+            self._connection.execute(statement)
 
     def start_run(
         self,
@@ -375,8 +592,12 @@ class Repository:
     ) -> None:
         """Close a poll run and update source state.
 
-        Only `RunOutcome.COMPLETE` records `last_complete_at` and clears the failure streak.
-        Every other outcome increments `consecutive_failures` and leaves job state untouched.
+        Every finished run moves `last_run_at`. Only `RunOutcome.COMPLETE` records
+        `last_complete_at` and clears the failure streak; a run whose `error_code` is a diagnostic
+        (:data:`DIAGNOSTIC_ERROR_CODES`) moves neither the streak nor the incident fields, so an
+        operator's dry runs cannot make a healthy source look broken; every other outcome
+        increments `consecutive_failures`, stamps the first failure of the streak, and stores the
+        error. No outcome changes job state.
         """
         with self._transaction() as connection:
             run = connection.execute(
@@ -404,17 +625,29 @@ class Repository:
                 ),
             )
             connection.execute(UPSERT_SOURCE_STATE_SQL, (source_id,))
+            finished = _utc_isoformat(finished_at)
             if outcome is RunOutcome.COMPLETE:
                 connection.execute(
                     "UPDATE source_state SET last_complete_at = ?, consecutive_failures = 0,"
-                    " backoff_until = NULL WHERE source_id = ?",
-                    (_utc_isoformat(finished_at), source_id),
+                    " backoff_until = NULL, last_run_at = ?,"
+                    # A clean success ends the streak. An incident that is still open keeps its
+                    # first-failure time until the health layer records the recovery it produces,
+                    # because that time is what the recovery event reports.
+                    " first_failure_at = CASE WHEN health_alert_open = 0 THEN NULL"
+                    " ELSE first_failure_at END WHERE source_id = ?",
+                    (finished, finished, source_id),
+                )
+            elif error_code in DIAGNOSTIC_ERROR_CODES:
+                connection.execute(
+                    "UPDATE source_state SET last_run_at = ? WHERE source_id = ?",
+                    (finished, source_id),
                 )
             else:
                 connection.execute(
-                    "UPDATE source_state SET consecutive_failures = consecutive_failures + 1"
-                    " WHERE source_id = ?",
-                    (source_id,),
+                    "UPDATE source_state SET consecutive_failures = consecutive_failures + 1,"
+                    " last_run_at = ?, first_failure_at = COALESCE(first_failure_at, ?),"
+                    " last_error = COALESCE(?, ?, ?) WHERE source_id = ?",
+                    (finished, finished, error_message, error_code, str(outcome), source_id),
                 )
 
     def upsert_observations(
@@ -612,13 +845,40 @@ class Repository:
         provider_request_id: str | None = None,
         http_status: int | None = None,
         error_message: str | None = None,
+        retry_after_seconds: float | None = None,
+        quota_limit: int | None = None,
+        quota_remaining: int | None = None,
+        quota_reset_at: datetime | None = None,
         event_ids: Iterable[int] = (),
     ) -> int:
-        """Persist a delivery attempt and link it to the job events it covered."""
+        """Persist a delivery attempt and link it to the job events it covered.
+
+        The provider's own retry signal, when it sent one, is stored as given. A certain no-send
+        failure that carries no signal gets the durable layer's own backoff for this attempt
+        number, so the schedule an unreachable provider is kept on is visible in the table instead
+        of being implied by the poll cadence. Pushover's ``X-Limit-App-*`` figures ride along on
+        the attempt that reported them, which is where the digest reads them.
+
+        Recording the attempt that reaches :data:`DEFAULT_MAX_RETRYABLE_ATTEMPTS` also writes one
+        ``abandoned`` row for each event that hit the cap, which ends the question: the events stop
+        being pending, and the row's message says why. An ambiguous outcome is capped separately by
+        the service's :data:`DEFAULT_MAX_UNCERTAIN_RETRIES`, which is tighter and fires first.
+        """
+        covered = list(dict.fromkeys(event_ids))
         with self._transaction() as connection:
+            if (
+                retry_after_seconds is None
+                and outcome == DeliveryOutcome.RETRYABLE.value
+                and covered
+            ):
+                already = _attempt_counts(connection, covered, NON_TERMINAL_DELIVERY_OUTCOMES)
+                attempt_number = max(already.values(), default=0) + 1
+                retry_after_seconds = retry_backoff_seconds(attempt_number)
             cursor = connection.execute(
                 "INSERT INTO notification_attempts (provider, attempted_at, outcome,"
-                " provider_request_id, http_status, error_message) VALUES (?, ?, ?, ?, ?, ?)",
+                " provider_request_id, http_status, error_message, retry_after_seconds,"
+                " quota_limit, quota_remaining, quota_reset_at)"
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (
                     provider,
                     _utc_isoformat(attempted_at),
@@ -626,6 +886,10 @@ class Repository:
                     provider_request_id,
                     http_status,
                     error_message,
+                    retry_after_seconds,
+                    quota_limit,
+                    quota_remaining,
+                    _optional_isoformat(quota_reset_at),
                 ),
             )
             if cursor.lastrowid is None:
@@ -634,9 +898,59 @@ class Repository:
             connection.executemany(
                 "INSERT INTO notification_event_links (notification_attempt_id, event_id)"
                 " VALUES (?, ?) ON CONFLICT DO NOTHING",
-                [(attempt_id, event_id) for event_id in event_ids],
+                [(attempt_id, event_id) for event_id in covered],
             )
+            if outcome == DeliveryOutcome.RETRYABLE.value and covered:
+                self._abandon_exhausted_retryable(
+                    connection,
+                    provider=provider,
+                    attempted_at=attempted_at,
+                    event_ids=covered,
+                )
         return attempt_id
+
+    @staticmethod
+    def _abandon_exhausted_retryable(
+        connection: sqlite3.Connection,
+        *,
+        provider: str,
+        attempted_at: datetime,
+        event_ids: Sequence[int],
+    ) -> None:
+        """End the question for events that have spent the no-send retry budget.
+
+        This is the cap the unbounded class needed: without it an unreachable provider would keep
+        collecting one ``retryable`` row per batch per cycle forever. The row written here is
+        terminal, so the events leave ``pending_events()`` and the attempt count stops growing.
+        """
+        counts = _attempt_counts(connection, event_ids, NON_TERMINAL_DELIVERY_OUTCOMES)
+        exhausted = sorted(
+            event_id
+            for event_id in event_ids
+            if counts.get(event_id, 0) >= DEFAULT_MAX_RETRYABLE_ATTEMPTS
+        )
+        if not exhausted:
+            return
+        cursor = connection.execute(
+            "INSERT INTO notification_attempts (provider, attempted_at, outcome, error_message)"
+            " VALUES (?, ?, ?, ?)",
+            (
+                provider,
+                _utc_isoformat(attempted_at),
+                DeliveryOutcome.ABANDONED.value,
+                f"abandoned after {DEFAULT_MAX_RETRYABLE_ATTEMPTS} unanswered attempts with a"
+                f" {retry_backoff_seconds(DEFAULT_MAX_RETRYABLE_ATTEMPTS):.0f}s final backoff:"
+                " the provider never accepted the message",
+            ),
+        )
+        if cursor.lastrowid is None:
+            raise RuntimeError(f"failed to record the abandoned attempt for {provider}")
+        abandoned_id = int(cursor.lastrowid)
+        connection.executemany(
+            "INSERT INTO notification_event_links (notification_attempt_id, event_id)"
+            " VALUES (?, ?) ON CONFLICT DO NOTHING",
+            [(abandoned_id, event_id) for event_id in exhausted],
+        )
 
     def load_active_jobs(self, source_id: str) -> list[NormalizedJob]:
         """Return every job observed for a source that a complete snapshot has not closed."""
@@ -669,15 +983,49 @@ class Repository:
         ).fetchone()
         if row is None:
             return None
-        return SourceState(
-            source_id=str(row["source_id"]),
-            etag=row["etag"],
-            last_modified=row["last_modified"],
-            consecutive_failures=int(row["consecutive_failures"]),
-            last_complete_at=_parse_timestamp(row["last_complete_at"]),
-            backoff_until=_parse_timestamp(row["backoff_until"]),
-            health_alert_open=bool(row["health_alert_open"]),
-        )
+        return _source_state_from_row(row)
+
+    def source_states(self) -> list[SourceState]:
+        """Every persisted source state, ordered by source id so callers can diff two reads."""
+        rows = self._connection.execute(
+            "SELECT * FROM source_state ORDER BY source_id"
+        ).fetchall()
+        return [_source_state_from_row(row) for row in rows]
+
+    def record_health_state(self, source_id: str, state: SourceHealthState) -> None:
+        """Persist the incident record one health evaluation produced.
+
+        ``consecutive_failures`` is written too, so the streak the health policy reasoned about and
+        the streak a later digest reads are the same number. ``source_id`` on the record is not
+        trusted; the argument names the row. An incident that is open must carry the instant it
+        opened, which keeps the two fields from drifting apart.
+
+        ``last_complete_at`` is deliberately not written here: freshness belongs to
+        :meth:`finish_run`, which sees the run that actually completed, and a health evaluation
+        reads the state from before its own run.
+        """
+        if state.consecutive_failures < 0:
+            raise ValueError("consecutive_failures must not be negative")
+        if state.health_alert_open and state.health_opened_at is None:
+            raise ValueError(
+                f"source {source_id} cannot have an open incident without its opening time"
+            )
+        with self._transaction() as connection:
+            connection.execute(UPSERT_SOURCE_STATE_SQL, (source_id,))
+            connection.execute(
+                "UPDATE source_state SET consecutive_failures = ?, health_alert_open = ?,"
+                " health_opened_at = ?, health_reason = ?, first_failure_at = ?, last_error = ?"
+                " WHERE source_id = ?",
+                (
+                    state.consecutive_failures,
+                    1 if state.health_alert_open else 0,
+                    _optional_isoformat(state.health_opened_at),
+                    state.health_reason,
+                    _optional_isoformat(state.first_failure_at),
+                    state.last_error,
+                    source_id,
+                ),
+            )
 
     def record_conditional_state(
         self,
@@ -813,18 +1161,101 @@ class Repository:
         self, event_ids: Iterable[int], *, outcome: DeliveryOutcome
     ) -> dict[int, int]:
         """How many recorded attempts with one outcome already cover each of these events."""
-        ids = list(dict.fromkeys(event_ids))
-        if not ids:
-            return {}
-        placeholders = ", ".join("?" for _ in ids)
-        rows = self._connection.execute(
-            "SELECT l.event_id AS event_id, COUNT(*) AS attempts FROM notification_event_links l"
-            " JOIN notification_attempts a ON a.id = l.notification_attempt_id"
-            f" WHERE a.outcome = ? AND l.event_id IN ({placeholders})"
-            " GROUP BY l.event_id",
-            (outcome.value, *ids),
+        return _attempt_counts(self._connection, event_ids, (outcome.value,))
+
+    def latest_quota(self, provider: str) -> QuotaSnapshot | None:
+        """The newest recorded provider quota for one provider, or `None` when none was reported.
+
+        The digest reports the provider's remaining monthly allowance and reset instant from here,
+        so a run of failures cannot quietly discard the last figures the provider sent.
+        """
+        row = self._connection.execute(
+            "SELECT provider, attempted_at, quota_limit, quota_remaining, quota_reset_at"
+            " FROM notification_attempts WHERE provider = ? AND quota_remaining IS NOT NULL"
+            " ORDER BY attempted_at DESC, id DESC LIMIT 1",
+            (provider,),
+        ).fetchone()
+        if row is None:
+            return None
+        observed_at = _parse_timestamp(row["attempted_at"])
+        if observed_at is None:
+            raise ValueError(f"notification attempt for {provider} has no attempted_at")
+        return QuotaSnapshot(
+            provider=str(row["provider"]),
+            limit=None if row["quota_limit"] is None else int(row["quota_limit"]),
+            remaining=int(row["quota_remaining"]),
+            reset_at=_parse_timestamp(row["quota_reset_at"]),
+            observed_at=observed_at,
+        )
+
+    def window_counts(self, started_at: datetime, finished_at: datetime) -> WindowCounts:
+        """Count one reporting window's job events and delivery attempts from stored history.
+
+        The window is half open -- ``started_at`` inclusive, ``finished_at`` exclusive -- and every
+        figure comes from the database, so a digest is reproducible from the same window and never
+        depends on what the reporting process remembers.
+        """
+        start = _utc_isoformat(started_at)
+        end = _utc_isoformat(finished_at)
+        events = self._connection.execute(
+            "SELECT event_type, COUNT(*) AS total FROM job_events"
+            " WHERE detected_at >= ? AND detected_at < ? GROUP BY event_type",
+            (start, end),
         ).fetchall()
-        return {int(row["event_id"]): int(row["attempts"]) for row in rows}
+        event_totals = {str(row["event_type"]): int(row["total"]) for row in events}
+        attempts = self._connection.execute(
+            "SELECT outcome, COUNT(*) AS total FROM notification_attempts"
+            " WHERE attempted_at >= ? AND attempted_at < ? GROUP BY outcome",
+            (start, end),
+        ).fetchall()
+        attempt_totals = {str(row["outcome"]): int(row["total"]) for row in attempts}
+        return WindowCounts(
+            new_jobs=event_totals.get(JobEventType.NEW.value, 0),
+            reopened_jobs=event_totals.get(JobEventType.REOPENED.value, 0),
+            attempts=sum(attempt_totals.values()),
+            delivered=attempt_totals.get(DeliveryOutcome.DELIVERED.value, 0),
+            retryable=attempt_totals.get(DeliveryOutcome.RETRYABLE.value, 0),
+            uncertain=attempt_totals.get(DeliveryOutcome.UNCERTAIN.value, 0),
+            permanent=attempt_totals.get(DeliveryOutcome.PERMANENT.value, 0),
+            abandoned=attempt_totals.get(DeliveryOutcome.ABANDONED.value, 0),
+        )
+
+    def prune_notification_attempts(
+        self,
+        *,
+        now: datetime,
+        retention_days: int = NOTIFICATION_ATTEMPT_RETENTION_DAYS,
+    ) -> int:
+        """Drop unresolved attempt rows older than the retention window, with their links.
+
+        Only rows with no terminal outcome are pruned. A terminal row is the record that ended an
+        event's question: deleting one would make its events pending again and could resend an
+        alert, so those rows stay for good. The practical effect is that an event nothing can
+        deliver costs at most :data:`DEFAULT_MAX_RETRYABLE_ATTEMPTS` sends per retention window
+        instead of one send per poll for as long as the event exists. Returns the rows removed.
+        """
+        if retention_days < 1:
+            raise ValueError(f"retention_days must be at least 1, got {retention_days}")
+        cutoff = _utc_isoformat(now - timedelta(days=retention_days))
+        with self._transaction() as connection:
+            placeholders = ", ".join("?" for _ in NON_TERMINAL_DELIVERY_OUTCOMES)
+            stale = connection.execute(
+                "SELECT id FROM notification_attempts"
+                f" WHERE outcome IN ({placeholders}) AND attempted_at < ?",
+                (*[outcome.value for outcome in NON_TERMINAL_DELIVERY_OUTCOMES], cutoff),
+            ).fetchall()
+            attempt_ids = [int(row["id"]) for row in stale]
+            if not attempt_ids:
+                return 0
+            ids = ", ".join("?" for _ in attempt_ids)
+            connection.execute(
+                f"DELETE FROM notification_event_links WHERE notification_attempt_id IN ({ids})",
+                attempt_ids,
+            )
+            connection.execute(
+                f"DELETE FROM notification_attempts WHERE id IN ({ids})", attempt_ids
+            )
+            return len(attempt_ids)
 
     def record_quarantine(
         self,
