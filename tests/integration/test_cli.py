@@ -135,6 +135,85 @@ def test_collect_live_suppressed_writes_a_cycle_report(
         assert connection.execute("SELECT COUNT(*) FROM jobs").fetchone()[0] == 2
 
 
+def test_collect_live_refuses_while_the_only_enabled_filter_never_notifies(
+    tmp_path: Path, greenhouse_endpoint: respx.Router, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Important 1: a live cycle is gated wherever it is asked for, not only through run."""
+    monkeypatch.setenv("PUSHOVER_APP_TOKEN", "test-token")
+    monkeypatch.setenv("PUSHOVER_USER_KEY", "test-user")
+    config = make_config(tmp_path)
+
+    result = invoke(
+        "collect",
+        "--all",
+        "--mode",
+        "live",
+        "--config",
+        str(config),
+        "--db",
+        str(tmp_path / "state.sqlite3"),
+    )
+
+    assert result.exit_code == 2
+    assert "all-jobs-dry-run" in result.stderr
+    assert not (tmp_path / "state.sqlite3").exists()
+
+
+def test_collect_live_refuses_below_the_ninety_percent_coverage_threshold(
+    tmp_path: Path, greenhouse_endpoint: respx.Router, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Important 1: collect --all is broad activation, so it obeys the same 90% rule as run."""
+    monkeypatch.setenv("PUSHOVER_APP_TOKEN", "test-token")
+    monkeypatch.setenv("PUSHOVER_USER_KEY", "test-user")
+    config = make_config(tmp_path, fallback_company=True, notify_filter=True)
+
+    result = invoke(
+        "collect",
+        "--all",
+        "--mode",
+        "live",
+        "--config",
+        str(config),
+        "--db",
+        str(tmp_path / "state.sqlite3"),
+    )
+
+    assert result.exit_code == 2
+    assert "below the 90%" in result.stderr
+    assert "50.00%" in result.stderr
+
+
+def test_collect_live_delivers_when_the_gates_pass(
+    tmp_path: Path, greenhouse_endpoint: respx.Router, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The gate refuses live without coverage; above the threshold the live path still works."""
+    config = make_config(tmp_path, notify_filter=True)
+    database = tmp_path / "state.sqlite3"
+    recorder = RecordingNotifier()
+    monkeypatch.setattr(cli, "build_notifier", lambda provider, **_: recorder)
+
+    result = invoke(
+        "collect",
+        "--all",
+        "--mode",
+        "live",
+        "--json",
+        "--config",
+        str(config),
+        "--db",
+        str(database),
+    )
+
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    cycle = payload["sources"][0]
+    assert cycle["outcome"] == "complete"
+    assert cycle["notifications_sent"] == 1
+    assert len(cycle["would_deliver"]) == 2
+    assert len(recorder.messages) == 1
+    assert "Example Robotics" in recorder.messages[0].title
+
+
 def test_collect_refuses_a_source_it_cannot_find(
     tmp_path: Path, greenhouse_endpoint: respx.Router
 ) -> None:
@@ -351,6 +430,22 @@ def test_report_health_emits_json_on_stdout(
     assert payload["sources_complete"] == 1
     assert payload["retry_policy"]["enforced"] is True
     assert payload["open_incidents"] == []
+
+
+def test_report_health_refuses_a_missing_database_without_creating_one(
+    tmp_path: Path, greenhouse_endpoint: respx.Router
+) -> None:
+    """Minor 4: a report reads state, so it must not invent the database it reports on."""
+    config = make_config(tmp_path)
+    database = tmp_path / "data" / "job-alert.sqlite3"
+
+    result = invoke(
+        "report", "health", "--json", "--config", str(config), "--db", str(database)
+    )
+
+    assert result.exit_code == 2
+    assert "cannot read" in result.stderr
+    assert not database.exists()
 
 
 # ------------------------------------------------------------------ notify-test

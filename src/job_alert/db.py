@@ -33,6 +33,11 @@ DEFAULT_MAX_RETRYABLE_ATTEMPTS = 8
 RETRY_BACKOFF_BASE_SECONDS = 60.0
 RETRY_BACKOFF_MAX_SECONDS = 3600.0
 
+#: The longest delay a retry may be held back by, whoever asked for it. A provider's own
+#: ``Retry-After`` is advisory, so it is honoured inside this ceiling rather than trusted: a
+#: pathological header, or a quota reset months away, must not park an alert indefinitely.
+RETRY_AFTER_MAX_SECONDS = RETRY_BACKOFF_MAX_SECONDS
+
 #: Attempt rows this old with no terminal outcome are pruned; terminal rows are never pruned.
 NOTIFICATION_ATTEMPT_RETENTION_DAYS = 30
 
@@ -205,6 +210,20 @@ def retry_backoff_seconds(attempt_number: int) -> float:
     if attempt_number < 1:
         raise ValueError(f"attempt_number must be at least 1, got {attempt_number}")
     return min(RETRY_BACKOFF_BASE_SECONDS * 2.0 ** (attempt_number - 1), RETRY_BACKOFF_MAX_SECONDS)
+
+
+def bounded_retry_after(seconds: float | None) -> float | None:
+    """A recorded retry delay, floored at zero and capped at :data:`RETRY_AFTER_MAX_SECONDS`.
+
+    The value comes from a provider's own answer -- ``Retry-After``, or a quota reset -- so it is
+    treated as advice rather than as an instruction: a delay the provider asks for is honoured
+    inside the same ceiling the durable layer's own backoff uses, and a negative or absurd one
+    cannot make an alert either send immediately on every pass or never come back at all.
+    ``None`` stays ``None``, which means "no recorded delay" rather than "due now".
+    """
+    if seconds is None:
+        return None
+    return min(max(float(seconds), 0.0), RETRY_AFTER_MAX_SECONDS)
 
 
 @dataclass(frozen=True)
@@ -526,6 +545,24 @@ class Repository:
         connection = sqlite3.connect(database, isolation_level=None, timeout=30.0)
         connection.row_factory = sqlite3.Row
         connection.execute("PRAGMA foreign_keys = ON")
+        return cls(connection)
+
+    @classmethod
+    def open_read_only(cls, path: str | Path) -> Repository:
+        """Open an existing database for reading, without creating or migrating it.
+
+        A report reads state that some other command produced, so it must not create the file it was
+        pointed at and must not apply a migration to it: an operator who mistypes a path should be
+        told, not handed an empty report and a new database. SQLite's ``mode=ro`` URI makes that
+        explicit, and a missing file is refused here rather than created by the connect call.
+        """
+        database = Path(path)
+        if not database.is_file():
+            raise FileNotFoundError(f"no state database at {database}")
+        connection = sqlite3.connect(
+            f"{database.resolve().as_uri()}?mode=ro", uri=True, isolation_level=None, timeout=30.0
+        )
+        connection.row_factory = sqlite3.Row
         return cls(connection)
 
     def close(self) -> None:
@@ -913,6 +950,9 @@ class Repository:
         the service's :data:`DEFAULT_MAX_UNCERTAIN_RETRIES`, which is tighter and fires first.
         """
         covered = list(dict.fromkeys(event_ids))
+        # A provider's own delay is advice: recorded inside the durable ceiling, so a pathological
+        # header cannot hold an alert back indefinitely, and never negative.
+        retry_after_seconds = bounded_retry_after(retry_after_seconds)
         with self._transaction() as connection:
             if (
                 retry_after_seconds is None

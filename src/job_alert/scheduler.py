@@ -54,7 +54,7 @@ HTTP fetcher and the database.
 from __future__ import annotations
 
 import asyncio
-from collections.abc import Awaitable, Callable, Mapping, Sequence
+from collections.abc import Awaitable, Callable, Collection, Mapping, Sequence
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime, timedelta
 from hashlib import sha256
@@ -178,6 +178,10 @@ class HeartbeatOutcome:
     incidents: tuple[HealthEvent, ...] = ()
     recoveries: tuple[HealthEvent, ...] = ()
     pending_deliveries: int = 0
+    #: Sources this heartbeat deliberately left alone because their own collection was still
+    #: running: that collection holds the state snapshot it will write from, so the heartbeat must
+    #: not write health for the same source underneath it.
+    deferred_in_flight: tuple[str, ...] = ()
 
     @property
     def events(self) -> tuple[HealthEvent, ...]:
@@ -353,7 +357,11 @@ class Scheduler:
         moment = _as_utc(self._clock() if now is None else now)
         self._next_heartbeat_at = moment + timedelta(seconds=self._heartbeat_interval_seconds)
         outcome = evaluate_heartbeat(
-            self._repository, self._sources, companies=self._company_names, now=moment
+            self._repository,
+            self._sources,
+            companies=self._company_names,
+            now=moment,
+            in_flight=tuple(self._in_flight),
         )
         if outcome.events:
             await self._push_health(outcome.events)
@@ -582,6 +590,7 @@ def evaluate_heartbeat(
     *,
     companies: Mapping[str, str] | None = None,
     now: datetime,
+    in_flight: Collection[str] = (),
 ) -> HeartbeatOutcome:
     """Apply the health policy to every enabled source that did not run, and count what is pending.
 
@@ -589,12 +598,27 @@ def evaluate_heartbeat(
     :func:`evaluate_source_heartbeat` returns the stored state untouched while the freshness window
     holds, and only the sources whose state actually moves are reported. Nothing here touches job
     state.
+
+    A source in ``in_flight`` is skipped entirely, health and pending deliveries alike. That is
+    what keeps one incident opened exactly once under concurrency: a collection that outlives a wake
+    already read the state it will write from, so a health write landing underneath it would be
+    clobbered by the run's own absolute evaluation -- reopening a recovery, or closing an incident
+    that was never announced. Skipping is enough on its own because every read and write below runs
+    in one event-loop step with no await between them, and because the scheduler only clears the
+    in-flight mark *after* the collection has written its health, the heartbeat's next pass sees the
+    settled state. A skipped source's pending events are not counted either: its collection is about
+    to deliver them at the end of the cycle it is in the middle of.
     """
     names = {} if companies is None else companies
+    busy = set(in_flight)
     incidents: list[HealthEvent] = []
     recoveries: list[HealthEvent] = []
     pending = 0
+    deferred: list[str] = []
     for source in sorted((source for source in sources if source.enabled), key=lambda s: s.id):
+        if source.id in busy:
+            deferred.append(source.id)
+            continue
         state = repository.source_health(source.id)
         if state is not None:
             health = SourceHealthState.from_source_state(
@@ -617,6 +641,7 @@ def evaluate_heartbeat(
         incidents=tuple(incidents),
         recoveries=tuple(recoveries),
         pending_deliveries=pending,
+        deferred_in_flight=tuple(deferred),
     )
 
 

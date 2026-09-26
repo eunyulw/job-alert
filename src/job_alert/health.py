@@ -514,11 +514,14 @@ class DailyDigest:
         """
         base = int(RETRY_BACKOFF_BASE_SECONDS)
         cap = int(RETRY_BACKOFF_MAX_SECONDS)
+        attempts = DEFAULT_MAX_RETRYABLE_ATTEMPTS
+        retention = NOTIFICATION_ATTEMPT_RETENTION_DAYS
         return (
-            f"at most {DEFAULT_MAX_RETRYABLE_ATTEMPTS} unanswered attempts per event, each retry"
-            f" waiting the recorded {base}s..{cap}s delay before it may be spent; an unanswered"
-            f" attempt is pruned after {NOTIFICATION_ATTEMPT_RETENTION_DAYS} days only once every"
-            " event it covers has a final answer, so the cap survives the retention window"
+            f"at most {attempts} unanswered attempts per event, each retry waiting the recorded"
+            f" {base}s..{cap}s delay before it may be spent, and a provider's own Retry-After"
+            f" honoured only up to that same {cap}s ceiling; an unanswered attempt is pruned after"
+            f" {retention} days only once every event it covers has a final answer, so the cap"
+            " survives the retention window"
         )
 
     @property

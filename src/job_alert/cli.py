@@ -395,6 +395,18 @@ def _open_repository(database: Path) -> Repository:
     return repository
 
 
+def _open_repository_for_read(database: Path) -> Repository:
+    """Open an existing database for reading, without creating or migrating it.
+
+    A report must not invent the state it reports on: an operator who mistypes a path gets a clear
+    refusal instead of an empty digest and a new database file.
+    """
+    try:
+        return Repository.open_read_only(database)
+    except (sqlite3.Error, OSError) as exc:
+        _refuse(f"cannot read {database}: {exc}")
+
+
 def _build_service(
     repository: Repository,
     config: AppConfig,
@@ -650,6 +662,11 @@ def collect(
 ) -> None:
     """Run one collection cycle for the selected sources and exit."""
     app_config = _config_or_refuse(config)
+    if mode is RunMode.LIVE:
+        # One gate for every live path in this CLI, whichever verb asked for it: a live cycle acts
+        # on the registry the gates describe, whether it is one wake of the loop or one set of
+        # cycles, so no command can reach a provider below the coverage threshold.
+        _require_live_activation(app_config)
     sources = _selected_sources(app_config, source_ids=source or (), all_sources=all_sources)
     notifier = build_notifier(provider) if mode is RunMode.LIVE else None
     results = _collect_and_close(
@@ -803,17 +820,25 @@ def report_health(
 ) -> None:
     """Report source freshness, open incidents, delivery activity, and the retry policy."""
     app_config = _config_or_refuse(config)
-    repository = _open_repository(db)
+    repository = _open_repository_for_read(db)
     try:
         moment = datetime.now(UTC)
-        digest = build_digest(
-            repository,
-            app_config.sources,
-            companies={company.id: company.name for company in app_config.companies},
-            now=moment,
-            window_start=moment - timedelta(days=1),
-            provider=provider,
-        )
+        try:
+            digest = build_digest(
+                repository,
+                app_config.sources,
+                companies={company.id: company.name for company in app_config.companies},
+                now=moment,
+                window_start=moment - timedelta(days=1),
+                provider=provider,
+            )
+        except (sqlite3.Error, KeyError, IndexError) as exc:
+            # An older file is refused rather than half-read: the columns this report needs arrive
+            # with the migration an applying command runs.
+            _refuse(
+                f"cannot read state from {db}: {exc}; run 'job-alert init-db --db {db}' to"
+                " upgrade it"
+            )
     finally:
         repository.close()
     if json_output:

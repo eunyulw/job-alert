@@ -17,7 +17,13 @@ from pathlib import Path
 import pytest
 
 from job_alert.db import Repository, SourceHealthState
-from job_alert.health import HealthEventKind, IncidentReason, staleness_threshold
+from job_alert.health import (
+    HealthEvent,
+    HealthEventKind,
+    IncidentReason,
+    evaluate_source_health,
+    staleness_threshold,
+)
 from job_alert.models import (
     CompanyTarget,
     JobEvent,
@@ -372,6 +378,91 @@ async def test_the_heartbeat_is_not_silent_while_a_delivery_is_pending(tmp_path:
     assert service.deliveries == ["acme-a"]
 
 
+async def test_the_heartbeat_leaves_health_writes_to_an_in_flight_collection(
+    tmp_path: Path,
+) -> None:
+    """Important 2: a collection that outlives a heartbeat owns the write, so one incident opens.
+
+    The source has never completed and last ran long enough ago for the heartbeat to call it stale,
+    while the in-flight collection's own evaluation is not stale (its first failure is now). Without
+    the in-flight guard the heartbeat would open an incident that the run's write then clobbers
+    without a recovery push; with it, the incident is opened exactly once, after the run is idle.
+    """
+    repository = open_repository(tmp_path)
+    source = make_source("acme-a", host="a", interval=5)
+    record_diagnostic(repository, source, at=NOW - timedelta(minutes=20))
+    service = RecordingService(
+        gated=True, health_writer=run_writer(repository, RunOutcome.FAILED, at=NOW)
+    )
+    scheduler = build_scheduler(repository, [source], service)
+
+    await scheduler.wake(now=NOW)
+    await wait_for(lambda: service.calls == ["acme-a"])
+
+    for offset in (0, 5, 10):
+        in_flight = await scheduler.heartbeat(now=NOW + timedelta(minutes=offset))
+        assert in_flight.events == ()
+        assert in_flight.deferred_in_flight == ("acme-a",)
+        state = repository.source_health(source.id)
+        assert state is not None and state.health_alert_open is False
+
+    service.release.set()
+    await scheduler.wait_for_idle()
+    assert service.health_events == []  # the failing run itself opens nothing
+
+    opened = await scheduler.heartbeat(now=NOW + timedelta(minutes=16))
+
+    assert [event.kind for event in opened.incidents] == [HealthEventKind.SOURCE_FAILURE]
+    assert opened.deferred_in_flight == ()
+    state = repository.source_health(source.id)
+    assert state is not None
+    assert state.health_alert_open is True
+    assert state.health_reason == IncidentReason.STALE_WITHOUT_COMPLETE_SUCCESS
+    # Exactly one failure event in the whole sequence, whoever wrote it.
+    assert len(service.health_events) + len(opened.incidents) == 1
+
+
+async def test_the_heartbeat_does_not_misread_a_source_whose_run_is_in_flight(
+    tmp_path: Path,
+) -> None:
+    """Important 2: a source that looks stale only because its collection has not finished yet.
+
+    The source has not completed for twenty minutes, so a heartbeat that ignores the in-flight set
+    opens a staleness incident -- and the collection that is completing right now, which carries no
+    incident in the pre-run state it evaluates against, closes it again without ever pushing the
+    recovery that would explain the closure. With the guard the heartbeat stays quiet, the run's own
+    freshness lands, and no incident is invented at all.
+    """
+    repository = open_repository(tmp_path)
+    source = make_source("acme-a", host="a", interval=5)
+    record_diagnostic(repository, source, at=NOW - timedelta(minutes=20))
+    service = RecordingService(
+        gated=True, health_writer=run_writer(repository, RunOutcome.COMPLETE, at=NOW)
+    )
+    scheduler = build_scheduler(repository, [source], service)
+
+    await scheduler.wake(now=NOW)
+    await wait_for(lambda: service.calls == ["acme-a"])
+
+    skipped = await scheduler.heartbeat(now=NOW)
+    assert skipped.events == ()
+    assert skipped.deferred_in_flight == ("acme-a",)
+    state = repository.source_health(source.id)
+    assert state is not None and state.health_alert_open is False
+
+    service.release.set()
+    await scheduler.wait_for_idle()
+
+    after = await scheduler.heartbeat(now=NOW + timedelta(minutes=5))
+
+    assert after.events == ()
+    assert service.health_events == []
+    state = repository.source_health(source.id)
+    assert state is not None
+    assert state.health_alert_open is False
+    assert state.last_complete_at == NOW
+
+
 # ------------------------------------------------------------------ the daily digest
 
 
@@ -459,6 +550,52 @@ def record_complete(repository: Repository, source: SourceConfig, *, at: datetim
     repository.finish_run(run_id, RunOutcome.COMPLETE, at, jobs_seen=1)
 
 
+def record_diagnostic(repository: Repository, source: SourceConfig, *, at: datetime) -> None:
+    """A dry run the operator asked for: it moves the source's last run and nothing else."""
+    run_id = repository.start_run(source.id, at)
+    repository.finish_run(run_id, RunOutcome.PARTIAL, at, error_code="dry_run")
+
+
+def run_writer(
+    repository: Repository, outcome: RunOutcome, *, at: datetime
+) -> Callable[[SourceConfig], tuple[HealthEvent, ...]]:
+    """A stand-in for the health write one real cycle makes, for a service that has none.
+
+    It follows the order the real service uses: read the stored state, finish the run, evaluate the
+    outcome against the state it read, and persist the result. Reading at write time is equivalent
+    here only because the heartbeat leaves an in-flight source alone, which is what the tests that
+    use this writer are checking.
+    """
+
+    def write(source: SourceConfig) -> tuple[HealthEvent, ...]:
+        before = repository.source_health(source.id)
+        assert before is not None
+        run_id = repository.start_run(source.id, at)
+        repository.finish_run(
+            run_id,
+            outcome,
+            at,
+            jobs_seen=1,
+            error_code=None if outcome is RunOutcome.COMPLETE else "collection_failed",
+            error_message=None if outcome is RunOutcome.COMPLETE else "HTTP 503",
+        )
+        evaluation = evaluate_source_health(
+            SourceHealthState.from_source_state(
+                before,
+                company_id=COMPANY.id,
+                company_name=COMPANY.name,
+                interval_minutes=source.interval_minutes,
+            ),
+            outcome,
+            now=at,
+            error_message=None if outcome is RunOutcome.COMPLETE else "HTTP 503",
+        )
+        repository.record_health_state(source.id, evaluation.state)
+        return tuple(evaluation.events)
+
+    return write
+
+
 def seed_pending_event(repository: Repository, source: SourceConfig, *, at: datetime) -> int:
     job = make_job(source.id)
     run_id = repository.start_run(source.id, at)
@@ -505,10 +642,17 @@ class StubFetcher:
 class RecordingService:
     """A stand-in collection service that records concurrency and delivery passes."""
 
-    def __init__(self, *, gated: bool = False) -> None:
+    def __init__(
+        self,
+        *,
+        gated: bool = False,
+        health_writer: Callable[[SourceConfig], tuple[HealthEvent, ...]] | None = None,
+    ) -> None:
         self.calls: list[str] = []
         self.finished: list[str] = []
         self.deliveries: list[str] = []
+        self.health_events: list[HealthEvent] = []
+        self.health_writer = health_writer
         self.active = 0
         self.max_active = 0
         self.per_host_active: dict[str, int] = {}
@@ -529,12 +673,17 @@ class RecordingService:
         try:
             if self.release is not None:
                 await self.release.wait()
+            events: tuple[HealthEvent, ...] = ()
+            if self.health_writer is not None:
+                events = tuple(self.health_writer(source))
+                self.health_events.extend(events)
             return CycleResult(
                 source_id=source.id,
                 mode=mode,
                 run_id=1,
                 outcome=RunOutcome.COMPLETE,
                 complete=True,
+                health_events=events,
             )
         finally:
             self.active -= 1

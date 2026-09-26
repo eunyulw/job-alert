@@ -6,6 +6,7 @@ import pytest
 
 from job_alert.db import (
     DEFAULT_MAX_RETRYABLE_ATTEMPTS,
+    RETRY_BACKOFF_MAX_SECONDS,
     DeliveryOutcome,
     IncompleteRunError,
     Repository,
@@ -758,6 +759,80 @@ def test_pending_events_use_the_newest_attempts_delay(tmp_path: Path) -> None:
             repo.pending_events("openai-greenhouse", now=attempted_at + timedelta(minutes=61))
             != []
         )
+
+
+# ------------------------------------------------------------------ the provider's own delay cap
+
+
+def test_a_provider_retry_after_is_capped_at_the_durable_ceiling(tmp_path: Path) -> None:
+    """Minor 3: a provider's own delay is advice, bounded by the same ceiling as our backoff."""
+    path = tmp_path / "state.sqlite3"
+    attempted_at = datetime(2026, 9, 18, 12, 0, tzinfo=UTC)
+    with Repository.open(path) as repo:
+        repo.initialize()
+        event_id = seed_event(repo, now=attempted_at - timedelta(minutes=5))
+        repo.record_notification(
+            "pushover",
+            DeliveryOutcome.RETRYABLE.value,
+            attempted_at,
+            retry_after_seconds=10_000_000.0,
+            event_ids=[event_id],
+        )
+
+        # Just inside the ceiling the event is still held back; at the ceiling it is due again.
+        assert (
+            repo.pending_events(
+                "openai-greenhouse",
+                now=attempted_at + timedelta(seconds=RETRY_BACKOFF_MAX_SECONDS - 1),
+            )
+            == []
+        )
+        assert repo.pending_events(
+            "openai-greenhouse",
+            now=attempted_at + timedelta(seconds=RETRY_BACKOFF_MAX_SECONDS),
+        ) != []
+
+        repo.record_notification(
+            "pushover",
+            DeliveryOutcome.RETRYABLE.value,
+            attempted_at,
+            retry_after_seconds=-30.0,
+            event_ids=[event_id],
+        )
+        assert repo.pending_events(
+            "openai-greenhouse", now=attempted_at + timedelta(seconds=1)
+        ) != []
+
+    with sqlite3.connect(path) as connection:
+        stored = [
+            row[0]
+            for row in connection.execute(
+                "SELECT retry_after_seconds FROM notification_attempts ORDER BY id"
+            )
+        ]
+    assert stored == [RETRY_BACKOFF_MAX_SECONDS, 0.0]
+
+
+def test_open_read_only_neither_creates_nor_migrates_a_database(tmp_path: Path) -> None:
+    """Minor 4: reading state is not a reason to write one."""
+    missing = tmp_path / "not-there.sqlite3"
+
+    with pytest.raises(FileNotFoundError, match="no state database"):
+        Repository.open_read_only(missing)
+
+    assert not missing.exists()
+
+    existing = tmp_path / "state.sqlite3"
+    with Repository.open(existing) as repo:
+        repo.initialize()
+        repo.start_run("openai-greenhouse", datetime(2026, 9, 18, tzinfo=UTC))
+
+    with Repository.open_read_only(existing) as read_only:
+        assert read_only.source_health("openai-greenhouse") is not None
+        with pytest.raises(sqlite3.OperationalError, match="readonly"):
+            read_only.record_backoff(
+                "openai-greenhouse", datetime(2026, 9, 18, 1, tzinfo=UTC)
+            )
 
 
 # ------------------------------------------------------------------ obligation 3: the attempt cap
