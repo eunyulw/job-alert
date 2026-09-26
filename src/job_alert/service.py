@@ -76,6 +76,8 @@ from job_alert.db import (
     PendingEvent,
     QuarantinedSnapshot,
     Repository,
+    SourceHealthState,
+    SourceState,
 )
 from job_alert.diff import SnapshotDiff, compare_snapshot
 from job_alert.fetch import (
@@ -86,6 +88,7 @@ from job_alert.fetch import (
     RequestSpec,
 )
 from job_alert.filters import evaluate_filters
+from job_alert.health import HealthEvent, evaluate_source_health, health_message
 from job_alert.models import (
     CollectionResult,
     CompanyTarget,
@@ -186,6 +189,10 @@ class CycleResult:
     warnings: tuple[str, ...] = ()
     error_code: str | None = None
     error_message: str | None = None
+    #: The zero or one health incident this run opened or recovered. Health is separate from job
+    #: alerts: these events describe the source, never a posting, and the caller that owns a
+    #: notifier is what decides whether to push them.
+    health_events: tuple[HealthEvent, ...] = ()
 
 
 class ConditionalFetcher:
@@ -303,7 +310,37 @@ class JobAlertService:
     async def collect_source(
         self, source: SourceConfig, mode: RunMode = RunMode.LIVE
     ) -> CycleResult:
-        """Fetch one source, commit what the snapshot proves, and deliver what it earned."""
+        """Fetch one source, commit what the snapshot proves, and record what it proved.
+
+        Health is recorded here rather than by the caller, for one reason: this is the only place
+        that knows both the state the cycle started from and the outcome it reached. The order is
+        strict.
+
+        1. Read the stored source state *before* the cycle starts.
+        2. Run the cycle, which commits the run, the jobs, the events, and the freshness a complete
+           success proves. :meth:`Repository.finish_run` deliberately no longer counts the
+           failure streak itself.
+        3. Evaluate the run's outcome against the state from step 1 and persist the result, which is
+           the single write of the streak, the first-failure instant, the last error, and the
+           incident flag.
+
+        Evaluating the state as it stands after the run would count one failure twice and open an
+        incident a run early; evaluating it before the run would lose the only evidence the run just
+        produced. A diagnostic run returns the state unchanged and writes nothing, so an operator's
+        dry runs can never make a healthy source look broken.
+        """
+        before = self._repository.source_health(source.id)
+        result = await self._collect_cycle(source, mode, state=before)
+        events = self._record_health(source, before, result)
+        if not events:
+            return result
+        await self._deliver_health(source, mode=mode, events=events)
+        return replace(result, health_events=events)
+
+    async def _collect_cycle(
+        self, source: SourceConfig, mode: RunMode, *, state: SourceState | None
+    ) -> CycleResult:
+        """One collection cycle, which knows nothing about health and everything about the board."""
         if mode is RunMode.LIVE and self._notifier is None:
             raise ValueError("LIVE mode delivers through a notifier; none was configured")
 
@@ -325,12 +362,11 @@ class JobAlertService:
                 message=str(exc),
             )
 
-        health = self._repository.source_health(source.id)
         applied = self._repository.last_applied_snapshot(source.id)
         conditional = ConditionalFetcher(
             self._fetcher,
-            etag=None if health is None else health.etag,
-            last_modified=None if health is None else health.last_modified,
+            etag=None if state is None else state.etag,
+            last_modified=None if state is None else state.last_modified,
             enabled=applied is not None and applied.page_count == 1,
         )
 
@@ -386,6 +422,76 @@ class JobAlertService:
         )
 
     # ------------------------------------------------------------------ collection outcomes
+
+    def _record_health(
+        self, source: SourceConfig, before: SourceState | None, result: CycleResult
+    ) -> tuple[HealthEvent, ...]:
+        """Persist the state one run's outcome earns, and report the incident or recovery it owes.
+
+        `before` is the state read before the cycle ran, which is what the policy has to reason
+        about: it applies this run's outcome to it and writes the result. A diagnostic run comes
+        back with the same state object, which is how this method knows nothing moved and writes
+        nothing.
+        """
+        company_name = self._company_names.get(source.company_id, "")
+        state = (
+            SourceHealthState(
+                source_id=source.id,
+                company_id=source.company_id,
+                company_name=company_name,
+                interval_minutes=source.interval_minutes,
+            )
+            if before is None
+            else SourceHealthState.from_source_state(
+                before,
+                company_id=source.company_id,
+                company_name=company_name,
+                interval_minutes=source.interval_minutes,
+            )
+        )
+        evaluation = evaluate_source_health(
+            state,
+            result.outcome,
+            now=self._clock(),
+            error_code=result.error_code,
+            error_message=result.error_message,
+        )
+        if evaluation.state is state:
+            return ()
+        self._repository.record_health_state(source.id, evaluation.state)
+        return tuple(evaluation.events)
+
+    async def _deliver_health(
+        self, source: SourceConfig, *, mode: RunMode, events: Sequence[HealthEvent]
+    ) -> None:
+        """Push the incident or recovery a cycle earned, in the one mode allowed to send anything.
+
+        Health is not a job alert: an incident never consumes a retry budget, never marks a posting
+        as announced, and never depends on a filter. It does follow the same rule about *sending*,
+        though -- a suppressed run reports what it would have sent and calls no provider -- and it
+        goes through the same notifier the alerts do. The link on the message is the source endpoint
+        the event is about.
+        """
+        if mode is not RunMode.LIVE or self._notifier is None:
+            return
+        for event in events:
+            await self._notifier.send(
+                health_message(event, source_url=str(source.endpoint))
+            )
+
+    async def deliver_pending(
+        self, source: SourceConfig, *, limit: int | None = None
+    ) -> tuple[int, tuple[WouldDeliver, ...]]:
+        """Deliver the events this source has already committed, without fetching anything.
+
+        This is the retry path for a source whose board is not due to be polled again: the alert is
+        already durable, so re-reading the provider would spend a request to learn nothing. The
+        recorded retry delay still decides whether each event may be attempted, so a caller may ask
+        as often as it likes -- the heartbeat does, every five minutes.
+        """
+        if self._notifier is None:
+            raise ValueError("delivering pending events needs a notifier; none was configured")
+        return await self._deliver(source, mode=RunMode.LIVE, now=self._clock(), limit=limit)
 
     async def _commit_validated(
         self,
@@ -773,13 +879,21 @@ class JobAlertService:
         return events, tuple(suppressed)
 
     async def _deliver(
-        self, source: SourceConfig, *, mode: RunMode, now: datetime
+        self,
+        source: SourceConfig,
+        *,
+        mode: RunMode,
+        now: datetime,
+        limit: int | None = None,
     ) -> tuple[int, tuple[WouldDeliver, ...]]:
         """Report, and in ``LIVE`` send, every pending event a filter authorizes right now.
 
         The pending set comes from the database rather than from this cycle, which is what makes a
         delivery survive a crash: an event committed before a failed send is simply still pending on
-        the next cycle, with the detection instant it was stored with.
+        the next cycle, with the detection instant it was stored with. The set is read *for this
+        instant*, so an event whose newest attempt recorded a retry delay that has not elapsed is
+        left for later rather than spending an attempt early. ``limit`` bounds how many events one
+        call may consider, which is what an operator's ``retry-notifications --limit`` asks for.
         """
         if mode is RunMode.BASELINE or mode is RunMode.DRY_RUN:
             return 0, ()
@@ -787,8 +901,10 @@ class JobAlertService:
         reports: list[WouldDeliver] = []
         alerts: list[AlertEvent] = []
         pending_events = self._repository.pending_events(
-            source.id, event_types=DELIVERABLE_EVENT_TYPES
+            source.id, event_types=DELIVERABLE_EVENT_TYPES, now=now
         )
+        if limit is not None:
+            pending_events = pending_events[:limit]
         for pending in pending_events:
             report, alert = self._pending_alert(pending, now=now)
             if report is None:

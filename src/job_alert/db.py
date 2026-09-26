@@ -84,10 +84,12 @@ class SourceState:
     """Persisted polling state for one source: validators, freshness, and health incident.
 
     ``last_run_at`` is the finish time of the most recent run whatever its outcome, while
-    ``last_complete_at`` only moves for a complete success. The incident fields are written by the
-    health layer through :meth:`Repository.record_health_state`; ``consecutive_failures``,
-    ``first_failure_at``, ``last_error``, and ``last_run_at`` are also maintained by
-    :meth:`Repository.finish_run` so an unwired deployment still records what happened.
+    ``last_complete_at`` only moves for a complete success. ``consecutive_failures``,
+    ``first_failure_at``, ``last_error``, and the incident fields have one writer: the health
+    layer that :meth:`Repository.record_health_state` persists. :meth:`Repository.finish_run`
+    records the run and the freshness it proves; letting it count the failure as well would count
+    one failed run twice and open an incident a run early. ``backoff_until`` is the instant
+    before which the scheduler must not poll the source again.
     """
 
     source_id: str
@@ -296,6 +298,48 @@ def _attempt_counts(
         (*outcomes, *ids),
     ).fetchall()
     return {int(row["event_id"]): int(row["attempts"]) for row in rows}
+
+
+def _attempts_every_event_has_answered(
+    connection: sqlite3.Connection, candidates: Sequence[int]
+) -> list[int]:
+    """Which candidate attempts cover nothing an operator is still waiting on.
+
+    An attempt is safe to forget once every event it covers has a terminal answer, because the
+    per-event cap only counts the attempts of events that are still unanswered. An attempt that
+    covers no event at all is safe to forget for the same reason: nothing reads it back.
+    """
+    if not candidates:
+        return []
+    attempt_placeholders = ", ".join("?" for _ in candidates)
+    rows = connection.execute(
+        "SELECT notification_attempt_id, event_id FROM notification_event_links"
+        f" WHERE notification_attempt_id IN ({attempt_placeholders})",
+        candidates,
+    ).fetchall()
+    linked: dict[int, set[int]] = {}
+    for row in rows:
+        linked.setdefault(int(row["notification_attempt_id"]), set()).add(int(row["event_id"]))
+    resolved: set[int] = set()
+    event_ids = sorted({event_id for events in linked.values() for event_id in events})
+    if event_ids:
+        event_placeholders = ", ".join("?" for _ in event_ids)
+        outcome_placeholders = ", ".join("?" for _ in TERMINAL_DELIVERY_OUTCOMES)
+        resolved = {
+            int(row["event_id"])
+            for row in connection.execute(
+                "SELECT DISTINCT l.event_id AS event_id FROM notification_event_links l"
+                " JOIN notification_attempts a ON a.id = l.notification_attempt_id"
+                f" WHERE l.event_id IN ({event_placeholders})"
+                f" AND a.outcome IN ({outcome_placeholders})",
+                (*event_ids, *[outcome.value for outcome in TERMINAL_DELIVERY_OUTCOMES]),
+            )
+        }
+    return [
+        attempt_id
+        for attempt_id in candidates
+        if not (linked.get(attempt_id, set()) - resolved)
+    ]
 
 
 def _schema_path() -> Path:
@@ -593,11 +637,13 @@ class Repository:
         """Close a poll run and update source state.
 
         Every finished run moves `last_run_at`. Only `RunOutcome.COMPLETE` records
-        `last_complete_at` and clears the failure streak; a run whose `error_code` is a diagnostic
-        (:data:`DIAGNOSTIC_ERROR_CODES`) moves neither the streak nor the incident fields, so an
-        operator's dry runs cannot make a healthy source look broken; every other outcome
-        increments `consecutive_failures`, stamps the first failure of the streak, and stores the
-        error. No outcome changes job state.
+        `last_complete_at` and clears `backoff_until`. Nothing here touches `consecutive_failures`,
+        `first_failure_at`, `last_error`, or the incident fields: the health layer is their single
+        writer, :func:`job_alert.health.evaluate_source_health`, and :meth:`record_health_state`
+        persists what it says. The health layer evaluates the state as it stood *before* this run,
+        so a run recorded here and counted there counts once, whether it succeeded or failed. A
+        deployment that wires only the repository still records what happened and when. No outcome
+        changes job state.
         """
         with self._transaction() as connection:
             run = connection.execute(
@@ -628,27 +674,29 @@ class Repository:
             finished = _utc_isoformat(finished_at)
             if outcome is RunOutcome.COMPLETE:
                 connection.execute(
-                    "UPDATE source_state SET last_complete_at = ?, consecutive_failures = 0,"
-                    " backoff_until = NULL, last_run_at = ?,"
-                    # A clean success ends the streak. An incident that is still open keeps its
-                    # first-failure time until the health layer records the recovery it produces,
-                    # because that time is what the recovery event reports.
-                    " first_failure_at = CASE WHEN health_alert_open = 0 THEN NULL"
-                    " ELSE first_failure_at END WHERE source_id = ?",
+                    "UPDATE source_state SET last_complete_at = ?, backoff_until = NULL,"
+                    " last_run_at = ? WHERE source_id = ?",
                     (finished, finished, source_id),
                 )
-            elif error_code in DIAGNOSTIC_ERROR_CODES:
+            else:
                 connection.execute(
                     "UPDATE source_state SET last_run_at = ? WHERE source_id = ?",
                     (finished, source_id),
                 )
-            else:
-                connection.execute(
-                    "UPDATE source_state SET consecutive_failures = consecutive_failures + 1,"
-                    " last_run_at = ?, first_failure_at = COALESCE(first_failure_at, ?),"
-                    " last_error = COALESCE(?, ?, ?) WHERE source_id = ?",
-                    (finished, finished, error_message, error_code, str(outcome), source_id),
-                )
+
+    def record_backoff(self, source_id: str, until: datetime | None) -> None:
+        """Record the instant before which this source must not be polled again.
+
+        The scheduler sets it after an incomplete cycle so a failing source costs one collection per
+        backoff step instead of one per wake; a complete run clears it. `None` clears it too, so
+        an operator can release a source deliberately.
+        """
+        with self._transaction() as connection:
+            connection.execute(UPSERT_SOURCE_STATE_SQL, (source_id,))
+            connection.execute(
+                "UPDATE source_state SET backoff_until = ? WHERE source_id = ?",
+                (_optional_isoformat(until), source_id),
+            )
 
     def upsert_observations(
         self,
@@ -1118,12 +1166,20 @@ class Repository:
         source_id: str,
         *,
         event_types: Sequence[JobEventType] = (JobEventType.NEW, JobEventType.REOPENED),
+        now: datetime | None = None,
     ) -> list[PendingEvent]:
         """Return the durable events of one source that still need a delivery decision.
 
         An event stays pending until an attempt covering it ends the question — that is, until one
         ends as ``delivered``, ``permanent``, or ``abandoned``. Pending events are returned oldest
         first so a retry keeps the order the events were detected in.
+
+        When `now` is given, an event whose newest unanswered attempt recorded a
+        `retry_after_seconds` delay that has not elapsed is left out: the recorded backoff decides
+        when a retry may be spent rather than the poll cadence deciding for it. An event with no
+        recorded delay -- one nothing has attempted yet, or one whose attempt carried no delay -- is
+        always due. Passing no `now` returns the unanswered set without that filter, which is what
+        an operator's report of outstanding work wants.
         """
         types = [str(event_type) for event_type in event_types]
         if not types:
@@ -1155,7 +1211,55 @@ class Repository:
                     run_id=int(row["run_id"]),
                 )
             )
-        return pending
+        if now is None:
+            return pending
+        due = self._events_past_backoff(pending, now=now)
+        return [event for event in pending if event.event_id in due]
+
+    def _events_past_backoff(
+        self, events: Sequence[PendingEvent], *, now: datetime
+    ) -> set[int]:
+        """Which of these events are past the delay their newest unanswered attempt recorded.
+
+        The newest attempt is the one that matters: a provider's own `Retry-After` replaces the
+        delay the durable layer chose, and the later attempt is the more recent answer.
+        """
+        if not events:
+            return set()
+        event_ids = [event.event_id for event in events]
+        event_placeholders = ", ".join("?" for _ in event_ids)
+        outcomes = [outcome.value for outcome in NON_TERMINAL_DELIVERY_OUTCOMES]
+        outcome_placeholders = ", ".join("?" for _ in outcomes)
+        rows = self._connection.execute(
+            "SELECT l.event_id, a.attempted_at, a.retry_after_seconds"
+            " FROM notification_event_links l"
+            " JOIN notification_attempts a ON a.id = l.notification_attempt_id"
+            f" WHERE l.event_id IN ({event_placeholders})"
+            f" AND a.outcome IN ({outcome_placeholders})"
+            " ORDER BY a.attempted_at, a.id",
+            (*event_ids, *outcomes),
+        ).fetchall()
+        newest: dict[int, tuple[datetime, float | None]] = {}
+        for row in rows:
+            attempted_at = _parse_timestamp(row["attempted_at"])
+            if attempted_at is None:
+                continue
+            delay = row["retry_after_seconds"]
+            newest[int(row["event_id"])] = (
+                attempted_at,
+                None if delay is None else float(delay),
+            )
+        moment = now.replace(tzinfo=UTC) if now.tzinfo is None else now.astimezone(UTC)
+        due: set[int] = set()
+        for event_id in event_ids:
+            recorded = newest.get(event_id)
+            if recorded is None:
+                due.add(event_id)
+                continue
+            attempted_at, delay = recorded
+            if delay is None or attempted_at + timedelta(seconds=delay) <= moment:
+                due.add(event_id)
+        return due
 
     def attempt_counts(
         self, event_ids: Iterable[int], *, outcome: DeliveryOutcome
@@ -1226,13 +1330,16 @@ class Repository:
         now: datetime,
         retention_days: int = NOTIFICATION_ATTEMPT_RETENTION_DAYS,
     ) -> int:
-        """Drop unresolved attempt rows older than the retention window, with their links.
+        """Drop old unanswered attempt rows nothing is waiting on any more, with their links.
 
-        Only rows with no terminal outcome are pruned. A terminal row is the record that ended an
-        event's question: deleting one would make its events pending again and could resend an
-        alert, so those rows stay for good. The practical effect is that an event nothing can
-        deliver costs at most :data:`DEFAULT_MAX_RETRYABLE_ATTEMPTS` sends per retention window
-        instead of one send per poll for as long as the event exists. Returns the rows removed.
+        Two kinds of row survive. A terminal row is the record that ended an event's question:
+        deleting one would make its events pending again and could resend an alert, so those rows
+        stay for good. An *unanswered* row survives while any event it covers is still unanswered,
+        because :data:`DEFAULT_MAX_RETRYABLE_ATTEMPTS` is a budget counted in exactly those rows:
+        deleting them would hand the same event a fresh budget every retention window, which is how
+        "8 attempts per event" quietly became "8 per window". Once every event a row covers has a
+        terminal answer, the row is history and the retention window applies to it. Returns the rows
+        removed.
         """
         if retention_days < 1:
             raise ValueError(f"retention_days must be at least 1, got {retention_days}")
@@ -1244,7 +1351,9 @@ class Repository:
                 f" WHERE outcome IN ({placeholders}) AND attempted_at < ?",
                 (*[outcome.value for outcome in NON_TERMINAL_DELIVERY_OUTCOMES], cutoff),
             ).fetchall()
-            attempt_ids = [int(row["id"]) for row in stale]
+            attempt_ids = _attempts_every_event_has_answered(
+                connection, [int(row["id"]) for row in stale]
+            )
             if not attempt_ids:
                 return 0
             ids = ", ".join("?" for _ in attempt_ids)

@@ -5,15 +5,34 @@ and ``report``. The root Typer application is created here so that later tasks a
 groups to the same application rather than to a second one.
 """
 
+# The operator surface
+# --------------------
+# ``init-db`` applies the schema, ``collect`` and ``baseline`` run a known set of cycles and
+# exit, and ``run`` is the scheduler that keeps going. ``report coverage`` and
+# ``report health`` render what the monitor already knows, ``notify-test`` proves that one
+# provider can deliver a message, and ``retry-notifications`` spends the retry budget on events
+# that were already committed.
+#
+# Two rules hold across all of them: a JSON command writes parseable JSON to stdout and nothing
+# else there, so every human line goes to stderr; and a refusal is exit code 2 -- a missing
+# ``--confirm-seed``, an unknown source, an unreadable configuration, absent Pushover credentials,
+# or a live run the coverage and filter gates do not allow -- because those are usage errors an
+# operator has to fix, not delivery failures.
+
 from __future__ import annotations
 
 import asyncio
 import json
+import signal
+import sqlite3
+from collections.abc import Sequence
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Annotated, Any, NoReturn
 
 import typer
 
+from job_alert.adapters.registry import AdapterRegistry
 from job_alert.audit import (
     DEFAULT_AUDIT_CONCURRENCY,
     DEFAULT_RESULTS_PATH,
@@ -36,12 +55,38 @@ from job_alert.audit import (
     validate_source_endpoint,
 )
 from job_alert.config import AppConfig, ConfigError, load_app_config
+from job_alert.db import Repository
 from job_alert.fetch import HttpFetcher
 from job_alert.models import SourceClass, SourceConfig, SupportStatus
+from job_alert.notifications import NtfyNotifier, PushoverNotifier
+from job_alert.notifications.base import (
+    NotificationConfigurationError,
+    NotificationMessage,
+    Notifier,
+)
+from job_alert.scheduler import (
+    DEFAULT_ALERT_URL,
+    Scheduler,
+    SchedulerReport,
+    build_digest,
+    digest_payload,
+)
+from job_alert.service import (
+    DELIVERABLE_EVENT_TYPES,
+    CycleResult,
+    JobAlertService,
+    RunMode,
+    WouldDeliver,
+)
 
 DEFAULT_CONFIG_DIR = Path("config")
 DEFAULT_MARKDOWN_PATH = Path("docs/source-audit.md")
 DEFAULT_INTERVAL_MINUTES = 30
+DEFAULT_DB_PATH = Path("data/job-alert.sqlite3")
+DEFAULT_COVERAGE_PATH = Path("reports/coverage.md")
+DEFAULT_DIGEST_PATH = Path("reports/daily-digest.md")
+DEFAULT_RETRY_LIMIT = 100
+TEST_MESSAGE_TITLE = "TEST \u2014 Fast Job Alert"
 
 app = typer.Typer(
     help="Fast company job alert monitor.", no_args_is_help=True, add_completion=False
@@ -58,6 +103,24 @@ ConfigDirOption = Annotated[
 ]
 ResultsOption = Annotated[
     Path, typer.Option("--json", help="Persisted audit results read and written by the audit")
+]
+ConfigPathOption = Annotated[
+    Path,
+    typer.Option(
+        "--config",
+        "--config-dir",
+        help="Directory holding company_targets/sources/filters",
+    ),
+]
+DbPathOption = Annotated[Path, typer.Option("--db", help="SQLite state database")]
+JsonOption = Annotated[
+    bool, typer.Option("--json", help="Write parseable JSON to stdout and logs to stderr")
+]
+ReportPathOption = Annotated[
+    Path | None, typer.Option("--report", help="Write the cycle report to this file")
+]
+ProviderOption = Annotated[
+    str, typer.Option("--provider", help="Delivery provider: pushover or ntfy")
 ]
 
 
@@ -304,3 +367,556 @@ def audit_report(
     for status in summary.by_status:
         typer.echo(f"  {status}: {summary.by_status[status]}")
     typer.echo(f"wrote {markdown} and {results}")
+
+
+# ------------------------------------------------------------------ operator surface
+
+
+def _refuse(message: str) -> NoReturn:
+    """Report an operator error and exit with the usage code the brief pins for one."""
+    typer.secho(message, err=True, fg=typer.colors.RED)
+    raise typer.Exit(code=2)
+
+
+def _config_or_refuse(config_dir: Path) -> AppConfig:
+    try:
+        return load_app_config(config_dir)
+    except ConfigError as exc:
+        _refuse(f"invalid configuration: {exc}")
+
+
+def _open_repository(database: Path) -> Repository:
+    """Open (and upgrade) the state database, refusing with the usage code when it cannot."""
+    try:
+        repository = Repository.open(database)
+        repository.initialize()
+    except (sqlite3.Error, RuntimeError) as exc:
+        _refuse(f"cannot open {database}: {exc}")
+    return repository
+
+
+def _build_service(
+    repository: Repository,
+    config: AppConfig,
+    fetcher: HttpFetcher,
+    notifier: Notifier | None,
+) -> JobAlertService:
+    """The collection service every operator command drives."""
+    return JobAlertService(
+        repository,
+        registry=AdapterRegistry.default(),
+        fetcher=fetcher,
+        filters=config.filters,
+        companies=config.companies,
+        notifier=notifier,
+    )
+
+
+def build_notifier(provider: str, *, fetcher: HttpFetcher | None = None) -> Notifier:
+    """Build the delivery provider the operator named, from credentials held in the environment."""
+    name = provider.strip().lower()
+    try:
+        if name == PushoverNotifier.provider:
+            return PushoverNotifier(fetcher=fetcher)
+        if name == NtfyNotifier.provider:
+            return NtfyNotifier(fetcher=fetcher)
+    except NotificationConfigurationError as exc:
+        _refuse(str(exc))
+    _refuse(f"unknown provider {provider!r}: choose pushover or ntfy")
+
+
+def test_message(alert_url: str = DEFAULT_ALERT_URL) -> NotificationMessage:
+    """The one message notify-test sends: labelled, and built from no stored job or event."""
+    return NotificationMessage(
+        title=TEST_MESSAGE_TITLE,
+        body=(
+            "Delivery test from the fast job alert monitor. No job event is involved and no stored"
+            " posting, event, or alert was read or written."
+        ),
+        url=alert_url,
+        url_title="Fast Job Alert",
+    )
+
+
+def _selected_sources(
+    config: AppConfig, *, source_ids: Sequence[str], all_sources: bool
+) -> list[SourceConfig]:
+    """The sources one command should act on, or a refusal that says how to ask for them."""
+    if source_ids and all_sources:
+        _refuse("choose either --source or --all, not both")
+    if source_ids:
+        by_id = {source.id: source for source in config.sources}
+        selected: list[SourceConfig] = []
+        for source_id in dict.fromkeys(source_ids):
+            source = by_id.get(source_id)
+            if source is None:
+                _refuse(f"unknown source {source_id!r}: it is not in the configured registry")
+            selected.append(source)
+        return selected
+    if all_sources:
+        return [source for source in config.sources if source.enabled]
+    _refuse("select a source with --source SOURCE_ID, or every enabled source with --all")
+
+
+def _require_live_activation(config: AppConfig) -> None:
+    """Refuse LIVE while nothing could be delivered, or while the coverage gate has not passed."""
+    enabled = [record for record in config.filters if record.enabled]
+    if not any(record.notify for record in enabled):
+        names = ", ".join(record.id for record in enabled) or "none"
+        _refuse(
+            "LIVE mode refused: no enabled filter notifies, so nothing could ever be delivered"
+            f" (enabled filters: {names})"
+        )
+    summary = coverage_summary(config)
+    if not summary.broad_activation_allowed:
+        _refuse(
+            f"LIVE mode refused: direct coverage is {summary.direct_coverage_percent:.2f}%"
+            f" ({summary.direct_supported}/{summary.total_companies}), below the 90%"
+            " broad-activation threshold"
+        )
+
+
+def _would_deliver_payload(item: WouldDeliver) -> dict[str, Any]:
+    return {
+        "event_id": item.event_id,
+        "event_type": str(item.event_type),
+        "canonical_job_key": item.canonical_job_key,
+        "company_id": item.company_id,
+        "title": item.title,
+        "posting_url": item.posting_url,
+        "priority": str(item.priority),
+        "reason": item.reason,
+        "deferred": item.deferred,
+        "defer_until": None if item.defer_until is None else item.defer_until.isoformat(),
+    }
+
+
+def _cycle_payload(result: CycleResult) -> dict[str, Any]:
+    """One collection cycle as JSON, including what it would have delivered and why."""
+    return {
+        "source_id": result.source_id,
+        "mode": str(result.mode),
+        "run_id": result.run_id,
+        "outcome": str(result.outcome),
+        "complete": result.complete,
+        "new": result.new_count,
+        "updated": result.updated_count,
+        "reopened": result.reopened_count,
+        "unchanged": result.unchanged_count,
+        "missing": result.missing_count,
+        "closed": result.closed_count,
+        "notifications_sent": result.notifications_sent,
+        "would_deliver": [_would_deliver_payload(item) for item in result.would_deliver],
+        "suppressed_duplicates": list(result.suppressed_duplicates),
+        "quarantined": result.quarantined,
+        "not_modified": result.not_modified,
+        "warnings": list(result.warnings),
+        "error_code": result.error_code,
+        "error_message": result.error_message,
+        "health_events": [
+            {
+                "kind": str(event.kind),
+                "source_id": event.source_id,
+                "company_id": event.company_id,
+                "reason": str(event.reason),
+                "consecutive_failures": event.consecutive_failures,
+                "occurred_at": event.occurred_at.isoformat(),
+                "last_error": event.last_error,
+            }
+            for event in result.health_events
+        ],
+    }
+
+
+def _cycle_report_payload(
+    mode: RunMode, results: Sequence[CycleResult], *, generated_at: datetime
+) -> dict[str, Any]:
+    """One command's whole set of cycles, which is what --json prints and --report writes."""
+    return {
+        "mode": str(mode),
+        "generated_at": generated_at.isoformat(),
+        "totals": {
+            "sources": len(results),
+            "new": sum(result.new_count for result in results),
+            "reopened": sum(result.reopened_count for result in results),
+            "closed": sum(result.closed_count for result in results),
+            "notifications_sent": sum(result.notifications_sent for result in results),
+            "incomplete": len([result for result in results if not result.complete]),
+        },
+        "sources": [_cycle_payload(result) for result in results],
+    }
+
+
+def _cycle_line(result: CycleResult) -> str:
+    """One cycle as an operator log line."""
+    return (
+        f"{result.source_id}  {result.outcome}  new={result.new_count}"
+        f"  updated={result.updated_count}  missing={result.missing_count}"
+        f"  notifications={result.notifications_sent}"
+        + (f"  error={result.error_code}" if result.error_code else "")
+    )
+
+
+def _write_json(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def _emit(payload: dict[str, Any], lines: Sequence[str], *, json_output: bool) -> None:
+    """JSON commands put the document on stdout and their log lines on stderr; others just talk."""
+    if json_output:
+        typer.echo(json.dumps(payload, indent=2))
+        for line in lines:
+            typer.secho(line, err=True)
+        return
+    for line in lines:
+        typer.echo(line)
+
+
+async def _run_cycles(
+    service: JobAlertService,
+    sources: Sequence[SourceConfig],
+    *,
+    mode: RunMode,
+) -> list[CycleResult]:
+    """One cycle per source, in order. A live cycle delivers its own health events."""
+    return [await service.collect_source(source, mode=mode) for source in sources]
+
+
+def _collect_and_close(
+    config: AppConfig,
+    sources: Sequence[SourceConfig],
+    *,
+    mode: RunMode,
+    notifier: Notifier | None,
+    database: Path,
+) -> list[CycleResult]:
+    """Run the selected cycles on one HTTP client, then close it and the database."""
+    repository = _open_repository(database)
+    fetcher = HttpFetcher()
+
+    async def run() -> list[CycleResult]:
+        try:
+            service = _build_service(repository, config, fetcher, notifier)
+            return await _run_cycles(service, sources, mode=mode)
+        finally:
+            await fetcher.close()
+
+    try:
+        return asyncio.run(run())
+    finally:
+        repository.close()
+
+
+async def _run_scheduler(scheduler: Scheduler, *, max_wakes: int | None) -> SchedulerReport:
+    """Run the loop until it stops, turning SIGINT and SIGTERM into a graceful shutdown."""
+    stop = asyncio.Event()
+    loop = asyncio.get_running_loop()
+    for name in ("SIGINT", "SIGTERM"):
+        number = getattr(signal, name, None)
+        if number is None:
+            continue
+        try:
+            loop.add_signal_handler(number, stop.set)
+        except (NotImplementedError, RuntimeError):  # not the main thread, or unsupported
+            continue
+    return await scheduler.run(stop=stop, max_wakes=max_wakes)
+
+
+@app.command("init-db")
+def init_db(db: DbPathOption = DEFAULT_DB_PATH) -> None:
+    """Create or upgrade the SQLite state database."""
+    repository = _open_repository(db)
+    repository.close()
+    typer.echo(f"initialized {db}")
+
+
+@app.command("collect")
+def collect(
+    source: Annotated[
+        list[str] | None, typer.Option("--source", help="Source id to collect, repeatable")
+    ] = None,
+    all_sources: Annotated[
+        bool, typer.Option("--all", help="Collect every enabled source")
+    ] = False,
+    mode: Annotated[
+        RunMode, typer.Option("--mode", help="What one cycle is allowed to change")
+    ] = RunMode.DRY_RUN,
+    json_output: JsonOption = False,
+    report: ReportPathOption = None,
+    config: ConfigPathOption = DEFAULT_CONFIG_DIR,
+    db: DbPathOption = DEFAULT_DB_PATH,
+    provider: ProviderOption = "pushover",
+) -> None:
+    """Run one collection cycle for the selected sources and exit."""
+    app_config = _config_or_refuse(config)
+    sources = _selected_sources(app_config, source_ids=source or (), all_sources=all_sources)
+    notifier = build_notifier(provider) if mode is RunMode.LIVE else None
+    results = _collect_and_close(
+        app_config, sources, mode=mode, notifier=notifier, database=db
+    )
+    payload = _cycle_report_payload(mode, results, generated_at=datetime.now(UTC))
+    if report is not None:
+        _write_json(report, payload)
+    lines = [*(_cycle_line(result) for result in results)]
+    lines.append(f"collected {len(results)} source(s) in {mode} mode")
+    if report is not None:
+        lines.append(f"wrote {report}")
+    _emit(payload, lines, json_output=json_output)
+
+
+@app.command("baseline")
+def baseline(
+    source: Annotated[
+        list[str] | None, typer.Option("--source", help="Source id to seed, repeatable")
+    ] = None,
+    all_sources: Annotated[
+        bool, typer.Option("--all", help="Seed every enabled source")
+    ] = False,
+    confirm_seed: Annotated[
+        bool,
+        typer.Option(
+            "--confirm-seed",
+            help="Confirm that the board as it stands now is the state to seed from",
+        ),
+    ] = False,
+    json_output: JsonOption = False,
+    report: ReportPathOption = None,
+    config: ConfigPathOption = DEFAULT_CONFIG_DIR,
+    db: DbPathOption = DEFAULT_DB_PATH,
+) -> None:
+    """Seed job state for the selected sources, announcing nothing at all."""
+    if not confirm_seed:
+        _refuse(
+            "baseline records every posting a board holds right now as already seen, so it cannot"
+            " announce them later; pass --confirm-seed to confirm that is the intent"
+        )
+    app_config = _config_or_refuse(config)
+    sources = _selected_sources(app_config, source_ids=source or (), all_sources=all_sources)
+    results = _collect_and_close(
+        app_config, sources, mode=RunMode.BASELINE, notifier=None, database=db
+    )
+    payload = _cycle_report_payload(RunMode.BASELINE, results, generated_at=datetime.now(UTC))
+    if report is not None:
+        _write_json(report, payload)
+    lines = [*(_cycle_line(result) for result in results)]
+    lines.append(f"seeded {len(results)} source(s); no event was staged and nothing was sent")
+    _emit(payload, lines, json_output=json_output)
+
+
+@app.command("run")
+def run_monitor(
+    config: ConfigPathOption = DEFAULT_CONFIG_DIR,
+    db: DbPathOption = DEFAULT_DB_PATH,
+    mode: Annotated[
+        RunMode, typer.Option("--mode", help="What a cycle is allowed to change")
+    ] = RunMode.LIVE_SUPPRESSED,
+    provider: ProviderOption = "pushover",
+    once: Annotated[
+        bool, typer.Option("--once", help="Run one wake cycle and exit")
+    ] = False,
+    max_wakes: Annotated[
+        int | None, typer.Option("--max-wakes", help="Stop after this many wake cycles")
+    ] = None,
+    alert_url: Annotated[
+        str, typer.Option("--alert-url", help="Link a health or digest push opens")
+    ] = DEFAULT_ALERT_URL,
+    digest_report: Annotated[
+        Path, typer.Option("--digest-report", help="Daily digest markdown path")
+    ] = DEFAULT_DIGEST_PATH,
+) -> None:
+    """Run the scheduler until it is stopped.
+
+    LIVE mode is the only mode that contacts a delivery provider, and it is refused while the
+    configured filters cannot approve anything, or while direct coverage is below the 90%
+    broad-activation threshold.
+    """
+    app_config = _config_or_refuse(config)
+    if mode is RunMode.LIVE:
+        _require_live_activation(app_config)
+    if max_wakes is not None and max_wakes < 1:
+        _refuse("--max-wakes must be at least 1")
+    notifier = build_notifier(provider) if mode is RunMode.LIVE else None
+    repository = _open_repository(db)
+    fetcher = HttpFetcher()
+    service = _build_service(repository, app_config, fetcher, notifier)
+    scheduler = Scheduler(
+        repository,
+        sources=app_config.sources,
+        companies=app_config.companies,
+        service=service,
+        fetcher=fetcher,
+        mode=mode,
+        notifier=notifier,
+        alert_url=alert_url,
+        digest_report_path=digest_report,
+        logger=lambda line: typer.secho(line, err=True),
+    )
+    report = asyncio.run(_run_scheduler(scheduler, max_wakes=1 if once else max_wakes))
+    typer.secho(f"stopped after {len(report.wakes)} wake cycle(s) in {mode} mode", err=True)
+
+
+report_app = typer.Typer(
+    help="Reports the monitor can render from stored state.",
+    no_args_is_help=True,
+    add_completion=False,
+)
+app.add_typer(report_app, name="report")
+
+
+@report_app.command("coverage")
+def report_coverage(
+    markdown: Annotated[Path, typer.Option("--markdown", help="Markdown report path")] = (
+        DEFAULT_COVERAGE_PATH
+    ),
+    results: Annotated[
+        Path, typer.Option("--results", help="Persisted audit results read and written")
+    ] = DEFAULT_RESULTS_PATH,
+    config: ConfigPathOption = DEFAULT_CONFIG_DIR,
+) -> None:
+    """Render the company coverage report from the audit store and the registry."""
+    app_config = _config_or_refuse(config)
+    try:
+        store = load_audit_store(results)
+        text, payload = render_report(app_config, store, generated_at=now_utc())
+        markdown.parent.mkdir(parents=True, exist_ok=True)
+        markdown.write_text(text, encoding="utf-8")
+        results.parent.mkdir(parents=True, exist_ok=True)
+        results.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    except AuditError as exc:
+        _refuse(str(exc))
+    summary = coverage_summary(app_config)
+    typer.echo(f"wrote {markdown} and {results}")
+    typer.echo(
+        f"direct coverage {summary.direct_supported}/{summary.total_companies} ="
+        f" {summary.direct_coverage_percent:.2f}% (90% gate"
+        f" {'passes' if summary.broad_activation_allowed else 'does not pass'})"
+    )
+
+
+@report_app.command("health")
+def report_health(
+    json_output: JsonOption = False,
+    db: DbPathOption = DEFAULT_DB_PATH,
+    config: ConfigPathOption = DEFAULT_CONFIG_DIR,
+    provider: ProviderOption = "pushover",
+) -> None:
+    """Report source freshness, open incidents, delivery activity, and the retry policy."""
+    app_config = _config_or_refuse(config)
+    repository = _open_repository(db)
+    try:
+        moment = datetime.now(UTC)
+        digest = build_digest(
+            repository,
+            app_config.sources,
+            companies={company.id: company.name for company in app_config.companies},
+            now=moment,
+            window_start=moment - timedelta(days=1),
+            provider=provider,
+        )
+    finally:
+        repository.close()
+    if json_output:
+        typer.echo(json.dumps(digest_payload(digest), indent=2))
+        return
+    typer.echo(digest.text)
+
+
+@app.command("notify-test")
+def notify_test(
+    provider: ProviderOption = "pushover",
+    alert_url: Annotated[
+        str, typer.Option("--alert-url", help="Link the test message opens")
+    ] = DEFAULT_ALERT_URL,
+) -> None:
+    """Send one labelled test message. No job event is involved or read."""
+    notifier = build_notifier(provider)
+    result = asyncio.run(notifier.send(test_message(alert_url)))
+    if not result.delivered:
+        _fail(
+            f"{result.provider} did not accept the test message:"
+            f" {result.error or f'HTTP {result.http_status}'}"
+        )
+        return
+    typer.echo(f"{result.provider} accepted the test message (HTTP {result.http_status})")
+
+
+async def _retry_committed(
+    service: JobAlertService,
+    repository: Repository,
+    sources: Sequence[SourceConfig],
+    *,
+    limit: int,
+) -> dict[str, Any]:
+    """Deliver what is already committed, bounded by the operator's limit.
+
+    An event inside the delay its last attempt recorded is counted and left alone: that is the
+    retry pacing doing its job, and the count is what makes it visible to an operator.
+    """
+    moment = datetime.now(UTC)
+    remaining = limit
+    delivered = 0
+    due_total = 0
+    waiting = 0
+    touched: list[str] = []
+    for source in sources:
+        outstanding = repository.pending_events(source.id, event_types=DELIVERABLE_EVENT_TYPES)
+        if not outstanding:
+            continue
+        due = repository.pending_events(
+            source.id, event_types=DELIVERABLE_EVENT_TYPES, now=moment
+        )
+        waiting += len(outstanding) - len(due)
+        allowance = min(remaining, len(due))
+        if allowance <= 0:
+            continue
+        sent, _ = await service.deliver_pending(source, limit=allowance)
+        remaining -= allowance
+        due_total += allowance
+        delivered += sent
+        touched.append(source.id)
+    return {
+        "delivered": delivered,
+        "due": due_total,
+        "waiting_for_backoff": waiting,
+        "sources": touched,
+        "limit": limit,
+    }
+
+
+@app.command("retry-notifications")
+def retry_notifications(
+    limit: Annotated[
+        int, typer.Option("--limit", help="At most this many events across all sources")
+    ] = DEFAULT_RETRY_LIMIT,
+    provider: ProviderOption = "pushover",
+    json_output: JsonOption = False,
+    config: ConfigPathOption = DEFAULT_CONFIG_DIR,
+    db: DbPathOption = DEFAULT_DB_PATH,
+) -> None:
+    """Spend the retry budget on events that were committed but never delivered."""
+    if limit < 0:
+        _refuse("--limit must not be negative")
+    app_config = _config_or_refuse(config)
+    notifier = build_notifier(provider)
+    repository = _open_repository(db)
+    fetcher = HttpFetcher()
+    sources = [source for source in app_config.sources if source.enabled]
+
+    async def run() -> dict[str, Any]:
+        try:
+            service = _build_service(repository, app_config, fetcher, notifier)
+            return await _retry_committed(service, repository, sources, limit=limit)
+        finally:
+            await fetcher.close()
+
+    try:
+        payload = asyncio.run(run())
+    finally:
+        repository.close()
+    lines = [
+        f"delivered {payload['delivered']} of {payload['due']} due event(s) across"
+        f" {len(payload['sources'])} source(s)",
+        f"{payload['waiting_for_backoff']} event(s) are inside their recorded retry delay",
+    ]
+    _emit(payload, lines, json_output=json_output)

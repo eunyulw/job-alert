@@ -15,6 +15,7 @@ import pytest
 from job_alert.adapters.registry import AdapterRegistry
 from job_alert.config import FilterConfig
 from job_alert.db import DeliveryOutcome
+from job_alert.health import HealthEventKind
 from job_alert.models import JobEventType, RunOutcome
 from job_alert.notifications.base import DeliveryResult
 from job_alert.service import JobAlertService, RunMode
@@ -144,6 +145,8 @@ async def test_a_delivery_failure_after_the_commit_retries_once_after_a_restart(
     assert len(service_harness.active_keys()) == 3
 
     service_harness.restart()
+    # The recorded 60s backoff is enforced, so the retry waits for it before it may be spent.
+    service_harness.clock.advance(minutes=2)
     retried = await service_harness.service.collect_source(
         service_harness.source, mode=RunMode.LIVE
     )
@@ -514,8 +517,15 @@ async def test_one_ambiguous_answer_keeps_the_event_pending(
     assert service_harness.repo.attempt_counts([event_id], outcome=DeliveryOutcome.RETRYABLE) == {
         event_id: 1
     }
-    # A definitive no-send failure leaves the alert pending rather than abandoning it.
+    # A definitive no-send failure leaves the alert pending rather than abandoning it, and the
+    # delay it recorded keeps the next cycle from spending a second attempt too early.
     assert len(service_harness.repo.pending_events(service_harness.source.id)) == 1
+    too_soon = await service_harness.service.collect_source(
+        service_harness.source, mode=RunMode.LIVE
+    )
+    assert too_soon.notifications_sent == 0
+    assert len(service_harness.notifier.messages) == 2
+    service_harness.clock.advance(minutes=2)
 
     delivered = await service_harness.service.collect_source(
         service_harness.source, mode=RunMode.LIVE
@@ -790,3 +800,87 @@ async def test_a_delivery_answer_carries_its_quota_and_retry_signal(
             "SELECT retry_after_seconds FROM notification_attempts"
         ).fetchone()
     assert stored == (90.0,)
+
+
+# ------------------------------------------------------------------ obligation 1: one writer
+
+
+@pytest.mark.asyncio
+async def test_one_failed_cycle_counts_as_exactly_one_failure(
+    service_harness: ServiceHarness,
+) -> None:
+    """A cycle is one failure, not two: only the health evaluation counts the run."""
+    service_harness.adapter.set_fixture("challenge")
+
+    failed = await service_harness.service.collect_source(
+        service_harness.source, mode=RunMode.LIVE_SUPPRESSED
+    )
+
+    assert failed.outcome is RunOutcome.CHALLENGED
+    assert failed.health_events == ()
+    state = service_harness.repo.source_health(service_harness.source.id)
+    assert state is not None
+    assert state.consecutive_failures == 1
+    assert state.first_failure_at is not None
+    assert state.last_error is not None
+    assert state.health_alert_open is False
+
+
+@pytest.mark.asyncio
+async def test_three_failing_cycles_open_one_incident_exactly_once(
+    service_harness: ServiceHarness,
+) -> None:
+    """The streak reaches three once, and only that third run opens an incident."""
+    service_harness.adapter.set_fixture("challenge")
+    events = []
+    streaks = []
+    for _ in range(3):
+        failed = await service_harness.service.collect_source(
+            service_harness.source, mode=RunMode.LIVE_SUPPRESSED
+        )
+        events.extend(failed.health_events)
+        state = service_harness.repo.source_health(service_harness.source.id)
+        assert state is not None
+        streaks.append(state.consecutive_failures)
+
+    assert streaks == [1, 2, 3]
+    assert [event.kind for event in events] == [HealthEventKind.SOURCE_FAILURE]
+    assert events[0].consecutive_failures == 3
+    assert events[0].source_id == service_harness.source.id
+    state = service_harness.repo.source_health(service_harness.source.id)
+    assert state is not None and state.health_alert_open is True
+    # Suppressed runs report the incident without pushing it, and an open incident stays single.
+    assert service_harness.notifier.messages == []
+
+    fourth = await service_harness.service.collect_source(
+        service_harness.source, mode=RunMode.LIVE_SUPPRESSED
+    )
+    assert fourth.health_events == ()
+
+
+@pytest.mark.asyncio
+async def test_a_live_incident_is_pushed_once_and_its_recovery_too(
+    service_harness: ServiceHarness,
+) -> None:
+    """Health events reach the phone through the same notifier the alerts use, and only in LIVE."""
+    service_harness.adapter.set_fixture("challenge")
+    for _ in range(3):
+        await service_harness.service.collect_source(service_harness.source, mode=RunMode.LIVE)
+
+    titles = [message.title for message in service_harness.notifier.messages]
+    assert len([title for title in titles if title.startswith("Source failing")]) == 1
+
+    service_harness.adapter.set_fixture("two-jobs")
+    recovered = await service_harness.service.collect_source(
+        service_harness.source, mode=RunMode.LIVE
+    )
+
+    assert [event.kind for event in recovered.health_events] == [
+        HealthEventKind.SOURCE_RECOVERY
+    ]
+    titles = [message.title for message in service_harness.notifier.messages]
+    assert len([title for title in titles if title.startswith("Source recovered")]) == 1
+    state = service_harness.repo.source_health(service_harness.source.id)
+    assert state is not None
+    assert state.health_alert_open is False
+    assert state.consecutive_failures == 0

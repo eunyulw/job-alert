@@ -4,7 +4,12 @@ from pathlib import Path
 
 import pytest
 
-from job_alert.db import DeliveryOutcome, IncompleteRunError, Repository
+from job_alert.db import (
+    DEFAULT_MAX_RETRYABLE_ATTEMPTS,
+    DeliveryOutcome,
+    IncompleteRunError,
+    Repository,
+)
 from job_alert.models import JobEvent, JobEventType, NormalizedJob, RunOutcome
 
 
@@ -109,7 +114,9 @@ def test_incomplete_run_cannot_change_absence_state(tmp_path: Path) -> None:
         assert [job.canonical_job_key for job in repo.load_active_jobs("openai-greenhouse")] == [
             "greenhouse:openai:123"
         ]
-        assert repo.source_health("openai-greenhouse").consecutive_failures == 4
+        # The health layer is the single writer of the failure streak (see the test below), so four
+        # runs finished straight through the repository leave it alone.
+        assert repo.source_health("openai-greenhouse").consecutive_failures == 0
 
 
 def test_complete_runs_close_job_only_after_absence_threshold(tmp_path: Path) -> None:
@@ -645,3 +652,157 @@ def test_initialize_upgrades_an_existing_database_in_place(tmp_path: Path) -> No
         "quota_remaining",
         "quota_reset_at",
     } <= attempt_columns
+
+
+# ------------------------------------------------------------------ single writer for the streak
+
+
+def test_finish_run_leaves_the_failure_streak_to_the_health_layer(tmp_path: Path) -> None:
+    """Obligation 1: one writer owns the streak, and it is the health evaluation.
+
+    ``finish_run`` still records the run itself -- its finish instant, its outcome, and a
+    complete success's freshness -- but it never counts failures, so a run the health layer also
+    evaluates cannot be counted twice.
+    """
+    with Repository.open(tmp_path / "state.sqlite3") as repo:
+        repo.initialize()
+        failed = repo.start_run("openai-greenhouse", datetime(2026, 9, 18, tzinfo=UTC))
+        repo.finish_run(
+            failed,
+            RunOutcome.FAILED,
+            datetime(2026, 9, 18, tzinfo=UTC),
+            error_code="collection_failed",
+            error_message="HTTP 503 from the provider",
+        )
+
+        state = repo.source_health("openai-greenhouse")
+        assert state is not None
+        assert state.consecutive_failures == 0
+        assert state.first_failure_at is None
+        assert state.last_error is None
+        assert state.last_run_at == datetime(2026, 9, 18, tzinfo=UTC)
+
+        recovered = repo.start_run("openai-greenhouse", datetime(2026, 9, 18, 1, tzinfo=UTC))
+        repo.finish_run(
+            recovered, RunOutcome.COMPLETE, datetime(2026, 9, 18, 1, tzinfo=UTC), jobs_seen=0
+        )
+        completed = repo.source_health("openai-greenhouse")
+        assert completed is not None
+        assert completed.last_complete_at == datetime(2026, 9, 18, 1, tzinfo=UTC)
+        assert completed.backoff_until is None
+
+
+# ------------------------------------------------------------------ obligation 2: retry pacing
+
+
+def seed_event(
+    repo: Repository, *, now: datetime = datetime(2026, 9, 18, 12, 0, tzinfo=UTC)
+) -> int:
+    """One stored new-job event, which is what a delivery attempt has to link to."""
+    job = make_job()
+    run_id = repo.start_run("openai-greenhouse", now)
+    repo.upsert_observations(run_id, [job])
+    repo.finish_run(run_id, RunOutcome.COMPLETE, now, jobs_seen=1)
+    return repo.record_events(
+        run_id, [JobEvent(event_type=JobEventType.NEW, job=job, detected_at=now)]
+    )[0]
+
+
+def test_pending_events_skip_an_attempt_inside_its_recorded_backoff(tmp_path: Path) -> None:
+    """Obligation 2: the recorded 60s..3600s delay is enforced, not merely written down."""
+    attempted_at = datetime(2026, 9, 18, 12, 0, tzinfo=UTC)
+    with Repository.open(tmp_path / "state.sqlite3") as repo:
+        repo.initialize()
+        event_id = seed_event(repo, now=attempted_at - timedelta(minutes=5))
+        repo.record_notification(
+            "pushover",
+            DeliveryOutcome.RETRYABLE.value,
+            attempted_at,
+            error_message="connect error before the request was sent",
+            event_ids=[event_id],
+        )
+
+        # Without a clock the read is the unanswered set, exactly as it was before pacing existed.
+        assert [event.event_id for event in repo.pending_events("openai-greenhouse")] == [event_id]
+        assert (
+            repo.pending_events("openai-greenhouse", now=attempted_at + timedelta(seconds=59))
+            == []
+        )
+
+        due = repo.pending_events("openai-greenhouse", now=attempted_at + timedelta(seconds=60))
+        assert [event.event_id for event in due] == [event_id]
+
+
+def test_pending_events_use_the_newest_attempts_delay(tmp_path: Path) -> None:
+    """A provider's own ``Retry-After`` replaces the durable layer's own delay."""
+    attempted_at = datetime(2026, 9, 18, 12, 0, tzinfo=UTC)
+    with Repository.open(tmp_path / "state.sqlite3") as repo:
+        repo.initialize()
+        event_id = seed_event(repo, now=attempted_at - timedelta(minutes=5))
+        repo.record_notification(
+            "pushover", DeliveryOutcome.RETRYABLE.value, attempted_at, event_ids=[event_id]
+        )
+        repo.record_notification(
+            "pushover",
+            DeliveryOutcome.RETRYABLE.value,
+            attempted_at + timedelta(minutes=1),
+            retry_after_seconds=3600.0,
+            event_ids=[event_id],
+        )
+
+        assert (
+            repo.pending_events("openai-greenhouse", now=attempted_at + timedelta(minutes=5))
+            == []
+        )
+        assert (
+            repo.pending_events("openai-greenhouse", now=attempted_at + timedelta(minutes=61))
+            != []
+        )
+
+
+# ------------------------------------------------------------------ obligation 3: the attempt cap
+
+
+def test_attempt_retention_cannot_refresh_a_pending_events_attempt_budget(
+    tmp_path: Path,
+) -> None:
+    """Obligation 3: pruning must not delete the rows the per-event cap counts."""
+    old = datetime(2026, 9, 18, tzinfo=UTC)
+    now = old + timedelta(days=40)
+    with Repository.open(tmp_path / "state.sqlite3") as repo:
+        repo.initialize()
+        event_id = seed_event(repo, now=old)
+        for index in range(4):
+            repo.record_notification(
+                "pushover",
+                DeliveryOutcome.RETRYABLE.value,
+                old + timedelta(seconds=index),
+                error_message="connect error before the request was sent",
+                event_ids=[event_id],
+            )
+
+        # The event is still unanswered, so the attempts that bound it stay.
+        assert repo.prune_notification_attempts(now=now) == 0
+        assert repo.attempt_counts([event_id], outcome=DeliveryOutcome.RETRYABLE) == {event_id: 4}
+
+        for index in range(4, DEFAULT_MAX_RETRYABLE_ATTEMPTS):
+            repo.record_notification(
+                "pushover",
+                DeliveryOutcome.RETRYABLE.value,
+                now + timedelta(seconds=index),
+                error_message="connect error before the request was sent",
+                event_ids=[event_id],
+            )
+
+        # Exactly the cap was spent, so the eighth attempt ends the question and nothing is pending.
+        assert repo.pending_events("openai-greenhouse") == []
+        assert repo.attempt_counts([event_id], outcome=DeliveryOutcome.RETRYABLE) == {
+            event_id: DEFAULT_MAX_RETRYABLE_ATTEMPTS
+        }
+
+        # Retention still works, one resolved event at a time: the aged attempts go, the recent
+        # ones stay until they are aged too.
+        assert repo.prune_notification_attempts(now=now) == 4
+        assert repo.attempt_counts([event_id], outcome=DeliveryOutcome.RETRYABLE) == {event_id: 4}
+        assert repo.prune_notification_attempts(now=now + timedelta(days=40)) == 4
+        assert repo.attempt_counts([event_id], outcome=DeliveryOutcome.RETRYABLE) == {}

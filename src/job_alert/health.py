@@ -32,10 +32,17 @@ either, so it never recovers an open incident.
 Where the evaluation fits
 -------------------------
 :func:`evaluate_source_health` applies one run's outcome to the state as it stood **before** that
-run was finished, which is the state ``JobAlertService.collect_source`` already reads at the start
-of a cycle. Persist the returned state with ``Repository.record_health_state`` so the streak, the
-incident fields, and the digest all read the same numbers. Passing the post-run state instead
+run was finished, which is the state ``JobAlertService.collect_source`` reads at the start of a
+cycle. Persist the returned state with ``Repository.record_health_state``: that write is the only
+one of the streak, the first-failure instant, the last error, and the incident flag, because
+``Repository.finish_run`` no longer counts the run as well. Passing the post-run state instead
 would advance the streak twice and open an incident one run early.
+
+Where the heartbeat fits
+------------------------
+:func:`evaluate_source_heartbeat` is the same policy applied to a source that did *not* run: it
+opens the staleness incident no run can open, and closes an incident whose recovery a stopped
+process never recorded. It never advances the streak, because no run happened to count.
 
 The daily digest
 ----------------
@@ -66,6 +73,7 @@ from job_alert.db import (
     WindowCounts,
 )
 from job_alert.models import RunOutcome, SourceConfig, SupportStatus
+from job_alert.notifications.base import NotificationMessage
 
 #: Consecutive failed, partial, challenged, or quarantined runs that open one incident.
 FAILURE_INCIDENT_THRESHOLD = 3
@@ -183,6 +191,22 @@ def staleness_threshold(interval_minutes: int) -> timedelta:
     )
 
 
+def health_message(event: HealthEvent, *, source_url: str) -> NotificationMessage:
+    """One health push: the incident or recovery, linking the source it describes.
+
+    The title and body are the event's own, so an operator reads the same words in the digest and on
+    the phone, and the link is the source endpoint the event is about -- the page worth opening when
+    a source is failing or has just recovered. Nothing here touches job state: a health push never
+    reads or writes a posting, an event, or a delivery attempt.
+    """
+    return NotificationMessage(
+        title=event.title,
+        body=event.body,
+        url=source_url,
+        url_title="Open source",
+    )
+
+
 def is_stale(
     *,
     now: datetime,
@@ -228,34 +252,11 @@ def evaluate_source_health(
 
     if outcome is RunOutcome.COMPLETE:
         complete_at = _as_utc(now)
-        events: list[HealthEvent] = []
-        if state.health_alert_open:
-            events = [
-                HealthEvent(
-                    kind=HealthEventKind.SOURCE_RECOVERY,
-                    source_id=state.source_id,
-                    company_id=state.company_id,
-                    company_name=state.company_name,
-                    occurred_at=complete_at,
-                    reason=IncidentReason.COMPLETE_SUCCESS,
-                    consecutive_failures=state.consecutive_failures,
-                    first_failure_at=state.first_failure_at,
-                    last_error=state.last_error,
-                    last_complete_at=complete_at,
-                    opened_at=state.health_opened_at,
-                ),
-            ]
+        events = (
+            [_recovery_event(state, complete_at=complete_at)] if state.health_alert_open else []
+        )
         return HealthEvaluation(
-            state=replace(
-                state,
-                consecutive_failures=0,
-                health_alert_open=False,
-                health_opened_at=None,
-                health_reason=None,
-                first_failure_at=None,
-                last_error=None,
-                last_complete_at=complete_at,
-            ),
+            state=replace(_recovered_state(state), last_complete_at=complete_at),
             events=events,
         )
 
@@ -305,6 +306,103 @@ def evaluate_source_health(
                 last_error=last_error,
                 last_complete_at=state.last_complete_at,
                 opened_at=failed_at,
+            ),
+        ],
+    )
+
+
+def _recovery_event(state: SourceHealthState, *, complete_at: datetime) -> HealthEvent:
+    """The one recovery a complete success owes an open incident, with the record it opened with."""
+    return HealthEvent(
+        kind=HealthEventKind.SOURCE_RECOVERY,
+        source_id=state.source_id,
+        company_id=state.company_id,
+        company_name=state.company_name,
+        occurred_at=complete_at,
+        reason=IncidentReason.COMPLETE_SUCCESS,
+        consecutive_failures=state.consecutive_failures,
+        first_failure_at=state.first_failure_at,
+        last_error=state.last_error,
+        last_complete_at=complete_at,
+        opened_at=state.health_opened_at,
+    )
+
+
+def _recovered_state(state: SourceHealthState) -> SourceHealthState:
+    """The incident record a source carries once it has completed again."""
+    return replace(
+        state,
+        consecutive_failures=0,
+        health_alert_open=False,
+        health_opened_at=None,
+        health_reason=None,
+        first_failure_at=None,
+        last_error=None,
+    )
+
+
+def evaluate_source_heartbeat(
+    state: SourceHealthState,
+    *,
+    now: datetime,
+    last_run_at: datetime | None = None,
+) -> HealthEvaluation:
+    """Apply one heartbeat to a source that may not have run since the last one.
+
+    The heartbeat answers the two questions a run cannot. It opens the staleness incident for a
+    source that has simply stopped producing complete successes -- the branch nothing else reaches,
+    because no run arrives to be counted -- and it closes an incident whose source did complete
+    after the incident opened but whose recovery was never recorded, which is what a process that
+    stopped between finishing a run and writing its health leaves behind.
+
+    It never advances the failure streak: no run happened, so inventing a failure would be a lie
+    about the source. It never opens a second incident for a source that already has one, and it
+    returns the state unchanged while the freshness window still holds. ``last_run_at`` is the
+    stored instant of the most recent run whatever its outcome, which is the anchor for a source
+    that has never completed one.
+    """
+    moment = _as_utc(now)
+    if state.health_alert_open:
+        if state.last_complete_at is None or state.health_opened_at is None:
+            return HealthEvaluation(state=state)
+        complete_at = _as_utc(state.last_complete_at)
+        if complete_at < _as_utc(state.health_opened_at):
+            return HealthEvaluation(state=state)
+        return HealthEvaluation(
+            state=replace(_recovered_state(state), last_complete_at=complete_at),
+            events=[_recovery_event(state, complete_at=complete_at)],
+        )
+
+    if not is_stale(
+        now=moment,
+        last_complete_at=state.last_complete_at,
+        first_failure_at=state.first_failure_at,
+        last_run_at=last_run_at,
+        interval_minutes=state.interval_minutes,
+    ):
+        return HealthEvaluation(state=state)
+
+    reason = IncidentReason.STALE_WITHOUT_COMPLETE_SUCCESS
+    return HealthEvaluation(
+        state=replace(
+            state,
+            health_alert_open=True,
+            health_opened_at=moment,
+            health_reason=reason,
+        ),
+        events=[
+            HealthEvent(
+                kind=HealthEventKind.SOURCE_FAILURE,
+                source_id=state.source_id,
+                company_id=state.company_id,
+                company_name=state.company_name,
+                occurred_at=moment,
+                reason=reason,
+                consecutive_failures=state.consecutive_failures,
+                first_failure_at=state.first_failure_at,
+                last_error=state.last_error,
+                last_complete_at=state.last_complete_at,
+                opened_at=moment,
             ),
         ],
     )
@@ -408,13 +506,19 @@ class DailyDigest:
 
     @property
     def retry_policy(self) -> str:
-        """The retry and retention numbers, so the digest states them instead of hiding them."""
+        """The retry and retention numbers, so the digest states them instead of hiding them.
+
+        The delay is stated as one the durable layer enforces before a retry may be spent, and the
+        retention window as one that cannot delete the attempts an unanswered event is still
+        counted against: both are what make the per-event cap mean what it says.
+        """
         base = int(RETRY_BACKOFF_BASE_SECONDS)
         cap = int(RETRY_BACKOFF_MAX_SECONDS)
         return (
-            f"at most {DEFAULT_MAX_RETRYABLE_ATTEMPTS} unanswered attempts per event with a"
-            f" {base}s..{cap}s backoff; resolved attempts are kept and unresolved ones older than"
-            f" {NOTIFICATION_ATTEMPT_RETENTION_DAYS} days are pruned"
+            f"at most {DEFAULT_MAX_RETRYABLE_ATTEMPTS} unanswered attempts per event, each retry"
+            f" waiting the recorded {base}s..{cap}s delay before it may be spent; an unanswered"
+            f" attempt is pruned after {NOTIFICATION_ATTEMPT_RETENTION_DAYS} days only once every"
+            " event it covers has a final answer, so the cap survives the retention window"
         )
 
     @property

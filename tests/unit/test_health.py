@@ -28,6 +28,7 @@ from job_alert.health import (
     STALE_INTERVAL_MULTIPLIER,
     DailyDigest,
     DigestSource,
+    HealthEvaluation,
     HealthEventKind,
     IncidentReason,
     SourceHealthState,
@@ -79,6 +80,45 @@ def seed_event(repo: Repository, *, now: datetime = fixed_now) -> int:
         run_id,
         [JobEvent(event_type=JobEventType.NEW, job=posting, detected_at=now)],
     )[0]
+
+
+def apply_run(
+    repo: Repository,
+    outcome: RunOutcome,
+    *,
+    now: datetime = fixed_now,
+    error_code: str | None = None,
+    error_message: str | None = None,
+) -> HealthEvaluation:
+    """Record one run the way the service records it, and return what health made of it.
+
+    The stored state is read before the run finishes and the evaluation is applied to it afterwards,
+    which is the order that keeps one failed run from being counted twice. Persisting the result is
+    then the only write of the streak, so a test that seeds failures this way is seeding the health
+    layer rather than the run row.
+    """
+    run_id = repo.start_run(SOURCE_ID, now)
+    before = repo.source_health(SOURCE_ID)
+    assert before is not None
+    repo.finish_run(
+        run_id,
+        outcome,
+        now,
+        jobs_seen=0,
+        error_code=error_code,
+        error_message=error_message,
+    )
+    evaluation = evaluate_source_health(
+        SourceHealthState.from_source_state(
+            before, company_id="openai", company_name="OpenAI", interval_minutes=5
+        ),
+        outcome,
+        now=now,
+        error_code=error_code,
+        error_message=error_message,
+    )
+    repo.record_health_state(SOURCE_ID, evaluation.state)
+    return evaluation
 
 
 # ------------------------------------------------------------------ health policy
@@ -249,14 +289,13 @@ def test_a_diagnostic_run_does_not_move_the_persisted_failure_streak(tmp_path: P
         repo.initialize()
         seed_event(repo)
         for _ in range(3):
-            run_id = repo.start_run(SOURCE_ID, fixed_now)
-            repo.finish_run(
-                run_id,
+            diagnostic = apply_run(
+                repo,
                 RunOutcome.PARTIAL,
-                fixed_now,
                 error_code="dry_run",
                 error_message="dry run: a complete collection was compared without writing state",
             )
+            assert diagnostic.events == []
         after_diagnostics = repo.source_health(SOURCE_ID)
         assert after_diagnostics is not None
         assert after_diagnostics.consecutive_failures == 0
@@ -265,11 +304,9 @@ def test_a_diagnostic_run_does_not_move_the_persisted_failure_streak(tmp_path: P
         assert after_diagnostics.last_complete_at is None
 
         for _ in range(3):
-            run_id = repo.start_run(SOURCE_ID, fixed_now)
-            repo.finish_run(
-                run_id,
+            apply_run(
+                repo,
                 RunOutcome.FAILED,
-                fixed_now,
                 error_code="collection_failed",
                 error_message="HTTP 503 from the provider",
             )
@@ -278,42 +315,33 @@ def test_a_diagnostic_run_does_not_move_the_persisted_failure_streak(tmp_path: P
         assert failing.consecutive_failures == 3
         assert failing.first_failure_at == fixed_now
         assert failing.last_error == "HTTP 503 from the provider"
-        assert failing.health_alert_open is False
+        # The third failure is also the run that opens the incident: one counter, one policy.
+        assert failing.health_alert_open is True
 
-        recovered = repo.start_run(SOURCE_ID, fixed_now)
-        repo.finish_run(recovered, RunOutcome.COMPLETE, fixed_now, jobs_seen=1)
+        recovery = apply_run(repo, RunOutcome.COMPLETE)
+        assert [event.kind for event in recovery.events] == [HealthEventKind.SOURCE_RECOVERY]
         cleaned = repo.source_health(SOURCE_ID)
         assert cleaned is not None
         assert cleaned.consecutive_failures == 0
         assert cleaned.first_failure_at is None
         assert cleaned.last_complete_at == fixed_now
         assert cleaned.last_run_at == fixed_now
+        assert cleaned.health_alert_open is False
 
 
 def test_an_incident_round_trips_through_the_repository(tmp_path: Path) -> None:
     with Repository.open(tmp_path / "state.sqlite3") as repo:
         repo.initialize()
-        run_id = seed_event(repo)
+        seed_event(repo)
         for _ in range(FAILURE_INCIDENT_THRESHOLD - 1):
-            run_id = repo.start_run(SOURCE_ID, fixed_now)
-            repo.finish_run(
-                run_id,
-                RunOutcome.FAILED,
-                fixed_now,
-                error_code="collection_failed",
-                error_message="HTTP 503",
+            seeded = apply_run(
+                repo, RunOutcome.FAILED, error_code="collection_failed", error_message="HTTP 503"
             )
-        stored = repo.source_health(SOURCE_ID)
-        assert stored is not None
-        state = SourceHealthState.from_source_state(
-            stored, company_id="openai", company_name="OpenAI", interval_minutes=5
-        )
-        opened = evaluate_source_health(
-            state, RunOutcome.FAILED, now=fixed_now, error_message="HTTP 503"
+        assert seeded.events == []
+        opened = apply_run(
+            repo, RunOutcome.FAILED, error_code="collection_failed", error_message="HTTP 503"
         )
         assert [event.kind for event in opened.events] == [HealthEventKind.SOURCE_FAILURE]
-
-        repo.record_health_state(SOURCE_ID, opened.state)
 
         incident = repo.source_health(SOURCE_ID)
         assert incident is not None
@@ -325,18 +353,10 @@ def test_an_incident_round_trips_through_the_repository(tmp_path: Path) -> None:
         assert incident.consecutive_failures == FAILURE_INCIDENT_THRESHOLD
 
         recovery_at = fixed_now + timedelta(hours=1)
-        recovery_run = repo.start_run(SOURCE_ID, recovery_at)
-        recovered = evaluate_source_health(
-            SourceHealthState.from_source_state(repo.source_health(SOURCE_ID)),
-            RunOutcome.COMPLETE,
-            now=recovery_at,
-        )
+        recovered = apply_run(repo, RunOutcome.COMPLETE, now=recovery_at)
         assert [event.kind for event in recovered.events] == [HealthEventKind.SOURCE_RECOVERY]
-        repo.record_health_state(SOURCE_ID, recovered.state)
         # Freshness is the run's business, so the complete run records it and the health record
         # writes back only the incident fields.
-        repo.finish_run(recovery_run, RunOutcome.COMPLETE, recovery_at, jobs_seen=1)
-
         cleared = repo.source_health(SOURCE_ID)
         assert cleared is not None
         assert cleared.health_alert_open is False
