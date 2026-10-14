@@ -1141,12 +1141,24 @@ def write_sources_yaml(path: Path, sources: Sequence[SourceConfig]) -> None:
     except yaml.YAMLError as exc:  # pragma: no cover - defensive, the payload is plain data
         raise AuditError(f"cannot serialize {path}: {exc}") from exc
 
+    _atomic_write(path, text)
+
+
+def _atomic_write(path: Path, text: str) -> None:
+    """Replace ``path`` through a temp-file rename, with the mode an ordinary write would give.
+
+    ``mkstemp`` creates its file ``0600``, and the rename would carry that onto the registry, which
+    the deployed container reads as a different user.
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
+    umask = os.umask(0)
+    os.umask(umask)
     descriptor, name = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.", suffix=".tmp")
     temporary = Path(name)
     try:
         with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
             handle.write(text)
+        temporary.chmod(0o666 & ~umask)
         os.replace(temporary, path)
     except OSError as exc:
         temporary.unlink(missing_ok=True)
@@ -1244,16 +1256,7 @@ def save_audit_store(path: Path, companies: Mapping[str, Any], *, generated_at: 
         mode="json"
     )
     text = json.dumps(payload, indent=2, sort_keys=False) + "\n"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, name = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.", suffix=".tmp")
-    temporary = Path(name)
-    try:
-        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-            handle.write(text)
-        os.replace(temporary, path)
-    except OSError as exc:
-        temporary.unlink(missing_ok=True)
-        raise AuditError(f"cannot write {path}: {exc}") from exc
+    _atomic_write(path, text)
 
 
 def audit_record(

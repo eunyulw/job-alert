@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import os
+import stat
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -25,6 +27,7 @@ from job_alert.audit import (
     record_probe,
     render_report,
     run_audit,
+    save_audit_store,
     write_sources_yaml,
 )
 from job_alert.config import AppConfig, load_app_config
@@ -186,6 +189,23 @@ def test_write_sources_yaml_is_stable_ordered_and_atomic(tmp_path: Path) -> None
     ]
     assert load_source_records(path) == sources
     assert list(tmp_path.iterdir()) == [path]
+
+
+def test_registry_and_audit_writes_are_readable_like_any_written_file(tmp_path: Path) -> None:
+    """A renamed temp file must not leave the registry 0600: another user reads it in the image."""
+    umask = os.umask(0)
+    os.umask(umask)
+    expected = 0o666 & ~umask
+    sources = tmp_path / "sources.yaml"
+    sources.write_text("sources: []\n", encoding="utf-8")
+    sources.chmod(0o600)  # the state an earlier release of the writer left behind
+
+    write_sources_yaml(sources, [_source("acme-discovery", "acme", SupportStatus.FALLBACK_ONLY)])
+    store = tmp_path / "reports" / "source-audit.json"
+    save_audit_store(store, {}, generated_at=datetime(2026, 10, 14, tzinfo=UTC))
+
+    assert stat.S_IMODE(sources.stat().st_mode) == expected
+    assert stat.S_IMODE(store.stat().st_mode) == expected
 
 
 def test_write_sources_yaml_leaves_the_previous_file_when_validation_fails(

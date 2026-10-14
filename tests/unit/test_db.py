@@ -881,3 +881,14 @@ def test_attempt_retention_cannot_refresh_a_pending_events_attempt_budget(
         assert repo.attempt_counts([event_id], outcome=DeliveryOutcome.RETRYABLE) == {event_id: 4}
         assert repo.prune_notification_attempts(now=now + timedelta(days=40)) == 4
         assert repo.attempt_counts([event_id], outcome=DeliveryOutcome.RETRYABLE) == {}
+
+
+def test_the_schema_ships_inside_the_package() -> None:
+    """A wheel installs only the package, so the migration must live in it, not beside it."""
+    import job_alert
+    from job_alert.db import _schema_path
+
+    package = Path(job_alert.__file__).resolve().parent
+    path = _schema_path()
+    assert path.is_file()
+    assert package in path.parents

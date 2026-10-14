@@ -1,0 +1,45 @@
+# Run from the repository root:
+#   docker compose -f deploy/compose.yaml --env-file deploy/job-alert.env up -d --build
+# See docs/operator-runbook.md for baseline, live enablement, backup, and recovery.
+services:
+  job-alert:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: fast-company-job-alert:local
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    volumes:
+      - job-alert-data:/app/data
+      # The registry is mounted so an operator can disable a broken source without a rebuild.
+      - ../config:/app/config:ro
+    environment:
+      # Empty is allowed: live-suppressed never contacts a provider, and the CLI refuses LIVE
+      # (exit 2) while either value is missing.
+      PUSHOVER_APP_TOKEN: ${PUSHOVER_APP_TOKEN:-}
+      PUSHOVER_USER_KEY: ${PUSHOVER_USER_KEY:-}
+      # Internal time is UTC; the daily digest is scheduled in America/Chicago by the code.
+      TZ: UTC
+      JOB_ALERT_DB: /app/data/job-alert.sqlite3
+      JOB_ALERT_HEALTH_MAX_AGE_MINUTES: "65"
+    command:
+      - job-alert
+      - run
+      - --config
+      - /app/config
+      - --db
+      - /app/data/job-alert.sqlite3
+      - --mode
+      - ${JOB_ALERT_MODE:-live-suppressed}
+      - --digest-report
+      - /app/data/reports/daily-digest.md
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+volumes:
+  job-alert-data:

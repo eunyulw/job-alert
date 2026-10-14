@@ -365,7 +365,8 @@ def _schema_path() -> Path:
     override = os.environ.get(SCHEMA_ENV_VAR)
     if override:
         return Path(override)
-    return Path(__file__).resolve().parents[2] / "migrations" / MIGRATION_NAME
+    # Inside the package, so an installed wheel carries the schema it applies.
+    return Path(__file__).resolve().parent / "migrations" / MIGRATION_NAME
 
 
 def _schema_statements(schema: str) -> list[str]:

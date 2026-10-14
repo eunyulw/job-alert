@@ -13,3 +13,4 @@ backups/
 reports/*
 !reports/.gitkeep
 .coverage
+deploy/*.env

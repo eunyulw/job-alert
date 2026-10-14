@@ -37,7 +37,7 @@ README.md                             operator setup and common commands
 config/company_targets.yaml           canonical company inventory and category membership
 config/sources.yaml                   audited source endpoints and polling policy
 config/filters.yaml                   notification rules
-migrations/001_initial.sql            complete initial SQLite schema
+src/job_alert/migrations/001_initial.sql complete initial SQLite schema (shipped in the wheel)
 src/job_alert/models.py               provider-neutral Pydantic models and enums
 src/job_alert/config.py               YAML loading and cross-file validation
 src/job_alert/db.py                   SQLite repository and transactional state changes
@@ -74,7 +74,7 @@ deploy/Dockerfile                     production image
 deploy/compose.yaml                   persistent service deployment
 deploy/job-alert.env.example          secret and runtime variable names
 deploy/healthcheck.py                 container health verification
-scripts/backup_sqlite.sh              consistent database backup
+scripts/backup_sqlite.py              consistent database backup and restore
 docs/source-audit.md                  company-by-company evidence and limitations
 docs/operator-runbook.md              deployment, recovery, and adapter incident steps
 ```
@@ -2172,7 +2172,7 @@ git commit -m "test: verify all-company collection workflow"
 - Create: `deploy/compose.yaml`
 - Create: `deploy/job-alert.env.example`
 - Create: `deploy/healthcheck.py`
-- Create: `scripts/backup_sqlite.sh`
+- Create: `scripts/backup_sqlite.py` (replaces `scripts/backup_sqlite.sh`; see revision note)
 - Create: `docs/operator-runbook.md`
 - Create: `README.md`
 - Create: `tests/integration/test_deployment_files.py`
@@ -2180,6 +2180,38 @@ git commit -m "test: verify all-company collection workflow"
 **Interfaces:**
 - Consumes: the `job-alert run` command and environment secrets.
 - Produces: reproducible always-on deployment with persistent SQLite, health checks, backups, and recovery instructions.
+
+> **Revision 2026-10-14 (plan verification before execution).** Checked against the code at `196c0ff`:
+> 1. `run` writes the daily digest to `reports/daily-digest.md` relative to `/app`, which is read-only in
+>    the container, and the write is not caught. The command passes
+>    `--digest-report /app/data/reports/daily-digest.md`.
+> 2. `uv sync --frozen` before `COPY src` cannot install the project. The image syncs dependencies with
+>    `--no-install-project`, copies the source, then syncs again with `--no-editable`.
+> 3. `python:3.12-slim` has no `sqlite3` CLI, and a named volume is not reachable from a macOS host, so
+>    the backup is `scripts/backup_sqlite.py` (the sqlite3 backup API) with `backup` and `restore`
+>    subcommands. It runs inside the container and on any host with Python. The shell script below is
+>    replaced by it, with the same argument checks, integrity check, and 14-file retention.
+> 4. `run` defaults to `live-suppressed`, and LIVE is refused without Pushover secrets anyway, so
+>    Compose takes the mode from `JOB_ALERT_MODE` (default `live-suppressed`) and passes the secrets
+>    through without `:?required`. Otherwise `docker compose config` fails before any credential exists.
+> 5. `config/` is bind-mounted read-only so an operator can disable a source without rebuilding the image.
+>
+> Found by the Step 6 smoke test (image built, run read-only as `jobalert`):
+> 6. The schema lived at the repository root and was resolved relative to the source tree, so the
+>    installed wheel could not create a database. It now ships inside the package.
+> 7. The audit's atomic writes left `config/sources.yaml` mode 0600 (`mkstemp`), unreadable by the
+>    container user. Writes now get the mode an ordinary write would.
+> 8. The health check raised a traceback on a database without the schema; it now exits with a reason.
+>
+> **Smoke test incomplete (2026-10-14):** `compose config`, `docker build`, `--help`, and the non-root
+> user check passed. The host disk then filled (about 120 MB free) and the Docker daemon failed with
+> I/O errors, so `init-db`, `run --once`, the health check, and the backup were not re-run inside the
+> container after fixes 6-8. They are covered by host tests. Re-run Step 6 once the disk has room.
+
+> **Open decision for Task 26 (not changed here).** `_require_live_activation` refuses LIVE whenever
+> direct coverage is below 90%, but the spec gates only *broad* activation. With 10 of 148 companies
+> covered, Task 26's five-company canary cannot run until "broad" is defined, for example as any
+> notifying filter without an `include_companies` allowlist.
 
 - [ ] **Step 1: Write failing deployment-policy tests**
 
@@ -2290,7 +2322,7 @@ sys.exit(0)
 
 - [ ] **Step 4: Implement consistent SQLite backup**
 
-`scripts/backup_sqlite.sh` accepts the database and backup directory as positional arguments, refuses empty or root paths, creates the destination, invokes `sqlite3 "$db" ".backup '$target'"`, verifies `PRAGMA integrity_check` returns `ok`, and retains the newest 14 daily backups. The runbook schedules it daily and documents restoration into a stopped container.
+`scripts/backup_sqlite.py backup` accepts the database and backup directory as positional arguments, refuses empty or root paths, creates the destination, copies through the sqlite3 backup API, verifies `PRAGMA integrity_check` returns `ok`, and retains the newest 14 daily backups. The runbook schedules it daily and documents restoration into a stopped container.
 
 ```sh
 #!/bin/sh
@@ -2330,6 +2362,7 @@ Run:
 ```bash
 docker compose -f deploy/compose.yaml config
 docker build -f deploy/Dockerfile -t fast-job-alert:test .
+docker run --rm --read-only -v job-alert-smoke:/app/data fast-job-alert:test job-alert init-db --db /app/data/job-alert.sqlite3
 docker run --rm fast-job-alert:test job-alert --help
 uv run pytest tests/integration/test_deployment_files.py -v
 ```
@@ -2339,7 +2372,7 @@ Expected: Compose validates, image builds, CLI help exits 0, and deployment test
 - [ ] **Step 7: Commit deployment assets**
 
 ```bash
-git add deploy scripts/backup_sqlite.sh docs/operator-runbook.md README.md tests/integration/test_deployment_files.py uv.lock
+git add deploy scripts/backup_sqlite.py docs/operator-runbook.md README.md tests/integration/test_deployment_files.py docs/superpowers/plans
 git commit -m "ops: add persistent job alert deployment"
 ```
 
