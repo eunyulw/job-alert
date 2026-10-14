@@ -99,9 +99,11 @@ def test_coverage_prefers_the_best_status_of_every_company_source() -> None:
 
 
 def test_provider_adapters_cover_every_registered_provider() -> None:
-    # The four documented providers plus the two audited fallbacks; every adapter answers to the
-    # provider name it is registered under, which is what the registry dispatches on.
+    # The four documented providers, the two audited fallbacks, and the company endpoints added by
+    # the Task 29 expansion; every adapter answers to the provider name it is registered under,
+    # which is what the registry dispatches on.
     assert sorted(PROVIDER_ADAPTERS) == [
+        "amazon",
         "ashby",
         "generic-json",
         "greenhouse",

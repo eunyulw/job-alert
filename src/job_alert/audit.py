@@ -46,6 +46,7 @@ from urllib.parse import parse_qs, unquote, urljoin, urlsplit
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, TypeAdapter, ValidationError
 
+from job_alert.adapters.amazon import AmazonAdapter
 from job_alert.adapters.ashby import AshbyAdapter
 from job_alert.adapters.base import (
     AdapterError,
@@ -86,6 +87,7 @@ PROVIDER_ADAPTERS: dict[str, SourceAdapter] = {
     "lever": LeverAdapter(),
     "ashby": AshbyAdapter(),
     "smartrecruiters": SmartRecruitersAdapter(),
+    "amazon": AmazonAdapter(),
     "generic-json": GenericJsonAdapter(),
     "json-ld": JsonLdAdapter(),
 }

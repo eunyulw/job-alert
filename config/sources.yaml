@@ -58,24 +58,23 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: amazon-discovery
+- id: amazon-amazon
   company_id: amazon
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.amazon.jobs/en/
-  interval_minutes: 30
+  provider: amazon
+  source_class: company_json
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://www.amazon.jobs/en/search.json?base_query=intern&sort=recent
+  interval_minutes: 15
+  tenant: amazon
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.amazon.jobs/en/
+    scope: base_query=intern (amazon.jobs caps hits at 10000; the full board exceeds it)
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: amazon.jobs/en/search.json, the endpoint the official careers site calls
     audit_notes:
-    - linked careers page https://passport.amazon.jobs/accountInfo served an access challenge
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    - amazon adapter collected 428 postings twice with identical canonical keys across 5 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
 - id: meta-discovery
   company_id: meta
   provider: discovery

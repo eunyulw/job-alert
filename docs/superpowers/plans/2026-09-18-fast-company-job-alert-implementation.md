@@ -2541,6 +2541,67 @@ Task 25 container with `JOB_ALERT_MODE=live`), verify Android delivery and direc
 Android acceptance criteria (delivery delay, quota headroom, secrets absent from Git history) in
 `docs/production-acceptance.md`. `PushoverNotifier` and its tests already exist (Task 20).
 
+### Task 29: Phased Company Expansion — FAANG Tier, Then Fortune 100, Then Beyond
+
+Requested 2026-10-14: extend alerts gradually, starting with FAANG-equivalent companies, then the
+Fortune 100, and so on. The alert target is unchanged: internships in robotics and mechanical
+engineering, currently "every internship" at each allowlisted company (see `config/filters.yaml`).
+
+**Two lists grow, in this order for every company:** first the *source* (a verified, enabled
+collection), then the *alert allowlist* (`include_companies` in both `production-matches` filters).
+A company is never allowlisted before its source passes the gate below, and LIVE already refuses an
+allowlist naming a company without an enabled source.
+
+**Per-company gate (applies in every phase):**
+
+1. Probe the official careers site's public endpoint with ordinary HTTPS. A challenge, login, or
+   `403` records the company `BLOCKED` with evidence; no evasion, no browser.
+2. Capture a sanitized fixture with a provenance README, write failing adapter tests, implement.
+3. Live probe twice: complete, identical keys, stable ids, direct HTTPS links, declared total met.
+4. Enable the source at its class tier; the first complete snapshot seeds silently.
+5. Two consecutive complete scheduler cycles, then add the company to the allowlist and reinstall
+   the LaunchAgent. Record it in `docs/collection-verification.md` (expansion log).
+
+**Scoped sources.** Some boards cannot be enumerated whole: amazon.jobs caps `hits` at 10,000 and
+Workday CXS reports at most `total=2000`; others would cost 50+ requests a cycle. Such a source may
+be scoped to a provider-side query (for example `intern`). The scope lives in the source's
+`parameters`, is named in the audit evidence, and completeness is judged against the *scoped*
+declared total. This relaxes the Global Constraint "ingest all jobs" for those sources only, and
+only because the full board is unreachable or impolite; filters still run after ingestion.
+
+**Phase 1 — FAANG tier** (probed 2026-10-14):
+
+| Company | Public endpoint found | Plan |
+| --- | --- | --- |
+| Amazon | `amazon.jobs/en/search.json`, JSON, capped at 10,000 hits; `base_query=intern` gives 428 in 5 pages | `amazon` adapter, scoped, `company_json` tier |
+| NVIDIA | Workday CXS (`POST …/wday/cxs/nvidia/NVIDIAExternalCareerSite/jobs`), `externalPath` per posting | `workday` adapter (Task 13 gate now passes), scoped |
+| Apple | `jobs.apple.com/en-us/search` server-rendered HTML | investigate embedded data; adapter only if complete and paginable |
+| Alphabet/Google | `google.com/about/careers/applications/jobs/results` server-rendered (`AF_initDataCallback`) | investigate as Apple |
+| Meta | `metacareers.com/jobs` redirects to a client-rendered search | probe; likely `BLOCKED`/`FALLBACK_ONLY` |
+| Microsoft | `careers.microsoft.com` → challenged Eightfold app; legacy API host certificate mismatch | probe; likely stays `FALLBACK_ONLY` |
+| Netflix | Eightfold, access challenge at audit | stays `BLOCKED` unless a public endpoint answers |
+
+**Phase 2 — Workday unlock of the existing registry:** the `workday` adapter from Phase 1 is applied to
+the eight audit-evidenced Workday candidates (Boston Dynamics, Boeing, Stryker, Rockwell Automation,
+Intel, Samsung, CrowdStrike, Zebra), robotics and aerospace first.
+
+**Phase 3 — Fortune 100:** add the current Fortune 100 to `config/company_targets.yaml` under a
+`fortune-100` category (companies already present just gain the category), run `job-alert audit run`
+for them, and enable every company whose provider has an adapter. Order: engineering-heavy employers
+first (aerospace/defense, automotive, industrial, semiconductors), finance/retail/health last. New
+enterprise adapters (SuccessFactors, Oracle, iCIMS, Eightfold) are built only when at least two
+Fortune 100 companies need the same one (the Task 13-17 gates).
+
+**Phase 4 — Fortune 500 and beyond:** repeat Phase 3 in rank order, in batches of about 25.
+
+**Status is tracked** in the expansion log in `docs/collection-verification.md`; this task's
+checkboxes are per phase:
+
+- [ ] Phase 1: FAANG tier
+- [ ] Phase 2: Workday registry unlock
+- [ ] Phase 3: Fortune 100
+- [ ] Phase 4: Fortune 500 batches
+
 ## Execution Checkpoints
 
 1. **Foundation checkpoint — Tasks 1–6:** Review model boundaries, SQLite safety, identity, diff semantics, HTTP controls, and adapter contract before any broad internet probing.
@@ -2552,6 +2613,7 @@ Android acceptance criteria (delivery delay, quota headroom, secrets absent from
 7. **Deployment checkpoint — Task 25:** Verify persistence, backup/restore, non-root container, and secret handling.
 8. **Laptop and production checkpoint — Task 26:** Require the explicit test notification, five-company canary, category-by-category rollout, and written acceptance evidence. Android delivery follows in Task 28.
 9. **Coverage cross-check checkpoint — Task 27:** Add only legitimate audited secondary sources, confirm gaps twice, and prove they cannot create duplicate job notifications.
+10. **Expansion checkpoints — Task 29:** one per phase; each company passes the per-company gate before it is allowlisted.
 
 ## Completion Definition
 
