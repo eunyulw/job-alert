@@ -57,7 +57,32 @@ OTHER_COUNTRIES = frozenset(
     )
 )
 
+# ISO-3 codes and "PRC" that open a label ("CAN Kanata", "GBR Bristol UK", "PRC Shanghai", "SGP").
+LEADING_COUNTRY_CODES = frozenset(
+    (
+        "CAN", "MEX", "GBR", "IRL", "DEU", "FRA", "ESP", "ITA", "NLD", "CHE", "AUT", "POL", "CZE",
+        "SWE", "BEL", "PRT", "HUN", "ROU", "TUR", "ISR", "IND", "CHN", "PRC", "JPN", "KOR", "SGP",
+        "AUS", "NZL", "BRA", "ARG", "CHL", "COL", "PHL", "MYS", "THA", "VNM", "IDN", "ZAF",
+    )
+)
+
 _UNITED_STATES = re.compile(r"\bunited states\b", re.IGNORECASE)
+_STATE_NAME_WORDS = re.compile(
+    r"(?<![A-Za-z])(" + "|".join(sorted(map(re.escape, US_STATE_NAMES), key=len, reverse=True))
+    + r")(?![A-Za-z])",
+    re.IGNORECASE,
+)
+_COUNTRY_WORDS = re.compile(
+    r"(?<![A-Za-z])(" + "|".join(sorted(map(re.escape, OTHER_COUNTRIES), key=len, reverse=True))
+    + r")(?![A-Za-z])",
+    re.IGNORECASE,
+)
+# "Huntsville AL", "Billerica (MA)": a state code as the last word, outside the comma rules.
+_TRAILING_STATE = re.compile(r"\s\(?([A-Z]{2})\)?$")
+# "FL-TAMPA, ...", "PA - Philadelphia": a state code, then a hyphen.
+_LEADING_STATE = re.compile(r"^([A-Z]{2})\s*-\s*\S")
+# "PhiladelphiaPA 19148 2017": a state code glued to a ZIP code, anywhere in a street address.
+_GLUED_ZIP = re.compile(r"([A-Z]{2})\s\d{5}(?:[\s-]\d{4})?\b")
 # Upper-case only, as a standalone token, so the English word "us" never counts.
 _US_TOKEN = re.compile(r"(?<![A-Za-z])(US|USA|U\.S\.A?\.?)(?![A-Za-z])")
 _STATE_AND_ZIP = re.compile(r"^([A-Z]{2})\s+\d{5}(?:-\d{4})?$")
@@ -96,8 +121,25 @@ def _place_country(place: str) -> str | None:
     zipped = _STATE_AND_ZIP.match(last)
     if zipped and zipped.group(1) in US_STATE_CODES:
         return "us"
-    if len(parts) == 2 and _TWO_LETTERS.match(last) and last in US_STATE_CODES:
+    # "Chicago, IL"; also "Lancaster, Tx", since no country code is written in title case.
+    if len(parts) == 2 and re.fullmatch(r"[A-Z][A-Za-z]", last) and last.upper() in US_STATE_CODES:
         return "us"
     if any(part.casefold() in US_STATE_NAMES for part in parts):
         return "us"
+    return _free_text_country(text)
+
+
+def _free_text_country(text: str) -> str | None:
+    """Labels that ignore the comma conventions: state or country words, codes without commas.
+
+    A state name wins over a country word, so "New Mexico" is not Mexico.
+    """
+    if _STATE_NAME_WORDS.search(text):
+        return "us"
+    for pattern in (_TRAILING_STATE, _LEADING_STATE, _GLUED_ZIP):
+        match = pattern.search(text)
+        if match and match.group(1) in US_STATE_CODES:
+            return "us"
+    if _COUNTRY_WORDS.search(text) or text.split()[0].strip(",") in LEADING_COUNTRY_CODES:
+        return "other"
     return None

@@ -22,6 +22,15 @@ US = [
     "Remote - US",
     "San Francisco, CA",
     "California",
+    "Huntsville AL",  # Blue Origin: state code as the last word
+    "Billerica (MA)",  # Boston Dynamics
+    "Cary North Carolina",  # Caterpillar: state name without a comma
+    "California - HQ",  # Nuro
+    "New Mexico",  # a state name wins over the country word inside it
+    "FL-TAMPA, 5411 SKYCENTER DR, STE 700 & 800",  # Elevance: leading state code and hyphen
+    "PA - Philadelphia, 3601 S Broad St",  # Comcast
+    "1 Mifflin St PhiladelphiaPA 19148 2017",  # Target: state code glued to a ZIP
+    "Lancaster, Tx",  # Kodiak
 ]
 OTHER = [
     "Ahmedabad, GUJARAT, IN",  # India: a three-part SmartRecruiters label ends in the country
@@ -35,8 +44,17 @@ OTHER = [
     "Seoul, Korea, Republic of",
     "84030, BAYERN, DE",
     "Singapore,Singapore",
+    "Darmstadt (HQ) - Germany",  # BorgWarner: country word after a hyphen
+    "Brampton Ontario Canada",  # Rockwell
+    "United Kingdom-Cheltenham",  # Northrop Grumman
+    "CAN Kanata (2), ON - WR",  # Aptiv: leading ISO-3 code
+    "PRC Shanghai",  # Intel
+    "SGP",  # Amazon
 ]
-UNKNOWN = ["Austin", "Austin - ATX1", "APAC", "", "2 Locations", "Remote"]
+UNKNOWN = [
+    "Austin", "Austin - ATX1", "APAC", "", "2 Locations", "Remote", "San Francisco",
+    "Greater Seattle Area", "Chennai Tamil Nadu", "Toronto, On",
+]
 
 
 @pytest.mark.parametrize("text", US)
