@@ -34,3 +34,23 @@ def validate_collection(result: CollectionResult) -> CollectionResult:
     if not result.complete:
         raise PartialCollectionError("adapter returned an incomplete collection")
     return result
+
+
+def job_metrics(result: CollectionResult) -> tuple[float | None, float | None]:
+    """The stable-id and direct-link percentages of one collection, or ``None`` for an empty one.
+
+    A posting has a stable id when its provider id is non-blank, and a direct link when both its
+    posting URL and its application URL are HTTPS. The audit grades a source on these numbers and
+    every collection cycle reports them, so both read this one definition.
+    """
+    if not result.jobs:
+        return None, None
+    total = len(result.jobs)
+    stable = sum(1 for job in result.jobs if job.source_job_id.strip())
+    direct = sum(
+        1
+        for job in result.jobs
+        if str(job.posting_url).startswith("https://")
+        and str(job.apply_url).startswith("https://")
+    )
+    return round(100.0 * stable / total, 2), round(100.0 * direct / total, 2)

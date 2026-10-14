@@ -100,6 +100,14 @@ def test_collect_dry_run_writes_json_to_stdout_and_logs_to_stderr(
     assert cycle["complete"] is True
     assert cycle["new"] == 2
     assert cycle["notifications_sent"] == 0
+    # The evidence a company-wide dry run is judged on travels with every cycle.
+    assert cycle["page_count"] == 1
+    assert cycle["parsed_total"] == 2
+    assert cycle["stable_id_percent"] == 100.0
+    assert cycle["direct_url_percent"] == 100.0
+    assert "declared_total" in cycle
+    assert isinstance(cycle["duration_seconds"], float)
+    assert cycle["duration_seconds"] >= 0
     # The human line is a log: it belongs on stderr so stdout stays machine-readable.
     assert "example-greenhouse" in result.stderr
     with sqlite3.connect(database) as connection:
@@ -191,6 +199,17 @@ def test_collect_live_delivers_when_the_gates_pass(
     database = tmp_path / "state.sqlite3"
     recorder = RecordingNotifier()
     monkeypatch.setattr(cli, "build_notifier", lambda provider, **_: recorder)
+    # Seed the board while it holds one posting, so the live cycle has exactly one to announce.
+    payload = json.loads(GREENHOUSE_FIXTURE.read_text(encoding="utf-8"))
+    route = greenhouse_endpoint.get(ENDPOINT)
+    route.return_value = httpx.Response(
+        200, json={"jobs": payload["jobs"][:1], "meta": {"total": 1}}, headers={"ETag": '"one"'}
+    )
+    seeded = invoke(
+        "baseline", "--all", "--confirm-seed", "--config", str(config), "--db", str(database)
+    )
+    assert seeded.exit_code == 0, seeded.output
+    route.return_value = httpx.Response(200, json=payload, headers={"ETag": '"cli-one"'})
 
     result = invoke(
         "collect",
@@ -208,10 +227,35 @@ def test_collect_live_delivers_when_the_gates_pass(
     payload = json.loads(result.stdout)
     cycle = payload["sources"][0]
     assert cycle["outcome"] == "complete"
+    assert cycle["seeded"] is False
     assert cycle["notifications_sent"] == 1
-    assert len(cycle["would_deliver"]) == 2
+    assert len(cycle["would_deliver"]) == 1
     assert len(recorder.messages) == 1
     assert "Example Robotics" in recorder.messages[0].title
+
+
+def test_collect_live_on_a_source_never_seeded_announces_nothing(
+    tmp_path: Path, greenhouse_endpoint: respx.Router, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A live cycle that finds no baseline seeds one instead of announcing the existing board."""
+    config = make_config(tmp_path, notify_filter=True)
+    database = tmp_path / "state.sqlite3"
+    recorder = RecordingNotifier()
+    monkeypatch.setattr(cli, "build_notifier", lambda provider, **_: recorder)
+
+    result = invoke(
+        "collect", "--all", "--mode", "live", "--json",
+        "--config", str(config), "--db", str(database),
+    )
+
+    assert result.exit_code == 0
+    cycle = json.loads(result.stdout)["sources"][0]
+    assert cycle["outcome"] == "complete"
+    assert cycle["seeded"] is True
+    assert cycle["notifications_sent"] == 0
+    assert cycle["would_deliver"] == []
+    assert recorder.messages == []
+    assert "seeded" in result.stderr
 
 
 def test_collect_refuses_a_source_it_cannot_find(

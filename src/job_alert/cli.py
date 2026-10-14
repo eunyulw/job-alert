@@ -57,7 +57,7 @@ from job_alert.audit import (
 from job_alert.config import AppConfig, ConfigError, load_app_config
 from job_alert.db import Repository
 from job_alert.fetch import HttpFetcher
-from job_alert.models import SourceClass, SourceConfig, SupportStatus
+from job_alert.models import TIER_INTERVAL_MINUTES, SourceClass, SourceConfig, SupportStatus
 from job_alert.notifications import NtfyNotifier, PushoverNotifier
 from job_alert.notifications.base import (
     NotificationConfigurationError,
@@ -81,7 +81,6 @@ from job_alert.service import (
 
 DEFAULT_CONFIG_DIR = Path("config")
 DEFAULT_MARKDOWN_PATH = Path("docs/source-audit.md")
-DEFAULT_INTERVAL_MINUTES = 30
 DEFAULT_DB_PATH = Path("data/job-alert.sqlite3")
 DEFAULT_COVERAGE_PATH = Path("reports/coverage.md")
 DEFAULT_DIGEST_PATH = Path("reports/daily-digest.md")
@@ -240,8 +239,9 @@ def audit_set_source(
     source_class: Annotated[SourceClass, typer.Option("--class", help="Source class")],
     status: Annotated[SupportStatus, typer.Option("--status", help="Support status")],
     interval: Annotated[
-        int, typer.Option("--interval", help="Poll interval in minutes")
-    ] = DEFAULT_INTERVAL_MINUTES,
+        int | None,
+        typer.Option("--interval", help="Poll interval in minutes (default: the class tier)"),
+    ] = None,
     tenant: Annotated[
         str | None, typer.Option("--tenant", help="Provider tenant or board token")
     ] = None,
@@ -258,7 +258,7 @@ def audit_set_source(
         source_class=source_class,
         support_status=status,
         endpoint=to_https_url(endpoint),
-        interval_minutes=interval,
+        interval_minutes=TIER_INTERVAL_MINUTES[source_class] if interval is None else interval,
         tenant=tenant,
         parameters={},
         # `enabled` follows the status: only a direct source (SUPPORTED or SUPPORTED_UNDOCUMENTED)
@@ -505,6 +505,7 @@ def _would_deliver_payload(item: WouldDeliver) -> dict[str, Any]:
 
 def _cycle_payload(result: CycleResult) -> dict[str, Any]:
     """One collection cycle as JSON, including what it would have delivered and why."""
+    metrics = result.metrics
     return {
         "source_id": result.source_id,
         "mode": str(result.mode),
@@ -525,6 +526,13 @@ def _cycle_payload(result: CycleResult) -> dict[str, Any]:
         "warnings": list(result.warnings),
         "error_code": result.error_code,
         "error_message": result.error_message,
+        "seeded": result.seeded,
+        "duration_seconds": result.duration_seconds,
+        "page_count": None if metrics is None else metrics.page_count,
+        "declared_total": None if metrics is None else metrics.declared_total,
+        "parsed_total": None if metrics is None else metrics.parsed_total,
+        "stable_id_percent": None if metrics is None else metrics.stable_id_percent,
+        "direct_url_percent": None if metrics is None else metrics.direct_url_percent,
         "health_events": [
             {
                 "kind": str(event.kind),
@@ -554,6 +562,7 @@ def _cycle_report_payload(
             "closed": sum(result.closed_count for result in results),
             "notifications_sent": sum(result.notifications_sent for result in results),
             "incomplete": len([result for result in results if not result.complete]),
+            "seeded": len([result for result in results if result.seeded]),
         },
         "sources": [_cycle_payload(result) for result in results],
     }
@@ -566,6 +575,7 @@ def _cycle_line(result: CycleResult) -> str:
         f"  updated={result.updated_count}  missing={result.missing_count}"
         f"  notifications={result.notifications_sent}"
         + (f"  error={result.error_code}" if result.error_code else "")
+        + ("  seeded (first complete snapshot, no events)" if result.seeded else "")
     )
 
 

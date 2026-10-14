@@ -62,6 +62,15 @@ Pagination rules:
 - A page whose posting ids are exactly a page already seen is a loop: the adapter keeps the jobs it
   already has and reports ``complete=False`` with a warning instead of following the loop or
   truncating the collection silently.
+- The board lists postings newest first, so a posting published while the board is walked lands
+  ahead of the offset: every later record shifts one place, one record repeats at a page boundary,
+  and the new posting sits on the head page the walk already left. A walk that ends short of
+  ``totalFound`` therefore re-reads the head page once. If that recovers exactly the missing
+  postings, the repeats it explains are dropped and the walk is complete.
+- A walk whose only remaining defects are a repeated posting id or a count that disagrees with
+  ``totalFound`` is still what a changing board looks like, so the adapter walks the board once
+  more and returns that second walk, complete or not. A loop, the page cap, or an unusable record
+  is never re-walked, because a second walk would only repeat it.
 - ``MAX_PAGES`` is a last-resort cap. Reaching it is an incomplete collection, never a complete one,
   so a runaway walk cannot look like a finished board.
 
@@ -125,8 +134,41 @@ class SmartRecruitersAdapter:
         list_url = _list_url(str(source.endpoint))
         first_seen_at = self._now()
 
+        result, shifted = await self._walk(
+            source, fetcher, tenant=tenant, page_size=page_size, list_url=list_url,
+            first_seen_at=first_seen_at,
+        )
+        if result.complete or not shifted:
+            return result
+        # The board moved under the offsets while it was read. One fresh walk is the whole budget:
+        # its verdict stands, complete or not, so a board that keeps disagreeing still fails closed.
+        retried, _ = await self._walk(
+            source, fetcher, tenant=tenant, page_size=page_size, list_url=list_url,
+            first_seen_at=first_seen_at,
+        )
+        return retried
+
+    async def _walk(
+        self,
+        source: SourceConfig,
+        fetcher: HttpFetcher,
+        *,
+        tenant: str,
+        page_size: int,
+        list_url: str,
+        first_seen_at: datetime,
+    ) -> tuple[CollectionResult, bool]:
+        """One pass over every page, and whether its only defects are those of a shifting board.
+
+        A repeated posting id and a count that disagrees with ``totalFound`` are what an insertion
+        or a removal ahead of the offset produces mid-walk. A pagination loop, the page cap, and an
+        unusable record are not, and a second walk would only repeat them.
+        """
+        structural = False
         jobs: list[NormalizedJob] = []
         warnings: list[str] = []
+        # Duplicates a shifting board explains; dropped only if the head re-read closes the gap.
+        shift_notes: list[str] = []
         seen_job_keys: set[str] = set()
         seen_posting_ids: set[str] = set()
         seen_page_id_sets: set[frozenset[str]] = set()
@@ -151,6 +193,7 @@ class SmartRecruitersAdapter:
 
             page_ids = _page_ids(records)
             if page_ids in seen_page_id_sets:
+                structural = True
                 warnings.append(
                     f"pagination loop detected at page {page_count}: the page repeated an earlier "
                     "page's job ids, so the collection is incomplete"
@@ -165,13 +208,16 @@ class SmartRecruitersAdapter:
                         record, source=source, tenant=tenant, first_seen_at=first_seen_at
                     )
                 except _UnusableJob as exc:
+                    structural = True
                     warnings.append(f"skipped malformed job record at index {index}: {exc}")
                     continue
                 if job.canonical_job_key in seen_job_keys:
-                    warnings.append(
+                    note = (
                         f"skipped duplicate job record at index {index}: "
                         "the source job id already appeared"
                     )
+                    warnings.append(note)
+                    shift_notes.append(note)
                     continue
                 seen_job_keys.add(job.canonical_job_key)
                 jobs.append(job)
@@ -183,6 +229,7 @@ class SmartRecruitersAdapter:
             if len(seen_posting_ids) >= declared_total:
                 break
             if page_count >= MAX_PAGES:
+                structural = True
                 warnings.append(
                     f"stopped after {page_count} pages: the page cap is reached, so the collection "
                     "may be incomplete"
@@ -190,13 +237,49 @@ class SmartRecruitersAdapter:
                 break
             offset += len(records)
 
+        if (
+            not structural
+            and declared_total is not None
+            and len(seen_posting_ids) < declared_total
+        ):
+            # The board lists newest first, so a posting published mid-walk lands ahead of the
+            # offset: it shifts every later record (one repeats at a page boundary) and sits on the
+            # head page the walk already left. One more read of that page recovers it.
+            payload = await fetcher.get(
+                RequestSpec(
+                    url=_page_url(list_url, offset=0, limit=page_size),
+                    headers=dict(source.headers),
+                    expected="json",
+                )
+            )
+            records, declared_total = _parse_page(payload)
+            page_count += 1
+            recovered = 0
+            for index, record in enumerate(records):
+                try:
+                    job = _normalize_job(
+                        record, source=source, tenant=tenant, first_seen_at=first_seen_at
+                    )
+                except _UnusableJob as exc:
+                    structural = True
+                    warnings.append(f"skipped malformed head record at index {index}: {exc}")
+                    continue
+                if job.canonical_job_key in seen_job_keys:
+                    continue
+                seen_job_keys.add(job.canonical_job_key)
+                jobs.append(job)
+                recovered += 1
+            seen_posting_ids.update(_page_ids(records))
+            if recovered and len(seen_posting_ids) == declared_total:
+                warnings = [note for note in warnings if note not in shift_notes]
+
         if len(seen_posting_ids) != declared_total:
             warnings.append(
                 f"collected {len(seen_posting_ids)} unique postings but the board declared "
                 f"totalFound={declared_total}, so the collection is incomplete"
             )
 
-        return CollectionResult(
+        result = CollectionResult(
             source_id=source.id,
             complete=not warnings,
             jobs=jobs,
@@ -204,6 +287,7 @@ class SmartRecruitersAdapter:
             page_count=page_count,
             declared_total=declared_total,
         )
+        return result, not structural
 
 
 def _list_url(endpoint: str) -> str:

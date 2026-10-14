@@ -331,20 +331,24 @@ async def test_smartrecruiters_tracks_the_declared_total_of_the_newest_page() ->
 @respx.mock
 @pytest.mark.asyncio
 async def test_smartrecruiters_marks_a_total_count_mismatch_incomplete() -> None:
+    # The board disagrees with its own total on both walks, so the one re-walk cannot settle it.
     route = respx.get(ENDPOINT).mock(
         side_effect=[
             page(record("1"), record("2"), offset=0, limit=2, total=3),
             page(offset=2, limit=2, total=3),
+            page(record("1"), record("2"), offset=0, limit=2, total=3),
         ]
+        * 2
     )
     source = make_smartrecruiters_source(parameters={"page_size": 2})
 
     async with HttpFetcher() as fetcher:
         result = await adapter().collect(source, fetcher)
 
+    # Each walk re-reads the head once, finds nothing new, and the re-walk agrees: incomplete.
     assert result.complete is False
-    assert result.page_count == 2
-    assert route.call_count == 2
+    assert result.page_count == 3
+    assert route.call_count == 6
     assert [job.source_job_id for job in result.jobs] == ["1", "2"]
     assert result.declared_total == 3
     assert result.warnings == [
@@ -353,6 +357,63 @@ async def test_smartrecruiters_marks_a_total_count_mismatch_incomplete() -> None
     ]
     with pytest.raises(PartialCollectionError, match="incomplete collection"):
         validate_collection(result)
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_smartrecruiters_rereads_the_head_after_a_posting_is_published_mid_walk() -> None:
+    """The board lists newest first, so a posting published mid-walk lands ahead of the offset.
+
+    Every later record shifts one place: the next page repeats a record already read, and the new
+    posting sits on page one, which the walk has already left. Re-reading the head page finds it.
+    """
+    route = respx.get(ENDPOINT).mock(
+        side_effect=[
+            page(record("2"), record("1"), offset=0, limit=2, total=3),
+            page(record("1"), record("0"), offset=2, limit=2, total=4),
+            page(offset=4, limit=2, total=4),
+            page(record("3"), record("2"), offset=0, limit=2, total=4),
+        ]
+    )
+    source = make_smartrecruiters_source(parameters={"page_size": 2})
+
+    async with HttpFetcher() as fetcher:
+        result = validate_collection(await adapter().collect(source, fetcher))
+
+    assert result.complete is True
+    assert result.warnings == []
+    assert sorted(job.source_job_id for job in result.jobs) == ["0", "1", "2", "3"]
+    assert result.declared_total == 4
+    assert result.page_count == 4
+    assert route.call_count == 4
+    assert request_params(route.calls[3].request) == [("offset", "0"), ("limit", "2")]
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_smartrecruiters_rewalks_once_when_the_head_cannot_explain_the_shift() -> None:
+    """A posting inserted below the head page is not found there, so the board is re-walked."""
+    route = respx.get(ENDPOINT).mock(
+        side_effect=[
+            page(record("4"), record("3"), offset=0, limit=2, total=5),
+            page(record("2"), record("1"), offset=2, limit=2, total=5),
+            page(record("1"), record("0"), offset=4, limit=2, total=6),
+            page(offset=6, limit=2, total=6),
+            page(record("4"), record("3"), offset=0, limit=2, total=6),
+            page(record("4"), record("3"), offset=0, limit=2, total=6),
+            page(record("y"), record("2"), offset=2, limit=2, total=6),
+            page(record("1"), record("0"), offset=4, limit=2, total=6),
+        ]
+    )
+    source = make_smartrecruiters_source(parameters={"page_size": 2})
+
+    async with HttpFetcher() as fetcher:
+        result = validate_collection(await adapter().collect(source, fetcher))
+
+    assert result.complete is True
+    assert sorted(job.source_job_id for job in result.jobs) == ["0", "1", "2", "3", "4", "y"]
+    assert result.page_count == 3
+    assert route.call_count == 8
 
 
 @respx.mock
@@ -403,8 +464,11 @@ async def test_smartrecruiters_reports_a_repeated_page_id_set_as_an_incomplete_c
 @respx.mock
 @pytest.mark.asyncio
 async def test_smartrecruiters_marks_a_posting_id_repeated_across_pages_incomplete() -> None:
+    # The repeat survives the one re-walk, so it is the board's own defect and stays incomplete.
     route = respx.get(ENDPOINT).mock(
         side_effect=[
+            page(record("1"), record("2"), offset=0, limit=2, total=3),
+            page(record("3"), record("2"), offset=2, limit=2, total=3),
             page(record("1"), record("2"), offset=0, limit=2, total=3),
             page(record("3"), record("2"), offset=2, limit=2, total=3),
         ]
@@ -416,7 +480,7 @@ async def test_smartrecruiters_marks_a_posting_id_repeated_across_pages_incomple
 
     assert result.complete is False
     assert result.page_count == 2
-    assert route.call_count == 2
+    assert route.call_count == 4
     assert [job.source_job_id for job in result.jobs] == ["1", "2", "3"]
     assert result.warnings == [
         "skipped duplicate job record at index 3: the source job id already appeared"

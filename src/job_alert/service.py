@@ -55,6 +55,7 @@ Safety rules this module enforces
 
 from __future__ import annotations
 
+import time
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, replace
 from datetime import UTC, datetime
@@ -64,6 +65,7 @@ from typing import cast
 from job_alert.adapters.base import (
     AdapterError,
     PartialCollectionError,
+    job_metrics,
     validate_collection,
 )
 from job_alert.adapters.registry import AdapterRegistry
@@ -158,6 +160,37 @@ class WouldDeliver:
     deferred: bool = False
 
 
+SEEDED_WARNING = (
+    "first complete snapshot for this source: seeded without events, as a baseline would be"
+)
+
+
+@dataclass(frozen=True, slots=True)
+class CollectionMetrics:
+    """What the adapter handed back, whether or not the collection went on to validate.
+
+    These are the numbers a company-wide dry run is judged on: pages walked, the total the provider
+    declared, the postings actually parsed, and how many carry a stable id and a direct HTTPS link.
+    """
+
+    page_count: int
+    declared_total: int | None
+    parsed_total: int
+    stable_id_percent: float | None
+    direct_url_percent: float | None
+
+    @classmethod
+    def of(cls, collection: CollectionResult) -> CollectionMetrics:
+        stable_id_percent, direct_url_percent = job_metrics(collection)
+        return cls(
+            page_count=collection.page_count,
+            declared_total=collection.declared_total,
+            parsed_total=len(collection.jobs),
+            stable_id_percent=stable_id_percent,
+            direct_url_percent=direct_url_percent,
+        )
+
+
 @dataclass(frozen=True, slots=True)
 class CycleResult:
     """What one collection cycle did, and what it deliberately did not do.
@@ -193,6 +226,14 @@ class CycleResult:
     #: alerts: these events describe the source, never a posting, and the caller that owns a
     #: notifier is what decides whether to push them.
     health_events: tuple[HealthEvent, ...] = ()
+    #: The collection the adapter returned, or ``None`` when it returned none: a challenge, a fetch
+    #: failure before any page parsed, or a ``304`` that reused the applied snapshot.
+    metrics: CollectionMetrics | None = None
+    #: Wall-clock seconds the whole cycle took, measured on a monotonic clock.
+    duration_seconds: float | None = None
+    #: The source had never applied a complete snapshot, so this one seeded it the way a baseline
+    #: does: jobs were stored and no event was staged.
+    seeded: bool = False
 
 
 class ConditionalFetcher:
@@ -330,7 +371,9 @@ class JobAlertService:
         dry runs can never make a healthy source look broken.
         """
         before = self._repository.source_health(source.id)
+        started = time.monotonic()
         result = await self._collect_cycle(source, mode, state=before)
+        result = replace(result, duration_seconds=round(time.monotonic() - started, 3))
         events = self._record_health(source, before, result)
         if not events:
             return result
@@ -389,18 +432,21 @@ class JobAlertService:
                 http_status=self._status(conditional),
             )
         except PartialCollectionError as exc:
-            return self._finish_unsuccessful(
+            # The adapter's warnings say *why* the board is incomplete; keep them with the run.
+            reasons = () if collection is None else tuple(collection.warnings)
+            failed = self._finish_unsuccessful(
                 run_id,
                 source,
                 mode,
                 RunOutcome.PARTIAL,
                 code="partial_collection",
-                message=str(exc),
+                message="; ".join((str(exc), *reasons)),
                 jobs_seen=0 if collection is None else len(collection.jobs),
                 http_status=self._status(conditional),
             )
+            return _with_metrics(collection, failed)
         except (AdapterError, FetchFailure) as exc:
-            return self._finish_unsuccessful(
+            failed = self._finish_unsuccessful(
                 run_id,
                 source,
                 mode,
@@ -410,8 +456,9 @@ class JobAlertService:
                 jobs_seen=0 if collection is None else len(collection.jobs),
                 http_status=self._status(conditional),
             )
+            return _with_metrics(collection, failed)
 
-        return await self._commit_validated(
+        committed = await self._commit_validated(
             run_id,
             source,
             mode,
@@ -420,6 +467,7 @@ class JobAlertService:
             applied=applied,
             detected_at=detected_at,
         )
+        return _with_metrics(valid, committed)
 
     # ------------------------------------------------------------------ collection outcomes
 
@@ -546,8 +594,15 @@ class JobAlertService:
                 declared_total=valid.declared_total,
             )
 
+        # A source that has never applied a complete snapshot was never baselined: its board holds
+        # postings that were public before this monitor looked, so the snapshot seeds it instead
+        # of announcing every one of them.
+        seeding = applied is None and mode is not RunMode.BASELINE
         events, suppressed = self._plan_events(
-            diff, jobs_by_key, detected_at=detected_at, mode=mode
+            diff,
+            jobs_by_key,
+            detected_at=detected_at,
+            mode=RunMode.BASELINE if seeding else mode,
         )
         with self._repository.transaction():
             self._repository.upsert_observations(run_id, jobs)
@@ -588,6 +643,8 @@ class JobAlertService:
             notifications_sent=sent,
             would_deliver=would_deliver,
             suppressed_duplicates=suppressed,
+            warnings=(SEEDED_WARNING,) if seeding else (),
+            seeded=seeding,
         )
 
     async def _commit_unchanged(
@@ -1064,6 +1121,12 @@ class JobAlertService:
             f" {candidate_count}, less than half: the snapshot is quarantined until another"
             " independently fetched complete collection confirms the same canonical job keys"
         )
+
+
+def _with_metrics(collection: CollectionResult | None, result: CycleResult) -> CycleResult:
+    if collection is None:
+        return result
+    return replace(result, metrics=CollectionMetrics.of(collection))
 
 
 def _counts(diff: SnapshotDiff, *, closed: int = 0) -> tuple[int, int, int, int, int, int]:

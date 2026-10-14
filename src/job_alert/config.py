@@ -10,7 +10,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
 
-from job_alert.models import CompanyTarget, SourceConfig
+from job_alert.models import TIER_INTERVAL_MINUTES, CompanyTarget, SourceConfig
 
 
 class ConfigError(ValueError):
@@ -145,6 +145,12 @@ def load_app_config(config_dir: Path) -> AppConfig:
     for source in config.sources:
         if source.company_id not in company_ids:
             raise ConfigError(f"unknown company_id {source.company_id}")
+        tier = TIER_INTERVAL_MINUTES[source.source_class]
+        if source.enabled and source.interval_minutes < tier:
+            raise ConfigError(
+                f"{source.id} polls every {source.interval_minutes} minutes, faster than the"
+                f" {source.source_class} tier of {tier}"
+            )
     source_company_ids = {source.company_id for source in config.sources}
     for company_id in sorted(company_ids - source_company_ids):
         raise ConfigError(f"missing source entry: {company_id}")

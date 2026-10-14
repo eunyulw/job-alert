@@ -51,6 +51,7 @@ from job_alert.adapters.base import (
     AdapterError,
     PartialCollectionError,
     SourceAdapter,
+    job_metrics,
     validate_collection,
 )
 from job_alert.adapters.generic_json import GenericJsonAdapter
@@ -68,6 +69,7 @@ from job_alert.fetch import (
     RequestSpec,
 )
 from job_alert.models import (
+    TIER_INTERVAL_MINUTES,
     CollectionResult,
     CompanyTarget,
     HttpsUrl,
@@ -834,7 +836,7 @@ async def _verify_provider(
     if not repeated:
         notes.append("repeating the collection changed the canonical job keys")
 
-    stable_id_percent, direct_url_percent = _job_metrics(first)
+    stable_id_percent, direct_url_percent = job_metrics(first)
     status = SupportStatus.NEEDS_MANUAL_REVIEW
     if not first.jobs:
         notes.append("board returned no postings, so stable identity and direct links are unproven")
@@ -907,20 +909,6 @@ def _candidate_source(
         headers=dict(source.headers),
         enabled=False,
     )
-
-
-def _job_metrics(result: CollectionResult) -> tuple[float | None, float | None]:
-    if not result.jobs:
-        return None, None
-    total = len(result.jobs)
-    stable = sum(1 for job in result.jobs if job.source_job_id.strip())
-    direct = sum(
-        1
-        for job in result.jobs
-        if str(job.posting_url).startswith("https://")
-        and str(job.apply_url).startswith("https://")
-    )
-    return round(100.0 * stable / total, 2), round(100.0 * direct / total, 2)
 
 
 async def _verify_workday(
@@ -1330,6 +1318,19 @@ def probe_target(source: SourceConfig, record: Mapping[str, Any] | None) -> Sour
     )
 
 
+def _tier_interval(source: SourceConfig, source_class: SourceClass) -> int:
+    """The interval a re-probed record polls at.
+
+    A record that changes class takes the new class's tier, so a discovery record verified as an API
+    does not keep the fallback cadence. A record that keeps its class keeps its interval, which may
+    be an operator's deliberate back-off, but never polls faster than the tier.
+    """
+    tier = TIER_INTERVAL_MINUTES[source_class]
+    if source.source_class is not source_class:
+        return tier
+    return max(source.interval_minutes, tier)
+
+
 def _updated_source(
     source: SourceConfig,
     company: CompanyTarget,
@@ -1419,7 +1420,7 @@ def _updated_source(
         source_class=source_class,
         support_status=result.support_status,
         endpoint=to_https_url(endpoint),
-        interval_minutes=source.interval_minutes,
+        interval_minutes=_tier_interval(source, source_class),
         tenant=tenant,
         parameters=parameters,
         headers=dict(source.headers),

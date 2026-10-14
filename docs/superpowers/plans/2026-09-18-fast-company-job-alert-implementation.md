@@ -2055,11 +2055,43 @@ git commit -m "feat: add scheduler and operator CLI"
 - Create: `tests/integration/test_all_configured_sources.py`
 - Create: `tests/integration/test_restart_and_delivery.py`
 - Create: `reports/.gitkeep`
-- Modify: `docs/source-audit.md`
+- Create: `docs/collection-verification.md`
+- Modify: `.gitignore`, `pyproject.toml`, `uv.lock`
+- Modify: `config/sources.yaml`, `src/job_alert/config.py`, `src/job_alert/cli.py` (interval tiers)
+- Modify: `src/job_alert/service.py`, `src/job_alert/adapters/base.py`, `src/job_alert/audit.py` (report metrics)
 
-**Interfaces:**
-- Consumes: all enabled audited sources, adapters, state engine, filters, and notification fakes.
-- Produces: machine-readable and Markdown dry-run/baseline reports and the go/no-go evidence for phone activation.
+> **Revision 2026-10-14 (plan verification before execution).** Checked against the code at `9fef095`:
+> 1. `docs/source-audit.md` is regenerated in full by `audit report`/`report coverage` (see
+>    `docs/enterprise-adapter-gates.md`), so Step 7 evidence goes in `docs/collection-verification.md`.
+> 2. Every enabled source polled every 30 minutes (the `audit set-source` default), contradicting the
+>    5/10/15/30 tiers in Global Constraints and the spec's 6/11/16-minute objectives. Step 0 fixes this
+>    before any baseline is recorded.
+> 3. The cycle report had none of the Step 4 metrics; Step 4a adds them.
+> 4. A dry run is stored with outcome `partial` (`error_code: dry_run`) by design so it can never become
+>    the absence snapshot. Step 4 therefore checks `complete: true`, not `outcome: complete`.
+> 5. `test_service_cycle.py` already covers a failed delivery retried after one restart. Step 2 covers
+>    only what it lacks: a restart between baseline and the new posting, a retry through the
+>    `retry-notifications` path (`deliver_pending`), and a final cycle proving nothing is re-sent.
+> 6. Only 10 sources are enabled; `automotive-ev-autonomous-mobility` has none, and three categories have
+>    one each, so Step 7 cannot sample two per category. It samples what exists and records the gap.
+> 7. `reports/` was ignored wholesale, so `reports/.gitkeep` could not be committed; the ignore rule is
+>    narrowed. Adding `pytest-cov` changes `uv.lock`, which the Step 8 commit now includes.
+>
+> Found while executing Step 6 (evidence in `docs/collection-verification.md`):
+> 8. `bosch-smartrecruiters` intermittently failed as postings were published mid-walk on a newest-first
+>    list. The adapter now re-reads the head page, then re-walks once, before failing closed.
+> 9. A source with no applied complete snapshot (a failed baseline, or a source enabled later) recorded
+>    its whole board as `new` events in LIVE/LIVE_SUPPRESSED. Its first complete snapshot now seeds
+>    silently (`seeded: true`). Task 25's runbook and Task 26's canary rely on this: enabling a source
+>    never announces the postings it already had.
+
+- [ ] **Step 0: Enforce the polling tiers before any baseline**
+
+Map source class to its tier interval (`documented_api` 5, `public_ats` 10, `company_json` 15,
+`html`/`fallback` 30). The configuration loader rejects an enabled source polled *faster* than its tier
+(slower stays legal so an operator can back off a `429`). `audit set-source` defaults `--interval` to the
+tier of `--class`. A test pins every enabled committed source to exactly its tier, and
+`config/sources.yaml` is corrected to match.
 
 - [ ] **Step 1: Add an offline registry-to-adapter completeness test**
 
@@ -2076,7 +2108,7 @@ def test_every_enabled_source_has_registered_adapter(app_config) -> None:
 
 - [ ] **Step 2: Add restart and exactly-once delivery tests**
 
-Use a temporary on-disk SQLite database. Baseline two jobs, close the service, reopen it, present a third job, force one transient notification failure, restart again, retry, and assert exactly one successful delivery for the third job and none for the baseline jobs.
+Use a temporary on-disk SQLite database. Baseline two jobs, close the service, reopen it, present a third job, force one transient notification failure, restart again, retry through `deliver_pending` (the `retry-notifications` path, which fetches nothing), and assert exactly one successful delivery for the third job and none for the baseline jobs. Restart once more and run another live cycle to prove nothing is re-sent.
 
 - [ ] **Step 3: Run the full offline quality gate**
 
@@ -2091,11 +2123,17 @@ git diff --check
 
 Add `pytest-cov>=6,<7` to the dev dependencies before this command. Expected: all checks pass and coverage is at least 90% for `identity.py`, `diff.py`, `config.py`, `filters.py`, and every enabled adapter.
 
+- [ ] **Step 4a: Add collection metrics to every cycle report (test first)**
+
+`CycleResult` and the `collect`/`baseline` JSON gain `duration_seconds` (monotonic), `page_count`, `declared_total`, `parsed_total`, `stable_id_percent`, and `direct_url_percent`. The two rates use the audit's existing definition, moved next to `validate_collection` so the audit and the service share one function. A failed cycle reports whatever it knows and `null` for the rest.
+
 - [ ] **Step 4: Run one dry collection against every enabled live source**
 
-Run: `uv run job-alert collect --all --mode dry-run --report reports/all-sources-dry-run.json`.
+Run: `uv run job-alert collect --all --mode dry-run --db data/verification.sqlite3 --report reports/all-sources-dry-run.json`.
 
-Expected: every enabled source produces `complete`; blocked and manual-review sources are excluded but remain visible in coverage. The report includes HTTP duration, pages, declared total, parsed total, stable-ID rate, direct-URL rate, and warnings.
+Expected: every enabled source reports `complete: true` (its stored outcome is `partial` with `error_code: dry_run`, by design); blocked and manual-review sources are excluded but remain visible in coverage. The report includes HTTP duration, pages, declared total, parsed total, stable-ID rate, direct-URL rate, and warnings.
+
+The verification database is local evidence only. The deployed container seeds its own baseline through the runbook in Task 25.
 
 - [ ] **Step 5: Resolve every dry-run discrepancy before baselining**
 
@@ -2106,22 +2144,24 @@ For any incomplete source, either fix its adapter with a failing fixture test fi
 Run:
 
 ```bash
-uv run job-alert baseline --all --confirm-seed --report reports/baseline.json
-uv run job-alert collect --all --mode live-suppressed --report reports/post-baseline.json
+uv run job-alert baseline --all --confirm-seed --db data/verification.sqlite3 --report reports/baseline.json
+uv run job-alert collect --all --mode live-suppressed --db data/verification.sqlite3 --report reports/post-baseline.json
 ```
 
 Expected: the baseline records jobs and sends zero alerts; the immediate second run produces zero new-job events unless a posting genuinely appeared between runs. Any real new event remains suppressed but is listed for manual verification.
 
 - [ ] **Step 7: Manually verify a stratified sample**
 
-Compare at least two companies from every category and at least one company from every enabled adapter family against its official career page. Record official visible job count, collected count, sample matching IDs/titles, pagination result, and timestamp in `docs/source-audit.md`. A discrepancy blocks that source from live notification.
+Compare at least two companies from every category (or every enabled company where a category has fewer than two, and record the category's gap explicitly) and at least one company from every enabled adapter family against its official career page. Record official visible job count, collected count, sample matching IDs/titles, pagination result, and timestamp in `docs/collection-verification.md`. A discrepancy blocks that source from live notification.
+
+An agent performing this step uses an independent ordinary-HTTP read of the human-facing board, not the adapter's endpoint, and labels it as such. A human visual check of the same companies remains an operator item for Task 26.
 
 - [ ] **Step 8: Commit the verification harness and nonvolatile evidence**
 
 Do not commit runtime reports containing volatile job inventories. Commit test code, `.gitkeep`, and summarized audit evidence only.
 
 ```bash
-git add pyproject.toml tests/integration reports/.gitkeep docs/source-audit.md
+git add .gitignore pyproject.toml uv.lock config/sources.yaml src tests reports/.gitkeep docs/collection-verification.md docs/superpowers/plans
 git commit -m "test: verify all-company collection workflow"
 ```
 

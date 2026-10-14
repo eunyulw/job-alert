@@ -78,6 +78,87 @@ async def test_dry_run_reports_the_board_without_writing_state(
     assert service_harness.notifier.messages == []
 
 
+@pytest.mark.parametrize("mode", [RunMode.LIVE, RunMode.LIVE_SUPPRESSED])
+@pytest.mark.asyncio
+async def test_a_source_never_seeded_is_seeded_by_its_first_snapshot_without_events(
+    service_harness: ServiceHarness, mode: RunMode
+) -> None:
+    """A board nobody baselined holds postings that were already public, so none of them is news.
+
+    A failed baseline, or a source enabled after the initial seeding, would otherwise announce its
+    whole board on its first complete cycle.
+    """
+    first = await service_harness.service.collect_source(service_harness.source, mode=mode)
+
+    assert first.complete is True
+    assert first.seeded is True
+    assert first.notifications_sent == 0
+    assert first.would_deliver == ()
+    assert any("seeded" in warning for warning in first.warnings)
+    assert service_harness.repo.pending_events(service_harness.source.id) == []
+    assert len(service_harness.active_keys()) == 2
+    assert service_harness.notifier.messages == []
+
+    service_harness.adapter.set_fixture("three-jobs")
+    second = await service_harness.service.collect_source(service_harness.source, mode=mode)
+
+    assert second.seeded is False
+    assert second.new_count == 1
+    assert len(second.would_deliver) == 1
+    if mode is RunMode.LIVE:
+        assert second.notifications_sent == 1
+        assert "Robotics Software Engineer 3" in service_harness.notifier.messages[0].body
+
+
+@pytest.mark.asyncio
+async def test_a_cycle_reports_the_collection_it_fetched(service_harness: ServiceHarness) -> None:
+    result = await service_harness.service.collect_source(
+        service_harness.source, mode=RunMode.DRY_RUN
+    )
+
+    assert result.metrics is not None
+    assert result.metrics.page_count == 1
+    assert result.metrics.declared_total == 2
+    assert result.metrics.parsed_total == 2
+    assert result.metrics.stable_id_percent == 100.0
+    assert result.metrics.direct_url_percent == 100.0
+    assert result.duration_seconds is not None
+    assert result.duration_seconds >= 0
+
+
+@pytest.mark.asyncio
+async def test_an_incomplete_collection_still_reports_what_it_parsed(
+    service_harness: ServiceHarness,
+) -> None:
+    service_harness.adapter.set_fixture("partial")
+
+    result = await service_harness.service.collect_source(
+        service_harness.source, mode=RunMode.DRY_RUN
+    )
+
+    assert result.complete is False
+    assert result.metrics is not None
+    assert result.metrics.parsed_total == 2
+    # The adapter's own reason is what an operator needs, so it survives into the cycle report.
+    assert result.error_message is not None
+    assert "page 2 failed" in result.error_message
+
+
+@pytest.mark.asyncio
+async def test_a_challenged_cycle_reports_no_collection_metrics(
+    service_harness: ServiceHarness,
+) -> None:
+    service_harness.adapter.set_fixture("challenge")
+
+    result = await service_harness.service.collect_source(
+        service_harness.source, mode=RunMode.DRY_RUN
+    )
+
+    assert result.outcome is RunOutcome.CHALLENGED
+    assert result.metrics is None
+    assert result.duration_seconds is not None
+
+
 @pytest.mark.asyncio
 async def test_a_304_is_a_complete_no_change_run_over_the_last_applied_snapshot(
     service_harness: ServiceHarness,

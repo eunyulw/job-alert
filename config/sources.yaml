@@ -266,7 +266,7 @@ sources:
   source_class: documented_api
   support_status: SUPPORTED
   endpoint: https://api.lever.co/v0/postings/palantir?mode=json
-  interval_minutes: 30
+  interval_minutes: 5
   tenant: palantir
   parameters:
     audit_status: SUPPORTED
@@ -382,7 +382,7 @@ sources:
   source_class: documented_api
   support_status: SUPPORTED
   endpoint: https://boards-api.greenhouse.io/v1/boards/anthropic/jobs?content=true
-  interval_minutes: 30
+  interval_minutes: 5
   tenant: anthropic
   parameters:
     audit_status: SUPPORTED
@@ -718,7 +718,7 @@ sources:
   source_class: public_ats
   support_status: SUPPORTED_UNDOCUMENTED
   endpoint: https://api.ashbyhq.com/posting-api/job-board/mistral.ai
-  interval_minutes: 30
+  interval_minutes: 10
   tenant: mistral.ai
   parameters:
     audit_status: SUPPORTED_UNDOCUMENTED
@@ -752,7 +752,7 @@ sources:
   source_class: public_ats
   support_status: SUPPORTED_UNDOCUMENTED
   endpoint: https://api.ashbyhq.com/posting-api/job-board/cohere
-  interval_minutes: 30
+  interval_minutes: 10
   tenant: cohere
   parameters:
     audit_status: SUPPORTED_UNDOCUMENTED
@@ -984,7 +984,7 @@ sources:
   source_class: documented_api
   support_status: SUPPORTED
   endpoint: https://boards-api.greenhouse.io/v1/boards/intrinsicrobotics/jobs?content=true
-  interval_minutes: 30
+  interval_minutes: 5
   tenant: intrinsicrobotics
   parameters:
     audit_status: SUPPORTED
@@ -1018,7 +1018,7 @@ sources:
   source_class: public_ats
   support_status: SUPPORTED_UNDOCUMENTED
   endpoint: https://api.ashbyhq.com/posting-api/job-board/serverobotics
-  interval_minutes: 30
+  interval_minutes: 10
   tenant: serverobotics
   parameters:
     audit_status: SUPPORTED_UNDOCUMENTED
@@ -1105,7 +1105,7 @@ sources:
   source_class: documented_api
   support_status: SUPPORTED
   endpoint: https://api.smartrecruiters.com/v1/companies/BoschGroup/postings
-  interval_minutes: 30
+  interval_minutes: 5
   tenant: BoschGroup
   parameters:
     audit_status: SUPPORTED
@@ -1192,7 +1192,7 @@ sources:
   source_class: public_ats
   support_status: SUPPORTED_UNDOCUMENTED
   endpoint: https://api.ashbyhq.com/posting-api/job-board/1x
-  interval_minutes: 30
+  interval_minutes: 10
   tenant: 1x
   parameters:
     audit_status: SUPPORTED_UNDOCUMENTED
@@ -1340,7 +1340,7 @@ sources:
   source_class: public_ats
   support_status: SUPPORTED_UNDOCUMENTED
   endpoint: https://api.ashbyhq.com/posting-api/job-board/StandardBots
-  interval_minutes: 30
+  interval_minutes: 10
   tenant: StandardBots
   parameters:
     audit_status: SUPPORTED_UNDOCUMENTED
@@ -1442,7 +1442,7 @@ sources:
   source_class: documented_api
   support_status: SUPPORTED
   endpoint: https://boards-api.greenhouse.io/v1/boards/neuralink/jobs?content=true
-  interval_minutes: 30
+  interval_minutes: 5
   tenant: neuralink
   parameters:
     audit_status: SUPPORTED

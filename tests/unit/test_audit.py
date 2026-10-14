@@ -313,6 +313,8 @@ def test_set_source_derives_enabled_from_the_status(tmp_path: Path) -> None:
     promoted = load_source_records(tmp_path / "sources.yaml")[0]
     assert promoted.support_status is SupportStatus.SUPPORTED
     assert promoted.enabled is True
+    # Without --interval the record polls at the documented_api tier.
+    assert promoted.interval_minutes == 5
 
 
 @respx.mock
@@ -713,6 +715,8 @@ def test_reprobe_with_a_different_provider_overwrites_the_previous_evidence(
     assert updated.source_class is SourceClass.PUBLIC_ATS
     assert updated.support_status is SupportStatus.SUPPORTED_UNDOCUMENTED
     assert updated.enabled is True
+    # A new source class polls at its own tier, not at the superseded record's interval.
+    assert updated.interval_minutes == 10
     assert "audit_provider" not in updated.parameters
     assert updated.parameters["audit_evidence"] == "final URL host jobs.ashbyhq.com"
     # No tenant, board token, or adapter parameter of the superseded provider may survive.

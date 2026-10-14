@@ -4,10 +4,10 @@ Run with::
 
     uv run pytest tests/live/test_ashby_live.py -m live -v
 
-The probe collects the first enabled, supported Ashby source from `config/sources.yaml` twice and
-requires both collections to be complete and to agree. Until the Task 11 audit enables such a
-source it skips deliberately instead of failing; a board that is genuinely empty is still a valid
-observation, because the audit is what proves the board is worth polling.
+The probe collects the first enabled, directly supported Ashby source from `config/sources.yaml`
+twice and requires both collections to be complete and to agree. Until the Task 11 audit enables
+such a source it skips deliberately instead of failing; a board that is genuinely empty is still a
+valid observation, because the audit is what proves the board is worth polling.
 """
 
 from __future__ import annotations
@@ -32,11 +32,14 @@ def verified_ashby_source() -> SourceConfig:
         if (
             source.provider == "ashby"
             and source.enabled
-            and source.support_status is SupportStatus.SUPPORTED
+            # Ashby's posting API is public but undocumented, so the audit grades its boards
+            # SUPPORTED_UNDOCUMENTED; either direct status is a board the monitor polls.
+            and source.support_status
+            in (SupportStatus.SUPPORTED, SupportStatus.SUPPORTED_UNDOCUMENTED)
         ):
             return source
     pytest.skip(
-        "config/sources.yaml has no enabled SUPPORTED ashby source: the Task 11 source audit "
+        "config/sources.yaml has no enabled direct ashby source: the Task 11 source audit "
         "has not enabled one yet"
     )
 

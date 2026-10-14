@@ -21,6 +21,18 @@ class SourceClass(StrEnum):
     FALLBACK = "fallback"
 
 
+#: The polling tier for each source class, in minutes. The spec's detection objectives (6, 11, and
+#: 16 minutes) hold only at these intervals, and polling faster than the tier is never allowed.
+#: Slower is allowed, because that is how an operator backs off a source that answers 429.
+TIER_INTERVAL_MINUTES: dict[SourceClass, int] = {
+    SourceClass.DOCUMENTED_API: 5,
+    SourceClass.PUBLIC_ATS: 10,
+    SourceClass.COMPANY_JSON: 15,
+    SourceClass.HTML: 30,
+    SourceClass.FALLBACK: 30,
+}
+
+
 class SupportStatus(StrEnum):
     SUPPORTED = "SUPPORTED"
     SUPPORTED_UNDOCUMENTED = "SUPPORTED_UNDOCUMENTED"

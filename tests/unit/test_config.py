@@ -4,6 +4,7 @@ import pytest
 from pydantic import ValidationError
 
 from job_alert.config import AppConfig, ConfigError, FilterConfig, FilterPriority, load_app_config
+from job_alert.models import TIER_INTERVAL_MINUTES, SourceClass
 
 
 def test_load_config_rejects_unknown_company_reference(tmp_path: Path) -> None:
@@ -23,6 +24,64 @@ def test_load_config_rejects_unknown_company_reference(tmp_path: Path) -> None:
     (tmp_path / "filters.yaml").write_text("filters: []\n")
     with pytest.raises(ConfigError, match="unknown company_id ghost"):
         load_app_config(tmp_path)
+
+
+def _single_source_config(
+    tmp_path: Path, *, source_class: str, interval: int, enabled: str
+) -> None:
+    (tmp_path / "company_targets.yaml").write_text(
+        "companies:\n  - id: acme\n    name: Acme\n    categories: [big-tech-ai]\n"
+    )
+    (tmp_path / "sources.yaml").write_text(
+        "sources:\n"
+        "  - id: acme-board\n"
+        "    company_id: acme\n"
+        "    provider: greenhouse\n"
+        f"    source_class: {source_class}\n"
+        "    support_status: SUPPORTED\n"
+        "    endpoint: https://example.com/jobs\n"
+        f"    interval_minutes: {interval}\n"
+        f"    enabled: {enabled}\n"
+    )
+    (tmp_path / "filters.yaml").write_text("filters: []\n")
+
+
+def test_tier_intervals_follow_the_polling_policy() -> None:
+    assert TIER_INTERVAL_MINUTES == {
+        SourceClass.DOCUMENTED_API: 5,
+        SourceClass.PUBLIC_ATS: 10,
+        SourceClass.COMPANY_JSON: 15,
+        SourceClass.HTML: 30,
+        SourceClass.FALLBACK: 30,
+    }
+
+
+def test_load_config_rejects_an_enabled_source_polled_faster_than_its_tier(
+    tmp_path: Path,
+) -> None:
+    _single_source_config(tmp_path, source_class="public_ats", interval=5, enabled="true")
+    with pytest.raises(ConfigError, match="acme-board polls every 5 minutes.*public_ats.*10"):
+        load_app_config(tmp_path)
+
+
+def test_load_config_allows_a_slower_or_disabled_source(tmp_path: Path) -> None:
+    # Slower than the tier is how an operator backs off a 429, so it stays legal.
+    _single_source_config(tmp_path, source_class="documented_api", interval=30, enabled="true")
+    assert load_app_config(tmp_path).sources[0].interval_minutes == 30
+    # A disabled source is never polled, so its interval cannot overload anything.
+    _single_source_config(tmp_path, source_class="public_ats", interval=5, enabled="false")
+    assert load_app_config(tmp_path).sources[0].interval_minutes == 5
+
+
+def test_every_enabled_committed_source_polls_at_exactly_its_tier(app_config: AppConfig) -> None:
+    """The freshness objectives in the spec (6/11/16 minutes) hold only at the tier interval."""
+    off_tier = sorted(
+        (source.id, source.interval_minutes, TIER_INTERVAL_MINUTES[source.source_class])
+        for source in app_config.sources
+        if source.enabled
+        and source.interval_minutes != TIER_INTERVAL_MINUTES[source.source_class]
+    )
+    assert off_tier == []
 
 
 def test_load_config_requires_every_target_to_have_source_or_review_status(tmp_path: Path) -> None:
