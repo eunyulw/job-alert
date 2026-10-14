@@ -1,5 +1,9 @@
 # Enterprise adapter gates
 
+> **Update 2026-10-14 (Task 29).** The Workday gate now passes: `src/job_alert/adapters/workday.py`
+> exists and `nvidia-workday` is an enabled, scoped source. The record below describes the state
+> on 2026-09-19 and is kept as history; the other four providers are unchanged.
+
 Recorded 2026-09-19 against the registry in `config/sources.yaml` as committed at revision
 `400dae2` - the base this note builds on, not the revision that added the note - and the persisted
 audit in `reports/source-audit.json`. The note itself was first committed as `87c07a8` and corrected

@@ -170,3 +170,13 @@ category-by-category expansion has nothing to enable for it.
 At the 5-minute `documented_api` tier, Bosch costs 51 requests per cycle, about 612 an hour, and up to
 twice that in a cycle that needs the re-walk. No `429` was observed during this task. If one appears,
 the runbook's back-off is to raise Bosch's `interval_minutes` (slower than the tier is allowed).
+
+## Expansion log (Task 29)
+
+Each company passes the per-company gate in Task 29 before it joins the alert allowlist. "Live
+check" is two consecutive adapter collections on the date shown.
+
+| Phase | Company | Source | Scope | Live check | Allowlisted |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Amazon | `amazon-amazon` (`company_json`, 15 min) | `base_query=intern` (hits capped at 10,000) | 2026-10-14: 428 twice, identical keys, 5 pages, 100% ids and links | after two clean scheduler cycles |
+| 1 | NVIDIA | `nvidia-workday` (`public_ats`, 10 min) | facet `workerSubType = Intern (Fixed Term)` (total capped at 2,000) | 2026-10-14: 163 twice, identical keys, 9 pages, 100% ids and links | after two clean scheduler cycles |

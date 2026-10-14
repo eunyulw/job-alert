@@ -110,6 +110,7 @@ def test_provider_adapters_cover_every_registered_provider() -> None:
         "json-ld",
         "lever",
         "smartrecruiters",
+        "workday",
     ]
     for provider, adapter in PROVIDER_ADAPTERS.items():
         assert adapter.provider == provider
@@ -337,6 +338,62 @@ def test_set_source_derives_enabled_from_the_status(tmp_path: Path) -> None:
     assert promoted.enabled is True
     # Without --interval the record polls at the documented_api tier.
     assert promoted.interval_minutes == 5
+
+
+@respx.mock
+def test_set_source_persists_adapter_parameters_such_as_a_scope(tmp_path: Path) -> None:
+    from typer.testing import CliRunner
+
+    from job_alert.cli import app
+
+    _write_config_dir(tmp_path)
+    endpoint = "https://acme.wd1.myworkdayjobs.com/wday/cxs/acme/External/jobs"
+    respx.post(endpoint).mock(
+        return_value=httpx.Response(
+            200,
+            json={
+                "total": 1,
+                "jobPostings": [{"title": "Robotics Intern", "externalPath": "/job/X/Intern_R1"}],
+            },
+        )
+    )
+    scope = {"applied_facets": {"workerSubType": ["intern-id"]}}
+
+    result = CliRunner().invoke(
+        app,
+        [
+            "audit", "set-source", "--company", "acme", "--provider", "workday",
+            "--endpoint", endpoint, "--class", "public_ats",
+            "--status", "SUPPORTED_UNDOCUMENTED", "--tenant", "acme",
+            "--parameters", json.dumps(scope), "--config-dir", str(tmp_path),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    record = load_source_records(tmp_path / "sources.yaml")[0]
+    assert record.parameters == scope
+    assert record.enabled is True
+    assert record.interval_minutes == 10
+
+
+def test_set_source_refuses_parameters_that_are_not_a_json_object(tmp_path: Path) -> None:
+    from typer.testing import CliRunner
+
+    from job_alert.cli import app
+
+    _write_config_dir(tmp_path)
+    result = CliRunner().invoke(
+        app,
+        [
+            "audit", "set-source", "--company", "acme", "--provider", "workday",
+            "--endpoint", "https://acme.wd1.myworkdayjobs.com/wday/cxs/acme/External/jobs",
+            "--class", "public_ats", "--status", "SUPPORTED_UNDOCUMENTED",
+            "--parameters", "[1, 2]", "--config-dir", str(tmp_path),
+        ],
+    )
+
+    assert result.exit_code == 1
+    assert "JSON object" in result.output
 
 
 @respx.mock

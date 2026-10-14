@@ -60,6 +60,7 @@ from job_alert.adapters.greenhouse import GreenhouseAdapter
 from job_alert.adapters.jsonld import JsonLdAdapter
 from job_alert.adapters.lever import LeverAdapter
 from job_alert.adapters.smartrecruiters import SmartRecruitersAdapter
+from job_alert.adapters.workday import WorkdayAdapter
 from job_alert.config import AppConfig, load_app_config
 from job_alert.fetch import (
     ChallengeDetected,
@@ -88,6 +89,7 @@ PROVIDER_ADAPTERS: dict[str, SourceAdapter] = {
     "ashby": AshbyAdapter(),
     "smartrecruiters": SmartRecruitersAdapter(),
     "amazon": AmazonAdapter(),
+    "workday": WorkdayAdapter(),
     "generic-json": GenericJsonAdapter(),
     "json-ld": JsonLdAdapter(),
 }
@@ -778,10 +780,13 @@ async def _verify_provider(
             notes=["careers page publishes application/ld+json JobPosting documents only"],
         )
 
+    # Workday has an adapter, but a Workday source must be scoped (its search caps at 2,000) and
+    # only an operator can say which facet is the scope, so the audit gathers evidence and stops;
+    # `audit set-source --parameters` promotes a scoped source.
+    if provider == WORKDAY_PROVIDER:
+        return await _verify_workday(source, fingerprint, fetcher)
     adapter = PROVIDER_ADAPTERS.get(provider)
     if adapter is None:
-        if provider == WORKDAY_PROVIDER:
-            return await _verify_workday(source, fingerprint, fetcher)
         return _Verification(
             status=SupportStatus.NEEDS_MANUAL_REVIEW,
             notes=[

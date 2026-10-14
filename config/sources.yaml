@@ -5,24 +5,26 @@
 # it; a record still awaiting audit stays on provider `discovery` with
 # support_status NEEDS_MANUAL_REVIEW, no audit_date, and enabled: false.
 sources:
-- id: nvidia-discovery
+- id: nvidia-workday
   company_id: nvidia
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.nvidia.com/en-us/about-nvidia/careers/
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://nvidia.wd5.myworkdayjobs.com/wday/cxs/nvidia/NVIDIAExternalCareerSite/jobs
+  interval_minutes: 10
+  tenant: nvidia
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.nvidia.com/en-us/about-nvidia/careers/
+    applied_facets:
+      workerSubType:
+      - 0c40f6bd1d8f10adf6dae42e46d44a17
+    scope: workerSubType = Intern (Fixed Term); Workday caps the unscoped board at total=2000
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite
     audit_notes:
-    - linked careers page https://jobs.nvidia.com/careers served an access challenge
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    - workday adapter collected 163 postings twice with identical canonical keys across 9 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
 - id: apple-discovery
   company_id: apple
   provider: discovery

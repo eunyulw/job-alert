@@ -247,10 +247,23 @@ def audit_set_source(
     tenant: Annotated[
         str | None, typer.Option("--tenant", help="Provider tenant or board token")
     ] = None,
+    parameters: Annotated[
+        str | None,
+        typer.Option(
+            "--parameters",
+            help='Adapter parameters as a JSON object, e.g. a scope: {"applied_facets": {...}}',
+        ),
+    ] = None,
     config_dir: ConfigDirOption = DEFAULT_CONFIG_DIR,
 ) -> None:
     """Validate an endpoint with its provider adapter, then replace the discovery record."""
     config = _config(config_dir)
+    try:
+        adapter_parameters = json.loads(parameters) if parameters is not None else {}
+    except json.JSONDecodeError as exc:
+        _fail(f"--parameters is not JSON: {exc}")
+    if not isinstance(adapter_parameters, dict):
+        _fail("--parameters must be a JSON object")
     if company not in {item.id for item in config.companies}:
         _fail(f"unknown company id {company}")
     candidate = SourceConfig(
@@ -262,7 +275,7 @@ def audit_set_source(
         endpoint=to_https_url(endpoint),
         interval_minutes=TIER_INTERVAL_MINUTES[source_class] if interval is None else interval,
         tenant=tenant,
-        parameters={},
+        parameters=adapter_parameters,
         # `enabled` follows the status: only a direct source (SUPPORTED or SUPPORTED_UNDOCUMENTED)
         # is polled, and an operator may still record a downgrade without enabling it.
         enabled=status in DIRECT_STATUSES,
