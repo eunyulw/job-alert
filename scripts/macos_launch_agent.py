@@ -27,6 +27,7 @@ import shutil
 import sqlite3
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -149,6 +150,14 @@ def _launchctl(*arguments: str) -> subprocess.CompletedProcess[bytes]:
     return subprocess.run(["launchctl", *arguments], capture_output=True, check=False)
 
 
+def _wait_until_unloaded(domain: str, attempts: int = 20) -> None:
+    """``bootout`` returns before the old instance is gone; wait for it, briefly."""
+    for _ in range(attempts):
+        if _launchctl("print", f"{domain}/{LABEL}").returncode != 0:
+            return
+        time.sleep(0.5)
+
+
 def install(mode: str) -> int:
     if shutil.which("uv") is None:
         print("install needs uv on PATH: https://docs.astral.sh/uv/", file=sys.stderr)
@@ -166,7 +175,12 @@ def install(mode: str) -> int:
     target = agent_path()
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_bytes(plistlib.dumps(render(RUNTIME, mode=mode)))
+    _wait_until_unloaded(domain)
     loaded = _launchctl("bootstrap", domain, str(target))
+    if loaded.returncode != 0:
+        # launchd can still be tearing the previous instance down; one late retry settles it.
+        time.sleep(2)
+        loaded = _launchctl("bootstrap", domain, str(target))
     if loaded.returncode != 0:
         print(loaded.stderr.decode(errors="replace").strip(), file=sys.stderr)
         return 1
