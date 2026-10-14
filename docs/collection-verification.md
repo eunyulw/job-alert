@@ -178,20 +178,20 @@ check" is two consecutive adapter collections on the date shown.
 
 | Phase | Company | Source | Scope | Live check | Allowlisted |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Amazon | `amazon-amazon` (`company_json`, 15 min) | `base_query=intern` (hits capped at 10,000) | 2026-10-14: 428 twice, identical keys, 5 pages, 100% ids and links | after two clean scheduler cycles |
-| 1 | NVIDIA | `nvidia-workday` (`public_ats`, 10 min) | facet `workerSubType = Intern (Fixed Term)` (total capped at 2,000) | 2026-10-14: 163 twice, identical keys, 9 pages, 100% ids and links | after two clean scheduler cycles |
-| 1 | Apple | `apple-apple` (`html`, 30 min) | `team=internships-STDNT-INTRN` | 2026-10-14: 101 twice, identical keys, 6 pages, 100% ids and links | after two clean scheduler cycles |
-| 1 | Alphabet/Google | `alphabet-google-google` (`html`, 30 min) | `employment_type=INTERN` | 2026-10-14: 77 twice, identical keys, 4 pages, 100% ids and links | after two clean scheduler cycles |
-| 1 | Netflix | `netflix-eightfold` (`company_json`, 15 min) | `query=intern` (loose) | 2026-10-14: 4 twice, identical keys, 1 page, 100% ids and links | after two clean scheduler cycles |
+| 1 | Amazon | `amazon-amazon` (`company_json`, 15 min) | `base_query=intern` (hits capped at 10,000) | 2026-10-14: 428 twice, identical keys, 5 pages, 100% ids and links | 2026-10-14, expansion filter |
+| 1 | NVIDIA | `nvidia-workday` (`public_ats`, 10 min) | facet `workerSubType = Intern (Fixed Term)` (total capped at 2,000) | 2026-10-14: 163 twice, identical keys, 9 pages, 100% ids and links | 2026-10-14, expansion filter |
+| 1 | Apple | `apple-apple` (`html`, 30 min) | `team=internships-STDNT-INTRN` | 2026-10-14: 101 twice, identical keys, 6 pages, 100% ids and links | 2026-10-14, expansion filter |
+| 1 | Alphabet/Google | `alphabet-google-google` (`html`, 30 min) | `employment_type=INTERN` | 2026-10-14: 77 twice, identical keys, 4 pages, 100% ids and links | 2026-10-14, expansion filter |
+| 1 | Netflix | `netflix-eightfold` (`company_json`, 15 min) | `query=intern` (loose) | 2026-10-14: 4 twice, identical keys, 1 page, 100% ids and links | 2026-10-14, expansion filter |
 | 1 | Microsoft | not collected | — | public search answered, then HTTP 429 after about four requests; v2 API refuses | deferred: needs a paced source |
 | 1 | Meta | not collected | — | client-rendered; GraphQL needs page-issued session tokens; no public endpoint | `FALLBACK_ONLY` |
-| 2 | Boston Dynamics | `boston-dynamics-workday` | whole board (77; no intern facet) | 2026-10-14: 77 twice, identical keys, 4 pages | after two clean scheduler cycles |
-| 2 | Rockwell Automation | `rockwell-automation-workday` | whole board (404; internships titled Co-op) | 2026-10-14: 404 twice, identical keys, 21 pages | after two clean scheduler cycles |
-| 2 | Zebra Technologies | `zebra-technologies-workday` | facet Intern (Fixed Term) (Trainee) | 2026-10-14: 10 twice, identical keys, 1 page | after two clean scheduler cycles |
-| 2 | Boeing | `boeing-workday` | facets Intern - Paid (Seasonal), Intern Fixed Term (Non-US) | 2026-10-14: 46 twice, identical keys, 3 pages | after two clean scheduler cycles |
-| 2 | Intel | `intel-workday` | facet Student / Intern (Fixed Term) | 2026-10-14: 84 twice, identical keys, 5 pages | after two clean scheduler cycles |
-| 2 | Samsung | `samsung-workday` | facet Intern(Empl.) | 2026-10-14: 13 twice, identical keys, 1 page | after two clean scheduler cycles |
-| 2 | CrowdStrike | `crowdstrike-workday` | facet Intern (Fixed Term) | 2026-10-14: 4 twice, identical keys, 1 page | after two clean scheduler cycles |
+| 2 | Boston Dynamics | `boston-dynamics-workday` | whole board (77; no intern facet) | 2026-10-14: 77 twice, identical keys, 4 pages | 2026-10-14, robotics filter (every internship) |
+| 2 | Rockwell Automation | `rockwell-automation-workday` | whole board (404; internships titled Co-op) | 2026-10-14: 404 twice, identical keys, 21 pages | 2026-10-14, expansion filter |
+| 2 | Zebra Technologies | `zebra-technologies-workday` | facet Intern (Fixed Term) (Trainee) | 2026-10-14: 10 twice, identical keys, 1 page | 2026-10-14, expansion filter |
+| 2 | Boeing | `boeing-workday` | facets Intern - Paid (Seasonal), Intern Fixed Term (Non-US) | 2026-10-14: 46 twice, identical keys, 3 pages | 2026-10-14, expansion filter |
+| 2 | Intel | `intel-workday` | facet Student / Intern (Fixed Term) | 2026-10-14: 84 twice, identical keys, 5 pages | 2026-10-14, expansion filter |
+| 2 | Samsung | `samsung-workday` | facet Intern(Empl.) | 2026-10-14: 13 twice, identical keys, 1 page | 2026-10-14, expansion filter |
+| 2 | CrowdStrike | `crowdstrike-workday` | facet Intern (Fixed Term) | 2026-10-14: 4 twice, identical keys, 1 page | 2026-10-14, expansion filter |
 | 2 | Stryker | not collected | facet Intern (Fixed Term) | one stub posting with no title or link; not waived | re-check next pass |
 
 Sources scoped to the provider's own internship classification (the Workday intern facets, Apple's
@@ -212,11 +212,11 @@ announcement.
 
 | Phase | Company | Source | Scope | Live check | Allowlisted |
 | --- | --- | --- | --- | --- | --- |
-| 3 | Galaxy Digital | `galaxy-digital-greenhouse` | whole board (Greenhouse) | audit 2026-10-14: 39 twice | after two clean scheduler cycles |
-| 3 | Target | `target-workday` | facet Intern (unscoped board hits the cap) | 2026-10-14: 128 twice, 7 pages | after two clean scheduler cycles |
-| 3 | Nike | `nike-workday` (30 min) | whole board (478; no intern facet) | 2026-10-14: 478 twice, 24 pages | after two clean scheduler cycles |
-| 3 | Coca-Cola | `coca-cola-workday` | facet Interim & Interns (no asserted type) | 2026-10-14: 8 twice | after two clean scheduler cycles |
-| 3 | Elevance Health | `elevance-health-workday` | facet Interns | 2026-10-14: 7 twice | after two clean scheduler cycles |
-| 3 | Bank of America | `bank-of-america-workday` | facet EE - Intern (Fixed Term) | 2026-10-14: 2 twice | after two clean scheduler cycles |
-| 3 | Comcast | `comcast-workday` | facet Intern (Trainee) | 2026-10-14: 2 twice | after two clean scheduler cycles |
-| 3 | Allstate | `allstate-workday` | facet Intern/Co-Op (Fixed Term) | 2026-10-14: 1 twice | after two clean scheduler cycles |
+| 3 | Galaxy Digital | `galaxy-digital-greenhouse` | whole board (Greenhouse) | audit 2026-10-14: 39 twice | 2026-10-14, expansion filter |
+| 3 | Target | `target-workday` | facet Intern (unscoped board hits the cap) | 2026-10-14: 128 twice, 7 pages | 2026-10-14, expansion filter |
+| 3 | Nike | `nike-workday` (30 min) | whole board (478; no intern facet) | 2026-10-14: 478 twice, 24 pages | pending its second 30-minute cycle |
+| 3 | Coca-Cola | `coca-cola-workday` | facet Interim & Interns (no asserted type) | 2026-10-14: 8 twice | 2026-10-14, expansion filter |
+| 3 | Elevance Health | `elevance-health-workday` | facet Interns | 2026-10-14: 7 twice | 2026-10-14, expansion filter |
+| 3 | Bank of America | `bank-of-america-workday` | facet EE - Intern (Fixed Term) | 2026-10-14: 2 twice | 2026-10-14, expansion filter |
+| 3 | Comcast | `comcast-workday` | facet Intern (Trainee) | 2026-10-14: 2 twice | 2026-10-14, expansion filter |
+| 3 | Allstate | `allstate-workday` | facet Intern/Co-Op (Fixed Term) | 2026-10-14: 1 twice | 2026-10-14, expansion filter |
