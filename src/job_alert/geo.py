@@ -6,8 +6,8 @@ is deliberately conservative so a US-only filter can be strict: a label is US on
 evidence, is ``"other"`` when it names another country, and is unknown otherwise — a bare city such
 as "Austin" or a count such as "2 Locations" proves nothing.
 
-One label may hold several places separated by ``;`` or ``|``; it is US if any place is, otherwise
-``"other"`` if any place is.
+One label may hold several places separated by ``;``, ``|`` or `` or ``; it is US if any place
+is, otherwise ``"other"`` if any place is.
 
 Ambiguities settled here: a trailing two-letter code ends a three-part label as a *country* code
 ("Ahmedabad, GUJARAT, IN" is India, "Toronto, ON, CA" is Canada), but ends a two-part label as a US
@@ -94,7 +94,7 @@ def location_country(label: str | None) -> str | None:
     """``"us"``, ``"other"``, or ``None`` for one provider location label."""
     if not label or not label.strip():
         return None
-    verdicts = [_place_country(place) for place in re.split(r"[;|]", label)]
+    verdicts = [_place_country(place) for place in re.split(r"[;|]| or ", label)]
     if "us" in verdicts:
         return "us"
     if "other" in verdicts:

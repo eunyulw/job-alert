@@ -3,10 +3,12 @@ from __future__ import annotations
 from typing import Protocol
 
 from job_alert.fetch import HttpFetcher
+from job_alert.geo import location_country
 from job_alert.models import CollectionResult, SourceConfig
 
 #: A source parameter naming the employment type its provider-side scope guarantees.
 ASSERTED_EMPLOYMENT_TYPE = "asserted_employment_type"
+ASSERTED_COUNTRY = "asserted_country"
 
 
 class AdapterError(RuntimeError):
@@ -66,13 +68,42 @@ def apply_source_assertions(result: CollectionResult, source: SourceConfig) -> C
     Google's ``employment_type=INTERN``, Apple's Students team) holds only internships, but titles
     there often omit "intern". ``asserted_employment_type`` records that guarantee, so the
     employment-type filter sees it. A text-search scope guarantees nothing and must not set it.
+
+    ``asserted_country`` does the same for a board that only hires in one country but writes
+    bare city names, so the US-only filter can place them.
     """
+    jobs = result.jobs
     asserted = source.parameters.get(ASSERTED_EMPLOYMENT_TYPE)
-    if asserted is None:
+    if asserted is not None:
+        if not isinstance(asserted, str) or not asserted.strip():
+            raise AdapterError(
+                f"source {source.id} has an unusable {ASSERTED_EMPLOYMENT_TYPE}: expected text"
+            )
+        jobs = [job.model_copy(update={"employment_type": asserted.strip()}) for job in jobs]
+    country = source.parameters.get(ASSERTED_COUNTRY)
+    if country is not None:
+        if not isinstance(country, str) or location_country(country) is None:
+            raise AdapterError(
+                f"source {source.id} has an unusable {ASSERTED_COUNTRY}: expected a country name"
+            )
+        jobs = [
+            job.model_copy(update={"locations": _with_country(job.locations, country)})
+            for job in jobs
+        ]
+    if jobs is result.jobs:
         return result
-    if not isinstance(asserted, str) or not asserted.strip():
-        raise AdapterError(
-            f"source {source.id} has an unusable {ASSERTED_EMPLOYMENT_TYPE}: expected text"
-        )
-    jobs = [job.model_copy(update={"employment_type": asserted.strip()}) for job in result.jobs]
     return result.model_copy(update={"jobs": jobs})
+
+
+def _with_country(locations: list[str], country: str) -> list[str]:
+    """Name the country on every label that does not already place itself.
+
+    For a board whose company hires in one country but labels places as bare cities ("San
+    Francisco", "Greater Seattle Area", "Remote"). A label that names any country is kept as is.
+    """
+    if not locations:
+        return [country]
+    return [
+        label if location_country(label) is not None else f"{label}, {country}"
+        for label in locations
+    ]

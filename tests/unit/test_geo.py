@@ -31,6 +31,7 @@ US = [
     "PA - Philadelphia, 3601 S Broad St",  # Comcast
     "1 Mifflin St PhiladelphiaPA 19148 2017",  # Target: state code glued to a ZIP
     "Lancaster, Tx",  # Kodiak
+    "Kermit, TX or Odessa, TX",  # Kodiak: places joined by "or"
 ]
 OTHER = [
     "Ahmedabad, GUJARAT, IN",  # India: a three-part SmartRecruiters label ends in the country

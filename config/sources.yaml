@@ -801,6 +801,7 @@ sources:
     audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/spacex/jobs
     audit_notes:
     - greenhouse adapter collected 2742 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: blue-origin-workday
@@ -822,6 +823,7 @@ sources:
     audit_evidence: public workday board probed directly at https://blueorigin.wd5.myworkdayjobs.com/wday/cxs/blueorigin/BlueOrigin/jobs
     audit_notes:
     - workday adapter collected 28 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: waymo-greenhouse
@@ -920,6 +922,7 @@ sources:
     audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/nuro/jobs?content=true
     audit_notes:
     - greenhouse adapter collected 108 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: zipline-greenhouse
@@ -968,6 +971,7 @@ sources:
     audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/apptronik/jobs?content=true
     audit_notes:
     - greenhouse adapter collected 78 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: dexterity-lever
@@ -1086,6 +1090,7 @@ sources:
     audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-09-19 audit)
     audit_notes:
     - workday adapter collected 77 postings twice with identical canonical keys across 4 page(s)
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: gecko-robotics-discovery
@@ -1371,6 +1376,7 @@ sources:
     audit_final_url: https://standardbots.com/careers
     audit_notes:
     - ashby adapter collected 34 postings twice with identical canonical keys across 1 page(s)
+    asserted_country: United States
   enabled: true
   audit_date: '2026-09-18'
 - id: matic-ashby
@@ -4021,6 +4027,7 @@ sources:
     audit_evidence: public ashby board probed directly at https://api.ashbyhq.com/posting-api/job-board/thebotcompany
     audit_notes:
     - ashby adapter collected 7 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: field-ai-lever
@@ -4085,6 +4092,7 @@ sources:
     audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/pathrobotics/jobs?content=true
     audit_notes:
     - greenhouse adapter collected 44 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: carbon-robotics-greenhouse
@@ -4165,6 +4173,7 @@ sources:
     audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/kodiak/jobs?content=true
     audit_notes:
     - greenhouse adapter collected 67 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: waabi-lever
@@ -4197,6 +4206,7 @@ sources:
     audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/stackav/jobs?content=true
     audit_notes:
     - greenhouse adapter collected 13 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: saronic-discovery
@@ -4306,6 +4316,7 @@ sources:
     audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/astranis/jobs?content=true
     audit_notes:
     - greenhouse adapter collected 180 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: merlin-labs-lever
@@ -4322,6 +4333,7 @@ sources:
     audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/merlinlabs?mode=json
     audit_notes:
     - lever adapter collected 25 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: outrider-greenhouse
@@ -4338,6 +4350,7 @@ sources:
     audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/outrider/jobs?content=true
     audit_notes:
     - greenhouse adapter collected 8 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: cobalt-robotics-lever
@@ -4466,6 +4479,7 @@ sources:
     audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/maymobility/jobs?content=true
     audit_notes:
     - greenhouse adapter collected 39 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: motional-greenhouse
@@ -4562,6 +4576,7 @@ sources:
     audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/ursamajor/jobs?content=true
     audit_notes:
     - greenhouse adapter collected 111 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
 - id: electra-aero-greenhouse
@@ -4610,5 +4625,6 @@ sources:
     audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/tutorintelligence?mode=json
     audit_notes:
     - lever adapter collected 47 postings twice with identical canonical keys
+    asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
