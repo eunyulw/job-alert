@@ -25,7 +25,9 @@ Steps run in the order below and the first decisive step ends the evaluation:
    ``excluded title keyword: <term>``. An exclusion match is never overturned by any inclusion,
    because it is decided before every inclusion other than the company list.
 4. ``include_title_keywords`` — a miss returns ``no included title keyword matched: <terms>``,
-   a hit records ``included title keyword: <term>``.
+   a hit records ``included title keyword: <term>``. ``require_title_keywords`` is a second title
+   list checked right after it and ANDed with it: a miss returns
+   ``no required title keyword matched: <terms>``, a hit ``required title keyword: <term>``.
 5. ``include_locations`` — a configured needle that appears in any of the posting's locations;
    a miss returns ``no included location matched: <terms>``, a hit ``included location: <term>``.
 6. ``workplace_types`` — compared against the vocabulary below; a posting with no workplace type
@@ -196,6 +198,15 @@ def _evaluate_filter(
         if hit is None:
             return _rejected(record, f"no included title keyword matched: {_join(title_keywords)}")
         evidence = evidence or f"included title keyword: {hit}"
+
+    required_title_keywords = _terms(record.require_title_keywords)
+    if required_title_keywords:
+        hit = _first_match(required_title_keywords, (title,))
+        if hit is None:
+            return _rejected(
+                record, f"no required title keyword matched: {_join(required_title_keywords)}"
+            )
+        evidence = evidence or f"required title keyword: {hit}"
 
     locations = _terms(record.include_locations)
     if locations:

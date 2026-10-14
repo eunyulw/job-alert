@@ -173,6 +173,8 @@ def test_repository_filters_are_the_approved_internship_canary(app_config: AppCo
         "all-jobs-dry-run",
         "production-matches",
         "production-matches-intern-type",
+        "expansion-matches",
+        "expansion-matches-intern-type",
     }
     dry_run = records["all-jobs-dry-run"]
     assert dry_run.enabled is True and dry_run.notify is False
@@ -180,18 +182,28 @@ def test_repository_filters_are_the_approved_internship_canary(app_config: AppCo
 
     polled = {source.company_id for source in app_config.sources if source.enabled}
     canary = {"1x", "standard-bots", "intrinsic", "serve-robotics", "neuralink"}
-    allowlists = [
-        set(records[record_id].include_companies)
-        for record_id in ("production-matches", "production-matches-intern-type")
-    ]
-    # Both filters alert on the same companies, which always include the first canary.
-    assert allowlists[0] == allowlists[1]
-    for record_id in ("production-matches", "production-matches-intern-type"):
-        record = records[record_id]
-        assert record.enabled is True and record.notify is True
-        # An allowlist keeps the canary out of broad activation, and every company it names must
-        # have an enabled source or LIVE refuses it.
-        assert canary <= set(record.include_companies) <= polled
+    for pair in (
+        ("production-matches", "production-matches-intern-type"),
+        ("expansion-matches", "expansion-matches-intern-type"),
+    ):
+        # Each pair alerts on the same companies through a title rule and a type rule.
+        assert set(records[pair[0]].include_companies) == set(records[pair[1]].include_companies)
+    for record in records.values():
+        if not record.notify:
+            continue
+        assert record.enabled is True
         assert record.quiet_hours_start is None and record.timezone is None
+        # An allowlist keeps every alerting filter out of broad activation, and each company it
+        # names must have an enabled source or LIVE refuses it.
+        assert record.include_companies and set(record.include_companies) <= polled
+    assert canary <= set(records["production-matches"].include_companies)
     assert records["production-matches"].include_title_keywords == ["intern", "co-op"]
     assert records["production-matches-intern-type"].employment_types == ["intern"]
+    # Expansion companies alert only on internships that name robotics or mechanical work.
+    expansion = records["expansion-matches"]
+    assert expansion.require_title_keywords == ["intern", "co-op"]
+    assert {"robot", "mechanical"} <= set(expansion.include_title_keywords)
+    assert records["expansion-matches-intern-type"].employment_types == ["intern"]
+    assert not set(records["production-matches"].include_companies) & set(
+        expansion.include_companies
+    )

@@ -2552,6 +2552,12 @@ collection), then the *alert allowlist* (`include_companies` in both `production
 A company is never allowlisted before its source passes the gate below, and LIVE already refuses an
 allowlist naming a company without an enabled source.
 
+**Which filter a company joins (decided 2026-10-14):** pure robotics companies join the
+`production-matches` pair (every internship). Every other expansion company joins the
+`expansion-matches` pair, which alerts only on internships whose title also names robotics,
+mechanical, or adjacent engineering work (`require_title_keywords` ANDs the two title lists),
+because "every internship" at a retailer or bank is noise for this search.
+
 **Per-company gate (applies in every phase):**
 
 1. Probe the official careers site's public endpoint with ordinary HTTPS. A challenge, login, or

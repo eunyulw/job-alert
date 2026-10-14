@@ -404,3 +404,35 @@ def test_unmatched_filters_never_defer(
     )[0]
     assert decision.matched is False
     assert decision.defer_until is None
+
+
+def test_required_title_keywords_must_also_match(engineering_job, filter_config) -> None:
+    """Two title lists AND together: an internship AND a robotics or mechanical role."""
+    rule = filter_config(
+        notify=True,
+        include_title_keywords=["robot", "mechanical"],
+        require_title_keywords=["intern", "co-op"],
+    )
+
+    both = evaluate_filters(engineering_job(title="Mechanical Engineering Intern"), [rule])[0]
+    assert both.matched is True and both.notify is True
+
+    not_intern = evaluate_filters(engineering_job(title="Robotics Engineer"), [rule])[0]
+    assert not_intern.matched is False
+    assert not_intern.reason == "no required title keyword matched: intern, co-op"
+
+    not_engineering = evaluate_filters(engineering_job(title="Finance Intern"), [rule])[0]
+    assert not_engineering.matched is False
+    assert not_engineering.reason.startswith("no included title keyword matched")
+
+
+def test_required_title_keywords_alone_restrict_the_title(engineering_job, filter_config) -> None:
+    rule = filter_config(require_title_keywords=["co-op"])
+    decision = evaluate_filters(engineering_job(title="Controls Co-op"), [rule])[0]
+    assert decision.matched is True
+    assert decision.reason == "required title keyword: co-op"
+
+
+def test_required_title_keywords_reject_blank_terms(filter_config) -> None:
+    with pytest.raises(ValueError, match="must not be blank"):
+        filter_config(require_title_keywords=["intern", " "])

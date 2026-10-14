@@ -46,6 +46,9 @@ class FilterConfig(BaseModel):
     notify: bool = False
     include_companies: list[str] = Field(default_factory=list)
     include_title_keywords: list[str] = Field(default_factory=list)
+    #: A second title list ANDed with ``include_title_keywords``: the title must also contain one of
+    #: these, e.g. "intern" alongside a robotics/mechanical keyword list.
+    require_title_keywords: list[str] = Field(default_factory=list)
     exclude_title_keywords: list[str] = Field(default_factory=list)
     include_locations: list[str] = Field(default_factory=list)
     workplace_types: list[str] = Field(default_factory=list)
@@ -61,6 +64,7 @@ class FilterConfig(BaseModel):
     @field_validator(
         "include_companies",
         "include_title_keywords",
+        "require_title_keywords",
         "exclude_title_keywords",
         "include_locations",
         "workplace_types",

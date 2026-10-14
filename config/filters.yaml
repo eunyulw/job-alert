@@ -2,7 +2,9 @@
 # only decides whether a match produces an alert. `all-jobs-dry-run` matches everything and never
 # notifies, so the audit and dry-run paths have a record to report against.
 #
-# Approved 2026-10-14 (Task 26 canary): every internship at the five robotics canary companies.
+# Approved 2026-10-14 (Task 26 canary): every internship at the robotics companies; at every other
+# allowlisted company (Task 29 expansion), only internships whose title names robotics, mechanical,
+# or adjacent engineering work, because "every internship" at a bank or retailer is noise.
 # Title keywords and employment types are ANDed inside one filter, so "intern in the title OR typed
 # Intern" takes two filters; a posting matching both still produces one alert. `intern` also matches
 # titles such as "Internal Tools"; that rare false positive is accepted because excluding "internal"
@@ -27,14 +29,14 @@ filters:
     employment_types: []
     priority: normal
 
+  # Robotics companies: every internship.
   - id: production-matches
     enabled: true
     notify: true
     include_companies:
-      [1x, standard-bots, intrinsic, serve-robotics, neuralink, amazon, nvidia, netflix,
-       boston-dynamics, rockwell-automation, zebra-technologies, boeing, intel, samsung,
-       crowdstrike, galaxy-digital]
+      [1x, standard-bots, intrinsic, serve-robotics, neuralink, boston-dynamics]
     include_title_keywords: [intern, co-op]
+    require_title_keywords: []
     exclude_title_keywords: []
     include_locations: []
     workplace_types: []
@@ -44,15 +46,56 @@ filters:
     employment_types: []
     priority: normal
 
-  # Ashby types internships as `Intern` even when the title does not say so.
+  # Ashby and scoped sources type internships even when the title does not say so.
   - id: production-matches-intern-type
     enabled: true
     notify: true
     include_companies:
-      [1x, standard-bots, intrinsic, serve-robotics, neuralink, amazon, nvidia, netflix,
-       boston-dynamics, rockwell-automation, zebra-technologies, boeing, intel, samsung,
-       crowdstrike, galaxy-digital]
+      [1x, standard-bots, intrinsic, serve-robotics, neuralink, boston-dynamics]
     include_title_keywords: []
+    require_title_keywords: []
+    exclude_title_keywords: []
+    include_locations: []
+    workplace_types: []
+    categories: []
+    departments: []
+    description_keywords: []
+    employment_types: [intern]
+    priority: normal
+
+  # Task 29 expansion companies: internships whose title names robotics or mechanical work.
+  - id: expansion-matches
+    enabled: true
+    notify: true
+    include_companies:
+      [amazon, nvidia, netflix, apple, alphabet-google, rockwell-automation, zebra-technologies,
+       boeing, intel, samsung, crowdstrike, galaxy-digital, target, coca-cola, elevance-health,
+       bank-of-america, comcast, allstate]
+    include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
+       automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
+       perception, motion, kinematic, machine design, product design, test engineer, maintenance]
+    require_title_keywords: [intern, co-op]
+    exclude_title_keywords: []
+    include_locations: []
+    workplace_types: []
+    categories: []
+    departments: []
+    description_keywords: []
+    employment_types: []
+    priority: normal
+
+  # The same, for postings a provider-classified scope types as Intern.
+  - id: expansion-matches-intern-type
+    enabled: true
+    notify: true
+    include_companies:
+      [amazon, nvidia, netflix, apple, alphabet-google, rockwell-automation, zebra-technologies,
+       boeing, intel, samsung, crowdstrike, galaxy-digital, target, coca-cola, elevance-health,
+       bank-of-america, comcast, allstate]
+    include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
+       automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
+       perception, motion, kinematic, machine design, product design, test engineer, maintenance]
+    require_title_keywords: []
     exclude_title_keywords: []
     include_locations: []
     workplace_types: []
