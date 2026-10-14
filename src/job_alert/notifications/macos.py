@@ -15,7 +15,9 @@ Classification follows the HTTP providers. Exit status 0 is delivered: the notif
 handed to Notification Center, which may still hide it if notifications are disallowed for the
 tool (``notify-test`` is how an operator checks). A non-zero exit, or a command that could not
 start, never showed anything and is retryable. A timeout is retryable but ``uncertain``, because
-the banner may already be on screen.
+the banner may already be on screen. When terminal-notifier fails (macOS refuses it until the user
+allows it in System Settings › Notifications), the alert is shown through ``osascript`` instead;
+a terminal-notifier timeout is not retried that way, since it may already have been shown.
 """
 
 from __future__ import annotations
@@ -94,7 +96,16 @@ class MacOSNotifier:
         self._timeout = timeout_seconds
 
     async def send(self, message: NotificationMessage) -> DeliveryResult:
-        argv = self._argv(message)
+        if self._terminal_notifier is None:
+            return await self._attempt(self._osascript_argv(message))
+        result = await self._attempt(self._terminal_notifier_argv(message))
+        if result.delivered or result.uncertain:
+            # A timeout may already have shown the banner; a second tool would duplicate it.
+            return result
+        # terminal-notifier is refused until macOS allows it to notify, so show the alert anyway.
+        return await self._attempt(self._osascript_argv(message))
+
+    async def _attempt(self, argv: list[str]) -> DeliveryResult:
         try:
             status, stderr = await self._runner(argv, self._timeout)
         except TimeoutError:
@@ -122,20 +133,21 @@ class MacOSNotifier:
             error=f"{argv[0]} failed with exit {status}" + (f": {detail}" if detail else ""),
         )
 
-    def _argv(self, message: NotificationMessage) -> list[str]:
-        loud = message.priority is FilterPriority.HIGH
-        if self._terminal_notifier is not None:
-            argv = [
-                self._terminal_notifier,
-                "-title",
-                _as_value(message.title),
-                "-message",
-                _as_value(message.body),
-                "-open",
-                message.url,
-            ]
-            return [*argv, "-sound", "default"] if loud else argv
-        script = _SCRIPT_WITH_SOUND if loud else _SCRIPT
+    def _terminal_notifier_argv(self, message: NotificationMessage) -> list[str]:
+        assert self._terminal_notifier is not None
+        argv = [
+            self._terminal_notifier,
+            "-title",
+            _as_value(message.title),
+            "-message",
+            _as_value(message.body),
+            "-open",
+            message.url,
+        ]
+        return [*argv, "-sound", "default"] if message.priority is FilterPriority.HIGH else argv
+
+    def _osascript_argv(self, message: NotificationMessage) -> list[str]:
+        script = _SCRIPT_WITH_SOUND if message.priority is FilterPriority.HIGH else _SCRIPT
         lines = [part for line in script for part in ("-e", line)]
         return [self._osascript, *lines, message.title, message.body, message.url]
 

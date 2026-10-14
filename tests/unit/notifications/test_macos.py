@@ -179,17 +179,46 @@ async def test_the_runner_is_given_a_bounded_timeout() -> None:
 
 @pytest.mark.asyncio
 async def test_the_default_runner_executes_without_a_shell(tmp_path) -> None:  # type: ignore[no-untyped-def]
-    """The real runner, against a harmless stand-in for the notification tool."""
+    """The real runner, against harmless stand-ins for both notification tools."""
     marker = tmp_path / "args.txt"
     tool = tmp_path / "terminal-notifier"
     tool.write_text(f'#!/bin/sh\nprintf "%s\\n" "$@" > "{marker}"\necho oops >&2\nexit 3\n')
     tool.chmod(0o755)
+    # The fallback must hit a stub too, or the test would post a real notification.
+    fallback = tmp_path / "osascript"
+    fallback.write_text("#!/bin/sh\necho refused too >&2\nexit 4\n")
+    fallback.chmod(0o755)
+    tools = {"terminal-notifier": str(tool), "osascript": str(fallback)}
 
-    result = await MacOSNotifier(
-        which=lambda name: str(tool) if name == "terminal-notifier" else None,
-        platform="darwin",
-    ).send(message(title="a; rm -rf /", body="$(whoami)"))
+    result = await MacOSNotifier(which=tools.get, platform="darwin").send(
+        message(title="a; rm -rf /", body="$(whoami)")
+    )
 
     assert result.delivered is False
-    assert result.error is not None and "exit 3" in result.error and "oops" in result.error
+    assert result.error is not None and "exit 4" in result.error and "refused too" in result.error
     assert marker.read_text().splitlines()[:4] == ["-title", "a; rm -rf /", "-message", "$(whoami)"]
+
+
+@pytest.mark.asyncio
+async def test_a_refused_terminal_notifier_falls_back_to_osascript() -> None:
+    """Until macOS allows terminal-notifier, the alert must still be shown, through osascript."""
+    runner = FakeRunner(
+        (3, "Could not request notification permission: Notifications are not allowed\n"),
+        (0, ""),
+    )
+
+    result = await notifier(runner, "terminal-notifier", "osascript").send(message())
+
+    assert result.delivered is True
+    assert [argv[0] for argv, _ in runner.calls] == [TERMINAL_NOTIFIER, OSASCRIPT]
+
+
+@pytest.mark.asyncio
+async def test_when_both_tools_fail_the_alert_is_retried_later() -> None:
+    runner = FakeRunner((3, "not allowed\n"), (1, "also refused\n"))
+
+    result = await notifier(runner, "terminal-notifier", "osascript").send(message())
+
+    assert result.delivered is False
+    assert result.retryable is True
+    assert result.error is not None and "also refused" in result.error
