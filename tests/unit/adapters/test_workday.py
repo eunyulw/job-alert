@@ -86,8 +86,8 @@ async def test_workday_maps_the_captured_postings() -> None:
     )
     assert taipei.apply_url == taipei.posting_url
     assert taipei.locations == ["Taiwan, Taipei"]
-    # "2 Locations" is a count the list view prints, not a place.
-    assert jobs["JR2027948"].locations == []
+    # "2 Locations" is a count the list view prints, not a place; the path names the primary one.
+    assert jobs["JR2027948"].locations == ["UK Bristol"]
     for job in result.jobs:
         assert_normalized_job(job)
 

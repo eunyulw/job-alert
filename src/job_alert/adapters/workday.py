@@ -20,8 +20,9 @@ Mapping decisions:
   ``bulletFields[0]`` when present.
 - ``posting_url`` and ``apply_url`` are ``https://{host}/{site}{externalPath}``; the path must be
   relative and start with ``/job/``, so a payload cannot point a link at another host.
-- ``locations`` is ``locationsText`` unless it only counts places (``"2 Locations"``), in which case
-  it is empty rather than wrong.
+- ``locations`` is ``locationsText`` unless it only counts places (``"2 Locations"``); then it is
+  the primary place named by the posting path (``/job/US-CA-Santa-Clara/…`` gives
+  ``US CA Santa Clara``).
 - The list view carries no description and only a relative ``postedOn``, so ``description_text``
   and ``source_published_at`` stay ``None``.
 
@@ -198,11 +199,14 @@ def _normalize_job(
     requisition = optional_text(bullets[0]) if isinstance(bullets, list) and bullets else None
     posting_url = f"{origin}/{site}{path}"
     location_text = optional_text(record.get("locationsText"))
-    locations = (
-        [location_text]
-        if location_text and not _LOCATION_COUNT.match(location_text)
-        else []
-    )
+    if location_text and not _LOCATION_COUNT.match(location_text):
+        locations = [location_text]
+    else:
+        # The list only counts the places ("2 Locations"); the posting path names the primary one
+        # ("/job/US-CA-Santa-Clara/…"), which is enough for a country filter.
+        segment = path.split("/")[2] if path.count("/") >= 3 else ""
+        primary = " ".join(segment.replace("-", " ").split())
+        locations = [primary] if primary else []
     try:
         return NormalizedJob(
             company_id=source.company_id,

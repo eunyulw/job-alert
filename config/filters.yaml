@@ -12,6 +12,8 @@
 # were tried and dropped: company boilerplate mentions robots or hardware in nearly every posting.
 # The allowlist grows through Task 29: a company joins after its source passes two clean scheduler
 # cycles (see the expansion log in docs/collection-verification.md).
+# Every alerting filter is US-only (2026-10-14): a posting alerts only when at least one of its
+# locations is confidently in the US (job_alert/geo.py); an unknown or missing location does not.
 # Both filters name their companies, so they are a canary under the 90% broad-activation gate. See
 # src/job_alert/filters.py for the criteria order and vocabulary.
 filters:
@@ -39,6 +41,7 @@ filters:
     require_title_keywords: []
     exclude_title_keywords: []
     include_locations: []
+    countries: [us]
     workplace_types: []
     categories: []
     departments: []
@@ -56,6 +59,7 @@ filters:
     require_title_keywords: []
     exclude_title_keywords: []
     include_locations: []
+    countries: [us]
     workplace_types: []
     categories: []
     departments: []
@@ -77,6 +81,7 @@ filters:
     require_title_keywords: [intern, co-op, student]
     exclude_title_keywords: []
     include_locations: []
+    countries: [us]
     workplace_types: []
     categories: []
     departments: []
@@ -98,6 +103,7 @@ filters:
     require_title_keywords: []
     exclude_title_keywords: []
     include_locations: []
+    countries: [us]
     workplace_types: []
     categories: []
     departments: []

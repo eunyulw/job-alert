@@ -46,6 +46,7 @@ from pydantic import HttpUrl, ValidationError
 from job_alert.adapters.base import AdapterError
 from job_alert.adapters.common import html_to_text, https_url, optional_text
 from job_alert.fetch import HttpFetcher, HttpPayload, RequestSpec
+from job_alert.geo import location_country
 from job_alert.identity import build_dedupe_key, build_job_key, content_hash
 from job_alert.models import CollectionResult, NormalizedJob, SourceConfig
 
@@ -225,34 +226,48 @@ def _title(record: Mapping[str, object]) -> str:
 
 
 def _locations(record: Mapping[str, object]) -> list[str]:
-    """The primary display location followed by every additional site, deduplicated."""
-    candidates: list[object] = [record.get("location")]
+    """The primary display location followed by every additional site, deduplicated.
+
+    A display label that names no country ("San Francisco") gets the country of the site's postal
+    address appended ("San Francisco, United States"), so a country filter can place it.
+    """
+    candidates: list[tuple[object, object]] = [(record.get("location"), record.get("address"))]
     secondary = record.get("secondaryLocations")
     if isinstance(secondary, list):
         candidates.extend(_secondary_location(item) for item in secondary)
 
     locations: list[str] = []
     seen: set[str] = set()
-    for candidate in candidates:
+    for candidate, address in candidates:
         if not isinstance(candidate, str) or not candidate.strip():
             continue
         text = " ".join(candidate.split())
-        key = text.casefold()
-        if key not in seen:
-            seen.add(key)
-            locations.append(text)
+        key = text.casefold()  # deduplicate on the display label, before a country is added
+        if key in seen:
+            continue
+        seen.add(key)
+        country = _address_country(address)
+        if country and location_country(text) is None:
+            text = f"{text}, {country}"
+        locations.append(text)
     return locations
 
 
-def _secondary_location(item: object) -> object:
-    """The display location of one additional site.
+def _address_country(address: object) -> str | None:
+    postal = address.get("postalAddress") if isinstance(address, Mapping) else None
+    country = postal.get("addressCountry") if isinstance(postal, Mapping) else None
+    return " ".join(country.split()) if isinstance(country, str) and country.strip() else None
+
+
+def _secondary_location(item: object) -> tuple[object, object]:
+    """The display location and address of one additional site.
 
     The captured board publishes each site as an object with a ``location`` string; a bare string
     is accepted too, so a board that changes shape does not silently lose a site.
     """
     if isinstance(item, Mapping):
-        return item.get("location")
-    return item
+        return item.get("location"), item.get("address")
+    return item, None
 
 
 def _description_text(record: Mapping[str, object]) -> str | None:

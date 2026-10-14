@@ -217,7 +217,7 @@ async def test_ashby_maps_the_captured_board_into_normalized_jobs() -> None:
         "f873dd71-46c9-4be1-8580-bc67c56b4cad/application"
     )
     assert first.title == "Full-Stack Software Engineer, Applied Foundations"
-    assert first.locations == ["San Francisco", "Mountain View"]
+    assert first.locations == ["San Francisco, United States", "Mountain View, United States"]
     assert first.department == "Applied AI"
     assert first.team == "Applied AI Engineering"
     assert first.employment_type == "FullTime"
@@ -236,7 +236,7 @@ async def test_ashby_maps_the_captured_board_into_normalized_jobs() -> None:
     assert second.source_job_id == "2"
     assert second.canonical_job_key == "ashby:example:2"
     assert second.title == "Researcher, Safety Training, National Security"
-    assert second.locations == ["San Francisco", "Washington, DC", "US - Remote"]
+    assert second.locations == ["San Francisco, United States", "Washington, DC", "US - Remote"]
     assert second.department == "Safety Systems"
     assert second.team == "Safety Systems"
     assert second.employment_type == "FullTime"
@@ -271,7 +271,12 @@ async def test_ashby_combines_primary_and_secondary_locations_without_duplicates
     async with HttpFetcher() as fetcher:
         result = await adapter().collect(make_ashby_source(), fetcher)
 
-    assert result.jobs[0].locations == ["San Francisco", "New York City", "London, UK"]
+    # The primary site's postal address names its country; the bare secondaries have none.
+    assert result.jobs[0].locations == [
+        "San Francisco, United States",
+        "New York City",
+        "London, UK",
+    ]
 
 
 @respx.mock

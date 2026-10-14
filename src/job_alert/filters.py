@@ -30,6 +30,10 @@ Steps run in the order below and the first decisive step ends the evaluation:
    ``no required title keyword matched: <terms>``, a hit ``required title keyword: <term>``.
 5. ``include_locations`` — a configured needle that appears in any of the posting's locations;
    a miss returns ``no included location matched: <terms>``, a hit ``included location: <term>``.
+   ``countries`` follows: at least one location must be placed in a listed country by
+   ``job_alert.geo``. No location returns ``location unknown, expected: <codes>``, only unplaceable
+   ones ``location country unknown, expected: <codes>``, and other countries
+   ``location not in included countries: <codes>``.
 6. ``workplace_types`` — compared against the vocabulary below; a posting with no workplace type
    returns ``workplace type unknown, expected one of: <terms>``, an unlisted one
    ``workplace type not included: <type>``, and a hit ``included workplace type: <type>``.
@@ -91,6 +95,7 @@ from datetime import UTC, datetime, time, timedelta, tzinfo
 from zoneinfo import ZoneInfo
 
 from job_alert.config import FilterConfig, FilterPriority
+from job_alert.geo import location_country
 from job_alert.models import NormalizedJob, StrictModel
 
 #: The canonical workplace types a filter may name; see the module docstring for provider spellings.
@@ -215,6 +220,19 @@ def _evaluate_filter(
         if hit is None:
             return _rejected(record, f"no included location matched: {_join(locations)}")
         evidence = evidence or f"included location: {hit}"
+
+    countries = _terms(record.countries)
+    if countries:
+        wanted = _join(countries)
+        if not job.locations:
+            return _rejected(record, f"location unknown, expected: {wanted}")
+        placed = {location_country(location) for location in job.locations}
+        hit = next((country for country in countries if country in placed), None)
+        if hit is None:
+            if placed == {None}:
+                return _rejected(record, f"location country unknown, expected: {wanted}")
+            return _rejected(record, f"location not in included countries: {wanted}")
+        evidence = evidence or f"included country: {hit}"
 
     workplace_types = _canonical_terms(record.workplace_types)
     if workplace_types:

@@ -196,6 +196,8 @@ def test_repository_filters_are_the_approved_internship_canary(app_config: AppCo
         # An allowlist keeps every alerting filter out of broad activation, and each company it
         # names must have an enabled source or LIVE refuses it.
         assert record.include_companies and set(record.include_companies) <= polled
+        # Alerts are strictly US-only.
+        assert record.countries == ["us"]
     assert canary <= set(records["production-matches"].include_companies)
     assert records["production-matches"].include_title_keywords == ["intern", "co-op", "student"]
     assert records["production-matches-intern-type"].employment_types == ["intern"]

@@ -436,3 +436,25 @@ def test_required_title_keywords_alone_restrict_the_title(engineering_job, filte
 def test_required_title_keywords_reject_blank_terms(filter_config) -> None:
     with pytest.raises(ValueError, match="must not be blank"):
         filter_config(require_title_keywords=["intern", " "])
+
+
+def test_countries_keep_only_postings_with_a_us_location(engineering_job, filter_config) -> None:
+    rule = filter_config(notify=True, countries=["us"])
+
+    def verdict(*locations: str) -> FilterDecision:
+        return evaluate_filters(engineering_job(locations=list(locations)), [rule])[0]
+
+    assert verdict("Santa Clara, CA").matched is True
+    assert verdict("Santa Clara, CA").reason == "included country: us"
+    # A posting open in several places counts when any one of them is in the US.
+    assert verdict("Toronto, ON, CA", "Austin, Texas").matched is True
+    assert verdict("London, United Kingdom").reason == "location not in included countries: us"
+    # Strict: a place the rule cannot place, or no place at all, is not the US.
+    assert verdict("Austin").reason == "location country unknown, expected: us"
+    assert verdict().reason == "location unknown, expected: us"
+
+
+def test_countries_accept_only_known_codes(filter_config) -> None:
+    with pytest.raises(ValueError, match="countries"):
+        filter_config(countries=["mars"])
+    assert filter_config(countries=["US"]).countries == ["US"]

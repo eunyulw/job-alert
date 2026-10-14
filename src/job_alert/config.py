@@ -22,6 +22,10 @@ class ConfigError(ValueError):
 _CLOCK_TIME = re.compile(r"^\d{2}:\d{2}$")
 
 
+#: Country codes ``job_alert.geo`` can recognise.
+KNOWN_COUNTRIES = frozenset({"us"})
+
+
 class FilterPriority(StrEnum):
     """Notification urgency a filter asks for; delivery providers map these to their own."""
 
@@ -51,6 +55,9 @@ class FilterConfig(BaseModel):
     require_title_keywords: list[str] = Field(default_factory=list)
     exclude_title_keywords: list[str] = Field(default_factory=list)
     include_locations: list[str] = Field(default_factory=list)
+    #: Country codes a posting must have at least one location in (see ``job_alert.geo``); a
+    #: location the rule cannot place, or no location, does not qualify. Only ``us`` is known.
+    countries: list[str] = Field(default_factory=list)
     workplace_types: list[str] = Field(default_factory=list)
     categories: list[str] = Field(default_factory=list)
     departments: list[str] = Field(default_factory=list)
@@ -78,6 +85,14 @@ class FilterConfig(BaseModel):
         """A blank term would match every posting, so refuse it instead of over-notifying."""
         if any(not term.strip() for term in value):
             raise ValueError("filter terms must not be blank")
+        return value
+
+    @field_validator("countries")
+    @classmethod
+    def _known_countries(cls, value: list[str]) -> list[str]:
+        unknown = [code for code in value if code.strip().casefold() not in KNOWN_COUNTRIES]
+        if unknown:
+            raise ValueError(f"countries must be among {sorted(KNOWN_COUNTRIES)}, got {unknown}")
         return value
 
     @field_validator("quiet_hours_start", "quiet_hours_end")
