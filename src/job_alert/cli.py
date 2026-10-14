@@ -58,7 +58,7 @@ from job_alert.config import AppConfig, ConfigError, load_app_config
 from job_alert.db import Repository
 from job_alert.fetch import HttpFetcher
 from job_alert.models import TIER_INTERVAL_MINUTES, SourceClass, SourceConfig, SupportStatus
-from job_alert.notifications import NtfyNotifier, PushoverNotifier
+from job_alert.notifications import MacOSNotifier, NtfyNotifier, PushoverNotifier
 from job_alert.notifications.base import (
     NotificationConfigurationError,
     NotificationMessage,
@@ -86,6 +86,8 @@ DEFAULT_COVERAGE_PATH = Path("reports/coverage.md")
 DEFAULT_DIGEST_PATH = Path("reports/daily-digest.md")
 DEFAULT_RETRY_LIMIT = 100
 TEST_MESSAGE_TITLE = "TEST \u2014 Fast Job Alert"
+#: Laptop notifications ship first; Pushover (Android) follows in Task 28 of the plan.
+DEFAULT_PROVIDER = "macos"
 
 app = typer.Typer(
     help="Fast company job alert monitor.", no_args_is_help=True, add_completion=False
@@ -119,7 +121,7 @@ ReportPathOption = Annotated[
     Path | None, typer.Option("--report", help="Write the cycle report to this file")
 ]
 ProviderOption = Annotated[
-    str, typer.Option("--provider", help="Delivery provider: pushover or ntfy")
+    str, typer.Option("--provider", help="Delivery provider: macos, pushover, or ntfy")
 ]
 
 
@@ -428,13 +430,15 @@ def build_notifier(provider: str, *, fetcher: HttpFetcher | None = None) -> Noti
     """Build the delivery provider the operator named, from credentials held in the environment."""
     name = provider.strip().lower()
     try:
+        if name == MacOSNotifier.provider:
+            return MacOSNotifier()
         if name == PushoverNotifier.provider:
             return PushoverNotifier(fetcher=fetcher)
         if name == NtfyNotifier.provider:
             return NtfyNotifier(fetcher=fetcher)
     except NotificationConfigurationError as exc:
         _refuse(str(exc))
-    _refuse(f"unknown provider {provider!r}: choose pushover or ntfy")
+    _refuse(f"unknown provider {provider!r}: choose macos, pushover, or ntfy")
 
 
 def test_message(alert_url: str = DEFAULT_ALERT_URL) -> NotificationMessage:
@@ -471,20 +475,39 @@ def _selected_sources(
 
 
 def _require_live_activation(config: AppConfig) -> None:
-    """Refuse LIVE while nothing could be delivered, or while the coverage gate has not passed."""
+    """Refuse LIVE while nothing could be delivered, or while broad activation is not yet earned.
+
+    The 90% coverage gate is for *broad* activation: an enabled notifying filter with no
+    ``include_companies`` allowlist. A filter that names its companies is a canary and may run
+    below the threshold, but only if every company it names has an enabled source to alert from.
+    """
     enabled = [record for record in config.filters if record.enabled]
-    if not any(record.notify for record in enabled):
+    notifying = [record for record in enabled if record.notify]
+    if not notifying:
         names = ", ".join(record.id for record in enabled) or "none"
         _refuse(
             "LIVE mode refused: no enabled filter notifies, so nothing could ever be delivered"
             f" (enabled filters: {names})"
         )
+    polled = {source.company_id.casefold() for source in config.sources if source.enabled}
+    for record in notifying:
+        unreachable = sorted(
+            company for company in record.include_companies
+            if company.strip().casefold() not in polled
+        )
+        if unreachable:
+            _refuse(
+                f"LIVE mode refused: filter {record.id} names {', '.join(unreachable)}, which has"
+                " no enabled source, so it could never alert there"
+            )
+    broad = [record.id for record in notifying if not record.include_companies]
     summary = coverage_summary(config)
-    if not summary.broad_activation_allowed:
+    if broad and not summary.broad_activation_allowed:
         _refuse(
             f"LIVE mode refused: direct coverage is {summary.direct_coverage_percent:.2f}%"
             f" ({summary.direct_supported}/{summary.total_companies}), below the 90%"
-            " broad-activation threshold"
+            f" broad-activation threshold, and {', '.join(broad)} has no include_companies"
+            " allowlist"
         )
 
 
@@ -668,7 +691,7 @@ def collect(
     report: ReportPathOption = None,
     config: ConfigPathOption = DEFAULT_CONFIG_DIR,
     db: DbPathOption = DEFAULT_DB_PATH,
-    provider: ProviderOption = "pushover",
+    provider: ProviderOption = DEFAULT_PROVIDER,
 ) -> None:
     """Run one collection cycle for the selected sources and exit."""
     app_config = _config_or_refuse(config)
@@ -738,7 +761,7 @@ def run_monitor(
     mode: Annotated[
         RunMode, typer.Option("--mode", help="What a cycle is allowed to change")
     ] = RunMode.LIVE_SUPPRESSED,
-    provider: ProviderOption = "pushover",
+    provider: ProviderOption = DEFAULT_PROVIDER,
     once: Annotated[
         bool, typer.Option("--once", help="Run one wake cycle and exit")
     ] = False,
@@ -826,7 +849,7 @@ def report_health(
     json_output: JsonOption = False,
     db: DbPathOption = DEFAULT_DB_PATH,
     config: ConfigPathOption = DEFAULT_CONFIG_DIR,
-    provider: ProviderOption = "pushover",
+    provider: ProviderOption = DEFAULT_PROVIDER,
 ) -> None:
     """Report source freshness, open incidents, delivery activity, and the retry policy."""
     app_config = _config_or_refuse(config)
@@ -859,7 +882,7 @@ def report_health(
 
 @app.command("notify-test")
 def notify_test(
-    provider: ProviderOption = "pushover",
+    provider: ProviderOption = DEFAULT_PROVIDER,
     alert_url: Annotated[
         str, typer.Option("--alert-url", help="Link the test message opens")
     ] = DEFAULT_ALERT_URL,
@@ -873,7 +896,8 @@ def notify_test(
             f" {result.error or f'HTTP {result.http_status}'}"
         )
         return
-    typer.echo(f"{result.provider} accepted the test message (HTTP {result.http_status})")
+    status = "" if result.http_status is None else f" (HTTP {result.http_status})"
+    typer.echo(f"{result.provider} accepted the test message{status}")
 
 
 async def _retry_committed(
@@ -924,7 +948,7 @@ def retry_notifications(
     limit: Annotated[
         int, typer.Option("--limit", help="At most this many events across all sources")
     ] = DEFAULT_RETRY_LIMIT,
-    provider: ProviderOption = "pushover",
+    provider: ProviderOption = DEFAULT_PROVIDER,
     json_output: JsonOption = False,
     config: ConfigPathOption = DEFAULT_CONFIG_DIR,
     db: DbPathOption = DEFAULT_DB_PATH,

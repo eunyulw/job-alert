@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+import sys
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -256,6 +257,76 @@ def test_collect_live_on_a_source_never_seeded_announces_nothing(
     assert cycle["would_deliver"] == []
     assert recorder.messages == []
     assert "seeded" in result.stderr
+
+
+CANARY_FILTER = """  - id: production-matches
+    enabled: true
+    notify: true
+    include_companies: [{companies}]
+"""
+
+
+def test_collect_live_allows_an_allowlisted_canary_below_the_coverage_threshold(
+    tmp_path: Path, greenhouse_endpoint: respx.Router, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The 90% gate is for broad activation; a filter naming its companies is a canary."""
+    config = make_config(tmp_path, fallback_company=True)
+    (config / "filters.yaml").write_text(
+        DRY_RUN_FILTER + CANARY_FILTER.format(companies="example"), encoding="utf-8"
+    )
+    recorder = RecordingNotifier()
+    monkeypatch.setattr(cli, "build_notifier", lambda provider, **_: recorder)
+
+    result = invoke(
+        "collect", "--all", "--mode", "live", "--json",
+        "--config", str(config), "--db", str(tmp_path / "state.sqlite3"),
+    )
+
+    assert result.exit_code == 0, result.stderr
+    assert json.loads(result.stdout)["sources"][0]["outcome"] == "complete"
+
+
+def test_collect_live_refuses_an_allowlist_naming_a_company_without_an_enabled_source(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = make_config(tmp_path, fallback_company=True)
+    (config / "filters.yaml").write_text(
+        DRY_RUN_FILTER + CANARY_FILTER.format(companies="example, fallback"), encoding="utf-8"
+    )
+    monkeypatch.setattr(cli, "build_notifier", lambda provider, **_: RecordingNotifier())
+
+    result = invoke(
+        "collect", "--all", "--mode", "live",
+        "--config", str(config), "--db", str(tmp_path / "state.sqlite3"),
+    )
+
+    assert result.exit_code == 2
+    assert "fallback" in result.stderr
+    assert "no enabled source" in result.stderr
+
+
+def test_notify_test_defaults_to_the_laptop(monkeypatch: pytest.MonkeyPatch) -> None:
+    chosen: list[str] = []
+    recorder = RecordingNotifier()
+
+    def build(provider: str, **_: object) -> RecordingNotifier:
+        chosen.append(provider)
+        return recorder
+
+    monkeypatch.setattr(cli, "build_notifier", build)
+
+    result = invoke("notify-test")
+
+    assert result.exit_code == 0, result.stderr
+    assert chosen == ["macos"]
+    assert recorder.messages[0].title == "TEST \u2014 Fast Job Alert"
+
+
+@pytest.mark.skipif(sys.platform != "darwin", reason="Notification Center exists only on macOS")
+def test_build_notifier_constructs_the_macos_provider() -> None:
+    from job_alert.notifications import MacOSNotifier
+
+    assert isinstance(cli.build_notifier("macos"), MacOSNotifier)
 
 
 def test_collect_refuses_a_source_it_cannot_find(
@@ -568,8 +639,8 @@ def test_retry_notifications_refuses_without_pushover_secrets(
     config = make_config(tmp_path)
 
     result = invoke(
-        "retry-notifications", "--limit", "10", "--config", str(config),
-        "--db", str(tmp_path / "state.sqlite3"),
+        "retry-notifications", "--limit", "10", "--provider", "pushover",
+        "--config", str(config), "--db", str(tmp_path / "state.sqlite3"),
     )
 
     assert result.exit_code == 2

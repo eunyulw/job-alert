@@ -23,7 +23,7 @@
 - Treat provider payloads and HTML as untrusted input.
 - Store secrets only in environment or deployment secret storage; never commit them.
 - Use `first_seen_at` as operational truth when source publication time is absent or semantically unreliable.
-- Pushover is the primary Android notification provider; ntfy is optional and secondary.
+- **Revised 2026-10-14:** macOS laptop notifications are the primary delivery channel for the first release; the monitor runs natively on the laptop under launchd. Pushover/Android delivery is deferred to Task 28 (its notifier already exists); ntfy stays optional.
 - Every approved company must end the source audit with one explicit support status.
 - At least 90% of companies must have a working direct official or official-career-site source before broad notification activation.
 
@@ -2376,83 +2376,91 @@ git add deploy scripts/backup_sqlite.py docs/operator-runbook.md README.md tests
 git commit -m "ops: add persistent job alert deployment"
 ```
 
-### Task 26: Android Delivery Test, Canary Rollout, and Production Acceptance
+### Task 26: Laptop (macOS) Delivery, Canary Rollout, and Production Acceptance
+
+> **Revision 2026-10-14.** The user asked to ship laptop notifications first and implement mobile
+> alerts afterwards. The original Android/Pushover version of this task moved, unchanged in intent,
+> to Task 28. A container cannot post macOS notifications, so the laptop release runs natively as a
+> launchd LaunchAgent; the Task 25 container remains the path for the later always-on/mobile phase.
+> The user delegated the open activation decision: the 90% coverage gate applies to *broad*
+> activation only, meaning any enabled notifying filter without an `include_companies` allowlist.
 
 **Files:**
-- Modify: `config/filters.yaml`
-- Modify: `docs/operator-runbook.md`
+- Create: `src/job_alert/notifications/macos.py`, `tests/unit/notifications/test_macos.py`
+- Modify: `src/job_alert/notifications/__init__.py`, `src/job_alert/cli.py`, `tests/integration/test_cli.py`
+- Create: `scripts/macos_launch_agent.py`, `tests/integration/test_macos_launch_agent.py`
+- Modify: `config/filters.yaml`, `docs/operator-runbook.md`, `README.md`
 - Create: `docs/production-acceptance.md`
 
 **Interfaces:**
-- Consumes: deployed service, audited sources, baseline database, user-approved filters, and Pushover Android credentials.
-- Produces: verified Android delivery and a controlled progression from suppressed mode to full monitoring.
+- Consumes: audited sources, a seeded local database, user-approved filters, and macOS Notification Center.
+- Produces: verified laptop delivery and a controlled progression from suppressed mode to monitoring.
 
-- [ ] **Step 1: Configure Android and Pushover without committing credentials**
+- [ ] **Step 1: Implement the macOS notifier (test first)**
 
-Install Pushover on Android, enable notifications and the desired sound, exempt it from aggressive battery optimization, create the Pushover application, and place the application token and user key only in the production secret environment. Record setup completion without recording either secret.
+`MacOSNotifier` (`provider = "macos"`) runs `terminal-notifier` when it is on `PATH` (clicking the
+alert opens the posting) and otherwise `osascript` (the banner shows the posting link as its subtitle;
+clicking cannot open it). It never uses a shell: titles and bodies are untrusted provider text, so the
+AppleScript receives them as `argv` items, never interpolated into the script. Exit 0 is delivered;
+a non-zero exit is retryable; a timeout is retryable and `uncertain`; a non-macOS host is a
+configuration error. `HIGH` priority plays the default sound.
 
-- [ ] **Step 2: Send the explicit test notification**
+- [ ] **Step 2: Make `macos` the default provider and narrow the coverage gate**
 
-Run: `job-alert notify-test --provider pushover`.
+`collect`, `run`, `notify-test`, `retry-notifications`, and `report health` default to
+`--provider macos`; `pushover` and `ntfy` remain selectable. `_require_live_activation` still refuses
+LIVE without an enabled notifying filter, applies the 90% gate only when an enabled notifying filter
+is broad, and refuses an allowlist naming a company that has no enabled source (it could never alert).
 
-Expected: Android receives `TEST — Fast Job Alert`; tapping `Open verification page` opens the harmless configured test URL. Record send time, receipt time, Android model/version, network type, and observed delay in `docs/production-acceptance.md`.
+- [ ] **Step 3: Install as a LaunchAgent**
 
-- [ ] **Step 3: Obtain and encode the user's production filter choices**
+`scripts/macos_launch_agent.py install|uninstall|print` renders
+`~/Library/LaunchAgents/com.fastjobalert.monitor.plist` with absolute paths to the repository's
+`.venv/bin/job-alert`, `config/`, `data/job-alert.sqlite3`, and logs under `data/logs/`, with
+`RunAtLoad` and `KeepAlive`, and loads it with `launchctl bootstrap gui/<uid>`. The mode is an argument
+(default `live-suppressed`). Tests cover the rendered plist only; they never call `launchctl`.
 
-Before changing `notify`, obtain explicit values for title keywords, excluded keywords, locations, remote/hybrid preferences, experience level, and priority companies. Enter them in `production-matches`, enable that filter, and keep `notify: false` for the first canary collection. Validate with `uv run job-alert collect --all --mode live-suppressed --report reports/filter-canary.json` and review every would-notify event.
+- [ ] **Step 4: Send the explicit test notification**
 
-- [ ] **Step 4: Enable a small canary group**
+Run `uv run job-alert notify-test --provider macos`. Expected: `TEST — Fast Job Alert` appears in
+Notification Center. If it does not, allow notifications for the delivering app (Script Editor for
+`osascript`, terminal-notifier otherwise) in System Settings › Notifications. Record the result in
+`docs/production-acceptance.md`.
 
-Set `notify: true` for five companies covering at least two adapter families. Run continuously for 24 hours. Acceptance requires no duplicate notifications, no baseline notifications, direct links that open correctly, no unresolved source-health incident, and Pushover quota remaining above 90% of its monthly allowance unless real matching volume explains otherwise.
+- [ ] **Step 5: Obtain and encode the user's production filter choices**
 
-- [ ] **Step 5: Expand by category with checkpoints**
+Before changing `notify`, obtain explicit values for title keywords, excluded keywords, locations,
+remote/hybrid preferences, experience level, and priority companies. Enter them in
+`production-matches` with an `include_companies` allowlist of up to five canary companies covering at
+least two adapter families, and keep `notify: false` for the first canary collection. Validate with
+`uv run job-alert collect --all --mode live-suppressed --report reports/filter-canary.json` and review
+every would-notify event.
 
-Enable one category at a time in this order: Robotics/Autonomy, Big Tech/AI, Automotive/Mobility, Industrial Automation, Aerospace/Defense, Medical Robotics. After each expansion, require two consecutive complete cycles and review would-notify versus delivered counts. Stop expansion on any duplicate, missing direct link, mass-drop quarantine, or repeated source error.
+- [ ] **Step 6: Run the canary on the laptop**
 
-- [ ] **Step 6: Verify freshness objectives empirically**
+Baseline (already seeded sources stay seeded), set `notify: true`, install the LaunchAgent with
+`--mode live`, and run for 24 hours of laptop uptime. Acceptance: no duplicate notifications, no
+baseline notifications, links open the posting, no unresolved source-health incident. A sleeping
+laptop does not poll; cycles resume on wake and the first cycle after wake detects what appeared.
 
-For naturally appearing jobs, compare `source_published_at` when trustworthy to `first_seen_at`, and always compare `first_seen_at` to notification delivery time. Report by tier: sample count, median detection delay, p95 detection delay, maximum, and number lacking a trustworthy source time. Do not represent these observations as provider guarantees.
+- [ ] **Step 7: Expand with checkpoints**
 
-- [ ] **Step 7: Run the final production acceptance checklist**
+Widen the allowlist one category at a time in this order: Robotics/Autonomy, Big Tech/AI,
+Automotive/Mobility, Industrial Automation, Aerospace/Defense, Medical Robotics. Removing the
+allowlist entirely is broad activation and stays refused until direct coverage reaches 90%. Stop on
+any duplicate, missing link, mass-drop quarantine, or repeated source error.
 
-Record evidence for every spec criterion:
+- [ ] **Step 8: Verify freshness and record acceptance**
 
-- every company has explicit source status;
-- direct coverage is at least 90% or broad activation remains disabled;
-- two consecutive complete runs have no false new events;
-- a synthetic added-job test emits exactly one event;
-- direct API controlled detection is at most six minutes;
-- stable non-official controlled detection meets 11- or 16-minute objective;
-- baseline sent zero alerts;
-- restart retained state;
-- duplicate fixtures sent one alert;
-- source failure did not cause closure events;
-- Android Pushover delivery and direct link succeeded;
-- secrets are absent from `git grep` and Git history;
-- source-health report identifies all degraded companies.
-
-Run:
-
-```bash
-uv run ruff check .
-uv run mypy src
-uv run pytest -m "not live" -q
-uv run pytest tests/live -m live -v
-uv run job-alert report coverage --markdown reports/coverage-final.md
-uv run job-alert report health --json
-git diff --check
-git status --short
-```
-
-Expected: code checks pass; live tests pass for every enabled source; coverage gate is explicit; worktree contains only the intended acceptance-document changes.
-
-- [ ] **Step 8: Commit production policy and acceptance evidence**
-
-Before committing, verify `config/filters.yaml` contains no phone number, email address, tokens, user keys, or sensitive personal text.
+Report detection delay by tier (sample count, median, p95, maximum) from `first_seen_at` versus
+delivery time, noting that laptop sleep is excluded from the objectives. Record evidence for every
+spec criterion that applies to laptop delivery in `docs/production-acceptance.md`; Android-specific
+criteria are carried to Task 28. Run the full quality gate and live probes, verify `config/filters.yaml`
+holds no personal data or secrets, and commit:
 
 ```bash
 git add config/filters.yaml docs/operator-runbook.md docs/production-acceptance.md
-git commit -m "ops: approve job alert production rollout"
+git commit -m "ops: approve laptop job alert rollout"
 ```
 
 ### Task 27: Secondary Coverage Cross-Checks Without Duplicate Alerts
@@ -2519,6 +2527,15 @@ git add config/secondary_sources.yaml src/job_alert/coverage_crosscheck.py src/j
 git commit -m "feat: add secondary source coverage checks"
 ```
 
+### Task 28: Android (Pushover) Delivery — Deferred
+
+Deferred on 2026-10-14 at the user's request until laptop delivery is accepted. This is the original
+Task 26: configure Pushover on Android without committing credentials, send `notify-test --provider
+pushover`, run the canary and category expansion with `--provider pushover` (natively or through the
+Task 25 container with `JOB_ALERT_MODE=live`), verify Android delivery and direct links, and record the
+Android acceptance criteria (delivery delay, quota headroom, secrets absent from Git history) in
+`docs/production-acceptance.md`. `PushoverNotifier` and its tests already exist (Task 20).
+
 ## Execution Checkpoints
 
 1. **Foundation checkpoint — Tasks 1–6:** Review model boundaries, SQLite safety, identity, diff semantics, HTTP controls, and adapter contract before any broad internet probing.
@@ -2528,7 +2545,7 @@ git commit -m "feat: add secondary source coverage checks"
 5. **Event pipeline checkpoint — Tasks 19–23:** Verify filters, durable notification events, baseline behavior, quarantine rules, health suppression, scheduler, and safety gates.
 6. **All-company checkpoint — Task 24:** Require a clean baseline and immediate repeat before any real job alert is delivered.
 7. **Deployment checkpoint — Task 25:** Verify persistence, backup/restore, non-root container, and secret handling.
-8. **Phone and production checkpoint — Task 26:** Require the explicit test push, five-company canary, category-by-category rollout, and written acceptance evidence.
+8. **Laptop and production checkpoint — Task 26:** Require the explicit test notification, five-company canary, category-by-category rollout, and written acceptance evidence. Android delivery follows in Task 28.
 9. **Coverage cross-check checkpoint — Task 27:** Add only legitimate audited secondary sources, confirm gaps twice, and prove they cannot create duplicate job notifications.
 
 ## Completion Definition

@@ -1,6 +1,67 @@
 # Operator runbook
 
-Every command runs from the repository root on the deployment host. `dc` below is shorthand for:
+The current release delivers **laptop notifications**: the monitor runs natively on your Mac as a
+LaunchAgent and posts to Notification Center. The container deployment further down is kept for the
+later always-on and mobile (Pushover) phase, Task 28 of the plan.
+
+## Laptop (macOS)
+
+All commands run from the repository root.
+
+1. **Install and check delivery.**
+
+   ```sh
+   uv sync
+   brew install terminal-notifier   # optional: makes a click open the posting
+   uv run job-alert notify-test     # provider macos is the default
+   ```
+
+   `TEST — Fast Job Alert` should appear. If it does not, open System Settings › Notifications and
+   allow notifications for **terminal-notifier**, or for **Script Editor** if you skipped the
+   install. Without terminal-notifier, a banner shows the posting link as its subtitle, but clicking it
+   opens Script Editor rather than the link.
+2. **Seed the baseline**, so the postings already on every board are never announced:
+
+   ```sh
+   uv run job-alert baseline --all --confirm-seed --report reports/baseline.json
+   ```
+
+3. **Choose what alerts you.** Edit the `production-matches` filter in `config/filters.yaml` (title
+   keywords, exclusions, locations, workplace types, priority) and give it an `include_companies`
+   allowlist. Keep `notify: false` at first and review what it would send:
+
+   ```sh
+   uv run job-alert collect --all --mode live-suppressed --report reports/filter-canary.json
+   ```
+
+4. **Start the background monitor.**
+
+   ```sh
+   python3 scripts/macos_launch_agent.py install --mode live-suppressed   # collect, no alerts
+   # after setting notify: true on production-matches:
+   python3 scripts/macos_launch_agent.py install --mode live              # alerts on
+   python3 scripts/macos_launch_agent.py uninstall                        # stop
+   ```
+
+   The agent starts at login, restarts if it exits (at most once every five minutes), and logs to
+   `data/logs/`. `tail -f data/logs/job-alert.err.log` shows each cycle. If LIVE is refused, the
+   reason is the last line of that log. A sleeping laptop does not poll, and the first cycle after
+   wake catches up.
+
+**What LIVE allows.** A notifying filter with an `include_companies` allowlist is a canary, and it
+may alert below the 90% coverage gate, as long as every company it names has an enabled source.
+Removing the allowlist is broad activation. That stays refused until direct coverage reaches 90%
+(10 of 148 companies on 2026-10-14). Health incidents and the 18:00 Chicago daily digest also arrive
+as laptop notifications in LIVE mode.
+
+Reports, backups, source disabling, `429` handling, and schema changes work as described below; on the
+laptop, run each command directly with `uv run job-alert …` against `data/job-alert.sqlite3`, and use
+`python3 scripts/backup_sqlite.py` without Docker. After editing `config/`, reload the agent by running
+`install` again.
+
+## Server container (later: always-on and mobile)
+
+Every command below runs from the repository root on the deployment host. `dc` is shorthand for:
 
 ```sh
 alias dc='docker compose -f deploy/compose.yaml --env-file deploy/job-alert.env'
@@ -9,8 +70,10 @@ alias dc='docker compose -f deploy/compose.yaml --env-file deploy/job-alert.env'
 Inside the container the state database is `/app/data/job-alert.sqlite3` on the `job-alert-data`
 volume, the registry is the repository's `config/` mounted read-only at `/app/config`, and the root
 filesystem is read-only. The process runs as the unprivileged `jobalert` user and publishes no port.
+A container cannot post macOS notifications, so it pairs with `--provider pushover` (set
+`--provider` through the Compose command once Task 28 lands).
 
-## Initial deployment
+### Initial deployment
 
 1. Create the secret file, which is ignored by git, and keep it readable only by you:
 
@@ -19,7 +82,7 @@ filesystem is read-only. The process runs as the unprivileged `jobalert` user an
    chmod 600 deploy/job-alert.env
    ```
 
-   Leave `JOB_ALERT_MODE=live-suppressed` until [live enablement](#live-enablement). The Pushover
+   Leave `JOB_ALERT_MODE=live-suppressed` until live enablement. The Pushover
    values may stay empty until then.
 2. Build the image and create the schema. The schema is idempotent, and every command that opens the
    database applies it; `init-db` only does it explicitly.
@@ -51,7 +114,7 @@ filesystem is read-only. The process runs as the unprivileged `jobalert` user an
 The container is healthy once some source has completed within 65 minutes (`deploy/healthcheck.py`,
 15-minute start period). `docker inspect --format '{{.State.Health.Status}}' <container>` shows it.
 
-## Pushover test
+### Pushover test
 
 Fill `PUSHOVER_APP_TOKEN` and `PUSHOVER_USER_KEY` in `deploy/job-alert.env`, then:
 
@@ -62,7 +125,7 @@ dc run --rm job-alert job-alert notify-test --provider pushover
 The phone receives `TEST — Fast Job Alert`. No job, event, or delivery record is read or written.
 Exit code 2 means a credential is missing; 1 means Pushover refused the message.
 
-## Live enablement
+### Live enablement
 
 LIVE is refused (exit 2) unless an enabled filter in `config/filters.yaml` has `notify: true`, the
 Pushover credentials are present, and direct coverage passes the 90% broad-activation gate. As of
@@ -81,7 +144,7 @@ To stop alerting without stopping collection, set `JOB_ALERT_MODE=live-suppresse
 `dc up -d` again. Events recorded while suppressed stay pending, and LIVE delivers them later, so
 review `would_deliver` in a suppressed report before switching.
 
-## Logs and reports
+### Logs and reports
 
 ```sh
 dc logs --since 1h job-alert
@@ -93,7 +156,7 @@ dc exec job-alert cat /app/data/reports/daily-digest.md            # written dai
 
 Logs rotate at 10 MiB, three files.
 
-## Backup
+### Backup
 
 `scripts/backup_sqlite.py` copies the database through the SQLite online-backup API, which is safe
 while the loop writes. It verifies the copy with `PRAGMA integrity_check` and keeps the newest 14
@@ -111,7 +174,7 @@ Schedule it daily from the host's crontab, for example at 03:00 (replace the pat
 0 3 * * * cd /srv/job-alert && docker compose -f deploy/compose.yaml --env-file deploy/job-alert.env exec -T job-alert python /app/scripts/backup_sqlite.py backup /app/data/job-alert.sqlite3 /app/data/backups && docker compose -f deploy/compose.yaml --env-file deploy/job-alert.env cp job-alert:/app/data/backups/. ./backups
 ```
 
-## Restore
+### Restore
 
 A restore replaces every job, event, and delivery record, so stop the loop first. The script refuses a
 backup that fails its integrity check, and leaves the database untouched when it does.
@@ -129,14 +192,13 @@ backup is new to it again, so the next cycle announces it once if a filter notif
 was already announced before the restore. Postings announced before the backup keep their delivery
 records and are not repeated.
 
-## Rotating Pushover credentials
+### Rotating Pushover credentials
 
 Create the new application token in Pushover, put it (and a new user key, if that changed) in
-`deploy/job-alert.env`, run `dc up -d` to recreate the container, and run the [Pushover
-test](#pushover-test). Then revoke the old token in Pushover. Never commit either value; `git grep`
+`deploy/job-alert.env`, run `dc up -d` to recreate the container, and run the Pushover test. Then revoke the old token in Pushover. Never commit either value; `git grep`
 for the token before every push if in doubt.
 
-## Disabling one broken source
+### Disabling one broken source
 
 On the host, record the reason with the evidence the audit holds, then restart so the loop reloads the
 registry:
@@ -149,7 +211,7 @@ dc restart job-alert
 
 The company stays in the registry and in the coverage report. Commit the `config/sources.yaml` change.
 
-## Handling `429 Too Many Requests`
+### Handling `429 Too Many Requests`
 
 The fetcher retries a `429`, honouring `Retry-After`. If the retries run out, the cycle fails
 closed: a failed cycle never closes a job. Three consecutive failures open one health incident, which
@@ -158,7 +220,7 @@ its `interval_minutes` in `config/sources.yaml`. Slower than its class tier is a
 refused at load. Then run `dc restart job-alert`. `bosch-smartrecruiters` is the heaviest source: 51
 requests per cycle at the 5-minute tier.
 
-## Handling a provider schema change
+### Handling a provider schema change
 
 A payload the adapter cannot read is an adapter error, and a challenge page is never read as an empty
 board, so the cycle fails closed and opens a health incident after repeated failures. Do not loosen
@@ -166,11 +228,11 @@ validation to make the incident go away. Either:
 
 1. capture a sanitized fixture of the new payload, write a failing adapter test, fix the adapter,
    and redeploy; or
-2. [disable the source](#disabling-one-broken-source) with the evidence until that is done.
+2. disable the source with the evidence until that is done.
 
-## Upgrading and rolling back the image
+### Upgrading and rolling back the image
 
-The database lives on the volume and survives any image change. Take a [backup](#backup) before an
+The database lives on the volume and survives any image change. Take a backup before an
 upgrade, then:
 
 ```sh
