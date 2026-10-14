@@ -782,6 +782,7 @@ def _cycle_line(result: CycleResult) -> str:
         f" missing={result.missing_count} closed={result.closed_count}"
         f" notifications={result.notifications_sent}"
         + (f" error={result.error_code}" if result.error_code else "")
+        + (" seeded (first complete snapshot, no events)" if result.seeded else "")
     )
 
 

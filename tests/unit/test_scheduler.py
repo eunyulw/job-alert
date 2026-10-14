@@ -736,3 +736,21 @@ def build_scheduler(
     }
     values.update(overrides)
     return Scheduler(**values)  # type: ignore[arg-type]
+
+
+def test_the_cycle_log_line_says_when_a_snapshot_only_seeded() -> None:
+    from job_alert.models import RunOutcome
+    from job_alert.scheduler import _cycle_line
+    from job_alert.service import CycleResult, RunMode
+
+    seeded = CycleResult(
+        source_id="acme", mode=RunMode.LIVE, run_id=1, outcome=RunOutcome.COMPLETE,
+        complete=True, new_count=5, seeded=True,
+    )
+    assert _cycle_line(seeded).endswith("seeded (first complete snapshot, no events)")
+    assert "seeded" not in _cycle_line(
+        CycleResult(
+            source_id="acme", mode=RunMode.LIVE, run_id=2, outcome=RunOutcome.COMPLETE,
+            complete=True,
+        )
+    )
