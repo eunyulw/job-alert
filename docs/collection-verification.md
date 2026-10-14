@@ -220,3 +220,5 @@ announcement.
 | 3 | Bank of America | `bank-of-america-workday` | facet EE - Intern (Fixed Term) | 2026-10-14: 2 twice | 2026-10-14, expansion filter |
 | 3 | Comcast | `comcast-workday` | facet Intern (Trainee) | 2026-10-14: 2 twice | 2026-10-14, expansion filter |
 | 3 | Allstate | `allstate-workday` | facet Intern/Co-Op (Fixed Term) | 2026-10-14: 1 twice | 2026-10-14, expansion filter |
+
+| 1 | Tesla (requested 2026-10-14) | not collected | — | `cua-api/apps/careers/state` and `/careers/search` answer HTTP 403 Access Denied (Akamai) | `BLOCKED`; not circumvented |

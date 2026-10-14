@@ -124,6 +124,7 @@ sources:
   endpoint: https://www.tesla.com/careers
   interval_minutes: 30
   parameters:
+    expansion_note: "2026-10-14 Task 29 (user asked for Tesla): www.tesla.com/cua-api/apps/careers/state and /careers/search both answer HTTP 403 Access Denied from Akamai to an ordinary request. Tesla refuses automated access, so no source is configured and nothing is circumvented. Options: a documented aggregator under Task 27, or checking tesla.com/careers manually."
     audit_status: BLOCKED
     audit_probed_at: '2026-09-18'
     audit_http_status: 403
