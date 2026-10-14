@@ -1,0 +1,27 @@
+Your job alert for tesla intern
+3 new jobs match your preferences.
+
+Internship, Mechanical Engineer, Vehicle Engineering (Winter/Spring 2027)
+Tesla
+Palo Alto, CA
+Actively recruiting
+View job: https://www.linkedin.com/comm/jobs/view/4012345678/?trackingId=abc%3D%3D&refId=xyz
+
+---------------------------------------------------------
+
+Internship, Robotics Software Engineer, Optimus (Summer 2027)
+Tesla
+Palo Alto, CA
+View job: https://www.linkedin.com/comm/jobs/view/4012345679/?trackingId=def
+
+---------------------------------------------------------
+
+Mechanical Design Intern
+Rivian
+Irvine, CA
+View job: https://www.linkedin.com/comm/jobs/view/4012345680/?trackingId=ghi
+
+---------------------------------------------------------
+
+See all jobs: https://www.linkedin.com/comm/jobs/search?keywords=tesla%20intern
+Unsubscribe: https://www.linkedin.com/comm/psettings/email-unsubscribe

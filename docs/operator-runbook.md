@@ -69,6 +69,32 @@ after monitoring began, accurate to one poll interval), `posted` (the provider's
 or `before monitoring` (already open when monitoring began, so the hours are a lower bound, shown
 with ≥). `uv run job-alert report openings --html FILE --db DB` writes the same page on demand.
 
+**Tesla through Gmail job alerts.** Tesla's careers site refuses automated access, so Tesla
+postings come from LinkedIn job-alert emails in your Gmail (plan Task 30). One-time setup:
+
+1. On LinkedIn, search jobs for `Tesla intern` in United States, filter Company = Tesla, and turn
+   on a job alert (email, daily or as often as offered) delivered to your Gmail.
+2. In your Google Account, turn on 2-Step Verification if it is off, create an app password
+   (Security > App passwords), and store it in the login keychain; the command prompts for the
+   password so it never appears in your shell history:
+
+   ```sh
+   security add-generic-password -s job-alert-gmail -a you@gmail.com -w
+   ```
+
+3. After the first alert email arrives, check what the source reads without changing anything:
+
+   ```sh
+   uv run job-alert collect --source tesla-email-alerts --mode dry-run \
+     --db ~/Library/Application\ Support/FastJobAlert/data/job-alert.sqlite3
+   ```
+
+   Then the source is enabled and `tesla` joins the expansion allowlist (plan Task 30 gate).
+
+The mailbox is opened read-only; nothing is marked read, moved, or deleted. To revoke access,
+delete the app password in your Google Account and run `security delete-generic-password -s
+job-alert-gmail`.
+
 **What LIVE allows.** A notifying filter with an `include_companies` allowlist is a canary, and it
 may alert below the 90% coverage gate, as long as every company it names has an enabled source.
 Removing the allowlist is broad activation. That stays refused until direct coverage reaches 90%

@@ -2608,6 +2608,27 @@ checkboxes are per phase:
 - [ ] Phase 3: Fortune 100 — inventory and audit done 2026-10-14; 8 sources enabled (Galaxy Digital, Target, Nike, Coca-Cola, Elevance, Bank of America, Comcast, Allstate); next: Eightfold endpoints for 5 companies, then a SuccessFactors adapter (3 here + 7 earlier candidates), Oracle (3 + 2), iCIMS (2 + 2)
 - [ ] Phase 4: Fortune 500 batches
 
+### Task 30: Email-Alert Sources for Companies That Refuse Automated Access
+
+Requested 2026-10-14 for Tesla, whose careers site answers 403 (Akamai) to any ordinary request.
+Circumventing that is out of scope (Global Constraints), so Tesla postings come from job-alert
+emails the user subscribes to (LinkedIn first), read from the user's own Gmail.
+
+**This revises Task 27 for this one case.** Task 27 forbids a secondary source from creating
+user-facing alerts. An email-alert source may alert, because the user asked for it and the company
+has no primary source; it never runs for a company that has one, it is never counted as direct
+coverage, and its alerts go through the same filters (including US-only).
+
+- [x] Adapter `email-alerts`: IMAP over TLS with a Gmail app password from the macOS login keychain
+  (service `job-alert-gmail`), mailbox opened read-only, messages fetched with `BODY.PEEK[]`;
+  LinkedIn plain-text cards parsed; only the named companies kept; the posting link drops email
+  tracking parameters; the earliest alert send time is the published time.
+- [x] `tesla-email-alerts` replaces `tesla-discovery`, **disabled**.
+- [ ] User: create a LinkedIn job alert for Tesla internships (United States) and a Gmail app
+  password stored in the keychain (runbook).
+- [ ] Gate: dry-run against the first real alert email, replace the constructed fixture with the
+  sanitized real message, then enable the source and add `tesla` to the expansion allowlist.
+
 ## Execution Checkpoints
 
 1. **Foundation checkpoint — Tasks 1–6:** Review model boundaries, SQLite safety, identity, diff semantics, HTTP controls, and adapter contract before any broad internet probing.

@@ -10,6 +10,7 @@ credential key or a personal-data key that holds a value.
 from __future__ import annotations
 
 import json
+import re
 from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
@@ -31,6 +32,12 @@ PERSONAL_DATA_KEYS = frozenset(
 )
 
 HTML_SUFFIXES = frozenset({".html", ".htm"})
+
+# Email-alert fixtures are message text, not provider responses. Email is where a person's address
+# leaks, so the only addresses such a file may carry are the alert services' no-reply senders.
+EMAIL_SUFFIXES = frozenset({".txt", ".eml"})
+ALLOWED_EMAIL_ADDRESSES = frozenset({"jobalerts-noreply@linkedin.com", "alert@indeed.com"})
+EMAIL_ADDRESS = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 
 PROVIDER_DIRECTORIES = sorted(
     path
@@ -124,6 +131,14 @@ def test_fixture_directory_records_provenance(directory: Path) -> None:
 )
 def test_fixture_responses_parse_and_carry_no_sensitive_keys(directory: Path) -> None:
     for path in _response_files(directory):
+        if path.suffix.lower() in EMAIL_SUFFIXES:
+            text = path.read_text(encoding="utf-8")
+            assert text.strip(), f"{directory.name}/{path.name} is empty"
+            addresses = set(EMAIL_ADDRESS.findall(text)) - ALLOWED_EMAIL_ADDRESSES
+            assert not addresses, f"{directory.name}/{path.name} carries addresses {addresses}"
+            for secret in sorted(SECRET_KEYS):
+                assert secret not in text.lower(), f"{directory.name}/{path.name} has {secret!r}"
+            continue
         payload = _parse_response(path)
         if payload is None:
             # An HTML capture has no keys, so the secret check falls back to the raw text: the page

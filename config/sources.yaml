@@ -116,14 +116,21 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: tesla-discovery
+- id: tesla-email-alerts
   company_id: tesla
-  provider: discovery
+  provider: email-alerts
   source_class: fallback
   support_status: BLOCKED
-  endpoint: https://www.tesla.com/careers
+  endpoint: https://mail.google.com/
   interval_minutes: 30
   parameters:
+    companies:
+    - Tesla
+    senders:
+    - jobalerts-noreply@linkedin.com
+    lookback_days: 45
+    keychain_service: job-alert-gmail
+    scope: LinkedIn job-alert emails in the user's own Gmail (Task 30); Tesla's careers site refuses automated access
     expansion_note: "2026-10-14 Task 29 (user asked for Tesla): www.tesla.com/cua-api/apps/careers/state and /careers/search both answer HTTP 403 Access Denied from Akamai to an ordinary request. Tesla refuses automated access, so no source is configured and nothing is circumvented. Options: a documented aggregator under Task 27, or checking tesla.com/careers manually."
     audit_status: BLOCKED
     audit_probed_at: '2026-09-18'

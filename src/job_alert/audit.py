@@ -57,6 +57,7 @@ from job_alert.adapters.base import (
     validate_collection,
 )
 from job_alert.adapters.eightfold import EightfoldAdapter
+from job_alert.adapters.email_alerts import EmailAlertAdapter
 from job_alert.adapters.generic_json import GenericJsonAdapter
 from job_alert.adapters.google import GoogleAdapter
 from job_alert.adapters.greenhouse import GreenhouseAdapter
@@ -95,6 +96,7 @@ PROVIDER_ADAPTERS: dict[str, SourceAdapter] = {
     "apple": AppleAdapter(),
     "google": GoogleAdapter(),
     "eightfold": EightfoldAdapter(),
+    "email-alerts": EmailAlertAdapter(),
     "workday": WorkdayAdapter(),
     "generic-json": GenericJsonAdapter(),
     "json-ld": JsonLdAdapter(),

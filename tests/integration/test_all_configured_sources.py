@@ -22,11 +22,17 @@ def test_every_enabled_source_has_registered_adapter(app_config: AppConfig) -> N
 
 
 def test_every_enabled_source_is_a_direct_audited_source(app_config: AppConfig) -> None:
-    """Only SUPPORTED or SUPPORTED_UNDOCUMENTED evidence may put a source on the schedule."""
+    """Only SUPPORTED or SUPPORTED_UNDOCUMENTED evidence may put a source on the schedule.
+
+    The one exception is an email-alert source (Task 30): a secondary channel the user subscribed
+    to, for a company that refuses automated access to its own careers site.
+    """
     undirect = sorted(
         (source.id, str(source.support_status))
         for source in app_config.sources
-        if source.enabled and source.support_status not in DIRECT_STATUSES
+        if source.enabled
+        and source.support_status not in DIRECT_STATUSES
+        and source.provider != "email-alerts"
     )
     assert undirect == []
 

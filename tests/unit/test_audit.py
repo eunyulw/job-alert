@@ -107,6 +107,7 @@ def test_provider_adapters_cover_every_registered_provider() -> None:
         "apple",
         "ashby",
         "eightfold",
+        "email-alerts",
         "generic-json",
         "google",
         "greenhouse",
