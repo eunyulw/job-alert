@@ -249,3 +249,20 @@ Not collected: Saronic (Ashby board answers, but one record has no title, so eve
 incomplete; not waived), and, with no public board found under any guessed token: Intuitive
 Surgical, Symbotic, Joby, Rivian, Aurora, Mobileye, Teradyne/Universal Robots, Gecko Robotics,
 Covariant, John Deere, Honeywell, L3Harris, Applied Intuition, Firefly, Hadrian, Machina Labs.
+
+Allowlisted 2026-10-14 after two clean scheduler cycles (Anduril's second run followed an
+interrupted one, caused by an agent reinstall). Robotics startups joined `production-matches`
+(every internship): Physical Intelligence, Figure, Apptronik, Agility, Skydio, Field AI, Skild AI,
+Dexterity, Nimble, Locus, Matic, Collaborative Robotics, The Bot Company, Pickle, Formic, Path,
+Carbon Robotics, Mujin, Bright Machines, Cobalt, Agtonomy, Tutor Intelligence, Aescape, Dexory,
+ANYbotics, Sanctuary AI, Toyota Research Institute. Everything else joined `expansion-matches`
+(engineering keywords in the title). A preview against the stored postings matched 296 current
+US internships, none of which alert, because they were seeded before monitoring.
+
+US placement: boards that hire only in the US but write bare city names carry
+`asserted_country: United States` (Astranis, SpaceX, Blue Origin, Nuro, Merlin Labs, The Bot
+Company, Tutor Intelligence, Stack AV, Boston Dynamics, Path Robotics, Apptronik, Kodiak, May
+Mobility, Outrider, Ursa Major, Standard Bots). Serve Robotics and Nimble do not: their boards
+also hold Canadian or unidentified sites. GE Aerospace and GE Vernova write bare city names
+across many countries and expose no country facet, so their postings alert only when the label
+says "USA".

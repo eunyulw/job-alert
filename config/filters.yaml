@@ -11,7 +11,11 @@
 # would drop real internships like "Software Engineer Intern, Internal Apps". Description keywords
 # were tried and dropped: company boilerplate mentions robots or hardware in nearly every posting.
 # The allowlist grows through Task 29: a company joins after its source passes two clean scheduler
-# cycles (see the expansion log in docs/collection-verification.md).
+# cycles (see the expansion log in docs/collection-verification.md). Phase 3b (2026-10-14) put the
+# robotics startups on the every-internship filters and the aerospace, automotive and industrial
+# companies on the expansion filters, whose keywords gained aerospace and vehicle terms (aerodynam,
+# guidance, gnc, thermal, powertrain, battery, weld, assembly, ...). `engine` is deliberately
+# absent: it is a substring of "engineer".
 # Every alerting filter is US-only (2026-10-14): a posting alerts only when at least one of its
 # locations is confidently in the US (job_alert/geo.py); an unknown or missing location does not.
 # Both filters name their companies, so they are a canary under the 90% broad-activation gate. See
@@ -36,7 +40,12 @@ filters:
     enabled: true
     notify: true
     include_companies:
-      [1x, standard-bots, intrinsic, serve-robotics, neuralink, boston-dynamics]
+      [1x, standard-bots, intrinsic, serve-robotics, neuralink, boston-dynamics,
+       physical-intelligence, figure-ai, apptronik, agility-robotics, skydio, field-ai, skild-ai,
+       dexterity, nimble, locus-robotics, matic, collaborative-robotics, the-bot-company,
+       pickle-robot, formic, path-robotics, carbon-robotics, mujin, bright-machines,
+       cobalt-robotics, agtonomy, tutor-intelligence, aescape, dexory, anybotics, sanctuary-ai,
+       toyota-research-institute]
     include_title_keywords: [intern, co-op, student]
     require_title_keywords: []
     exclude_title_keywords: []
@@ -54,7 +63,12 @@ filters:
     enabled: true
     notify: true
     include_companies:
-      [1x, standard-bots, intrinsic, serve-robotics, neuralink, boston-dynamics]
+      [1x, standard-bots, intrinsic, serve-robotics, neuralink, boston-dynamics,
+       physical-intelligence, figure-ai, apptronik, agility-robotics, skydio, field-ai, skild-ai,
+       dexterity, nimble, locus-robotics, matic, collaborative-robotics, the-bot-company,
+       pickle-robot, formic, path-robotics, carbon-robotics, mujin, bright-machines,
+       cobalt-robotics, agtonomy, tutor-intelligence, aescape, dexory, anybotics, sanctuary-ai,
+       toyota-research-institute]
     include_title_keywords: []
     require_title_keywords: []
     exclude_title_keywords: []
@@ -74,10 +88,17 @@ filters:
     include_companies:
       [amazon, nvidia, netflix, apple, alphabet-google, rockwell-automation, zebra-technologies,
        boeing, intel, samsung, crowdstrike, galaxy-digital, target, coca-cola, elevance-health,
-       bank-of-america, comcast, allstate]
+       bank-of-america, comcast, allstate,
+       spacex, anduril, blue-origin, waymo, zoox, nuro, zipline, lucid-motors, divergent, kodiak,
+       waabi, stack-av, relativity-space, rocket-lab, varda, astranis, outrider, epirus,
+       chaos-industries, skyryse, scout-motors, harbinger, may-mobility, motional, torc-robotics,
+       vast, ursa-major, electra-aero, shield-ai, hermeus, merlin-labs, helion, general-motors,
+       medtronic, caterpillar, northrop-grumman, ge-aerospace, ge-vernova, aptiv, borgwarner, 3m]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
-       perception, motion, kinematic, machine design, product design, test engineer, maintenance, material]
+       perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,
+       aerodynam, guidance, gnc, thermal, fluid, battery, powertrain, vehicle, additive, weld,
+       assembly, reliability, systems engineer, design engineer, integration, hardware test]
     require_title_keywords: [intern, co-op, student]
     exclude_title_keywords: []
     include_locations: []
@@ -96,10 +117,17 @@ filters:
     include_companies:
       [amazon, nvidia, netflix, apple, alphabet-google, rockwell-automation, zebra-technologies,
        boeing, intel, samsung, crowdstrike, galaxy-digital, target, coca-cola, elevance-health,
-       bank-of-america, comcast, allstate]
+       bank-of-america, comcast, allstate,
+       spacex, anduril, blue-origin, waymo, zoox, nuro, zipline, lucid-motors, divergent, kodiak,
+       waabi, stack-av, relativity-space, rocket-lab, varda, astranis, outrider, epirus,
+       chaos-industries, skyryse, scout-motors, harbinger, may-mobility, motional, torc-robotics,
+       vast, ursa-major, electra-aero, shield-ai, hermeus, merlin-labs, helion, general-motors,
+       medtronic, caterpillar, northrop-grumman, ge-aerospace, ge-vernova, aptiv, borgwarner, 3m]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
-       perception, motion, kinematic, machine design, product design, test engineer, maintenance, material]
+       perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,
+       aerodynam, guidance, gnc, thermal, fluid, battery, powertrain, vehicle, additive, weld,
+       assembly, reliability, systems engineer, design engineer, integration, hardware test]
     require_title_keywords: []
     exclude_title_keywords: []
     include_locations: []
