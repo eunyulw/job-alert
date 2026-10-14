@@ -1261,3 +1261,246 @@ companies:
       - fortune-100
     aliases:
       - "MassMutual"
+  # Mechanical and robotics expansion (2026-10-14): boards found by probing public ATS APIs.
+  - id: northrop-grumman
+    name: "Northrop Grumman"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: ge-aerospace
+    name: "GE Aerospace"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: ge-vernova
+    name: "GE Vernova"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: 3m
+    name: "3M"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: collaborative-robotics
+    name: "Collaborative Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases:
+      - "Cobot"
+  - id: the-bot-company
+    name: "The Bot Company"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: field-ai
+    name: "Field AI"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: pickle-robot
+    name: "Pickle Robot"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: formic
+    name: "Formic"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: path-robotics
+    name: "Path Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: carbon-robotics
+    name: "Carbon Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: mujin
+    name: "Mujin"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: bright-machines
+    name: "Bright Machines"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: divergent
+    name: "Divergent Technologies"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - automotive-ev-autonomous-mobility
+    aliases:
+      - "Divergent"
+  - id: kodiak
+    name: "Kodiak Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases:
+      - "Kodiak"
+  - id: waabi
+    name: "Waabi"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: stack-av
+    name: "Stack AV"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: saronic
+    name: "Saronic"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: shield-ai
+    name: "Shield AI"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: hermeus
+    name: "Hermeus"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: relativity-space
+    name: "Relativity Space"
+    categories:
+      - aerospace-defense
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: rocket-lab
+    name: "Rocket Lab"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: varda
+    name: "Varda Space Industries"
+    categories:
+      - aerospace-defense
+    aliases:
+      - "Varda"
+  - id: astranis
+    name: "Astranis"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: merlin-labs
+    name: "Merlin Labs"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases:
+      - "Merlin"
+  - id: outrider
+    name: "Outrider"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: cobalt-robotics
+    name: "Cobalt Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: epirus
+    name: "Epirus"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: chaos-industries
+    name: "CHAOS Industries"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: skyryse
+    name: "Skyryse"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: helion
+    name: "Helion Energy"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases:
+      - "Helion"
+  - id: scout-motors
+    name: "Scout Motors"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: harbinger
+    name: "Harbinger Motors"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases:
+      - "Harbinger"
+  - id: may-mobility
+    name: "May Mobility"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: motional
+    name: "Motional"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: torc-robotics
+    name: "Torc Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases:
+      - "Torc"
+  - id: agtonomy
+    name: "Agtonomy"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: aescape
+    name: "Aescape"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: vast
+    name: "Vast"
+    categories:
+      - aerospace-defense
+    aliases:
+      - "Vast Space"
+  - id: ursa-major
+    name: "Ursa Major"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: electra-aero
+    name: "Electra"
+    categories:
+      - aerospace-defense
+    aliases:
+      - "Electra.aero"
+  - id: dexory
+    name: "Dexory"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: tutor-intelligence
+    name: "Tutor Intelligence"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []

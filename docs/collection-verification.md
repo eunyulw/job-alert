@@ -222,3 +222,30 @@ announcement.
 | 3 | Allstate | `allstate-workday` | facet Intern/Co-Op (Fixed Term) | 2026-10-14: 1 twice | 2026-10-14, expansion filter |
 
 | 1 | Tesla (requested 2026-10-14) | not collected | — | `cua-api/apps/careers/state` and `/careers/search` answer HTTP 403 Access Denied (Akamai) | `BLOCKED`; not circumvented |
+
+### Phase 3b — mechanical and robotics companies (2026-10-14)
+
+The 2026-09-18 audit read only company landing pages, so it marked most robotics companies
+`BLOCKED` (a challenge on the marketing site) or `FALLBACK_ONLY` (no feed linked). Their job boards
+were probed directly on 2026-10-14: candidate board tokens on the public Greenhouse, Lever and
+Ashby posting APIs, accepted only when the board name or posting URLs identify the company
+(`figure` is Figure Lending and `archer` a veterinary clinic, so neither was used), plus Workday
+tenants with their intern facet. 26 registry companies moved to a direct source and 43 new
+companies were added (categories robotics, aerospace-defense, automotive, industrial). Every source
+below passed `audit set-source`: two collections with identical canonical keys.
+
+| Provider | Companies (postings at audit) |
+| --- | --- |
+| Greenhouse | SpaceX (2742)\*, Anduril (2522)\*, Lucid (453), Waymo (366), Relativity Space (361), Zipline (351), Rocket Lab (579), Scout Motors (210), Vast (187), Astranis (180), CHAOS Industries (148), Divergent (128), Varda (111), Ursa Major (111), Nuro (108), Figure (97), Harbinger (92), Motional (81), Apptronik (78), Agility Robotics (73), Kodiak (67), Torc (50), Skild AI (47), Path Robotics (44), Nimble (41), Formic (40), Epirus (40), May Mobility (39), Electra (35), Dexory (29), Skyryse (20), Stack AV (13), Carbon Robotics (11), Outrider (8), Locus Robotics (4) |
+| Lever | Shield AI (612, 15 min), Zoox (240), Field AI (106), Waabi (96), Mujin (90), Hermeus (81), Tutor Intelligence (47), Merlin Labs (25), ANYbotics (23), Dexterity (22), Bright Machines (16), Toyota Research Institute (11), Cobalt Robotics (10), Pickle Robot (8), Agtonomy (4) |
+| Ashby | Skydio (161), Helion (69), Physical Intelligence (39), Matic (24), Collaborative Robotics (13), Aescape (12), The Bot Company (7), Sanctuary AI (3) |
+| Workday (intern facet) | GE Vernova (195, Co-op/Intern), GE Aerospace (154, Co-op/Intern), GM (79, Intern + Co-Op), Caterpillar (66, Intern + Student Worker), Medtronic (56, Intern), BorgWarner (52, Student), Aptiv (38, Intern - Developmental/Working), Northrop Grumman (33, Intern (Global)), Blue Origin (28, Intern (Fixed Term)) |
+| Workday (whole board) | 3M (746; no intern facet) |
+
+\* Fetched with `descriptions: false` every 15 minutes: SpaceX's board is 31 MB with descriptions
+and 2.6 MB without.
+
+Not collected: Saronic (Ashby board answers, but one record has no title, so every collection is
+incomplete; not waived), and, with no public board found under any guessed token: Intuitive
+Surgical, Symbotic, Joby, Rivian, Aurora, Mobileye, Teradyne/Universal Robots, Gecko Robotics,
+Covariant, John Deere, Honeywell, L3Harris, Applied Intuition, Firefly, Hadrian, Machina Labs.

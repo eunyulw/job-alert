@@ -502,6 +502,29 @@ async def test_greenhouse_requests_descriptions_when_the_endpoint_omits_content(
 
 @respx.mock
 @pytest.mark.asyncio
+async def test_greenhouse_skips_descriptions_only_when_the_registry_says_so() -> None:
+    route = respx.get(url__startswith=ENDPOINT.split("?")[0]).mock(
+        return_value=httpx.Response(200, json=board(record(content=None)))
+    )
+
+    async with HttpFetcher() as fetcher:
+        result = await adapter().collect(
+            make_source(parameters={"descriptions": False}), fetcher
+        )
+
+    assert dict(request_params(route.calls[0].request)) == {"content": "false"}
+    assert result.complete is True and result.jobs[0].description_text is None
+
+
+@pytest.mark.asyncio
+async def test_greenhouse_rejects_a_non_boolean_descriptions_parameter() -> None:
+    async with HttpFetcher() as fetcher:
+        with pytest.raises(AdapterError, match="descriptions"):
+            await adapter().collect(make_source(parameters={"descriptions": "no"}), fetcher)
+
+
+@respx.mock
+@pytest.mark.asyncio
 async def test_greenhouse_keeps_content_enabled_endpoints_and_their_parameters() -> None:
     board_url = "https://boards-api.greenhouse.io/v1/boards/example/jobs"
     route = respx.get(url__startswith=board_url).mock(

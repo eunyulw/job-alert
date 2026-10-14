@@ -131,7 +131,7 @@ sources:
     lookback_days: 45
     keychain_service: job-alert-gmail
     scope: LinkedIn job-alert emails in the user's own Gmail (Task 30); Tesla's careers site refuses automated access
-    expansion_note: "2026-10-14 Task 29 (user asked for Tesla): www.tesla.com/cua-api/apps/careers/state and /careers/search both answer HTTP 403 Access Denied from Akamai to an ordinary request. Tesla refuses automated access, so no source is configured and nothing is circumvented. Options: a documented aggregator under Task 27, or checking tesla.com/careers manually."
+    expansion_note: '2026-10-14 Task 29 (user asked for Tesla): www.tesla.com/cua-api/apps/careers/state and /careers/search both answer HTTP 403 Access Denied from Akamai to an ordinary request. Tesla refuses automated access, so no source is configured and nothing is circumvented. Options: a documented aggregator under Task 27, or checking tesla.com/careers manually.'
     audit_status: BLOCKED
     audit_probed_at: '2026-09-18'
     audit_http_status: 403
@@ -785,73 +785,77 @@ sources:
     - ashby adapter collected 142 postings twice with identical canonical keys across 1 page(s)
   enabled: true
   audit_date: '2026-09-18'
-- id: spacex-discovery
+- id: spacex-greenhouse
   company_id: spacex
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.spacex.com/careers
-  interval_minutes: 30
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/spacex/jobs
+  interval_minutes: 15
+  tenant: spacex
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.spacex.com/careers
+    descriptions: false
+    slow_poll_reason: board exceeds 2,000 postings; polled every 15 minutes without descriptions
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/spacex/jobs
     audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
-- id: blue-origin-discovery
+    - greenhouse adapter collected 2742 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: blue-origin-workday
   company_id: blue-origin
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.blueorigin.com/careers
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://blueorigin.wd5.myworkdayjobs.com/wday/cxs/blueorigin/BlueOrigin/jobs
+  interval_minutes: 10
+  tenant: blueorigin
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_http_status: 429
-    audit_final_url: https://www.blueorigin.com/careers
+    applied_facets:
+      workerSubType:
+      - f3db39143e3e01ea6d86269150283618
+    scope: workerSubType = Intern (Fixed Term)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public workday board probed directly at https://blueorigin.wd5.myworkdayjobs.com/wday/cxs/blueorigin/BlueOrigin/jobs
     audit_notes:
-    - 'careers landing page request failed: request failed after 4 attempts: HTTP 429 for https://www.blueorigin.com/careers'
-  enabled: false
-  audit_date: '2026-09-19'
-- id: waymo-discovery
+    - workday adapter collected 28 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: waymo-greenhouse
   company_id: waymo
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://waymo.com/careers/
-  interval_minutes: 30
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/waymo/jobs?content=true
+  interval_minutes: 5
+  tenant: waymo
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://careers.withwaymo.com
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/waymo/jobs?content=true
     audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
-- id: zoox-discovery
+    - greenhouse adapter collected 366 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: zoox-lever
   company_id: zoox
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://zoox.com/careers/
-  interval_minutes: 30
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/zoox?mode=json
+  interval_minutes: 5
+  tenant: zoox
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://zoox.com/careers
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/zoox?mode=json
     audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    - lever adapter collected 240 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: intuitive-surgical-discovery
   company_id: intuitive-surgical
   provider: discovery
@@ -869,21 +873,22 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: skydio-discovery
+- id: skydio-ashby
   company_id: skydio
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.skydio.com/careers
-  interval_minutes: 30
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/skydio
+  interval_minutes: 10
+  tenant: skydio
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://www.skydio.com/careers
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public ashby board probed directly at https://api.ashbyhq.com/posting-api/job-board/skydio
     audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
+    - ashby adapter collected 161 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: aurora-innovation-discovery
   company_id: aurora-innovation
   provider: discovery
@@ -901,40 +906,38 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: nuro-discovery
+- id: nuro-greenhouse
   company_id: nuro
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.nuro.ai/careers
-  interval_minutes: 30
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/nuro/jobs?content=true
+  interval_minutes: 5
+  tenant: nuro
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.nuro.ai/careers
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/nuro/jobs?content=true
     audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
-- id: zipline-discovery
+    - greenhouse adapter collected 108 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: zipline-greenhouse
   company_id: zipline
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.flyzipline.com/careers
-  interval_minutes: 30
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/flyzipline/jobs?content=true
+  interval_minutes: 5
+  tenant: flyzipline
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.zipline.com/careers
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/flyzipline/jobs?content=true
     audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    - greenhouse adapter collected 351 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: symbotic-discovery
   company_id: symbotic
   provider: discovery
@@ -951,54 +954,54 @@ sources:
     - 'careers landing page request failed: non-retryable HTTP 403 for https://www.symbotic.com/careers/'
   enabled: false
   audit_date: '2026-09-18'
-- id: apptronik-discovery
+- id: apptronik-greenhouse
   company_id: apptronik
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.apptronik.com/careers
-  interval_minutes: 30
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/apptronik/jobs?content=true
+  interval_minutes: 5
+  tenant: apptronik
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 404
-    audit_final_url: https://www.apptronik.com/careers
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/apptronik/jobs?content=true
     audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.apptronik.com/careers'
-  enabled: false
-  audit_date: '2026-09-18'
-- id: dexterity-discovery
+    - greenhouse adapter collected 78 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: dexterity-lever
   company_id: dexterity
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.dexterity.ai/careers
-  interval_minutes: 30
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/dexterity?mode=json
+  interval_minutes: 5
+  tenant: dexterity
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 404
-    audit_final_url: https://www.dexterity.ai/careers
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/dexterity?mode=json
     audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.dexterity.ai/careers'
-  enabled: false
-  audit_date: '2026-09-18'
-- id: locus-robotics-discovery
+    - lever adapter collected 22 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: locus-robotics-greenhouse
   company_id: locus-robotics
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://locusrobotics.com/careers
-  interval_minutes: 30
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/locusrobotics/jobs?content=true
+  interval_minutes: 5
+  tenant: locusrobotics
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://locusrobotics.com/careers
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/locusrobotics/jobs?content=true
     audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://locusrobotics.com/careers'
-  enabled: false
-  audit_date: '2026-09-18'
+    - greenhouse adapter collected 4 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: intrinsic-greenhouse
   company_id: intrinsic
   provider: greenhouse
@@ -1017,22 +1020,22 @@ sources:
     - greenhouse adapter collected 25 postings twice with identical canonical keys across 1 page(s)
   enabled: true
   audit_date: '2026-09-18'
-- id: physical-intelligence-discovery
+- id: physical-intelligence-ashby
   company_id: physical-intelligence
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.physicalintelligence.company/jobs
-  interval_minutes: 30
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/physicalintelligence
+  interval_minutes: 10
+  tenant: physicalintelligence
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 404
-    audit_final_url: https://www.physicalintelligence.company/jobs
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public ashby board probed directly at https://api.ashbyhq.com/posting-api/job-board/physicalintelligence
     audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.physicalintelligence.company/jobs'
-  enabled: false
-  audit_date: '2026-09-18'
+    - ashby adapter collected 39 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: serve-robotics-ashby
   company_id: serve-robotics
   provider: ashby
@@ -1051,24 +1054,22 @@ sources:
     - ashby adapter collected 30 postings twice with identical canonical keys across 1 page(s)
   enabled: true
   audit_date: '2026-09-18'
-- id: sanctuary-ai-discovery
+- id: sanctuary-ai-ashby
   company_id: sanctuary-ai
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.sanctuary.ai/careers
-  interval_minutes: 30
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/sanctuary
+  interval_minutes: 10
+  tenant: sanctuary
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://sanctuary.ai/careers/
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public ashby board probed directly at https://api.ashbyhq.com/posting-api/job-board/sanctuary
     audit_notes:
-    - 'linked careers page https://sanctuary.ai/wp-content/uploads/2026/06/2026_June-Career-Sizzle-Video.mp4 could not be read: response exceeds 15728640 byte limit'
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    - ashby adapter collected 3 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: boston-dynamics-workday
   company_id: boston-dynamics
   provider: workday
@@ -1138,23 +1139,22 @@ sources:
     - derived SmartRecruiters posting URL https://jobs.smartrecruiters.com/BoschGroup/744000150470642 returned HTTP 200
   enabled: true
   audit_date: '2026-09-19'
-- id: lucid-motors-discovery
+- id: lucid-motors-greenhouse
   company_id: lucid-motors
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://lucidmotors.com/careers
-  interval_minutes: 30
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/lucidmotors/jobs?content=true
+  interval_minutes: 5
+  tenant: lucidmotors
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://lucidmotors.com/careers
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/lucidmotors/jobs?content=true
     audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    - greenhouse adapter collected 453 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: joby-aviation-discovery
   company_id: joby-aviation
   provider: discovery
@@ -1189,23 +1189,22 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: toyota-research-institute-discovery
+- id: toyota-research-institute-lever
   company_id: toyota-research-institute
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.tri.global/careers/
-  interval_minutes: 30
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/tri?mode=json
+  interval_minutes: 5
+  tenant: tri
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.tri.global/careers
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/tri?mode=json
     audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    - lever adapter collected 11 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: 1x-ashby
   company_id: 1x
   provider: ashby
@@ -1241,21 +1240,22 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: agility-robotics-discovery
+- id: agility-robotics-greenhouse
   company_id: agility-robotics
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://agilityrobotics.com/careers
-  interval_minutes: 30
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/agilityrobotics/jobs?content=true
+  interval_minutes: 5
+  tenant: agilityrobotics
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://agilityrobotics.com/careers
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/agilityrobotics/jobs?content=true
     audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
+    - greenhouse adapter collected 73 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: unitree-discovery
   company_id: unitree
   provider: discovery
@@ -1339,21 +1339,22 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: nimble-discovery
+- id: nimble-greenhouse
   company_id: nimble
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.nimble.ai/careers
-  interval_minutes: 30
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/nimblerobotics/jobs?content=true
+  interval_minutes: 5
+  tenant: nimblerobotics
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://www.nimble.ai/careers
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/nimblerobotics/jobs?content=true
     audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
+    - greenhouse adapter collected 41 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: standard-bots-ashby
   company_id: standard-bots
   provider: ashby
@@ -1372,23 +1373,22 @@ sources:
     - ashby adapter collected 34 postings twice with identical canonical keys across 1 page(s)
   enabled: true
   audit_date: '2026-09-18'
-- id: matic-discovery
+- id: matic-ashby
   company_id: matic
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.maticrobots.com/careers
-  interval_minutes: 30
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/maticrobots
+  interval_minutes: 10
+  tenant: maticrobots
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://maticrobots.com/careers
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public ashby board probed directly at https://api.ashbyhq.com/posting-api/job-board/maticrobots
     audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    - ashby adapter collected 24 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: geek-plus-discovery
   company_id: geek-plus
   provider: discovery
@@ -1682,21 +1682,27 @@ sources:
     - workday CXS confirmed 100 unique postings of 1464 declared, so pagination completeness is unproven until the Workday adapter exists
   enabled: false
   audit_date: '2026-09-19'
-- id: medtronic-discovery
+- id: medtronic-workday
   company_id: medtronic
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://jobs.medtronic.com/
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://medtronic.wd1.myworkdayjobs.com/wday/cxs/medtronic/MedtronicCareers/jobs
+  interval_minutes: 10
+  tenant: medtronic
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_final_url: https://jobs.medtronic.com/
+    applied_facets:
+      workerSubType:
+      - 6726e368deda465eb362a1203261d1e5
+    scope: workerSubType = Intern
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public workday board probed directly at https://medtronic.wd1.myworkdayjobs.com/wday/cxs/medtronic/MedtronicCareers/jobs
     audit_notes:
-    - 'careers landing page request failed: request failed after 4 attempts for https://jobs.medtronic.com/'
-  enabled: false
-  audit_date: '2026-09-19'
+    - workday adapter collected 56 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: cmr-surgical-discovery
   company_id: cmr-surgical
   provider: discovery
@@ -1713,37 +1719,38 @@ sources:
     - 'careers landing page request failed: non-retryable HTTP 403 for https://www.cmrsurgical.com/careers'
   enabled: false
   audit_date: '2026-09-18'
-- id: figure-ai-discovery
+- id: figure-ai-greenhouse
   company_id: figure-ai
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.figure.ai/careers
-  interval_minutes: 30
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/figureai/jobs?content=true
+  interval_minutes: 5
+  tenant: figureai
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://www.figure.ai/careers
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/figureai/jobs?content=true
     audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
-- id: skild-ai-discovery
+    - greenhouse adapter collected 97 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: skild-ai-greenhouse
   company_id: skild-ai
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.skild.ai/careers
-  interval_minutes: 30
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/skildai-careers/jobs?content=true
+  interval_minutes: 5
+  tenant: skildai-careers
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 404
-    audit_final_url: https://www.skild.ai/careers
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/skildai-careers/jobs?content=true
     audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.skild.ai/careers'
-  enabled: false
-  audit_date: '2026-09-18'
+    - greenhouse adapter collected 47 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: covariant-discovery
   company_id: covariant
   provider: discovery
@@ -1853,22 +1860,22 @@ sources:
     - successfactors provider evidence found (the official careers page links to https://jobs.epson.com/, which resolves to https://jobs.epson.com/ (careers page links to https://career4.successfactors.com/career?site=&amp;company=epsonameri&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
   audit_date: '2026-09-19'
-- id: anybotics-discovery
+- id: anybotics-lever
   company_id: anybotics
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.anybotics.com/careers/
-  interval_minutes: 30
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/anybotics?mode=json
+  interval_minutes: 5
+  tenant: anybotics
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://www.anybotics.com/careers/
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/anybotics?mode=json
     audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.anybotics.com/careers/'
-  enabled: false
-  audit_date: '2026-09-18'
+    - lever adapter collected 23 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: doosan-robotics-discovery
   company_id: doosan-robotics
   provider: successfactors
@@ -1903,23 +1910,24 @@ sources:
     - 'careers landing page request failed: non-retryable HTTP 403 for https://www.careers.jnj.com/'
   enabled: false
   audit_date: '2026-09-18'
-- id: anduril-discovery
+- id: anduril-greenhouse
   company_id: anduril
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.anduril.com/careers/
-  interval_minutes: 30
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs
+  interval_minutes: 15
+  tenant: andurilindustries
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.anduril.com/careers
+    descriptions: false
+    slow_poll_reason: board exceeds 2,000 postings; polled every 15 minutes without descriptions
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs
     audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    - greenhouse adapter collected 2522 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: john-deere-discovery
   company_id: john-deere
   provider: discovery
@@ -1935,21 +1943,28 @@ sources:
     - access challenge detected on the official careers landing page
   enabled: false
   audit_date: '2026-09-18'
-- id: caterpillar-discovery
+- id: caterpillar-workday
   company_id: caterpillar
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.caterpillar.com/en/careers.html
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://cat.wd5.myworkdayjobs.com/wday/cxs/cat/CaterpillarCareers/jobs
+  interval_minutes: 10
+  tenant: cat
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_final_url: https://www.caterpillar.com/en/careers.html
+    applied_facets:
+      workerSubType:
+      - 3ff971b74e64011c93bf033b6e160342
+      - 3ff971b74e6401249eea21076716572f
+    scope: workerSubType = Intern - Temporary or Student Worker/Grant Worker
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public workday board probed directly at https://cat.wd5.myworkdayjobs.com/wday/cxs/cat/CaterpillarCareers/jobs
     audit_notes:
-    - 'careers landing page request failed: request timed out after 12.0 seconds for https://www.caterpillar.com/en/careers.html'
-  enabled: false
-  audit_date: '2026-09-19'
+    - workday adapter collected 66 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: emerson-discovery
   company_id: emerson
   provider: oracle
@@ -1968,22 +1983,28 @@ sources:
     - oracle provider evidence found (careers page links to https://hdjq.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
   audit_date: '2026-09-19'
-- id: general-motors-discovery
+- id: general-motors-workday
   company_id: general-motors
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.gm.com/
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://generalmotors.wd5.myworkdayjobs.com/wday/cxs/generalmotors/Careers_GM/jobs
+  interval_minutes: 10
+  tenant: generalmotors
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://careers.gm.com/
+    applied_facets:
+      workerSubType:
+      - 81219c91208501e94c213185a61a320a
+      - 81219c91208501ec00823185a61a360a
+    scope: workerSubType = Intern (Fixed Term) (Trainee) or Co-Op (Fixed Term)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public workday board probed directly at https://generalmotors.wd5.myworkdayjobs.com/wday/cxs/generalmotors/Careers_GM/jobs
     audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://careers.gm.com/'
-  enabled: false
-  audit_date: '2026-09-18'
+    - workday adapter collected 79 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: rivian-discovery
   company_id: rivian
   provider: discovery
@@ -2348,25 +2369,30 @@ sources:
     - 'lever list request failed: non-retryable HTTP 404 for https://api.lever.co/v0/postings/mobileye?mode=json&skip=0&limit=100'
   enabled: false
   audit_date: '2026-09-19'
-- id: aptiv-discovery
+- id: aptiv-workday
   company_id: aptiv
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.aptiv.com/en/careers
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://aptiv.wd5.myworkdayjobs.com/wday/cxs/aptiv/APTIV_CAREERS/jobs
+  interval_minutes: 10
+  tenant: aptiv
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.aptiv.com/en/jobs
+    applied_facets:
+      workerSubType:
+      - c4f85d7930380186ea6bf0d3649fd49b
+      - c4f85d79303801cb3c4d73c1649fa79b
+      - c9ec0f283442105104909096b1566892
+      - c9ec0f2834421051049aba57b81e68b5
+    scope: workerSubType = Intern - Developmental or Intern - Working
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public workday board probed directly at https://aptiv.wd5.myworkdayjobs.com/wday/cxs/aptiv/APTIV_CAREERS/jobs
     audit_notes:
-    - 'linked careers page https://aptivcareers.searchapi-na.hawksearch.com/api/v2/search/&quot;,&quot;EventTrackingUrl&quot;:&quot;https://aptivcareers.tracking-na.hawksearch.com/api/trackevent/&quot;,&quot;EventTrackingEnabled&quot;:true,&quot;CssClass&quot;:null} could not be read: non-retryable HTTP 400 for https://aptivcareers.searchapi-na.hawksearch.com/api/v2/search/&quot;,&quot;EventTrackingUrl&quot;:&quot;https://aptivcareers.tracking-na.hawksearch.com/api/trackevent/&quot;,&quot;EventTrackingEnabled&quot;:true,&quot;CssClass&quot;:null}'
-    - 'linked careers page https://aptivcareers.searchapi-na.hawksearch.com/api/v2/search/&quot;,&quot;EventTrackingUrl&quot;:&quot;https://aptivcareers.tracking-na.hawksearch.com/api/trackevent/&quot;,&quot;EventTrackingEnabled&quot;:true,&quot;PageLabels&quot;:{&quot;CountryLabel&quot;:&quot;Country&quot;,&quot;SearchButtonLabel&quot;:&quot;Search could not be read: non-retryable HTTP 400 for https://aptivcareers.searchapi-na.hawksearch.com/api/v2/search/&quot;,&quot;EventTrackingUrl&quot;:&quot;https://aptivcareers.tracking-na.hawksearch.com/api/trackevent/&quot;,&quot;EventTrackingEnabled&quot;:true,&quot;PageLabels&quot;:{&quot;CountryLabel&quot;:&quot;Country&quot;,&quot;SearchButtonLabel&quot;:&quot;Search'
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    - workday adapter collected 38 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: magna-international-discovery
   company_id: magna-international
   provider: discovery
@@ -2451,23 +2477,27 @@ sources:
     - 'careers landing page request failed: non-retryable HTTP 404 for https://www.aisin.com/en/careers/'
   enabled: false
   audit_date: '2026-09-18'
-- id: borgwarner-discovery
+- id: borgwarner-workday
   company_id: borgwarner
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.borgwarner.com/careers
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://borgwarner.wd5.myworkdayjobs.com/wday/cxs/borgwarner/BorgWarner_Careers/jobs
+  interval_minutes: 10
+  tenant: borgwarner
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.borgwarner.com/careers
+    applied_facets:
+      workerSubType:
+      - 04519724ad9a4dbaa1c1dd96f0cfb311
+    scope: workerSubType = Student
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public workday board probed directly at https://borgwarner.wd5.myworkdayjobs.com/wday/cxs/borgwarner/BorgWarner_Careers/jobs
     audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    - workday adapter collected 52 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
 - id: boeing-workday
   company_id: boeing
   provider: workday
@@ -3879,4 +3909,706 @@ sources:
     - no positive provider evidence on the official careers landing page
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
+  audit_date: '2026-10-14'
+- id: northrop-grumman-workday
+  company_id: northrop-grumman
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://ngc.wd1.myworkdayjobs.com/wday/cxs/ngc/Northrop_Grumman_External_Site/jobs
+  interval_minutes: 10
+  tenant: ngc
+  parameters:
+    applied_facets:
+      workerSubType:
+      - a111b0a898f10129e4db58f2e700d97a
+    scope: workerSubType = Intern (Global) (Fixed Term)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public workday board probed directly at https://ngc.wd1.myworkdayjobs.com/wday/cxs/ngc/Northrop_Grumman_External_Site/jobs
+    audit_notes:
+    - workday adapter collected 33 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: ge-aerospace-workday
+  company_id: ge-aerospace
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://geaerospace.wd5.myworkdayjobs.com/wday/cxs/geaerospace/GE_ExternalSite/jobs
+  interval_minutes: 10
+  tenant: geaerospace
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 74cbdbfadb6e1001457c5daa0b900000
+    scope: workerSubType = Co-op/Intern (Fixed Term)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public workday board probed directly at https://geaerospace.wd5.myworkdayjobs.com/wday/cxs/geaerospace/GE_ExternalSite/jobs
+    audit_notes:
+    - workday adapter collected 154 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: ge-vernova-workday
+  company_id: ge-vernova
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://gevernova.wd5.myworkdayjobs.com/wday/cxs/gevernova/Vernova_ExternalSite/jobs
+  interval_minutes: 10
+  tenant: gevernova
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 0235f30695e810014f5b8ff4a6f90000
+    scope: workerSubType = Co-op/Intern (Fixed Term)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public workday board probed directly at https://gevernova.wd5.myworkdayjobs.com/wday/cxs/gevernova/Vernova_ExternalSite/jobs
+    audit_notes:
+    - workday adapter collected 195 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: 3m-workday
+  company_id: 3m
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://3m.wd1.myworkdayjobs.com/wday/cxs/3m/Search/jobs
+  interval_minutes: 10
+  tenant: 3m
+  parameters:
+    whole_board: true
+    scope: whole board (746 postings at audit; no internship facet; titles say Internship)
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public workday board probed directly at https://3m.wd1.myworkdayjobs.com/wday/cxs/3m/Search/jobs
+    audit_notes:
+    - workday adapter collected 746 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: collaborative-robotics-ashby
+  company_id: collaborative-robotics
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/cobot
+  interval_minutes: 10
+  tenant: cobot
+  parameters:
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public ashby board probed directly at https://api.ashbyhq.com/posting-api/job-board/cobot
+    audit_notes:
+    - ashby adapter collected 13 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: the-bot-company-ashby
+  company_id: the-bot-company
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/thebotcompany
+  interval_minutes: 10
+  tenant: thebotcompany
+  parameters:
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public ashby board probed directly at https://api.ashbyhq.com/posting-api/job-board/thebotcompany
+    audit_notes:
+    - ashby adapter collected 7 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: field-ai-lever
+  company_id: field-ai
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/field-ai?mode=json
+  interval_minutes: 5
+  tenant: field-ai
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/field-ai?mode=json
+    audit_notes:
+    - lever adapter collected 106 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: pickle-robot-lever
+  company_id: pickle-robot
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/picklerobot?mode=json
+  interval_minutes: 5
+  tenant: picklerobot
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/picklerobot?mode=json
+    audit_notes:
+    - lever adapter collected 8 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: formic-greenhouse
+  company_id: formic
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/formic/jobs?content=true
+  interval_minutes: 5
+  tenant: formic
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/formic/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 40 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: path-robotics-greenhouse
+  company_id: path-robotics
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/pathrobotics/jobs?content=true
+  interval_minutes: 5
+  tenant: pathrobotics
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/pathrobotics/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 44 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: carbon-robotics-greenhouse
+  company_id: carbon-robotics
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/carbonrobotics/jobs?content=true
+  interval_minutes: 5
+  tenant: carbonrobotics
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/carbonrobotics/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 11 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: mujin-lever
+  company_id: mujin
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/mujininc?mode=json
+  interval_minutes: 5
+  tenant: mujininc
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/mujininc?mode=json
+    audit_notes:
+    - lever adapter collected 90 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: bright-machines-lever
+  company_id: bright-machines
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/brightmachines?mode=json
+  interval_minutes: 5
+  tenant: brightmachines
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/brightmachines?mode=json
+    audit_notes:
+    - lever adapter collected 16 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: divergent-greenhouse
+  company_id: divergent
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/divergent/jobs?content=true
+  interval_minutes: 5
+  tenant: divergent
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/divergent/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 128 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: kodiak-greenhouse
+  company_id: kodiak
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/kodiak/jobs?content=true
+  interval_minutes: 5
+  tenant: kodiak
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/kodiak/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 67 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: waabi-lever
+  company_id: waabi
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/waabi?mode=json
+  interval_minutes: 5
+  tenant: waabi
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/waabi?mode=json
+    audit_notes:
+    - lever adapter collected 96 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: stack-av-greenhouse
+  company_id: stack-av
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/stackav/jobs?content=true
+  interval_minutes: 5
+  tenant: stackav
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/stackav/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 13 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: saronic-discovery
+  company_id: saronic
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/saronic
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_reason: '2026-10-14: board api.ashbyhq.com/posting-api/job-board/saronic answers (231 postings) but record 57 has no title, so every collection is incomplete; not waived. Re-check next pass.'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: shield-ai-lever
+  company_id: shield-ai
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/shieldai?mode=json
+  interval_minutes: 15
+  tenant: shieldai
+  parameters:
+    slow_poll_reason: board of 600+ postings with descriptions; polled every 15 minutes
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/shieldai?mode=json
+    audit_notes:
+    - lever adapter collected 612 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: hermeus-lever
+  company_id: hermeus
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/hermeus?mode=json
+  interval_minutes: 5
+  tenant: hermeus
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/hermeus?mode=json
+    audit_notes:
+    - lever adapter collected 81 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: relativity-space-greenhouse
+  company_id: relativity-space
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/relativity/jobs?content=true
+  interval_minutes: 5
+  tenant: relativity
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/relativity/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 361 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: rocket-lab-greenhouse
+  company_id: rocket-lab
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/rocketlab/jobs?content=true
+  interval_minutes: 5
+  tenant: rocketlab
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/rocketlab/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 579 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: varda-greenhouse
+  company_id: varda
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/vardaspace/jobs?content=true
+  interval_minutes: 5
+  tenant: vardaspace
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/vardaspace/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 111 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: astranis-greenhouse
+  company_id: astranis
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/astranis/jobs?content=true
+  interval_minutes: 5
+  tenant: astranis
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/astranis/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 180 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: merlin-labs-lever
+  company_id: merlin-labs
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/merlinlabs?mode=json
+  interval_minutes: 5
+  tenant: merlinlabs
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/merlinlabs?mode=json
+    audit_notes:
+    - lever adapter collected 25 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: outrider-greenhouse
+  company_id: outrider
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/outrider/jobs?content=true
+  interval_minutes: 5
+  tenant: outrider
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/outrider/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 8 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: cobalt-robotics-lever
+  company_id: cobalt-robotics
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/cobaltrobotics?mode=json
+  interval_minutes: 5
+  tenant: cobaltrobotics
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/cobaltrobotics?mode=json
+    audit_notes:
+    - lever adapter collected 10 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: epirus-greenhouse
+  company_id: epirus
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/epirus/jobs?content=true
+  interval_minutes: 5
+  tenant: epirus
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/epirus/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 40 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: chaos-industries-greenhouse
+  company_id: chaos-industries
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/chaosindustries/jobs?content=true
+  interval_minutes: 5
+  tenant: chaosindustries
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/chaosindustries/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 148 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: skyryse-greenhouse
+  company_id: skyryse
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/skyryse/jobs?content=true
+  interval_minutes: 5
+  tenant: skyryse
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/skyryse/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 20 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: helion-ashby
+  company_id: helion
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/helion
+  interval_minutes: 10
+  tenant: helion
+  parameters:
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public ashby board probed directly at https://api.ashbyhq.com/posting-api/job-board/helion
+    audit_notes:
+    - ashby adapter collected 69 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: scout-motors-greenhouse
+  company_id: scout-motors
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/scoutmotors/jobs?content=true
+  interval_minutes: 5
+  tenant: scoutmotors
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/scoutmotors/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 210 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: harbinger-greenhouse
+  company_id: harbinger
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/harbingermotors/jobs?content=true
+  interval_minutes: 5
+  tenant: harbingermotors
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/harbingermotors/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 92 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: may-mobility-greenhouse
+  company_id: may-mobility
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/maymobility/jobs?content=true
+  interval_minutes: 5
+  tenant: maymobility
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/maymobility/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 39 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: motional-greenhouse
+  company_id: motional
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/motional/jobs?content=true
+  interval_minutes: 5
+  tenant: motional
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/motional/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 81 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: torc-robotics-greenhouse
+  company_id: torc-robotics
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/torcrobotics/jobs?content=true
+  interval_minutes: 5
+  tenant: torcrobotics
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/torcrobotics/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 50 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: agtonomy-lever
+  company_id: agtonomy
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/agtonomy?mode=json
+  interval_minutes: 5
+  tenant: agtonomy
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/agtonomy?mode=json
+    audit_notes:
+    - lever adapter collected 4 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: aescape-ashby
+  company_id: aescape
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/aescape
+  interval_minutes: 10
+  tenant: aescape
+  parameters:
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public ashby board probed directly at https://api.ashbyhq.com/posting-api/job-board/aescape
+    audit_notes:
+    - ashby adapter collected 12 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: vast-greenhouse
+  company_id: vast
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/vast/jobs?content=true
+  interval_minutes: 5
+  tenant: vast
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/vast/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 187 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: ursa-major-greenhouse
+  company_id: ursa-major
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/ursamajor/jobs?content=true
+  interval_minutes: 5
+  tenant: ursamajor
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/ursamajor/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 111 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: electra-aero-greenhouse
+  company_id: electra-aero
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/electraaero/jobs?content=true
+  interval_minutes: 5
+  tenant: electraaero
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/electraaero/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 35 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: dexory-greenhouse
+  company_id: dexory
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/dexory/jobs?content=true
+  interval_minutes: 5
+  tenant: dexory
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/dexory/jobs?content=true
+    audit_notes:
+    - greenhouse adapter collected 29 postings twice with identical canonical keys
+  enabled: true
+  audit_date: '2026-10-14'
+- id: tutor-intelligence-lever
+  company_id: tutor-intelligence
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/tutorintelligence?mode=json
+  interval_minutes: 5
+  tenant: tutorintelligence
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: public lever board probed directly at https://api.lever.co/v0/postings/tutorintelligence?mode=json
+    audit_notes:
+    - lever adapter collected 47 postings twice with identical canonical keys
+  enabled: true
   audit_date: '2026-10-14'

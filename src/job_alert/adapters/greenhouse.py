@@ -21,6 +21,10 @@ Mapping decisions the payload does not spell out:
 - ``apply_url`` is ``absolute_url`` unless the registry supplies an ``apply_url_template``
   parameter. Templates come from the reviewed registry, and one that does not render an absolute
   HTTPS URL is a configuration error rather than a silent fallback.
+- A source whose parameters say ``descriptions: false`` is fetched with ``content=false``. Very
+  large boards need this: SpaceX's board is 31 MB with descriptions and 2.6 MB without. Such a
+  board has no description text, departments or offices, so its hash covers only title and
+  location. No alerting filter reads descriptions.
 
 Challenge pages and HTTP failures are classified by ``HttpFetcher`` before this adapter sees the
 body, so a challenge is never mistaken for an empty board.
@@ -69,7 +73,7 @@ class GreenhouseAdapter:
         tenant = _resolve_tenant(source)
         payload = await fetcher.get(
             RequestSpec(
-                url=_list_url(str(source.endpoint)),
+                url=_list_url(str(source.endpoint), descriptions=_wants_descriptions(source)),
                 headers=dict(source.headers),
                 expected="json",
             )
@@ -107,14 +111,21 @@ class GreenhouseAdapter:
         )
 
 
-def _list_url(endpoint: str) -> str:
-    """The configured endpoint with exactly one ``content=true`` query parameter.
+def _wants_descriptions(source: SourceConfig) -> bool:
+    value = source.parameters.get("descriptions", True)
+    if not isinstance(value, bool):
+        raise AdapterError(f"greenhouse source {source.id} has a non-boolean descriptions")
+    return value
 
-    A board recorded without ``content=true`` would silently lose every description, so the
-    parameter is always set: an existing ``content`` value is replaced rather than duplicated and
-    every other query parameter is kept. The query string is rebuilt through ``urlencode``, so an
-    already content-enabled endpoint is preserved semantically rather than byte for byte (parameter
-    order and percent-encoding may differ).
+
+def _list_url(endpoint: str, *, descriptions: bool = True) -> str:
+    """The configured endpoint with exactly one ``content`` query parameter.
+
+    Only the registry's ``descriptions`` parameter decides the value. A stray ``content=false`` in a
+    recorded endpoint would silently lose every description, so an existing ``content`` value is
+    replaced rather than duplicated and every other query parameter is kept. The query string is
+    rebuilt through ``urlencode``, so an endpoint is preserved semantically rather than byte for
+    byte (parameter order and percent-encoding may differ).
     """
     parts = urlsplit(endpoint)
     query = [
@@ -122,7 +133,7 @@ def _list_url(endpoint: str) -> str:
         for name, value in parse_qsl(parts.query, keep_blank_values=True)
         if name != "content"
     ]
-    query.append(("content", "true"))
+    query.append(("content", "true" if descriptions else "false"))
     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), ""))
 
 
