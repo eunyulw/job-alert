@@ -8,11 +8,11 @@ Evidence for each acceptance criterion that applies to laptop delivery. Android-
 | Field | Value |
 | --- | --- |
 | Command | `uv run job-alert notify-test` (provider `macos`) |
-| Sent | 2026-10-14T08:56:07Z |
+| Sent | 2026-10-14T08:56:07Z, resent 2026-10-14T09:41:20Z |
 | Host | macOS 15.4.1 |
 | Tool | `osascript` (terminal-notifier not installed) |
 | Result | accepted by Notification Center (exit 0) |
-| Seen on screen | **pending: operator confirmation** |
+| Seen on screen | yes: confirmed by the user for the 09:41 send |
 | Click opens link | not applicable with `osascript`; re-test after installing terminal-notifier |
 
 ## Criteria
@@ -27,7 +27,7 @@ Evidence for each acceptance criterion that applies to laptop delivery. Android-
 | Restart retained state | met | `tests/integration/test_restart_and_delivery.py` |
 | Duplicate fixtures sent one alert | met | `tests/integration/test_service_cycle.py` (dedupe across boards) |
 | Source failure did not close jobs | met | partial, challenge, and quarantine tests; Bosch partial cycles closed nothing |
-| Laptop delivery and direct link succeed | pending | needs on-screen confirmation and the canary |
+| Laptop delivery and direct link succeed | delivery met; link pending | test notification seen 2026-10-14; link check needs terminal-notifier and the canary |
 | Secrets absent from Git | met | laptop delivery uses no secret; `deploy/*.env` and `.env` are ignored |
 | Health report identifies degraded sources | met | `job-alert report health`, scheduler digest tests |
 | Canary: 24 h, no duplicates, links open, no open incident | pending | needs the user's filter choices |
