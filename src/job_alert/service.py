@@ -65,6 +65,7 @@ from typing import cast
 from job_alert.adapters.base import (
     AdapterError,
     PartialCollectionError,
+    apply_source_assertions,
     job_metrics,
     validate_collection,
 )
@@ -419,6 +420,7 @@ class JobAlertService:
         collection: CollectionResult | None = None
         try:
             collection = await adapter.collect(source, cast("HttpFetcher", conditional))
+            collection = apply_source_assertions(collection, source)
             valid = validate_collection(collection)
         except ConditionalNotModified:
             return await self._commit_unchanged(

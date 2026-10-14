@@ -8,9 +8,10 @@ undocumented. It answers ``{"total": N, "jobPostings": [...]}``, pages at most 2
 
 Because of that cap a Workday source is always **scoped**: its ``parameters`` carry
 ``applied_facets`` (for example a tenant's internship worker subtype) and/or ``search_text``, and
-completeness is judged against the ``total`` the scoped search declares on its first page. An
-unscoped source is a configuration error, and a search whose ``total`` reaches the cap is reported
-incomplete after one request.
+completeness is judged against the ``total`` the scoped search declares on its first page. A board
+an operator knows is smaller than the cap may instead set ``whole_board: true``. A source with none
+of these is a configuration error, and a search whose ``total`` reaches the cap is reported
+incomplete after one request, whole board or not.
 
 Mapping decisions:
 
@@ -136,10 +137,12 @@ def _scope(source: SourceConfig) -> tuple[dict[str, list[str]], str]:
             f"workday source {source.id} has an unusable scope: applied_facets must map names to"
             " non-empty lists of ids, and search_text must be text"
         )
-    if not facets and not search_text.strip():
+    whole_board = source.parameters.get("whole_board", False) is True
+    if not facets and not search_text.strip() and not whole_board:
         raise AdapterError(
             f"workday source {source.id} has no scope: Workday caps a search at {TOTAL_CAP}"
-            " postings, so set applied_facets or search_text"
+            " postings, so set applied_facets or search_text, or whole_board: true for a board"
+            " known to be smaller"
         )
     return {str(name): list(values) for name, values in facets.items()}, search_text
 

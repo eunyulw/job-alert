@@ -154,6 +154,37 @@ async def test_a_posting_no_filter_approves_is_resolved_and_never_resurrected(
 
 
 @pytest.mark.asyncio
+async def test_a_scope_the_provider_classified_asserts_the_employment_type(
+    service_harness: ServiceHarness,
+) -> None:
+    """A source scoped to the provider's own internship facet holds only internships.
+
+    Titles there often omit "intern" (Samsung, Google's Student Researcher), so the type the scope
+    guarantees is stamped on every posting for the employment-type filter to see.
+    """
+    service_harness.source = service_harness.source.model_copy(
+        update={"parameters": {"asserted_employment_type": "Intern"}}
+    )
+    service_harness.set_filters(
+        (
+            FilterConfig(
+                id="by-type", notify=True, include_companies=["acme"], employment_types=["intern"]
+            ),
+        )
+    )
+    await service_harness.service.collect_source(service_harness.source, mode=RunMode.BASELINE)
+    service_harness.adapter.set_fixture("three-jobs")
+
+    result = await service_harness.service.collect_source(
+        service_harness.source, mode=RunMode.LIVE
+    )
+
+    assert result.notifications_sent == 1
+    stored = service_harness.repo.load_active_jobs(service_harness.source.id)
+    assert {job.employment_type for job in stored} == {"Intern"}
+
+
+@pytest.mark.asyncio
 async def test_a_cycle_reports_the_collection_it_fetched(service_harness: ServiceHarness) -> None:
     result = await service_harness.service.collect_source(
         service_harness.source, mode=RunMode.DRY_RUN

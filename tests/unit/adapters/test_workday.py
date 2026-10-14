@@ -138,6 +138,31 @@ async def test_workday_requires_an_explicit_scope() -> None:
 
 @respx.mock
 @pytest.mark.asyncio
+async def test_workday_reads_a_whole_board_an_operator_declared_small() -> None:
+    whole = source().model_copy(update={"parameters": {"whole_board": True}})
+    route = respx.post(ENDPOINT).mock(return_value=page(posting("A"), total=1))
+
+    async with HttpFetcher() as fetcher:
+        result = validate_collection(await WorkdayAdapter().collect(whole, fetcher))
+
+    assert [job.source_job_id for job in result.jobs] == ["A"]
+    assert bodies(route)[0]["appliedFacets"] == {}
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_workday_whole_board_still_refuses_the_cap() -> None:
+    whole = source().model_copy(update={"parameters": {"whole_board": True}})
+    respx.post(ENDPOINT).mock(return_value=page(posting("A"), total=TOTAL_CAP))
+
+    async with HttpFetcher() as fetcher:
+        result = await WorkdayAdapter().collect(whole, fetcher)
+
+    assert result.complete is False
+
+
+@respx.mock
+@pytest.mark.asyncio
 async def test_workday_rewalks_once_when_the_board_shifts() -> None:
     route = respx.post(ENDPOINT).mock(
         side_effect=[

@@ -18,6 +18,7 @@ sources:
       workerSubType:
       - 0c40f6bd1d8f10adf6dae42e46d44a17
     scope: workerSubType = Intern (Fixed Term); Workday caps the unscoped board at total=2000
+    asserted_employment_type: Intern
     audit_status: SUPPORTED_UNDOCUMENTED
     audit_probed_at: '2026-10-14'
     audit_evidence: Workday CXS search behind nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite
@@ -35,6 +36,7 @@ sources:
   tenant: apple
   parameters:
     scope: team=internships-STDNT-INTRN (the Students internships team)
+    asserted_employment_type: Intern
     audit_status: SUPPORTED_UNDOCUMENTED
     audit_probed_at: '2026-10-14'
     audit_evidence: hydration JSON of the server-rendered jobs.apple.com search page
@@ -52,6 +54,7 @@ sources:
   tenant: google
   parameters:
     scope: employment_type=INTERN
+    asserted_employment_type: Intern
     audit_status: SUPPORTED_UNDOCUMENTED
     audit_probed_at: '2026-10-14'
     audit_evidence: ds:1 results block of the server-rendered google.com/about/careers results page
@@ -84,7 +87,7 @@ sources:
   endpoint: https://www.metacareers.com/
   interval_minutes: 30
   parameters:
-    expansion_note: "2026-10-14 Task 29: metacareers.com/jobsearch is client-rendered; the HTML carries no job data and listings load through a GraphQL API that needs page-issued session tokens. No public endpoint; stays FALLBACK_ONLY."
+    expansion_note: '2026-10-14 Task 29: metacareers.com/jobsearch is client-rendered; the HTML carries no job data and listings load through a GraphQL API that needs page-issued session tokens. No public endpoint; stays FALLBACK_ONLY.'
     audit_status: FALLBACK_ONLY
     audit_probed_at: '2026-09-18'
     audit_http_status: 200
@@ -102,7 +105,7 @@ sources:
   endpoint: https://careers.microsoft.com/
   interval_minutes: 30
   parameters:
-    expansion_note: "2026-10-14 Task 29: apply.careers.microsoft.com/api/pcsx/search answers publicly (query=intern declared 101, 10 per page) but returned HTTP 429 after about four requests in a few minutes, and /api/apply/v2/jobs answers 403 'Not authorized for PCSX'. Deferred until a paced Eightfold PCSX source (60+ minute interval) is built."
+    expansion_note: '2026-10-14 Task 29: apply.careers.microsoft.com/api/pcsx/search answers publicly (query=intern declared 101, 10 per page) but returned HTTP 429 after about four requests in a few minutes, and /api/apply/v2/jobs answers 403 ''Not authorized for PCSX''. Deferred until a paced Eightfold PCSX source (60+ minute interval) is built.'
     audit_status: FALLBACK_ONLY
     audit_probed_at: '2026-09-18'
     audit_http_status: 200
@@ -129,25 +132,27 @@ sources:
     - 'careers landing page request failed: non-retryable HTTP 403 for https://www.tesla.com/careers'
   enabled: false
   audit_date: '2026-09-18'
-- id: samsung-discovery
+- id: samsung-workday
   company_id: samsung
   provider: workday
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.samsung.com/us/careers/
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://sec.wd3.myworkdayjobs.com/wday/cxs/sec/Samsung_Careers/jobs
+  interval_minutes: 10
+  tenant: sec
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: careers page links to https://sec.wd3.myworkdayjobs.com/Samsung_Careers
-    audit_provider: workday
-    audit_endpoint: https://sec.wd3.myworkdayjobs.com/wday/cxs/sec/Samsung_Careers/jobs
-    audit_http_status: 200
-    audit_final_url: https://www.samsung.com/us/careers/
+    applied_facets:
+      workerSubType:
+      - 189767dd6c920145d5c3e59c2c297819
+    scope: workerSubType = Intern(Empl.)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-09-19 audit)
     audit_notes:
-    - workday CXS confirmed 99 unique postings of 693 declared, so pagination completeness is unproven until the Workday adapter exists
-  enabled: false
-  audit_date: '2026-09-19'
+    - workday adapter collected 13 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
 - id: asml-discovery
   company_id: asml
   provider: discovery
@@ -413,25 +418,27 @@ sources:
     - 'careers landing page request failed: request timed out after 12.0 seconds for https://www.amd.com/en/corporate/careers.html'
   enabled: false
   audit_date: '2026-09-19'
-- id: intel-discovery
+- id: intel-workday
   company_id: intel
   provider: workday
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.intel.com/content/www/us/en/jobs/jobs-at-intel.html
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://intel.wd1.myworkdayjobs.com/wday/cxs/intel/External/jobs
+  interval_minutes: 10
+  tenant: intel
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: careers page links to https://intel.wd1.myworkdayjobs.com/External/page/6042070b79e01001f04fa9b468070000
-    audit_provider: workday
-    audit_endpoint: https://intel.wd1.myworkdayjobs.com/wday/cxs/intel/External/jobs
-    audit_http_status: 200
-    audit_final_url: https://www.intel.com/content/www/us/en/jobs/life-at-intel.html
+    applied_facets:
+      workerSubType:
+      - dc8bf79476611087dfde99931439ae75
+    scope: workerSubType = Student / Intern (Fixed Term)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-09-19 audit)
     audit_notes:
-    - workday CXS confirmed 100 unique postings of 613 declared, so pagination completeness is unproven until the Workday adapter exists
-  enabled: false
-  audit_date: '2026-09-19'
+    - workday adapter collected 84 postings twice with identical canonical keys across 5 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
 - id: broadcom-discovery
   company_id: broadcom
   provider: discovery
@@ -664,25 +671,27 @@ sources:
     - 'careers landing page request failed: non-retryable HTTP 403 for https://www.cadence.com/en_US/home/company/careers.html'
   enabled: false
   audit_date: '2026-09-18'
-- id: crowdstrike-discovery
+- id: crowdstrike-workday
   company_id: crowdstrike
   provider: workday
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.crowdstrike.com/en-us/careers/
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://crowdstrike.wd5.myworkdayjobs.com/wday/cxs/crowdstrike/crowdstrikecareers/jobs
+  interval_minutes: 10
+  tenant: crowdstrike
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: careers page links to https://crowdstrike.wd5.myworkdayjobs.com/crowdstrikecareers
-    audit_provider: workday
-    audit_endpoint: https://crowdstrike.wd5.myworkdayjobs.com/wday/cxs/crowdstrike/crowdstrikecareers/jobs
-    audit_http_status: 200
-    audit_final_url: https://www.crowdstrike.com/en-us/careers/
+    applied_facets:
+      workerSubType:
+      - f79adfd173da01f3129fd137e373b210
+    scope: workerSubType = Intern (Fixed Term)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-09-19 audit)
     audit_notes:
-    - workday CXS confirmed 100 unique postings of 371 declared, so pagination completeness is unproven until the Workday adapter exists
-  enabled: false
-  audit_date: '2026-09-19'
+    - workday adapter collected 4 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
 - id: cloudflare-discovery
   company_id: cloudflare
   provider: discovery
@@ -1052,25 +1061,24 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: boston-dynamics-discovery
+- id: boston-dynamics-workday
   company_id: boston-dynamics
   provider: workday
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://bostondynamics.com/careers/
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://bostondynamics.wd1.myworkdayjobs.com/wday/cxs/bostondynamics/Boston_Dynamics/jobs
+  interval_minutes: 10
+  tenant: bostondynamics
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: careers page links to https://bostondynamics.wd1.myworkdayjobs.com/en-US/Boston_Dynamics/introduceYourself
-    audit_provider: workday
-    audit_endpoint: https://bostondynamics.wd1.myworkdayjobs.com/wday/cxs/bostondynamics/Boston_Dynamics/jobs
-    audit_http_status: 200
-    audit_final_url: https://bostondynamics.com/careers/
+    whole_board: true
+    scope: whole board (77 postings at audit; no internship facet)
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-09-19 audit)
     audit_notes:
-    - workday CXS publishes posting ids but no direct application URL for any posting, so the per-posting application-link evidence the audit requires is missing until the Workday adapter exists
-  enabled: false
-  audit_date: '2026-09-19'
+    - workday adapter collected 77 postings twice with identical canonical keys across 4 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
 - id: gecko-robotics-discovery
   company_id: gecko-robotics
   provider: discovery
@@ -1559,25 +1567,24 @@ sources:
     - 'careers landing page request failed: non-retryable HTTP 403 for https://www.omron.com/global/en/careers/'
   enabled: false
   audit_date: '2026-09-18'
-- id: rockwell-automation-discovery
+- id: rockwell-automation-workday
   company_id: rockwell-automation
   provider: workday
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.rockwellautomation.com/en-us/company/careers.html
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://rockwellautomation.wd1.myworkdayjobs.com/wday/cxs/rockwellautomation/External_Rockwell_Automation/jobs
+  interval_minutes: 10
+  tenant: rockwellautomation
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: careers page links to https://rockwellautomation.wd1.myworkdayjobs.com/en-US/External_Rockwell_Automation/introduceYourself
-    audit_provider: workday
-    audit_endpoint: https://rockwellautomation.wd1.myworkdayjobs.com/wday/cxs/rockwellautomation/External_Rockwell_Automation/jobs
-    audit_http_status: 200
-    audit_final_url: https://www.rockwellautomation.com/en-us/careers.html
+    whole_board: true
+    scope: whole board (404 postings at audit; no internship facet; internships are often titled Co-op)
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-09-19 audit)
     audit_notes:
-    - workday CXS confirmed 100 unique postings of 425 declared, so pagination completeness is unproven until the Workday adapter exists
-  enabled: false
-  audit_date: '2026-09-19'
+    - workday adapter collected 404 postings twice with identical canonical keys across 21 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
 - id: teradyne-discovery
   company_id: teradyne
   provider: discovery
@@ -1655,6 +1662,7 @@ sources:
   endpoint: https://careers.stryker.com/
   interval_minutes: 30
   parameters:
+    expansion_note: "2026-10-14 Task 29 Phase 2: the Workday intern facet (workerSubType Intern (Fixed Term), 213 declared) returned one stub posting with only a requisition id (R574890), no title and no link, so the collection is incomplete and was not waived. Re-check in the next pass."
     audit_status: NEEDS_MANUAL_REVIEW
     audit_probed_at: '2026-09-19'
     audit_evidence: careers page links to https://stryker.wd1.myworkdayjobs.com/StrykerCareers/login
@@ -1762,25 +1770,27 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: zebra-technologies-discovery
+- id: zebra-technologies-workday
   company_id: zebra-technologies
   provider: workday
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://careers.zebra.com/
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://zebra.wd501.myworkdayjobs.com/wday/cxs/zebra/Zebra_careers/jobs
+  interval_minutes: 10
+  tenant: zebra
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: careers page links to https://zebra.wd501.myworkdayjobs.com/Zebra_careers
-    audit_provider: workday
-    audit_endpoint: https://zebra.wd501.myworkdayjobs.com/wday/cxs/zebra/Zebra_careers/jobs
-    audit_http_status: 200
-    audit_final_url: https://www.zebra.com/us/en/about-zebra/careers.html
+    applied_facets:
+      workerSubType:
+      - 2e88c140a2411000e8503b59f9a80000
+    scope: workerSubType = Intern (Fixed Term) (Trainee)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-09-19 audit)
     audit_notes:
-    - workday CXS confirmed 100 unique postings of 248 declared, so pagination completeness is unproven until the Workday adapter exists
-  enabled: false
-  audit_date: '2026-09-19'
+    - workday adapter collected 10 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
 - id: daifuku-discovery
   company_id: daifuku
   provider: icims
@@ -2450,25 +2460,28 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: boeing-discovery
+- id: boeing-workday
   company_id: boeing
   provider: workday
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://jobs.boeing.com/
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://boeing.wd1.myworkdayjobs.com/wday/cxs/boeing/EXTERNAL_CAREERS/jobs
+  interval_minutes: 10
+  tenant: boeing
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: careers page links to https://boeing.wd1.myworkdayjobs.com/en-US/EXTERNAL_CAREERS/login
-    audit_provider: workday
-    audit_endpoint: https://boeing.wd1.myworkdayjobs.com/wday/cxs/boeing/EXTERNAL_CAREERS/jobs
-    audit_http_status: 200
-    audit_final_url: https://jobs.boeing.com/
+    applied_facets:
+      workerSubType:
+      - 8b618a30e00f01dbf217e9650c3fc507
+      - dcf0a31f3b411000ba18b737ca570000
+    scope: workerSubType = Intern - Paid (Seasonal) or Intern Fixed Term (Non-US)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-09-19 audit)
     audit_notes:
-    - workday CXS confirmed 100 unique postings of 733 declared, so pagination completeness is unproven until the Workday adapter exists
-  enabled: false
-  audit_date: '2026-09-19'
+    - workday adapter collected 46 postings twice with identical canonical keys across 3 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
 - id: lockheed-martin-discovery
   company_id: lockheed-martin
   provider: eightfold
