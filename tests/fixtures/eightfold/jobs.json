@@ -1,0 +1,60 @@
+{
+  "domain": "netflix.com",
+  "positions": [
+    {
+      "id": 790317917022,
+      "name": "Machine Learning/AI Infrastructure Engineering Intern (AI Platform) PhD, Winter 2027",
+      "posting_name": "Machine Learning/AI Infrastructure Engineering Intern (AI Platform) PhD, Winter 2027",
+      "location": "Los Gatos,California,United States of America",
+      "locations": [
+        "Los Gatos,California,United States of America"
+      ],
+      "hot": 0,
+      "department": "Engineering",
+      "business_unit": "Streaming",
+      "t_update": 1787097600,
+      "t_create": 1787097600,
+      "ats_job_id": "JR42220",
+      "display_job_id": "JR42220",
+      "type": "ATS",
+      "id_locale": "JR42220-en-US",
+      "job_description": "",
+      "locale": "en-US",
+      "stars": 0,
+      "medallionProgram": null,
+      "location_flexibility": null,
+      "work_location_option": "onsite",
+      "canonicalPositionUrl": "https://explore.jobs.netflix.net/careers/job/790317917022",
+      "isPrivate": false
+    },
+    {
+      "id": 790317300617,
+      "name": "CG Experimental Artist- Ink",
+      "posting_name": "CG Experimental Artist- Ink",
+      "location": "Los Angeles,California,United States of America",
+      "locations": [
+        "Los Angeles,California,United States of America",
+        "Vancouver,British Columbia,Canada",
+        "Los Gatos,California,United States of America"
+      ],
+      "hot": 0,
+      "department": "Inkubator",
+      "business_unit": "Creations",
+      "t_update": 1784678400,
+      "t_create": 1784678400,
+      "ats_job_id": "JR41754",
+      "display_job_id": "JR41754",
+      "type": "ATS",
+      "id_locale": "JR41754-en-US",
+      "job_description": "",
+      "locale": "en-US",
+      "stars": 0,
+      "medallionProgram": null,
+      "location_flexibility": "flexible_within_country",
+      "work_location_option": "remote_local",
+      "canonicalPositionUrl": "https://explore.jobs.netflix.net/careers/job/790317300617",
+      "isPrivate": false
+    }
+  ],
+  "count": 2
+}

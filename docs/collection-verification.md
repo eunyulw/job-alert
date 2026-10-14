@@ -182,3 +182,6 @@ check" is two consecutive adapter collections on the date shown.
 | 1 | NVIDIA | `nvidia-workday` (`public_ats`, 10 min) | facet `workerSubType = Intern (Fixed Term)` (total capped at 2,000) | 2026-10-14: 163 twice, identical keys, 9 pages, 100% ids and links | after two clean scheduler cycles |
 | 1 | Apple | `apple-apple` (`html`, 30 min) | `team=internships-STDNT-INTRN` | 2026-10-14: 101 twice, identical keys, 6 pages, 100% ids and links | after two clean scheduler cycles |
 | 1 | Alphabet/Google | `alphabet-google-google` (`html`, 30 min) | `employment_type=INTERN` | 2026-10-14: 77 twice, identical keys, 4 pages, 100% ids and links | after two clean scheduler cycles |
+| 1 | Netflix | `netflix-eightfold` (`company_json`, 15 min) | `query=intern` (loose) | 2026-10-14: 4 twice, identical keys, 1 page, 100% ids and links | after two clean scheduler cycles |
+| 1 | Microsoft | not collected | — | public search answered, then HTTP 429 after about four requests; v2 API refuses | deferred: needs a paced source |
+| 1 | Meta | not collected | — | client-rendered; GraphQL needs page-issued session tokens; no public endpoint | `FALLBACK_ONLY` |

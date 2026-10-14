@@ -84,6 +84,7 @@ sources:
   endpoint: https://www.metacareers.com/
   interval_minutes: 30
   parameters:
+    expansion_note: "2026-10-14 Task 29: metacareers.com/jobsearch is client-rendered; the HTML carries no job data and listings load through a GraphQL API that needs page-issued session tokens. No public endpoint; stays FALLBACK_ONLY."
     audit_status: FALLBACK_ONLY
     audit_probed_at: '2026-09-18'
     audit_http_status: 200
@@ -101,6 +102,7 @@ sources:
   endpoint: https://careers.microsoft.com/
   interval_minutes: 30
   parameters:
+    expansion_note: "2026-10-14 Task 29: apply.careers.microsoft.com/api/pcsx/search answers publicly (query=intern declared 101, 10 per page) but returned HTTP 429 after about four requests in a few minutes, and /api/apply/v2/jobs answers 403 'Not authorized for PCSX'. Deferred until a paced Eightfold PCSX source (60+ minute interval) is built."
     audit_status: FALLBACK_ONLY
     audit_probed_at: '2026-09-18'
     audit_http_status: 200
@@ -181,21 +183,23 @@ sources:
     - eightfold provider evidence found (careers page links to https://app.eightfold.ai/careers?domain=qualcomm.com); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
   audit_date: '2026-09-19'
-- id: netflix-discovery
+- id: netflix-eightfold
   company_id: netflix
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://explore.jobs.netflix.net/careers
-  interval_minutes: 30
+  provider: eightfold
+  source_class: company_json
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://explore.jobs.netflix.net/api/apply/v2/jobs?domain=netflix.com&query=intern
+  interval_minutes: 15
+  tenant: netflix.com
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://explore.jobs.netflix.net/careers
+    scope: query=intern (loose text match; the filter decides)
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Eightfold v2 jobs API behind explore.jobs.netflix.net (the landing page was challenged at the 2026-09-18 audit; the API answered without one)
     audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
+    - eightfold adapter collected 4 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
 - id: oracle-discovery
   company_id: oracle
   provider: discovery

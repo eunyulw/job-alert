@@ -2597,7 +2597,7 @@ Fortune 100 companies need the same one (the Task 13-17 gates).
 **Status is tracked** in the expansion log in `docs/collection-verification.md`; this task's
 checkboxes are per phase:
 
-- [ ] Phase 1: FAANG tier
+- [ ] Phase 1: FAANG tier — sources done 2026-10-14 for Amazon, NVIDIA, Apple, Google, Netflix (allowlisting waits for two clean cycles); Microsoft deferred (429 rate limit, needs a paced Eightfold PCSX source); Meta has no public endpoint
 - [ ] Phase 2: Workday registry unlock
 - [ ] Phase 3: Fortune 100
 - [ ] Phase 4: Fortune 500 batches
