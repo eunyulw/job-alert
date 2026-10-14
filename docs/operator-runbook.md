@@ -18,9 +18,18 @@ All commands run from the repository root.
    uv run job-alert notify-test     # provider macos is the default
    ```
 
-   `TEST — Fast Job Alert` should appear. If it does not, open System Settings › Notifications and
-   allow notifications for **terminal-notifier**, or for **Script Editor** if you skipped the
-   install. Without terminal-notifier, a banner shows the posting link as its subtitle, but clicking it
+   `TEST — Fast Job Alert` should appear, and clicking it opens its link. terminal-notifier needs a
+   one-time permission: if it reports "Notifications are turned off for this application", launch
+   it once as an app so macOS registers it, then turn on **terminal-notifier** in System Settings ›
+   Notifications:
+
+   ```sh
+   open -a "$(brew --prefix terminal-notifier)/terminal-notifier.app" --args -title Setup -message Allow
+   ```
+
+   Until it is allowed, alerts still appear through Script Editor (clicking those opens Script
+   Editor, not the posting). If `brew install` stops at an untrusted tap, prefix it with
+   `HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1`. Without terminal-notifier, a banner shows the posting link as its subtitle, but clicking it
    opens Script Editor rather than the link.
 2. **Seed the baseline**, so the postings already on every board are never announced:
 
