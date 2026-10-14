@@ -30,7 +30,10 @@ filters:
   - id: production-matches
     enabled: true
     notify: true
-    include_companies: [1x, standard-bots, intrinsic, serve-robotics, neuralink, amazon, nvidia]
+    include_companies:
+      [1x, standard-bots, intrinsic, serve-robotics, neuralink, amazon, nvidia, netflix,
+       boston-dynamics, rockwell-automation, zebra-technologies, boeing, intel, samsung,
+       crowdstrike, galaxy-digital]
     include_title_keywords: [intern, co-op]
     exclude_title_keywords: []
     include_locations: []
@@ -45,7 +48,10 @@ filters:
   - id: production-matches-intern-type
     enabled: true
     notify: true
-    include_companies: [1x, standard-bots, intrinsic, serve-robotics, neuralink, amazon, nvidia]
+    include_companies:
+      [1x, standard-bots, intrinsic, serve-robotics, neuralink, amazon, nvidia, netflix,
+       boston-dynamics, rockwell-automation, zebra-technologies, boeing, intel, samsung,
+       crowdstrike, galaxy-digital]
     include_title_keywords: []
     exclude_title_keywords: []
     include_locations: []
