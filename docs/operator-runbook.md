@@ -152,8 +152,10 @@ dc logs -f job-alert
 ```
 
 To stop alerting without stopping collection, set `JOB_ALERT_MODE=live-suppressed` and run
-`dc up -d` again. Events recorded while suppressed stay pending, and LIVE delivers them later, so
-review `would_deliver` in a suppressed report before switching.
+`dc up -d` again. Events a notifying filter approved while suppressed stay pending, and LIVE delivers
+them later, so review `would_deliver` in a suppressed report before switching. An event no notifying
+filter approved is closed as `filtered` when it is evaluated, so widening a filter later never
+announces old postings.
 
 ### Logs and reports
 

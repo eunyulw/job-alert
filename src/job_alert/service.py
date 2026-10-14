@@ -160,6 +160,9 @@ class WouldDeliver:
     deferred: bool = False
 
 
+#: The ``provider`` recorded on a filter decision, which never reaches a delivery provider.
+FILTER_DECISION_PROVIDER = "filter"
+
 SEEDED_WARNING = (
     "first complete snapshot for this source: seeded without events, as a baseline would be"
 )
@@ -962,13 +965,27 @@ class JobAlertService:
         )
         if limit is not None:
             pending_events = pending_events[:limit]
+        unmatched: list[int] = []
         for pending in pending_events:
             report, alert = self._pending_alert(pending, now=now)
             if report is None:
+                unmatched.append(pending.event_id)
                 continue
             reports.append(report)
             if alert is not None:
                 alerts.append(alert)
+
+        if unmatched:
+            # No enabled filter authorizes these, so their question is answered now. Left pending,
+            # they would be re-filtered on every cycle forever, and a filter widened later would
+            # announce every one of them at once.
+            self._repository.record_notification(
+                FILTER_DECISION_PROVIDER,
+                DeliveryOutcome.FILTERED.value,
+                now,
+                error_message="no enabled filter authorizes a notification",
+                event_ids=unmatched,
+            )
 
         if mode is RunMode.LIVE_SUPPRESSED:
             return 0, tuple(reports)

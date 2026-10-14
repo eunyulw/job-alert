@@ -8,7 +8,7 @@ endpoint whose board can be swapped between cycles.
 from __future__ import annotations
 
 import sqlite3
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 
 import pytest
 
@@ -19,7 +19,7 @@ from job_alert.health import HealthEventKind
 from job_alert.models import JobEventType, RunOutcome
 from job_alert.notifications.base import DeliveryResult
 from job_alert.service import JobAlertService, RunMode
-from tests.integration.harness import ENDPOINT, ServiceHarness
+from tests.integration.harness import DEFAULT_FILTERS, ENDPOINT, FIXED_NOW, ServiceHarness
 
 
 @pytest.mark.asyncio
@@ -108,6 +108,49 @@ async def test_a_source_never_seeded_is_seeded_by_its_first_snapshot_without_eve
     if mode is RunMode.LIVE:
         assert second.notifications_sent == 1
         assert "Robotics Software Engineer 3" in service_harness.notifier.messages[0].body
+
+
+NOTHING_MATCHES = (
+    FilterConfig(
+        id="harness-nothing",
+        notify=True,
+        include_companies=["acme"],
+        include_title_keywords=["astronaut"],
+    ),
+)
+
+
+@pytest.mark.parametrize("mode", [RunMode.LIVE, RunMode.LIVE_SUPPRESSED])
+@pytest.mark.asyncio
+async def test_a_posting_no_filter_approves_is_resolved_and_never_resurrected(
+    service_harness: ServiceHarness, mode: RunMode
+) -> None:
+    """Most new postings match no filter; they must not stay pending and pile up forever.
+
+    Left pending, every cycle and heartbeat would re-filter an ever-growing set, and widening a
+    filter later would announce every old posting at once.
+    """
+    service_harness.set_filters(NOTHING_MATCHES)
+    await service_harness.service.collect_source(service_harness.source, mode=RunMode.BASELINE)
+    service_harness.adapter.set_fixture("three-jobs")
+
+    result = await service_harness.service.collect_source(service_harness.source, mode=mode)
+
+    assert result.new_count == 1
+    assert result.would_deliver == ()
+    assert service_harness.repo.pending_events(service_harness.source.id) == []
+    assert service_harness.notifier.messages == []
+    # A filter decision is not a provider attempt, so delivery reports do not count it.
+    counts = service_harness.repo.window_counts(FIXED_NOW, FIXED_NOW + timedelta(days=1))
+    assert counts.attempts == 0
+
+    # Widening the filter afterwards must not announce the posting that was already decided.
+    service_harness.set_filters(DEFAULT_FILTERS)
+    service_harness.clock.advance(minutes=10)
+    later = await service_harness.service.collect_source(service_harness.source, mode=RunMode.LIVE)
+    assert later.notifications_sent == 0
+    assert later.would_deliver == ()
+    assert service_harness.notifier.messages == []
 
 
 @pytest.mark.asyncio

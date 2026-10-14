@@ -56,7 +56,10 @@ class DeliveryOutcome(StrEnum):
     ``DELIVERED`` links the event ids the message covered, ``RETRYABLE`` and ``UNCERTAIN`` leave
     them pending for a later cycle, ``PERMANENT`` ends the question because the provider refused
     the message for good, and ``ABANDONED`` ends it because an ambiguous outcome has been retried
-    as often as the service allows. Only the last two are terminal without a delivery.
+    as often as the service allows. ``FILTERED`` ends it without contacting any provider, because
+    no enabled filter authorized a notification when the event was evaluated; it is a decision, not
+    a provider attempt, so delivery reports leave it out. The last three are terminal without a
+    delivery.
     """
 
     DELIVERED = "delivered"
@@ -64,6 +67,7 @@ class DeliveryOutcome(StrEnum):
     UNCERTAIN = "uncertain"
     PERMANENT = "permanent"
     ABANDONED = "abandoned"
+    FILTERED = "filtered"
 
 
 #: Outcomes that stop a cycle from ever re-attempting the events an attempt covered.
@@ -71,6 +75,7 @@ TERMINAL_DELIVERY_OUTCOMES = (
     DeliveryOutcome.DELIVERED,
     DeliveryOutcome.PERMANENT,
     DeliveryOutcome.ABANDONED,
+    DeliveryOutcome.FILTERED,
 )
 
 #: Outcomes that leave the events they cover pending for a later cycle.
@@ -1357,7 +1362,11 @@ class Repository:
         return WindowCounts(
             new_jobs=event_totals.get(JobEventType.NEW.value, 0),
             reopened_jobs=event_totals.get(JobEventType.REOPENED.value, 0),
-            attempts=sum(attempt_totals.values()),
+            attempts=sum(
+                total
+                for outcome, total in attempt_totals.items()
+                if outcome != DeliveryOutcome.FILTERED.value
+            ),
             delivered=attempt_totals.get(DeliveryOutcome.DELIVERED.value, 0),
             retryable=attempt_totals.get(DeliveryOutcome.RETRYABLE.value, 0),
             uncertain=attempt_totals.get(DeliveryOutcome.UNCERTAIN.value, 0),
