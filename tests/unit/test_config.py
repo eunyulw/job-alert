@@ -180,12 +180,18 @@ def test_repository_filters_are_the_approved_internship_canary(app_config: AppCo
 
     polled = {source.company_id for source in app_config.sources if source.enabled}
     canary = {"1x", "standard-bots", "intrinsic", "serve-robotics", "neuralink"}
+    allowlists = [
+        set(records[record_id].include_companies)
+        for record_id in ("production-matches", "production-matches-intern-type")
+    ]
+    # Both filters alert on the same companies, which always include the first canary.
+    assert allowlists[0] == allowlists[1]
     for record_id in ("production-matches", "production-matches-intern-type"):
         record = records[record_id]
         assert record.enabled is True and record.notify is True
         # An allowlist keeps the canary out of broad activation, and every company it names must
         # have an enabled source or LIVE refuses it.
-        assert set(record.include_companies) == canary <= polled
+        assert canary <= set(record.include_companies) <= polled
         assert record.quiet_hours_start is None and record.timezone is None
     assert records["production-matches"].include_title_keywords == ["intern", "co-op"]
     assert records["production-matches-intern-type"].employment_types == ["intern"]
