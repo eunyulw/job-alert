@@ -1662,7 +1662,7 @@ sources:
   endpoint: https://careers.stryker.com/
   interval_minutes: 30
   parameters:
-    expansion_note: "2026-10-14 Task 29 Phase 2: the Workday intern facet (workerSubType Intern (Fixed Term), 213 declared) returned one stub posting with only a requisition id (R574890), no title and no link, so the collection is incomplete and was not waived. Re-check in the next pass."
+    expansion_note: '2026-10-14 Task 29 Phase 2: the Workday intern facet (workerSubType Intern (Fixed Term), 213 declared) returned one stub posting with only a requisition id (R574890), no title and no link, so the collection is incomplete and was not waived. Re-check in the next pass.'
     audit_status: NEEDS_MANUAL_REVIEW
     audit_probed_at: '2026-09-19'
     audit_evidence: careers page links to https://stryker.wd1.myworkdayjobs.com/StrykerCareers/login
@@ -2515,3 +2515,1360 @@ sources:
     - access challenge detected on the official careers landing page
   enabled: false
   audit_date: '2026-09-18'
+- id: walmart-discovery
+  company_id: walmart
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://careers.walmart.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://careers.walmart.com/us/en/home
+    audit_notes:
+    - 'linked careers page https://careers.stage.walmart.com could not be read: non-retryable HTTP 401 for https://careers.stage.walmart.com'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: unitedhealth-group-oracle
+  company_id: unitedhealth-group
+  provider: oracle
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.unitedhealthgroup.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_evidence: careers page links to https://uhg.taleo.net/careersection/10000/mysubmissions.ftl?lang=en
+    audit_provider: oracle
+    audit_http_status: 200
+    audit_final_url: https://careers.unitedhealthgroup.com/search-jobs
+    audit_notes:
+    - oracle provider evidence found (careers page links to https://uhg.taleo.net/careersection/10000/mysubmissions.ftl?lang=en); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+  enabled: false
+  audit_date: '2026-10-14'
+- id: cvs-health-discovery
+  company_id: cvs-health
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://jobs.cvshealth.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://jobs.cvshealth.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: berkshire-hathaway-discovery
+  company_id: berkshire-hathaway
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.berkshirehathaway.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://www.berkshirehathaway.com/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: mckesson-discovery
+  company_id: mckesson
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://careers.mckesson.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://careers.mckesson.com/en
+    audit_notes:
+    - 'linked careers page https://jobs-search-analytics.prod.use1.radancy.net could not be read: request timed out after 12.0 seconds for https://jobs-search-analytics.prod.use1.radancy.net'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: exxon-mobil-successfactors
+  company_id: exxon-mobil
+  provider: successfactors
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://jobs.exxonmobil.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_evidence: careers page links to https://career4.successfactors.com/career?site=&amp;company=exxonmobilP&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE
+    audit_provider: successfactors
+    audit_http_status: 200
+    audit_final_url: https://jobs.exxonmobil.com/
+    audit_notes:
+    - successfactors provider evidence found (careers page links to https://career4.successfactors.com/career?site=&amp;company=exxonmobilP&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+  enabled: false
+  audit_date: '2026-10-14'
+- id: cencora-discovery
+  company_id: cencora
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.cencora.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://careers.cencora.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: jpmorgan-chase-oracle
+  company_id: jpmorgan-chase
+  provider: oracle
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.jpmorgan.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_evidence: careers page links to https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/requisitions&#34;,&#34;ctaTitle&#34;:&#34;&#34;,&#34;ctaComponentName&#34;:&#34;Primary
+    audit_provider: oracle
+    audit_http_status: 200
+    audit_final_url: https://www.jpmorganchase.com/careers?redirect=careers_jpm
+    audit_notes:
+    - oracle provider evidence found (careers page links to https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/requisitions&#34;,&#34;ctaTitle&#34;:&#34;&#34;,&#34;ctaComponentName&#34;:&#34;Primary); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+  enabled: false
+  audit_date: '2026-10-14'
+- id: costco-wholesale-discovery
+  company_id: costco-wholesale
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.costco.com/jobs.html
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://www.costco.com/f/-/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: cigna-group-discovery
+  company_id: cigna-group
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://jobs.thecignagroup.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://jobs.thecignagroup.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: cardinal-health-discovery
+  company_id: cardinal-health
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://jobs.cardinalhealth.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://jobs.cardinalhealth.com/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: elevance-health-workday
+  company_id: elevance-health
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://elevancehealth.wd1.myworkdayjobs.com/wday/cxs/elevancehealth/ANT/jobs
+  interval_minutes: 10
+  tenant: elevancehealth
+  parameters:
+    applied_facets:
+      workerSubType:
+      - fb574c8c226401016cb97e8a27b50000
+    scope: workerSubType = Interns
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-10-14 Fortune 100 audit)
+    audit_notes:
+    - workday adapter collected 7 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
+- id: centene-discovery
+  company_id: centene
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://jobs.centene.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://jobs.centene.com/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://jobs.centene.com/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: bank-of-america-workday
+  company_id: bank-of-america
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://ghr.wd1.myworkdayjobs.com/wday/cxs/ghr/lateral-us/jobs
+  interval_minutes: 10
+  tenant: ghr
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 13a0897a1ccc103871f67ead7af41fae
+    scope: workerSubType = EE - Intern (Fixed Term)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-10-14 Fortune 100 audit)
+    audit_notes:
+    - workday adapter collected 2 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
+- id: chevron-eightfold
+  company_id: chevron
+  provider: eightfold
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.chevron.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_evidence: careers page links to https://chevron.eightfold.ai/careers#upload
+    audit_provider: eightfold
+    audit_http_status: 200
+    audit_final_url: https://careers.chevron.com/
+    audit_notes:
+    - eightfold evidence found but no list endpoint could be derived
+  enabled: false
+  audit_date: '2026-10-14'
+- id: citigroup-eightfold
+  company_id: citigroup
+  provider: eightfold
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://jobs.citi.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_evidence: careers page links to https://citi.eightfold.ai/careers/join?jtn_form_id=jtn-early-career
+    audit_provider: eightfold
+    audit_http_status: 200
+    audit_final_url: https://jobs.citi.com/
+    audit_notes:
+    - eightfold evidence found but no list endpoint could be derived
+  enabled: false
+  audit_date: '2026-10-14'
+- id: home-depot-discovery
+  company_id: home-depot
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://careers.homedepot.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://careers.homedepot.com/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: fannie-mae-discovery
+  company_id: fannie-mae
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.fanniemae.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://www.fanniemae.com/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.fanniemae.com/careers'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: kroger-discovery
+  company_id: kroger
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.krogerfamilycareers.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://www.krogerfamilycareers.com/en/sites/CX_2001
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: verizon-discovery
+  company_id: verizon
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://mycareer.verizon.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://mycareer.verizon.com/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://mycareer.verizon.com/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: phillips-66-successfactors
+  company_id: phillips-66
+  provider: successfactors
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.phillips66.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_evidence: careers page links to https://career4.successfactors.com
+    audit_provider: successfactors
+    audit_http_status: 200
+    audit_final_url: https://careers.phillips66.com/
+    audit_notes:
+    - successfactors provider evidence found (careers page links to https://career4.successfactors.com); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+  enabled: false
+  audit_date: '2026-10-14'
+- id: marathon-petroleum-discovery
+  company_id: marathon-petroleum
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.marathonpetroleum.com/Careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://www.marathonpetroleum.com/Careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.marathonpetroleum.com/Careers/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: stonex-group-discovery
+  company_id: stonex-group
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.stonex.com/en/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://www.stonex.com/en/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.stonex.com/en/careers/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: state-farm-icims
+  company_id: state-farm
+  provider: icims
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.statefarm.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_evidence: careers page links to https://events-statefarm.icims.com/jobs/search?_sp=25275787-8bc0-44ef-9b77-3b8bcb4495d9.1653086551237
+    audit_provider: icims
+    audit_http_status: 200
+    audit_final_url: https://www.statefarm.com/careers
+    audit_notes:
+    - icims provider evidence found (careers page links to https://events-statefarm.icims.com/jobs/search?_sp=25275787-8bc0-44ef-9b77-3b8bcb4495d9.1653086551237); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+  enabled: false
+  audit_date: '2026-10-14'
+- id: freddie-mac-discovery
+  company_id: freddie-mac
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.freddiemac.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://careers.freddiemac.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: humana-discovery
+  company_id: humana
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.humana.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://careers.humana.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: att-discovery
+  company_id: att
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.att.jobs/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://www.att.jobs/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: goldman-sachs-discovery
+  company_id: goldman-sachs
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.goldmansachs.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://www.goldmansachs.com/careers/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: comcast-workday
+  company_id: comcast
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://comcast.wd115.myworkdayjobs.com/wday/cxs/comcast/Comcast_Careers/jobs
+  interval_minutes: 10
+  tenant: comcast
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 285386867dd90195ab83a6087e0b8419
+    scope: workerSubType = Intern (Trainee)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-10-14 Fortune 100 audit)
+    audit_notes:
+    - workday adapter collected 2 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
+- id: wells-fargo-discovery
+  company_id: wells-fargo
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.wellsfargojobs.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://www.wellsfargojobs.com/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.wellsfargojobs.com/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: morgan-stanley-eightfold
+  company_id: morgan-stanley
+  provider: eightfold
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.morganstanley.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_evidence: the official careers page links to https://www.morganstanley.com/careers/career-opportunities-search, which resolves to https://www.morganstanley.com/careers/career-opportunities-search (careers page links to https://morganstanley.eightfold.ai/careers)
+    audit_provider: eightfold
+    audit_http_status: 200
+    audit_final_url: https://www.morganstanley.com/people
+    audit_notes:
+    - eightfold evidence found but no list endpoint could be derived
+  enabled: false
+  audit_date: '2026-10-14'
+- id: valero-energy-discovery
+  company_id: valero-energy
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.valero.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://www.valero.com/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.valero.com/careers'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: dell-technologies-discovery
+  company_id: dell-technologies
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://jobs.dell.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://enterpriseplatform.dell.com/hcmUI/CandidateExperience/en/sites/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: target-workday
+  company_id: target
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://target.wd5.myworkdayjobs.com/wday/cxs/target/targetcareers/jobs
+  interval_minutes: 10
+  tenant: target
+  parameters:
+    applied_facets:
+      workerSubType:
+      - daccab9f1d25019dc0cd608d3157bd05
+    scope: workerSubType = Intern (the unscoped board hits the 2000 cap)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-10-14 Fortune 100 audit)
+    audit_notes:
+    - workday adapter collected 128 postings twice with identical canonical keys across 7 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
+- id: walt-disney-discovery
+  company_id: walt-disney
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://jobs.disneycareers.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://www.disneycareers.com/en
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: pepsico-icims
+  company_id: pepsico
+  provider: icims
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.pepsicojobs.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_evidence: careers page links to https://pepjobs-pepsico.icims.com/jobs/login
+    audit_provider: icims
+    audit_http_status: 200
+    audit_final_url: https://www.pepsicojobs.com/main/
+    audit_notes:
+    - icims provider evidence found (careers page links to https://pepjobs-pepsico.icims.com/jobs/login); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+  enabled: false
+  audit_date: '2026-10-14'
+- id: ups-discovery
+  company_id: ups
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.jobs-ups.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://www.jobs-ups.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: fedex-discovery
+  company_id: fedex
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://careers.fedex.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://careers.fedex.com/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: progressive-discovery
+  company_id: progressive
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.progressive.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://www.progressive.com/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.progressive.com/careers/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: lowes-discovery
+  company_id: lowes
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://talent.lowes.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://talent.lowes.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: energy-transfer-discovery
+  company_id: energy-transfer
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.energytransfer.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://www.energytransfer.com/careers/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: procter-gamble-discovery
+  company_id: procter-gamble
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.pgcareers.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://www.pgcareers.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: sysco-discovery
+  company_id: sysco
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.sysco.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://careers.sysco.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: american-express-eightfold
+  company_id: american-express
+  provider: eightfold
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.americanexpress.com/en-us/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_evidence: careers page links to https://aexp.eightfold.ai/careers?location=${country}&query=${Title}`;
+    audit_provider: eightfold
+    audit_http_status: 200
+    audit_final_url: https://www.americanexpress.com/en-us/careers/
+    audit_notes:
+    - eightfold evidence found but no list endpoint could be derived
+  enabled: false
+  audit_date: '2026-10-14'
+- id: albertsons-discovery
+  company_id: albertsons
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.albertsonscompanies.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://www.albertsonscompanies.com/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.albertsonscompanies.com/careers/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: archer-daniels-midland-discovery
+  company_id: archer-daniels-midland
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.adm.com/en-us/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://www.adm.com/en-us/careers/
+    audit_notes:
+    - linked careers page https://sjobs.brassring.com/TGnewUI/Search/Home/Home?partnerid=25416&siteid=5998 served an access challenge
+    - linked careers page https://sjobs.brassring.com/TGnewUI/Search/home/HomeWithPreLoad?partnerid=25416&siteid=5429&PageType=searchResults&SearchType=linkquery&LinkID=4393909 served an access challenge
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: metlife-discovery
+  company_id: metlife
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.metlife.com/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://www.metlifecareers.com/en_US/ml
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: hca-healthcare-discovery
+  company_id: hca-healthcare
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.hcahealthcare.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://careers.hcahealthcare.com/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://careers.hcahealthcare.com/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: new-york-life-discovery
+  company_id: new-york-life
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.newyorklife.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://www.newyorklife.com/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: capital-one-eightfold
+  company_id: capital-one
+  provider: eightfold
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.capitalonecareers.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_evidence: careers page links to https://capitalone.eightfold.ai/careers/join?jtn_form_id=Capital_One_Join_Talent_Network_Form
+    audit_provider: eightfold
+    audit_http_status: 200
+    audit_final_url: https://www.capitalonecareers.com/
+    audit_notes:
+    - eightfold evidence found but no list endpoint could be derived
+  enabled: false
+  audit_date: '2026-10-14'
+- id: allstate-workday
+  company_id: allstate
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://allstate.wd5.myworkdayjobs.com/wday/cxs/allstate/allstate_careers/jobs
+  interval_minutes: 10
+  tenant: allstate
+  parameters:
+    applied_facets:
+      workerSubType:
+      - bf1cc5a85e0b1002cdef7c05565a0000
+    scope: workerSubType = Intern/Co-Op (Fixed Term)
+    asserted_employment_type: Intern
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-10-14 Fortune 100 audit)
+    audit_notes:
+    - workday adapter collected 1 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
+- id: eli-lilly-discovery
+  company_id: eli-lilly
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.lilly.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://careers.lilly.com/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://careers.lilly.com/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: merck-discovery
+  company_id: merck
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://jobs.merck.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://jobs.merck.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: nationwide-discovery
+  company_id: nationwide
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.nationwide.com/personal/about-us/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://www.nationwide.com/personal/about-us/careers/
+    audit_notes:
+    - 'linked careers page https://careers.nationwide.com/ could not be read: non-retryable HTTP 403 for https://careers.nationwide.com/'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: delta-air-lines-discovery
+  company_id: delta-air-lines
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.delta.com/us/en/careers/overview
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 444
+    audit_final_url: https://www.delta.com/us/en/careers/overview
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 444 for https://www.delta.com/us/en/careers/overview'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: publix-discovery
+  company_id: publix
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://corporate.publix.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://jobs.publix.com/
+    audit_notes:
+    - 'linked careers page https://sjobs.brassring.com/TGNewUI/Search/Home/Home?partnerid=26173 could not be read: request failed after 4 attempts: HTTP 500 for https://sjobs.brassring.com/TGNewUI/Search/Home/Home?partnerid=26173'
+    - 'linked careers page https://sjobs.brassring.com/TGNewUI/Search/Home/Home?partnerid=26173&amp;siteid=5197 could not be read: request failed after 4 attempts: HTTP 500 for https://sjobs.brassring.com/TGNewUI/Search/Home/Home?partnerid=26173&amp;siteid=5197'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: pfizer-discovery
+  company_id: pfizer
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.pfizer.com/about/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://www.pfizer.com/about/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.pfizer.com/about/careers'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: td-synnex-discovery
+  company_id: td-synnex
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.tdsynnex.com/na/us/careers/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 404
+    audit_final_url: https://www.tdsynnex.com/na/us/careers/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.tdsynnex.com/na/us/careers/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: conocophillips-discovery
+  company_id: conocophillips
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.conocophillips.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://careers.conocophillips.com/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://careers.conocophillips.com/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: galaxy-digital-greenhouse
+  company_id: galaxy-digital
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/galaxydigitalservices/jobs?content=true
+  interval_minutes: 5
+  tenant: galaxydigitalservices
+  parameters:
+    audit_status: SUPPORTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: careers page links to https://job-boards.greenhouse.io/galaxydigitalservices/jobs/5837236004
+    audit_http_status: 200
+    audit_final_url: https://www.galaxy.com/careers
+    audit_notes:
+    - greenhouse adapter collected 39 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
+- id: abbvie-discovery
+  company_id: abbvie
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.abbvie.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://careers.abbvie.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: prudential-financial-discovery
+  company_id: prudential-financial
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.prudential.com/links/about/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://www.prudential.com/links/about/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: tjx-discovery
+  company_id: tjx
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://jobs.tjx.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://jobs.tjx.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: performance-food-group-discovery
+  company_id: performance-food-group
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.pfgc.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://www.pfgc.com/careers
+    audit_notes:
+    - linked careers page https://sjobs.brassring.com/TGnewUI/Search/Home/Home?partnerid=26350&siteid=6930 served an access challenge
+    - 'linked careers page https://sjobs.brassring.com/TGnewUI/Search/Home/Home?partnerid=26350&amp;siteid=6930 could not be read: request failed after 4 attempts: HTTP 500 for https://sjobs.brassring.com/TGnewUI/Search/Home/Home?partnerid=26350&amp;siteid=6930'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: united-airlines-discovery
+  company_id: united-airlines
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.united.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://careers.united.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: hp-discovery
+  company_id: hp
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://jobs.hp.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://jobs.hp.com/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://jobs.hp.com/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: charter-communications-discovery
+  company_id: charter-communications
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://jobs.spectrum.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://jobs.spectrum.com/
+    audit_notes:
+    - 'linked careers page https://jobs-search-analytics.prod.use1.radancy.net could not be read: request timed out after 12.0 seconds for https://jobs-search-analytics.prod.use1.radancy.net'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: american-airlines-successfactors
+  company_id: american-airlines
+  provider: successfactors
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://jobs.aa.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_evidence: careers page links to https://career4.successfactors.com
+    audit_provider: successfactors
+    audit_http_status: 200
+    audit_final_url: https://jobs.aa.com/
+    audit_notes:
+    - successfactors provider evidence found (careers page links to https://career4.successfactors.com); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+  enabled: false
+  audit_date: '2026-10-14'
+- id: tyson-foods-discovery
+  company_id: tyson-foods
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.tysonfoods.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://careers.tysonfoods.com/
+    audit_notes:
+    - 'careers landing page request failed: request failed after 4 attempts for https://careers.tysonfoods.com/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: enterprise-products-oracle
+  company_id: enterprise-products
+  provider: oracle
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.enterpriseproducts.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_evidence: careers page links to https://epco.taleo.net/careersection/it/jobsearch.ftl?lang=en&amp;radiusType=M&amp;searchExpanded=false&amp;radius=1&amp;jobfield=4501372523&amp;jobfield=4401372523&amp;jobfield=4301372523&amp;jobfield=101372523&amp;jobfield=4201372523
+    audit_provider: oracle
+    audit_http_status: 200
+    audit_final_url: https://www.enterpriseproducts.com/careers/
+    audit_notes:
+    - oracle provider evidence found (careers page links to https://epco.taleo.net/careersection/it/jobsearch.ftl?lang=en&amp;radiusType=M&amp;searchExpanded=false&amp;radius=1&amp;jobfield=4501372523&amp;jobfield=4401372523&amp;jobfield=4301372523&amp;jobfield=101372523&amp;jobfield=4201372523); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
+  enabled: false
+  audit_date: '2026-10-14'
+- id: ingram-micro-discovery
+  company_id: ingram-micro
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.ingrammicro.com/en-us/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://www.ingrammicro.com/en-us/careers
+    audit_notes:
+    - 'careers landing page request failed: request timed out after 12.0 seconds for https://www.ingrammicro.com/en-us/careers'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: general-dynamics-discovery
+  company_id: general-dynamics
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.gd.com/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://www.gd.com/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.gd.com/careers'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: usaa-discovery
+  company_id: usaa
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://www.usaajobs.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_final_url: https://www.usaajobs.com/
+    audit_notes:
+    - access challenge detected on the official careers landing page
+  enabled: false
+  audit_date: '2026-10-14'
+- id: tiaa-discovery
+  company_id: tiaa
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://www.tiaa.org/public/about-tiaa/careers
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://www.tiaa.org/public/about-tiaa/careers
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: liberty-mutual-discovery
+  company_id: liberty-mutual
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://jobs.libertymutualgroup.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://jobs.libertymutualgroup.com/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://jobs.libertymutualgroup.com/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: travelers-discovery
+  company_id: travelers
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://careers.travelers.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://careers.travelers.com/
+    audit_notes:
+    - 'linked careers page https://careers.travelers.comhttps://careers.travelers.com/ could not be read: request failed after 4 attempts for https://careers.travelers.comhttps://careers.travelers.com/'
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'
+- id: bristol-myers-squibb-discovery
+  company_id: bristol-myers-squibb
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers.bms.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 403
+    audit_final_url: https://careers.bms.com/
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://careers.bms.com/'
+  enabled: false
+  audit_date: '2026-10-14'
+- id: coca-cola-workday
+  company_id: coca-cola
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://coke.wd1.myworkdayjobs.com/wday/cxs/coke/coca-cola-careers/jobs
+  interval_minutes: 10
+  tenant: coke
+  parameters:
+    applied_facets:
+      jobFamilyGroup:
+      - aa45546b05c5013a36723dc12d01cbaf
+    scope: jobFamilyGroup = Interim & Interns (mixes interim roles, so no asserted type)
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-10-14 Fortune 100 audit)
+    audit_notes:
+    - workday adapter collected 8 postings twice with identical canonical keys across 1 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
+- id: nike-workday
+  company_id: nike
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://nike.wd1.myworkdayjobs.com/wday/cxs/nike/nke2/jobs
+  interval_minutes: 30
+  tenant: nike
+  parameters:
+    whole_board: true
+    scope: whole board (478 at audit; no internship facet)
+    slow_poll_reason: the whole-board walk is 24 pages, so it runs every 30 minutes instead of 10
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: Workday CXS search behind the official careers site (fingerprinted by the 2026-10-14 Fortune 100 audit)
+    audit_notes:
+    - workday adapter collected 478 postings twice with identical canonical keys across 24 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
+- id: massmutual-discovery
+  company_id: massmutual
+  provider: discovery
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://careers.massmutual.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: FALLBACK_ONLY
+    audit_probed_at: '2026-10-14'
+    audit_http_status: 200
+    audit_final_url: https://careers.massmutual.com/
+    audit_notes:
+    - no positive provider evidence on the official careers landing page
+    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
+  enabled: false
+  audit_date: '2026-10-14'

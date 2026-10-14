@@ -977,15 +977,16 @@ async def _verify_workday(
         declared = "unknown" if total is None else str(total)
         notes.append(
             f"workday CXS confirmed {len(ids)} unique postings of {declared} declared, so "
-            "pagination completeness is unproven until the Workday adapter exists"
+            "pagination completeness is unproven until a scoped source is promoted with"
+            " `audit set-source --parameters`"
         )
     elif not repeated:
         notes.append("repeating the workday walk changed the posting identities")
     elif direct_url_percent != 100.0:
         notes.append(
             "workday CXS publishes posting ids but no direct application URL for any posting, so "
-            "the per-posting application-link evidence the audit requires is missing until the "
-            "Workday adapter exists"
+            "the per-posting application-link evidence the audit requires is missing until a "
+            "scoped source is promoted with `audit set-source --parameters`"
         )
     else:
         status = SupportStatus.SUPPORTED_UNDOCUMENTED

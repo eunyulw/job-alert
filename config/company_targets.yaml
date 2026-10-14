@@ -10,24 +10,28 @@ categories:
   - automotive-ev-autonomous-mobility
   - aerospace-defense
   - medical-robotics
+  - fortune-100
 companies:
   - id: nvidia
     name: "NVIDIA"
     categories:
       - big-tech-ai
       - robotics-autonomy-physical-ai
+      - fortune-100
     aliases: []
   - id: apple
     name: "Apple"
     categories:
       - big-tech-ai
       - robotics-autonomy-physical-ai
+      - fortune-100
     aliases: []
   - id: alphabet-google
     name: "Alphabet/Google"
     categories:
       - big-tech-ai
       - robotics-autonomy-physical-ai
+      - fortune-100
     aliases:
       - "Google"
   - id: amazon
@@ -35,18 +39,21 @@ companies:
     categories:
       - big-tech-ai
       - robotics-autonomy-physical-ai
+      - fortune-100
     aliases: []
   - id: meta
     name: "Meta"
     categories:
       - big-tech-ai
       - robotics-autonomy-physical-ai
+      - fortune-100
     aliases: []
   - id: microsoft
     name: "Microsoft"
     categories:
       - big-tech-ai
       - robotics-autonomy-physical-ai
+      - fortune-100
     aliases: []
   - id: tesla
     name: "Tesla"
@@ -54,6 +61,7 @@ companies:
       - big-tech-ai
       - robotics-autonomy-physical-ai
       - automotive-ev-autonomous-mobility
+      - fortune-100
     aliases: []
   - id: samsung
     name: "Samsung"
@@ -79,6 +87,7 @@ companies:
     name: "Oracle"
     categories:
       - big-tech-ai
+      - fortune-100
     aliases: []
   - id: salesforce
     name: "Salesforce"
@@ -94,6 +103,7 @@ companies:
     name: "Cisco"
     categories:
       - big-tech-ai
+      - fortune-100
     aliases: []
   - id: palantir
     name: "Palantir"
@@ -105,6 +115,7 @@ companies:
     name: "Uber"
     categories:
       - big-tech-ai
+      - fortune-100
     aliases: []
   - id: airbnb
     name: "Airbnb"
@@ -145,11 +156,13 @@ companies:
     name: "Intel"
     categories:
       - big-tech-ai
+      - fortune-100
     aliases: []
   - id: broadcom
     name: "Broadcom"
     categories:
       - big-tech-ai
+      - fortune-100
     aliases: []
   - id: tsmc
     name: "TSMC"
@@ -170,6 +183,7 @@ companies:
     name: "IBM"
     categories:
       - big-tech-ai
+      - fortune-100
     aliases: []
   - id: bytedance
     name: "ByteDance"
@@ -620,6 +634,7 @@ companies:
     categories:
       - robotics-autonomy-physical-ai
       - medical-robotics
+      - fortune-100
     aliases: []
   - id: anduril
     name: "Anduril"
@@ -637,6 +652,7 @@ companies:
     name: "Caterpillar"
     categories:
       - industrial-automation-advanced-manufacturing
+      - fortune-100
     aliases: []
   - id: emerson
     name: "Emerson"
@@ -647,6 +663,7 @@ companies:
     name: "General Motors"
     categories:
       - automotive-ev-autonomous-mobility
+      - fortune-100
     aliases: []
   - id: rivian
     name: "Rivian"
@@ -657,6 +674,7 @@ companies:
     name: "Ford Motor Company"
     categories:
       - automotive-ev-autonomous-mobility
+      - fortune-100
     aliases: []
   - id: toyota-motor
     name: "Toyota Motor"
@@ -797,16 +815,449 @@ companies:
     name: "Boeing"
     categories:
       - aerospace-defense
+      - fortune-100
     aliases: []
   - id: lockheed-martin
     name: "Lockheed Martin"
     categories:
       - aerospace-defense
+      - fortune-100
     aliases: []
   - id: rtx
     name: "RTX"
     categories:
       - aerospace-defense
+      - fortune-100
     aliases:
       - "Raytheon"
       - "Raytheon Technologies"
+  # Fortune 100 (2026 list, ranked by 2025 revenue) companies not already listed above; added
+  # 2026-10-14 for Task 29 Phase 3.
+  - id: walmart
+    name: "Walmart"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: unitedhealth-group
+    name: "UnitedHealth Group"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: cvs-health
+    name: "CVS Health"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: berkshire-hathaway
+    name: "Berkshire Hathaway"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: mckesson
+    name: "McKesson"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: exxon-mobil
+    name: "Exxon Mobil"
+    categories:
+      - fortune-100
+    aliases:
+      - "ExxonMobil"
+  - id: cencora
+    name: "Cencora"
+    categories:
+      - fortune-100
+    aliases:
+      - "AmerisourceBergen"
+  - id: jpmorgan-chase
+    name: "JPMorgan Chase"
+    categories:
+      - fortune-100
+    aliases:
+      - "JPMorgan"
+  - id: costco-wholesale
+    name: "Costco Wholesale"
+    categories:
+      - fortune-100
+    aliases:
+      - "Costco"
+  - id: cigna-group
+    name: "Cigna Group"
+    categories:
+      - fortune-100
+    aliases:
+      - "Cigna"
+  - id: cardinal-health
+    name: "Cardinal Health"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: elevance-health
+    name: "Elevance Health"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: centene
+    name: "Centene"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: bank-of-america
+    name: "Bank of America"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: chevron
+    name: "Chevron"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: citigroup
+    name: "Citigroup"
+    categories:
+      - fortune-100
+    aliases:
+      - "Citi"
+  - id: home-depot
+    name: "Home Depot"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: fannie-mae
+    name: "Fannie Mae"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: kroger
+    name: "Kroger"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: verizon
+    name: "Verizon Communications"
+    categories:
+      - fortune-100
+    aliases:
+      - "Verizon"
+  - id: phillips-66
+    name: "Phillips 66"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: marathon-petroleum
+    name: "Marathon Petroleum"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: stonex-group
+    name: "StoneX Group"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: state-farm
+    name: "State Farm Insurance"
+    categories:
+      - fortune-100
+    aliases:
+      - "State Farm"
+  - id: freddie-mac
+    name: "Freddie Mac"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: humana
+    name: "Humana"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: att
+    name: "AT&T"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: goldman-sachs
+    name: "Goldman Sachs Group"
+    categories:
+      - fortune-100
+    aliases:
+      - "Goldman Sachs"
+  - id: comcast
+    name: "Comcast"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: wells-fargo
+    name: "Wells Fargo"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: morgan-stanley
+    name: "Morgan Stanley"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: valero-energy
+    name: "Valero Energy"
+    categories:
+      - fortune-100
+    aliases:
+      - "Valero"
+  - id: dell-technologies
+    name: "Dell Technologies"
+    categories:
+      - fortune-100
+    aliases:
+      - "Dell"
+  - id: target
+    name: "Target"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: walt-disney
+    name: "Walt Disney"
+    categories:
+      - fortune-100
+    aliases:
+      - "Disney"
+  - id: pepsico
+    name: "PepsiCo"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: ups
+    name: "UPS"
+    categories:
+      - fortune-100
+    aliases:
+      - "United Parcel Service"
+  - id: fedex
+    name: "FedEx"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: progressive
+    name: "Progressive"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: lowes
+    name: "Lowe's"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: energy-transfer
+    name: "Energy Transfer"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: procter-gamble
+    name: "Procter & Gamble"
+    categories:
+      - fortune-100
+    aliases:
+      - "P&G"
+  - id: sysco
+    name: "Sysco"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: american-express
+    name: "American Express"
+    categories:
+      - fortune-100
+    aliases:
+      - "Amex"
+  - id: albertsons
+    name: "Albertsons"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: archer-daniels-midland
+    name: "Archer Daniels Midland"
+    categories:
+      - fortune-100
+    aliases:
+      - "ADM"
+  - id: metlife
+    name: "MetLife"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: hca-healthcare
+    name: "HCA Healthcare"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: new-york-life
+    name: "New York Life Insurance"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: capital-one
+    name: "Capital One Financial"
+    categories:
+      - fortune-100
+    aliases:
+      - "Capital One"
+  - id: allstate
+    name: "Allstate"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: eli-lilly
+    name: "Eli Lilly"
+    categories:
+      - fortune-100
+    aliases:
+      - "Lilly"
+  - id: merck
+    name: "Merck"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: nationwide
+    name: "Nationwide"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: delta-air-lines
+    name: "Delta Air Lines"
+    categories:
+      - fortune-100
+    aliases:
+      - "Delta"
+  - id: publix
+    name: "Publix Super Markets"
+    categories:
+      - fortune-100
+    aliases:
+      - "Publix"
+  - id: pfizer
+    name: "Pfizer"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: td-synnex
+    name: "TD Synnex"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: conocophillips
+    name: "ConocoPhillips"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: galaxy-digital
+    name: "Galaxy Digital"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: abbvie
+    name: "AbbVie"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: prudential-financial
+    name: "Prudential Financial"
+    categories:
+      - fortune-100
+    aliases:
+      - "Prudential"
+  - id: tjx
+    name: "TJX"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: performance-food-group
+    name: "Performance Food Group"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: united-airlines
+    name: "United Airlines Holdings"
+    categories:
+      - fortune-100
+    aliases:
+      - "United Airlines"
+  - id: hp
+    name: "HP"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: charter-communications
+    name: "Charter Communications"
+    categories:
+      - fortune-100
+    aliases:
+      - "Spectrum"
+  - id: american-airlines
+    name: "American Airlines Group"
+    categories:
+      - fortune-100
+    aliases:
+      - "American Airlines"
+  - id: tyson-foods
+    name: "Tyson Foods"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: enterprise-products
+    name: "Enterprise Products Partners"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: ingram-micro
+    name: "Ingram Micro Holding"
+    categories:
+      - fortune-100
+    aliases:
+      - "Ingram Micro"
+  - id: general-dynamics
+    name: "General Dynamics"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: usaa
+    name: "USAA"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: tiaa
+    name: "TIAA"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: liberty-mutual
+    name: "Liberty Mutual Insurance Group"
+    categories:
+      - fortune-100
+    aliases:
+      - "Liberty Mutual"
+  - id: travelers
+    name: "Travelers"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: bristol-myers-squibb
+    name: "Bristol-Myers Squibb"
+    categories:
+      - fortune-100
+    aliases:
+      - "BMS"
+  - id: coca-cola
+    name: "Coca-Cola"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: nike
+    name: "Nike"
+    categories:
+      - fortune-100
+    aliases: []
+  - id: massmutual
+    name: "Massachusetts Mutual Life"
+    categories:
+      - fortune-100
+    aliases:
+      - "MassMutual"

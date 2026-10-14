@@ -73,15 +73,25 @@ def test_load_config_allows_a_slower_or_disabled_source(tmp_path: Path) -> None:
     assert load_app_config(tmp_path).sources[0].interval_minutes == 5
 
 
-def test_every_enabled_committed_source_polls_at_exactly_its_tier(app_config: AppConfig) -> None:
-    """The freshness objectives in the spec (6/11/16 minutes) hold only at the tier interval."""
-    off_tier = sorted(
+def test_every_enabled_committed_source_polls_at_its_tier_or_says_why_not(
+    app_config: AppConfig,
+) -> None:
+    """The freshness objectives in the spec (6/11/16 minutes) hold only at the tier interval.
+
+    A source may poll more slowly (a large whole-board walk, a 429 back-off), but only with a
+    recorded ``slow_poll_reason``; nothing may poll faster than its tier.
+    """
+    unexplained = sorted(
         (source.id, source.interval_minutes, TIER_INTERVAL_MINUTES[source.source_class])
         for source in app_config.sources
         if source.enabled
         and source.interval_minutes != TIER_INTERVAL_MINUTES[source.source_class]
+        and not (
+            source.interval_minutes > TIER_INTERVAL_MINUTES[source.source_class]
+            and str(source.parameters.get("slow_poll_reason", "")).strip()
+        )
     )
-    assert off_tier == []
+    assert unexplained == []
 
 
 def test_load_config_requires_every_target_to_have_source_or_review_status(tmp_path: Path) -> None:

@@ -198,3 +198,25 @@ Sources scoped to the provider's own internship classification (the Workday inte
 internships team, Google's `employment_type=INTERN`) carry `asserted_employment_type: Intern`, so
 the `production-matches-intern-type` filter alerts on postings whose titles omit "intern" (11 of
 Samsung's 13, Google's Student Researcher roles). Text-search and whole-board scopes do not.
+
+### Phase 3 — Fortune 100 (2026 list)
+
+The 80 Fortune 100 companies not already in the registry were added under `fortune-100` (the 20
+already present gained the category) and audited on 2026-10-14: 1 `SUPPORTED`, 32 `BLOCKED`,
+23 `FALLBACK_ONLY`, 24 `NEEDS_MANUAL_REVIEW`. Provider evidence among the latter: Workday 7 (all
+promoted below), Eightfold 5 (American Express, Capital One, Chevron, Citigroup, Morgan Stanley; no
+list endpoint derived yet), SuccessFactors 3 (American Airlines, Exxon Mobil, Phillips 66), Oracle 3
+(JPMorgan Chase, UnitedHealth Group, Enterprise Products), iCIMS 2 (PepsiCo, State Farm). Source of
+the ranking: the 2026 Fortune 500 as listed by DemandSage, whose top 10 matches Fortune's 2026-06-03
+announcement.
+
+| Phase | Company | Source | Scope | Live check | Allowlisted |
+| --- | --- | --- | --- | --- | --- |
+| 3 | Galaxy Digital | `galaxy-digital-greenhouse` | whole board (Greenhouse) | audit 2026-10-14: 39 twice | after two clean scheduler cycles |
+| 3 | Target | `target-workday` | facet Intern (unscoped board hits the cap) | 2026-10-14: 128 twice, 7 pages | after two clean scheduler cycles |
+| 3 | Nike | `nike-workday` (30 min) | whole board (478; no intern facet) | 2026-10-14: 478 twice, 24 pages | after two clean scheduler cycles |
+| 3 | Coca-Cola | `coca-cola-workday` | facet Interim & Interns (no asserted type) | 2026-10-14: 8 twice | after two clean scheduler cycles |
+| 3 | Elevance Health | `elevance-health-workday` | facet Interns | 2026-10-14: 7 twice | after two clean scheduler cycles |
+| 3 | Bank of America | `bank-of-america-workday` | facet EE - Intern (Fixed Term) | 2026-10-14: 2 twice | after two clean scheduler cycles |
+| 3 | Comcast | `comcast-workday` | facet Intern (Trainee) | 2026-10-14: 2 twice | after two clean scheduler cycles |
+| 3 | Allstate | `allstate-workday` | facet Intern/Co-Op (Fixed Term) | 2026-10-14: 1 twice | after two clean scheduler cycles |

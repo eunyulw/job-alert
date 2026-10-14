@@ -2599,7 +2599,7 @@ checkboxes are per phase:
 
 - [ ] Phase 1: FAANG tier — sources done 2026-10-14 for Amazon, NVIDIA, Apple, Google, Netflix (allowlisting waits for two clean cycles); Microsoft deferred (429 rate limit, needs a paced Eightfold PCSX source); Meta has no public endpoint
 - [ ] Phase 2: Workday registry unlock — 7 of 8 sources done 2026-10-14 (Boston Dynamics, Rockwell, Zebra, Boeing, Intel, Samsung, CrowdStrike); Stryker blocked by a stub posting; allowlisting waits for two clean cycles
-- [ ] Phase 3: Fortune 100
+- [ ] Phase 3: Fortune 100 — inventory and audit done 2026-10-14; 8 sources enabled (Galaxy Digital, Target, Nike, Coca-Cola, Elevance, Bank of America, Comcast, Allstate); next: Eightfold endpoints for 5 companies, then a SuccessFactors adapter (3 here + 7 earlier candidates), Oracle (3 + 2), iCIMS (2 + 2)
 - [ ] Phase 4: Fortune 500 batches
 
 ## Execution Checkpoints
