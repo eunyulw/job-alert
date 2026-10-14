@@ -23,23 +23,33 @@ def _module() -> ModuleType:
     return module
 
 
-def test_the_agent_runs_the_monitor_from_this_checkout_with_laptop_delivery() -> None:
-    agent = _module().render(ROOT, mode="live-suppressed")
+RUNTIME = Path("/Users/someone/Library/Application Support/FastJobAlert")
+
+
+def test_the_agent_runs_a_staged_runtime_outside_privacy_protected_folders() -> None:
+    """launchd agents cannot read ~/Documents, so the agent touches nothing in the checkout."""
+    agent = _module().render(RUNTIME, mode="live-suppressed")
 
     assert agent["Label"] == "com.fastjobalert.monitor"
     arguments = agent["ProgramArguments"]
-    assert arguments[0] == str(ROOT / ".venv" / "bin" / "job-alert")
+    assert arguments[0] == str(RUNTIME / "venv" / "bin" / "job-alert")
     assert arguments[1] == "run"
     assert arguments[arguments.index("--mode") + 1] == "live-suppressed"
     assert arguments[arguments.index("--provider") + 1] == "macos"
-    assert arguments[arguments.index("--config") + 1] == str(ROOT / "config")
-    assert arguments[arguments.index("--db") + 1] == str(ROOT / "data" / "job-alert.sqlite3")
-    assert all(Path(part).is_absolute() for part in arguments if part.startswith("/"))
-    assert agent["WorkingDirectory"] == str(ROOT)
+    assert arguments[arguments.index("--config") + 1] == str(RUNTIME / "config")
+    assert arguments[arguments.index("--db") + 1] == str(RUNTIME / "data" / "job-alert.sqlite3")
+    paths = [part for part in arguments if part.startswith("/")]
+    paths += [agent["WorkingDirectory"], agent["StandardOutPath"], agent["StandardErrorPath"]]
+    assert all(Path(path).is_relative_to(RUNTIME) for path in paths)
+
+
+def test_the_default_runtime_is_in_application_support() -> None:
+    runtime = _module().RUNTIME
+    assert runtime == Path.home() / "Library" / "Application Support" / "FastJobAlert"
 
 
 def test_the_agent_restarts_after_failures_without_spinning() -> None:
-    agent = _module().render(ROOT, mode="live")
+    agent = _module().render(RUNTIME, mode="live")
 
     assert agent["RunAtLoad"] is True
     assert agent["KeepAlive"] is True
@@ -48,20 +58,57 @@ def test_the_agent_restarts_after_failures_without_spinning() -> None:
     assert agent["ProcessType"] == "Background"
 
 
-def test_the_agent_can_find_homebrew_tools_and_logs_under_data() -> None:
-    agent = _module().render(ROOT, mode="live")
+def test_the_agent_can_find_homebrew_tools_and_logs_in_the_runtime() -> None:
+    agent = _module().render(RUNTIME, mode="live")
 
     # launchd starts agents with /usr/bin:/bin:/usr/sbin:/sbin, which has no terminal-notifier.
     assert "/opt/homebrew/bin" in agent["EnvironmentVariables"]["PATH"].split(":")
-    assert agent["StandardOutPath"].startswith(str(ROOT / "data" / "logs"))
-    assert agent["StandardErrorPath"].startswith(str(ROOT / "data" / "logs"))
+    assert agent["StandardErrorPath"] == str(RUNTIME / "logs" / "job-alert.err.log")
+
+
+def test_config_is_copied_into_the_runtime_replacing_the_old_copy(tmp_path: Path) -> None:
+    module = _module()
+    source = tmp_path / "checkout" / "config"
+    source.mkdir(parents=True)
+    (source / "filters.yaml").write_text("filters: []\n", encoding="utf-8")
+    runtime = tmp_path / "runtime"
+    (runtime / "config").mkdir(parents=True)
+    (runtime / "config" / "stale.yaml").write_text("old", encoding="utf-8")
+
+    module.sync_config(source, runtime)
+
+    assert sorted(path.name for path in (runtime / "config").iterdir()) == ["filters.yaml"]
+
+
+def test_a_seeded_checkout_database_moves_once_and_never_overwrites(tmp_path: Path) -> None:
+    import sqlite3
+
+    module = _module()
+    checkout_db = tmp_path / "checkout" / "data" / "job-alert.sqlite3"
+    checkout_db.parent.mkdir(parents=True)
+    with sqlite3.connect(checkout_db) as connection:
+        connection.execute("CREATE TABLE marker (value TEXT)")
+        connection.execute("INSERT INTO marker VALUES ('seeded')")
+    connection.close()
+    runtime = tmp_path / "runtime"
+
+    assert module.adopt_database(checkout_db, runtime) is True
+    assert not checkout_db.exists()
+    adopted = module.database(runtime)
+    with sqlite3.connect(adopted) as connection:
+        assert connection.execute("SELECT value FROM marker").fetchone() == ("seeded",)
+    connection.close()
+
+    checkout_db.write_bytes(b"a later, different file")
+    assert module.adopt_database(checkout_db, runtime) is False
+    assert checkout_db.exists()
 
 
 def test_only_the_two_running_modes_can_be_installed() -> None:
     module = _module()
     for mode in ("dry-run", "baseline", "anything"):
         with pytest.raises(ValueError, match="mode"):
-            module.render(ROOT, mode=mode)
+            module.render(RUNTIME, mode=mode)
 
 
 def test_print_emits_a_valid_property_list() -> None:

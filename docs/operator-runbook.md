@@ -13,6 +13,8 @@ All commands run from the repository root.
    ```sh
    uv sync
    brew install terminal-notifier   # optional: makes a click open the posting
+   # if brew refuses with "untrusted tap osrf/simulation", run `brew trust osrf/simulation` first
+   # (only if you trust that tap), then re-run `install` so the agent picks terminal-notifier up
    uv run job-alert notify-test     # provider macos is the default
    ```
 
@@ -24,6 +26,7 @@ All commands run from the repository root.
 
    ```sh
    uv run job-alert baseline --all --confirm-seed --report reports/baseline.json
+   # once the agent is installed, add --db ~/Library/Application\ Support/FastJobAlert/data/job-alert.sqlite3
    ```
 
 3. **Choose what alerts you.** Edit the `production-matches` filter in `config/filters.yaml` (title
@@ -38,15 +41,24 @@ All commands run from the repository root.
 
    ```sh
    python3 scripts/macos_launch_agent.py install --mode live-suppressed   # collect, no alerts
-   # after setting notify: true on production-matches:
    python3 scripts/macos_launch_agent.py install --mode live              # alerts on
-   python3 scripts/macos_launch_agent.py uninstall                        # stop
+   python3 scripts/macos_launch_agent.py status                           # state and last log lines
+   python3 scripts/macos_launch_agent.py uninstall                        # stop (state is kept)
    ```
 
-   The agent starts at login, restarts if it exits (at most once every five minutes), and logs to
-   `data/logs/`. `tail -f data/logs/job-alert.err.log` shows each cycle. If LIVE is refused, the
-   reason is the last line of that log. A sleeping laptop does not poll, and the first cycle after
-   wake catches up.
+   macOS privacy protection stops background agents from reading `~/Documents`, so `install` stages
+   a self-contained runtime in `~/Library/Application Support/FastJobAlert`. That runtime holds a venv
+   built from `uv.lock`, a copy of `config/`, the database `data/job-alert.sqlite3`, `reports/`, and
+   `logs/`. **Run `install` again after changing code or `config/`**; the database is kept. On the
+   first install, a database seeded in the checkout's `data/` is moved into the runtime.
+
+   The agent starts at login, restarts if it exits (at most once every five minutes), and a sleeping
+   laptop catches up on the first cycle after wake. If LIVE is refused, the reason is the last line
+   of `logs/job-alert.err.log`. Point manual commands at the runtime database, for example:
+
+   ```sh
+   uv run job-alert report health --db ~/Library/Application\ Support/FastJobAlert/data/job-alert.sqlite3
+   ```
 
 **What LIVE allows.** A notifying filter with an `include_companies` allowlist is a canary, and it
 may alert below the 90% coverage gate, as long as every company it names has an enabled source.
@@ -55,9 +67,8 @@ Removing the allowlist is broad activation. That stays refused until direct cove
 as laptop notifications in LIVE mode.
 
 Reports, backups, source disabling, `429` handling, and schema changes work as described below; on the
-laptop, run each command directly with `uv run job-alert …` against `data/job-alert.sqlite3`, and use
-`python3 scripts/backup_sqlite.py` without Docker. After editing `config/`, reload the agent by running
-`install` again.
+laptop, run each command directly with `uv run job-alert …` and `--db` pointed at the runtime database,
+and use `python3 scripts/backup_sqlite.py` without Docker. After editing `config/`, run `install` again.
 
 ## Server container (later: always-on and mobile)
 

@@ -2414,10 +2414,15 @@ is broad, and refuses an allowlist naming a company that has no enabled source (
 
 - [ ] **Step 3: Install as a LaunchAgent**
 
-`scripts/macos_launch_agent.py install|uninstall|print` renders
-`~/Library/LaunchAgents/com.fastjobalert.monitor.plist` with absolute paths to the repository's
-`.venv/bin/job-alert`, `config/`, `data/job-alert.sqlite3`, and logs under `data/logs/`, with
-`RunAtLoad` and `KeepAlive`, and loads it with `launchctl bootstrap gui/<uid>`. The mode is an argument
+`scripts/macos_launch_agent.py install|status|uninstall|print` renders
+`~/Library/LaunchAgents/com.fastjobalert.monitor.plist` with `RunAtLoad`, `KeepAlive`, and a
+five-minute restart throttle, and loads it with `launchctl bootstrap gui/<uid>`. *Found on first
+install:* macOS privacy protection (TCC) blocks a launchd agent from executing or reading anything
+under `~/Documents`, where the checkout lives. So `install` stages a runtime in
+`~/Library/Application Support/FastJobAlert`: a venv built from `uv.lock` with the package installed
+non-editable, a copy of `config/`, the database, reports, and logs. A database already seeded in the
+checkout is moved in once. Granting Full Disk Access to a shell or interpreter was rejected as too
+broad. The mode is an argument
 (default `live-suppressed`). Tests cover the rendered plist only; they never call `launchctl`.
 
 - [ ] **Step 4: Send the explicit test notification**

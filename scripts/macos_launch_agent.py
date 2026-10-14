@@ -1,15 +1,21 @@
 """Install the monitor as a macOS LaunchAgent, so laptop alerts run whenever you are logged in.
 
-    python scripts/macos_launch_agent.py print [--mode live-suppressed|live]
-    python scripts/macos_launch_agent.py install [--mode live-suppressed|live]
-    python scripts/macos_launch_agent.py uninstall
+    python3 scripts/macos_launch_agent.py install [--mode live-suppressed|live]
+    python3 scripts/macos_launch_agent.py status
+    python3 scripts/macos_launch_agent.py print [--mode live-suppressed|live]
+    python3 scripts/macos_launch_agent.py uninstall
 
-The agent runs ``job-alert run --provider macos`` from this checkout's ``.venv`` (create it with
-``uv sync``), keeps state in ``data/job-alert.sqlite3``, and logs to ``data/logs/``. It starts at
-login, restarts if it exits, and waits five minutes between restarts so a refused LIVE gate does not
-spin. A sleeping laptop does not poll; the loop resumes on wake.
+macOS privacy protection (TCC) stops a background agent from reading ``~/Documents``, ``~/Desktop``,
+and ``~/Downloads``, where a checkout often lives. ``install`` therefore stages a self-contained
+runtime in ``~/Library/Application Support/FastJobAlert``: a virtual environment built from
+``uv.lock`` with the package installed (not linked), a copy of ``config/``, and the state database,
+reports, and logs. Run ``install`` again after changing code or ``config/``; the database is kept.
+On the first install a ``data/job-alert.sqlite3`` already seeded in the checkout is moved into the
+runtime, so its baseline is not lost.
 
-``install`` replaces an existing agent with the same label. Only the standard library is used.
+The agent runs ``job-alert run --provider macos``, starts at login, restarts if it exits, and waits
+five minutes between restarts so a refused LIVE gate does not spin. A sleeping laptop does not poll;
+the loop resumes on wake. Only the standard library is used; ``install`` needs ``uv`` on ``PATH``.
 """
 
 from __future__ import annotations
@@ -17,6 +23,8 @@ from __future__ import annotations
 import argparse
 import os
 import plistlib
+import shutil
+import sqlite3
 import subprocess
 import sys
 from pathlib import Path
@@ -29,39 +37,44 @@ RESTART_THROTTLE_SECONDS = 300
 #: launchd starts agents with only the system directories on PATH.
 AGENT_PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 ROOT = Path(__file__).resolve().parents[1]
+RUNTIME = Path.home() / "Library" / "Application Support" / "FastJobAlert"
 
 
 def agent_path() -> Path:
     return Path.home() / "Library" / "LaunchAgents" / f"{LABEL}.plist"
 
 
-def _logs(root: Path) -> tuple[Path, Path]:
-    directory = root / "data" / "logs"
+def database(runtime: Path) -> Path:
+    return runtime / "data" / "job-alert.sqlite3"
+
+
+def _logs(runtime: Path) -> tuple[Path, Path]:
+    directory = runtime / "logs"
     return directory / "job-alert.out.log", directory / "job-alert.err.log"
 
 
-def render(root: Path, *, mode: str) -> dict[str, Any]:
-    """The LaunchAgent property list for a checkout at ``root``."""
+def render(runtime: Path, *, mode: str) -> dict[str, Any]:
+    """The LaunchAgent property list for a runtime staged at ``runtime``."""
     if mode not in MODES:
         raise ValueError(f"mode must be one of {', '.join(MODES)}, not {mode!r}")
-    stdout, stderr = _logs(root)
+    stdout, stderr = _logs(runtime)
     return {
         "Label": LABEL,
         "ProgramArguments": [
-            str(root / ".venv" / "bin" / "job-alert"),
+            str(runtime / "venv" / "bin" / "job-alert"),
             "run",
             "--config",
-            str(root / "config"),
+            str(runtime / "config"),
             "--db",
-            str(root / "data" / "job-alert.sqlite3"),
+            str(database(runtime)),
             "--mode",
             mode,
             "--provider",
             "macos",
             "--digest-report",
-            str(root / "data" / "reports" / "daily-digest.md"),
+            str(runtime / "reports" / "daily-digest.md"),
         ],
-        "WorkingDirectory": str(root),
+        "WorkingDirectory": str(runtime),
         "EnvironmentVariables": {"PATH": AGENT_PATH},
         "RunAtLoad": True,
         "KeepAlive": True,
@@ -79,46 +92,124 @@ def roll_over_logs(paths: list[Path]) -> None:
             path.replace(path.with_name(path.name + ".1"))
 
 
-def _launchctl(*arguments: str, check: bool) -> None:
-    subprocess.run(["launchctl", *arguments], check=check)
+def sync_config(source: Path, runtime: Path) -> None:
+    """Replace the runtime's registry with the checkout's, so the agent reads what was committed."""
+    target = runtime / "config"
+    staging = runtime / "config.new"
+    shutil.rmtree(staging, ignore_errors=True)
+    shutil.copytree(source, staging)
+    shutil.rmtree(target, ignore_errors=True)
+    staging.replace(target)
+
+
+def adopt_database(checkout_db: Path, runtime: Path) -> bool:
+    """Move a database seeded in the checkout into an empty runtime; never overwrite one."""
+    target = database(runtime)
+    if target.exists() or not checkout_db.is_file():
+        return False
+    target.parent.mkdir(parents=True, exist_ok=True)
+    reader = sqlite3.connect(f"file:{checkout_db}?mode=ro", uri=True)
+    try:
+        writer = sqlite3.connect(target)
+        try:
+            reader.backup(writer)
+        finally:
+            writer.close()
+    finally:
+        reader.close()
+    for suffix in ("", "-wal", "-shm"):
+        Path(f"{checkout_db}{suffix}").unlink(missing_ok=True)
+    return True
+
+
+def _stage_environment(runtime: Path) -> None:
+    """A virtual environment with the locked dependencies and an installed copy of the package."""
+    venv = runtime / "venv"
+    python = venv / "bin" / "python"
+    requirements = runtime / "requirements.txt"
+    subprocess.run(["uv", "venv", "--allow-existing", "--python", "3.12", str(venv)], check=True)
+    subprocess.run(
+        ["uv", "export", "--frozen", "--no-dev", "--no-emit-project", "--no-hashes",
+         "--output-file", str(requirements)],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.DEVNULL,
+    )
+    subprocess.run(
+        ["uv", "pip", "install", "--python", str(python), "-r", str(requirements)], check=True
+    )
+    subprocess.run(
+        ["uv", "pip", "install", "--python", str(python), "--no-deps", "--reinstall",
+         "--no-cache", str(ROOT)],
+        check=True,
+    )
+
+
+def _launchctl(*arguments: str) -> subprocess.CompletedProcess[bytes]:
+    return subprocess.run(["launchctl", *arguments], capture_output=True, check=False)
 
 
 def install(mode: str) -> int:
-    executable = ROOT / ".venv" / "bin" / "job-alert"
-    if not executable.is_file():
-        print(f"missing {executable}: run 'uv sync' in {ROOT} first", file=sys.stderr)
+    if shutil.which("uv") is None:
+        print("install needs uv on PATH: https://docs.astral.sh/uv/", file=sys.stderr)
         return 2
-    agent = render(ROOT, mode=mode)
-    stdout, stderr = _logs(ROOT)
+    RUNTIME.mkdir(parents=True, exist_ok=True)
+    domain = f"gui/{os.getuid()}"
+    _launchctl("bootout", f"{domain}/{LABEL}")  # nothing to stop on a first install
+    _stage_environment(RUNTIME)
+    sync_config(ROOT / "config", RUNTIME)
+    if adopt_database(ROOT / "data" / "job-alert.sqlite3", RUNTIME):
+        print(f"moved the checkout's seeded database to {database(RUNTIME)}")
+    stdout, stderr = _logs(RUNTIME)
     stdout.parent.mkdir(parents=True, exist_ok=True)
     roll_over_logs([stdout, stderr])
     target = agent_path()
     target.parent.mkdir(parents=True, exist_ok=True)
-    domain = f"gui/{os.getuid()}"
-    _launchctl("bootout", f"{domain}/{LABEL}", check=False)
-    target.write_bytes(plistlib.dumps(agent))
-    _launchctl("bootstrap", domain, str(target), check=True)
-    print(f"installed {target} in {mode} mode; logs in {stdout.parent}")
+    target.write_bytes(plistlib.dumps(render(RUNTIME, mode=mode)))
+    loaded = _launchctl("bootstrap", domain, str(target))
+    if loaded.returncode != 0:
+        print(loaded.stderr.decode(errors="replace").strip(), file=sys.stderr)
+        return 1
+    print(f"installed {LABEL} in {mode} mode; runtime and logs in {RUNTIME}")
     return 0
 
 
+def status() -> int:
+    state = _launchctl("print", f"gui/{os.getuid()}/{LABEL}")
+    lines = state.stdout.decode(errors="replace").splitlines()
+    loaded = state.returncode == 0
+    print(f"agent: {'loaded' if loaded else 'not loaded'}")
+    for line in lines:
+        if line.strip().startswith(("state =", "pid =", "last exit code =")):
+            print(f"  {line.strip()}")
+    print(f"database: {database(RUNTIME)}")
+    _, stderr = _logs(RUNTIME)
+    if stderr.is_file():
+        print(f"log: {stderr}")
+        for line in stderr.read_text(encoding="utf-8", errors="replace").splitlines()[-5:]:
+            print(f"  {line}")
+    return 0 if loaded else 1
+
+
 def uninstall() -> int:
-    _launchctl("bootout", f"gui/{os.getuid()}/{LABEL}", check=False)
+    _launchctl("bootout", f"gui/{os.getuid()}/{LABEL}")
     agent_path().unlink(missing_ok=True)
-    print(f"removed {LABEL}")
+    print(f"removed {LABEL}; the runtime and its database stay in {RUNTIME}")
     return 0
 
 
 def main(arguments: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("command", choices=("print", "install", "uninstall"))
+    parser.add_argument("command", choices=("print", "install", "status", "uninstall"))
     parser.add_argument("--mode", choices=MODES, default="live-suppressed")
     options = parser.parse_args(arguments)
     if options.command == "print":
-        sys.stdout.buffer.write(plistlib.dumps(render(ROOT, mode=options.mode)))
+        sys.stdout.buffer.write(plistlib.dumps(render(RUNTIME, mode=options.mode)))
         return 0
     if options.command == "install":
         return install(options.mode)
+    if options.command == "status":
+        return status()
     return uninstall()
 
 

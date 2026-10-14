@@ -157,23 +157,25 @@ def test_filter_config_rejects_an_unknown_timezone() -> None:
         FilterConfig(id="bad-zone", quiet_hours_start="22:00", quiet_hours_end="07:00", timezone="")
 
 
-def test_repository_filters_stay_disabled_and_restriction_free(app_config: AppConfig) -> None:
+def test_repository_filters_are_the_approved_internship_canary(app_config: AppConfig) -> None:
     records = {record.id: record for record in app_config.filters}
-    assert set(records) == {"all-jobs-dry-run", "production-matches"}
-    for record in records.values():
-        assert record.notify is False
-        assert record.include_companies == []
-        assert record.include_title_keywords == []
-        assert record.exclude_title_keywords == []
-        assert record.include_locations == []
-        assert record.workplace_types == []
-        assert record.categories == []
-        assert record.departments == []
-        assert record.description_keywords == []
-        assert record.employment_types == []
-        assert record.priority is FilterPriority.NORMAL
-        assert record.quiet_hours_start is None
-        assert record.quiet_hours_end is None
-        assert record.timezone is None
-    assert records["all-jobs-dry-run"].enabled is True
-    assert records["production-matches"].enabled is False
+    assert set(records) == {
+        "all-jobs-dry-run",
+        "production-matches",
+        "production-matches-intern-type",
+    }
+    dry_run = records["all-jobs-dry-run"]
+    assert dry_run.enabled is True and dry_run.notify is False
+    assert dry_run.include_companies == [] and dry_run.include_title_keywords == []
+
+    polled = {source.company_id for source in app_config.sources if source.enabled}
+    canary = {"1x", "standard-bots", "intrinsic", "serve-robotics", "neuralink"}
+    for record_id in ("production-matches", "production-matches-intern-type"):
+        record = records[record_id]
+        assert record.enabled is True and record.notify is True
+        # An allowlist keeps the canary out of broad activation, and every company it names must
+        # have an enabled source or LIVE refuses it.
+        assert set(record.include_companies) == canary <= polled
+        assert record.quiet_hours_start is None and record.timezone is None
+    assert records["production-matches"].include_title_keywords == ["intern", "co-op"]
+    assert records["production-matches-intern-type"].employment_types == ["intern"]
