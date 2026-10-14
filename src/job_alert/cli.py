@@ -64,6 +64,7 @@ from job_alert.notifications.base import (
     NotificationMessage,
     Notifier,
 )
+from job_alert.openings import write_openings_page
 from job_alert.scheduler import (
     DEFAULT_ALERT_URL,
     Scheduler,
@@ -84,6 +85,7 @@ DEFAULT_MARKDOWN_PATH = Path("docs/source-audit.md")
 DEFAULT_DB_PATH = Path("data/job-alert.sqlite3")
 DEFAULT_COVERAGE_PATH = Path("reports/coverage.md")
 DEFAULT_DIGEST_PATH = Path("reports/daily-digest.md")
+DEFAULT_OPENINGS_PATH = Path("reports/openings.html")
 DEFAULT_RETRY_LIMIT = 100
 TEST_MESSAGE_TITLE = "TEST \u2014 Fast Job Alert"
 #: Laptop notifications ship first; Pushover (Android) follows in Task 28 of the plan.
@@ -787,6 +789,10 @@ def run_monitor(
     digest_report: Annotated[
         Path, typer.Option("--digest-report", help="Daily digest markdown path")
     ] = DEFAULT_DIGEST_PATH,
+    openings_page: Annotated[
+        Path,
+        typer.Option("--openings-page", help="HTML page of matching openings, kept current"),
+    ] = DEFAULT_OPENINGS_PATH,
 ) -> None:
     """Run the scheduler until it is stopped.
 
@@ -813,6 +819,8 @@ def run_monitor(
         notifier=notifier,
         alert_url=alert_url,
         digest_report_path=digest_report,
+        openings_page_path=openings_page,
+        filters=app_config.filters,
         logger=lambda line: typer.secho(line, err=True),
     )
     report = asyncio.run(_run_scheduler(scheduler, max_wakes=1 if once else max_wakes))
@@ -891,6 +899,33 @@ def report_health(
         typer.echo(json.dumps(digest_payload(digest), indent=2))
         return
     typer.echo(digest.text)
+
+
+@report_app.command("openings")
+def report_openings(
+    html_path: Annotated[
+        Path, typer.Option("--html", help="Where to write the openings page")
+    ] = DEFAULT_OPENINGS_PATH,
+    db: DbPathOption = DEFAULT_DB_PATH,
+    config: ConfigPathOption = DEFAULT_CONFIG_DIR,
+) -> None:
+    """Write the page of open postings an alerting filter matches, with hours open."""
+    app_config = _config_or_refuse(config)
+    repository = _open_repository_for_read(db)
+    try:
+        count = write_openings_page(
+            html_path,
+            repository,
+            sources=app_config.sources,
+            filters=app_config.filters,
+            companies=app_config.companies,
+            now=datetime.now(UTC),
+        )
+    except sqlite3.Error as exc:
+        _refuse(f"cannot read state from {db}: {exc}")
+    finally:
+        repository.close()
+    typer.echo(f"wrote {html_path} with {count} matching opening(s)")
 
 
 @app.command("notify-test")

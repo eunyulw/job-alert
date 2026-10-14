@@ -1055,6 +1055,24 @@ class Repository:
         ).fetchall()
         return [_job_from_row(row) for row in rows]
 
+    def first_detections(self) -> dict[str, datetime]:
+        """When each posting was first detected as new or reopened, by canonical job key.
+
+        A posting a baseline seeded has no such event: it was already open when monitoring began,
+        so it is absent here rather than given the seeding instant.
+        """
+        rows = self._connection.execute(
+            "SELECT canonical_job_key, MIN(detected_at) AS detected_at FROM job_events"
+            " WHERE event_type IN (?, ?) GROUP BY canonical_job_key",
+            (JobEventType.NEW.value, JobEventType.REOPENED.value),
+        ).fetchall()
+        detections: dict[str, datetime] = {}
+        for row in rows:
+            moment = _parse_timestamp(row["detected_at"])
+            if moment is not None:
+                detections[str(row["canonical_job_key"])] = moment
+        return detections
+
     def last_complete_job_keys(self, source_id: str) -> set[str]:
         """Return the canonical keys observed by the most recent complete run of a source.
 

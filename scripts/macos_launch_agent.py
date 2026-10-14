@@ -2,6 +2,7 @@
 
     python3 scripts/macos_launch_agent.py install [--mode live-suppressed|live]
     python3 scripts/macos_launch_agent.py status
+    python3 scripts/macos_launch_agent.py page      # open the openings page in the browser
     python3 scripts/macos_launch_agent.py print [--mode live-suppressed|live]
     python3 scripts/macos_launch_agent.py uninstall
 
@@ -45,6 +46,10 @@ def agent_path() -> Path:
     return Path.home() / "Library" / "LaunchAgents" / f"{LABEL}.plist"
 
 
+def openings_page(runtime: Path) -> Path:
+    return runtime / "reports" / "openings.html"
+
+
 def database(runtime: Path) -> Path:
     return runtime / "data" / "job-alert.sqlite3"
 
@@ -74,6 +79,8 @@ def render(runtime: Path, *, mode: str) -> dict[str, Any]:
             "macos",
             "--digest-report",
             str(runtime / "reports" / "daily-digest.md"),
+            "--openings-page",
+            str(openings_page(runtime)),
         ],
         "WorkingDirectory": str(runtime),
         "EnvironmentVariables": {"PATH": AGENT_PATH},
@@ -205,6 +212,17 @@ def status() -> int:
     return 0 if loaded else 1
 
 
+def page() -> int:
+    """Open the openings page the agent keeps current."""
+    target = openings_page(RUNTIME)
+    if not target.is_file():
+        print(f"no page yet at {target}: is the agent installed and running?", file=sys.stderr)
+        return 1
+    subprocess.run(["open", str(target)], check=False)
+    print(target)
+    return 0
+
+
 def uninstall() -> int:
     _launchctl("bootout", f"gui/{os.getuid()}/{LABEL}")
     agent_path().unlink(missing_ok=True)
@@ -214,7 +232,7 @@ def uninstall() -> int:
 
 def main(arguments: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("command", choices=("print", "install", "status", "uninstall"))
+    parser.add_argument("command", choices=("print", "install", "status", "page", "uninstall"))
     parser.add_argument("--mode", choices=MODES, default="live-suppressed")
     options = parser.parse_args(arguments)
     if options.command == "print":
@@ -224,6 +242,8 @@ def main(arguments: list[str]) -> int:
         return install(options.mode)
     if options.command == "status":
         return status()
+    if options.command == "page":
+        return page()
     return uninstall()
 
 

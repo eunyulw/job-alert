@@ -38,6 +38,9 @@ def test_the_agent_runs_a_staged_runtime_outside_privacy_protected_folders() -> 
     assert arguments[arguments.index("--provider") + 1] == "macos"
     assert arguments[arguments.index("--config") + 1] == str(RUNTIME / "config")
     assert arguments[arguments.index("--db") + 1] == str(RUNTIME / "data" / "job-alert.sqlite3")
+    assert arguments[arguments.index("--openings-page") + 1] == str(
+        RUNTIME / "reports" / "openings.html"
+    )
     paths = [part for part in arguments if part.startswith("/")]
     paths += [agent["WorkingDirectory"], agent["StandardOutPath"], agent["StandardErrorPath"]]
     assert all(Path(path).is_relative_to(RUNTIME) for path in paths)

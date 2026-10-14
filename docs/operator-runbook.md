@@ -43,6 +43,7 @@ All commands run from the repository root.
    python3 scripts/macos_launch_agent.py install --mode live-suppressed   # collect, no alerts
    python3 scripts/macos_launch_agent.py install --mode live              # alerts on
    python3 scripts/macos_launch_agent.py status                           # state and last log lines
+   python3 scripts/macos_launch_agent.py page                             # open the openings page
    python3 scripts/macos_launch_agent.py uninstall                        # stop (state is kept)
    ```
 
@@ -59,6 +60,14 @@ All commands run from the repository root.
    ```sh
    uv run job-alert report health --db ~/Library/Application\ Support/FastJobAlert/data/job-alert.sqlite3
    ```
+
+**The openings page.** The agent keeps `reports/openings.html` in the runtime folder current: every
+open posting an alerting filter matches, newest first, with how many hours it has been open. It is
+rewritten after any cycle that finds new or closed postings and at least every five minutes, and the
+hours tick in the browser between rewrites. "Opened" says how the time is known: `detected` (posted
+after monitoring began, accurate to one poll interval), `posted` (the provider's own publish time),
+or `before monitoring` (already open when monitoring began, so the hours are a lower bound, shown
+with ≥). `uv run job-alert report openings --html FILE --db DB` writes the same page on demand.
 
 **What LIVE allows.** A notifying filter with an `include_companies` allowlist is a canary, and it
 may alert below the 90% coverage gate, as long as every company it names has an enabled source.

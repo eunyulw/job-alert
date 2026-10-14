@@ -754,3 +754,22 @@ def test_the_cycle_log_line_says_when_a_snapshot_only_seeded() -> None:
             complete=True,
         )
     )
+
+
+async def test_a_wake_writes_the_openings_page_and_only_again_when_due(tmp_path: Path) -> None:
+    repository = open_repository(tmp_path)
+    page = tmp_path / "reports" / "openings.html"
+    source = make_source("acme-fresh", host="a")
+    record_complete(repository, source, at=NOW - timedelta(minutes=1))
+    scheduler = build_scheduler(
+        repository, [source], RecordingService(), openings_page_path=page
+    )
+
+    await scheduler.wake(now=NOW)
+
+    assert page.read_text(encoding="utf-8").startswith("<!doctype html>")
+    page.unlink()
+    # Nothing changed and no heartbeat is due, so the next wake leaves the page alone.
+    await scheduler.wake(now=NOW + timedelta(seconds=30))
+    assert not page.exists()
+    await scheduler.wait_for_idle()

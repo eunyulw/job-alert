@@ -547,6 +547,33 @@ def test_report_health_emits_json_on_stdout(
     assert payload["open_incidents"] == []
 
 
+def test_report_openings_writes_the_page(
+    tmp_path: Path, greenhouse_endpoint: respx.Router
+) -> None:
+    config = make_config(tmp_path)
+    database = tmp_path / "state.sqlite3"
+    invoke("baseline", "--all", "--confirm-seed", "--config", str(config), "--db", str(database))
+    page = tmp_path / "out" / "openings.html"
+
+    result = invoke(
+        "report", "openings", "--html", str(page), "--config", str(config), "--db", str(database)
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "wrote" in result.stdout
+    assert page.read_text(encoding="utf-8").startswith("<!doctype html>")
+
+
+def test_report_openings_refuses_a_missing_database(tmp_path: Path) -> None:
+    config = make_config(tmp_path)
+    result = invoke(
+        "report", "openings", "--html", str(tmp_path / "o.html"),
+        "--config", str(config), "--db", str(tmp_path / "missing.sqlite3"),
+    )
+    assert result.exit_code == 2
+    assert not (tmp_path / "missing.sqlite3").exists()
+
+
 def test_report_health_refuses_a_missing_database_without_creating_one(
     tmp_path: Path, greenhouse_endpoint: respx.Router
 ) -> None:

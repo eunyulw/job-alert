@@ -35,6 +35,7 @@ uv run job-alert baseline --all --confirm-seed
 uv run job-alert run                       # scheduler, live-suppressed by default
 uv run job-alert report coverage --markdown reports/coverage.md
 uv run job-alert report health --json
+uv run job-alert report openings --html reports/openings.html   # matching openings, hours open
 uv run job-alert notify-test               # laptop notification (macos)
 ```
 
@@ -43,6 +44,7 @@ Secrets come only from the environment: `PUSHOVER_APP_TOKEN` and `PUSHOVER_USER_
 
 ## Running on the laptop
 
-`scripts/macos_launch_agent.py install` runs the monitor in the background at login. See
+`scripts/macos_launch_agent.py install` runs the monitor in the background at login, and
+`scripts/macos_launch_agent.py page` opens the openings page it keeps current. See
 `docs/operator-runbook.md` for the laptop setup, and for the container deployment (`deploy/`) that
 the later always-on and mobile phase uses.

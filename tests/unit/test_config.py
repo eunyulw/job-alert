@@ -197,11 +197,11 @@ def test_repository_filters_are_the_approved_internship_canary(app_config: AppCo
         # names must have an enabled source or LIVE refuses it.
         assert record.include_companies and set(record.include_companies) <= polled
     assert canary <= set(records["production-matches"].include_companies)
-    assert records["production-matches"].include_title_keywords == ["intern", "co-op"]
+    assert records["production-matches"].include_title_keywords == ["intern", "co-op", "student"]
     assert records["production-matches-intern-type"].employment_types == ["intern"]
     # Expansion companies alert only on internships that name robotics or mechanical work.
     expansion = records["expansion-matches"]
-    assert expansion.require_title_keywords == ["intern", "co-op"]
+    assert expansion.require_title_keywords == ["intern", "co-op", "student"]
     assert {"robot", "mechanical"} <= set(expansion.include_title_keywords)
     assert records["expansion-matches-intern-type"].employment_types == ["intern"]
     assert not set(records["production-matches"].include_companies) & set(

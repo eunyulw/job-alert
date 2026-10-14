@@ -35,7 +35,7 @@ filters:
     notify: true
     include_companies:
       [1x, standard-bots, intrinsic, serve-robotics, neuralink, boston-dynamics]
-    include_title_keywords: [intern, co-op]
+    include_title_keywords: [intern, co-op, student]
     require_title_keywords: []
     exclude_title_keywords: []
     include_locations: []
@@ -73,8 +73,8 @@ filters:
        bank-of-america, comcast, allstate]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
-       perception, motion, kinematic, machine design, product design, test engineer, maintenance]
-    require_title_keywords: [intern, co-op]
+       perception, motion, kinematic, machine design, product design, test engineer, maintenance, material]
+    require_title_keywords: [intern, co-op, student]
     exclude_title_keywords: []
     include_locations: []
     workplace_types: []
@@ -94,7 +94,7 @@ filters:
        bank-of-america, comcast, allstate]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
-       perception, motion, kinematic, machine design, product design, test engineer, maintenance]
+       perception, motion, kinematic, machine design, product design, test engineer, maintenance, material]
     require_title_keywords: []
     exclude_title_keywords: []
     include_locations: []

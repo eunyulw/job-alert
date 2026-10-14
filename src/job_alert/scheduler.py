@@ -63,6 +63,7 @@ from typing import Any
 from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
 
+from job_alert.config import FilterConfig
 from job_alert.db import (
     DEFAULT_MAX_RETRYABLE_ATTEMPTS,
     DIAGNOSTIC_ERROR_CODES,
@@ -85,6 +86,7 @@ from job_alert.health import (
 )
 from job_alert.models import CompanyTarget, RunOutcome, SourceConfig
 from job_alert.notifications.base import NotificationMessage, Notifier
+from job_alert.openings import write_openings_page
 from job_alert.service import DELIVERABLE_EVENT_TYPES, CycleResult, JobAlertService, RunMode
 
 #: How long the loop waits between wakes when nothing else is scheduled sooner.
@@ -255,6 +257,8 @@ class Scheduler:
         logger: Callable[[str], None] | None = None,
         alert_url: str = DEFAULT_ALERT_URL,
         digest_report_path: Path | None = None,
+        openings_page_path: Path | None = None,
+        filters: Sequence[FilterConfig] = (),
         wake_interval_seconds: float = DEFAULT_WAKE_INTERVAL_SECONDS,
         heartbeat_interval_seconds: float = DEFAULT_HEARTBEAT_INTERVAL_SECONDS,
         digest_hour: int = DIGEST_HOUR,
@@ -279,6 +283,12 @@ class Scheduler:
         self._logger = logger
         self._alert_url = alert_url
         self._digest_report_path = digest_report_path
+        self._openings_page_path = openings_page_path
+        self._filters = tuple(filters)
+        self._companies = tuple(companies)
+        # The page is written on the first wake, after any cycle that changed the board, and on
+        # every heartbeat, so it is never more than five minutes stale.
+        self._openings_dirty = True
         self._wake_interval_seconds = float(wake_interval_seconds)
         self._heartbeat_interval_seconds = float(heartbeat_interval_seconds)
         self._digest_hour = digest_hour
@@ -343,6 +353,8 @@ class Scheduler:
             await self.heartbeat(now=moment) if moment >= self._next_heartbeat_at else None
         )
         digest = await self.send_digest(now=moment) if moment >= self._next_digest_at else None
+        if self._openings_dirty or heartbeat is not None:
+            self._write_openings(moment)
         return WakeReport(
             now=moment,
             dispatched=tuple(source.id for source in due if source.id not in in_flight),
@@ -351,6 +363,23 @@ class Scheduler:
             heartbeat=heartbeat,
             digest=digest,
         )
+
+    def _write_openings(self, moment: datetime) -> None:
+        """Rewrite the openings page; a failure is logged, never fatal to the loop."""
+        self._openings_dirty = False
+        if self._openings_page_path is None:
+            return
+        try:
+            write_openings_page(
+                self._openings_page_path,
+                self._repository,
+                sources=self._sources,
+                filters=self._filters,
+                companies=self._companies,
+                now=moment,
+            )
+        except Exception as exc:  # the page is a convenience; collection must go on
+            self._log(f"openings page not written: {type(exc).__name__}: {exc}")
 
     async def heartbeat(self, *, now: datetime | None = None) -> HeartbeatOutcome:
         """Evaluate source health, push what it earned, and retry anything still undelivered."""
@@ -505,6 +534,8 @@ class Scheduler:
             self._log(f"{source.id}: collection failed: {type(exc).__name__}: {exc}")
             return
         self._log(_cycle_line(result))
+        if result.new_count or result.reopened_count or result.closed_count:
+            self._openings_dirty = True
         self._record_backoff(source, result)
 
     async def _deliver_pending(self, source: SourceConfig) -> None:
