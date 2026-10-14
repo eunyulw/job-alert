@@ -25,41 +25,40 @@ sources:
     - workday adapter collected 163 postings twice with identical canonical keys across 9 page(s)
   enabled: true
   audit_date: '2026-10-14'
-- id: apple-discovery
+- id: apple-apple
   company_id: apple
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.apple.com/careers/us/
+  provider: apple
+  source_class: html
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.apple.com/en-us/search?team=internships-STDNT-INTRN&sort=newest
   interval_minutes: 30
+  tenant: apple
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.apple.com/careers/us/
+    scope: team=internships-STDNT-INTRN (the Students internships team)
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: hydration JSON of the server-rendered jobs.apple.com search page
     audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
-- id: alphabet-google-discovery
+    - apple adapter collected 101 postings twice with identical canonical keys across 6 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
+- id: alphabet-google-google
   company_id: alphabet-google
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.google.com/about/careers/applications/
+  provider: google
+  source_class: html
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://www.google.com/about/careers/applications/jobs/results/?employment_type=INTERN
   interval_minutes: 30
+  tenant: google
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.google.com/about/careers/applications/
+    scope: employment_type=INTERN
+    audit_status: SUPPORTED_UNDOCUMENTED
+    audit_probed_at: '2026-10-14'
+    audit_evidence: ds:1 results block of the server-rendered google.com/about/careers results page
     audit_notes:
-    - 'linked careers page https://www.gstatic.com/_/boq-hiring/_/r/ could not be read: non-retryable HTTP 404 for https://www.gstatic.com/_/boq-hiring/_/r/'
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    - google adapter collected 77 postings twice with identical canonical keys across 4 page(s)
+  enabled: true
+  audit_date: '2026-10-14'
 - id: amazon-amazon
   company_id: amazon
   provider: amazon

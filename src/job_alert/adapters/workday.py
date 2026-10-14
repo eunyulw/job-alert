@@ -41,6 +41,7 @@ from pydantic import HttpUrl, ValidationError
 
 from job_alert.adapters.base import AdapterError
 from job_alert.adapters.common import optional_text
+from job_alert.adapters.paged import UnusableRecord, walk_scoped
 from job_alert.fetch import HttpFetcher, HttpPayload, RequestSpec
 from job_alert.identity import build_dedupe_key, build_job_key, content_hash
 from job_alert.models import CollectionResult, NormalizedJob, SourceConfig
@@ -55,10 +56,6 @@ _LOCATION_COUNT = re.compile(r"^\d+\s+locations?$", re.IGNORECASE)
 
 def _utcnow() -> datetime:
     return datetime.now(UTC)
-
-
-class _UnusableJob(ValueError):
-    """One provider record cannot be normalized, so the collection is incomplete."""
 
 
 def site_of(endpoint: str) -> tuple[str, str, str]:
@@ -82,28 +79,12 @@ class WorkdayAdapter:
         self._now = now
 
     async def collect(self, source: SourceConfig, fetcher: HttpFetcher) -> CollectionResult:
-        first, shifted = await self._walk(source, fetcher)
-        if first.complete or not shifted:
-            return first
-        second, _ = await self._walk(source, fetcher)
-        return second
-
-    async def _walk(
-        self, source: SourceConfig, fetcher: HttpFetcher
-    ) -> tuple[CollectionResult, bool]:
         origin, tenant, site = site_of(str(source.endpoint))
         facets, search_text = _scope(source)
         page_size = _page_size(source)
         first_seen_at = self._now()
-        jobs: list[NormalizedJob] = []
-        warnings: list[str] = []
-        structural = False
-        seen: set[str] = set()
-        offset = 0
-        page_count = 0
-        declared: int | None = None
 
-        while True:
+        async def fetch_page(page_index: int, offset: int) -> tuple[list[Any], int | None]:
             payload = await fetcher.post(
                 RequestSpec(
                     url=str(source.endpoint),
@@ -120,60 +101,24 @@ class WorkdayAdapter:
                 )
             )
             records, total = _parse_page(payload)
-            page_count += 1
-            if declared is None:
-                declared = total
-            if declared >= TOTAL_CAP:
-                structural = True
-                warnings.append(
-                    f"the search declares total={declared}, Workday's cap, so it cannot be read"
-                    " whole: narrow the source's applied_facets or search_text"
-                )
-                break
-            for index_in_page, record in enumerate(records):
-                index = offset + index_in_page
-                try:
-                    job = _normalize_job(
-                        record,
-                        source=source,
-                        origin=origin,
-                        tenant=f"{tenant}/{site}",
-                        site=site,
-                        first_seen_at=first_seen_at,
-                    )
-                except _UnusableJob as exc:
-                    structural = True
-                    warnings.append(f"skipped malformed job record at index {index}: {exc}")
-                    continue
-                if job.source_job_id in seen:
-                    warnings.append(
-                        f"skipped duplicate job record at index {index}: the id already appeared"
-                    )
-                    continue
-                seen.add(job.source_job_id)
-                jobs.append(job)
-            if not records or offset + len(records) >= declared:
-                break
-            if page_count >= MAX_PAGES:
-                structural = True
-                warnings.append(f"stopped after {page_count} pages: the page cap is reached")
-                break
-            offset += len(records)
+            # Workday reports the total on the first page only; later pages say 0.
+            return records, total if page_index == 0 else None
 
-        if declared is not None and declared < TOTAL_CAP and len(seen) != declared:
-            warnings.append(
-                f"collected {len(seen)} unique postings but the search declared total={declared},"
-                " so the collection is incomplete"
-            )
-        result = CollectionResult(
+        return await walk_scoped(
             source_id=source.id,
-            complete=not warnings,
-            jobs=jobs,
-            warnings=warnings,
-            page_count=page_count,
-            declared_total=declared,
+            fetch_page=fetch_page,
+            normalize=lambda record: _normalize_job(
+                record,
+                source=source,
+                origin=origin,
+                tenant=f"{tenant}/{site}",
+                site=site,
+                first_seen_at=first_seen_at,
+            ),
+            cap=TOTAL_CAP,
+            max_pages=MAX_PAGES,
+            cap_advice="narrow the source's applied_facets or search_text",
         )
-        return result, not structural
 
 
 def _scope(source: SourceConfig) -> tuple[dict[str, list[str]], str]:
@@ -236,16 +181,16 @@ def _normalize_job(
     first_seen_at: datetime,
 ) -> NormalizedJob:
     if not isinstance(record, Mapping):
-        raise _UnusableJob("record is not a JSON object")
+        raise UnusableRecord("record is not a JSON object")
     title = record.get("title")
     if not isinstance(title, str) or not title.strip():
-        raise _UnusableJob("missing title")
+        raise UnusableRecord("missing title")
     path = optional_text(record.get("externalPath"))
     if path is None or not path.startswith("/job/") or "//" in path:
-        raise _UnusableJob("externalPath is not a relative /job/ path")
+        raise UnusableRecord("externalPath is not a relative /job/ path")
     source_job_id = path.rsplit("_", 1)[-1].strip()
     if "_" not in path or not source_job_id or "/" in source_job_id:
-        raise _UnusableJob("externalPath carries no requisition suffix")
+        raise UnusableRecord("externalPath carries no requisition suffix")
     bullets = record.get("bulletFields")
     requisition = optional_text(bullets[0]) if isinstance(bullets, list) and bullets else None
     posting_url = f"{origin}/{site}{path}"
@@ -287,4 +232,4 @@ def _normalize_job(
             raw_metadata={"posted_on": optional_text(record.get("postedOn"))},
         )
     except ValidationError as exc:
-        raise _UnusableJob("record does not normalize into a job") from exc
+        raise UnusableRecord("record does not normalize into a job") from exc

@@ -180,3 +180,5 @@ check" is two consecutive adapter collections on the date shown.
 | --- | --- | --- | --- | --- | --- |
 | 1 | Amazon | `amazon-amazon` (`company_json`, 15 min) | `base_query=intern` (hits capped at 10,000) | 2026-10-14: 428 twice, identical keys, 5 pages, 100% ids and links | after two clean scheduler cycles |
 | 1 | NVIDIA | `nvidia-workday` (`public_ats`, 10 min) | facet `workerSubType = Intern (Fixed Term)` (total capped at 2,000) | 2026-10-14: 163 twice, identical keys, 9 pages, 100% ids and links | after two clean scheduler cycles |
+| 1 | Apple | `apple-apple` (`html`, 30 min) | `team=internships-STDNT-INTRN` | 2026-10-14: 101 twice, identical keys, 6 pages, 100% ids and links | after two clean scheduler cycles |
+| 1 | Alphabet/Google | `alphabet-google-google` (`html`, 30 min) | `employment_type=INTERN` | 2026-10-14: 77 twice, identical keys, 4 pages, 100% ids and links | after two clean scheduler cycles |

@@ -47,6 +47,7 @@ import yaml
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, TypeAdapter, ValidationError
 
 from job_alert.adapters.amazon import AmazonAdapter
+from job_alert.adapters.apple import AppleAdapter
 from job_alert.adapters.ashby import AshbyAdapter
 from job_alert.adapters.base import (
     AdapterError,
@@ -56,6 +57,7 @@ from job_alert.adapters.base import (
     validate_collection,
 )
 from job_alert.adapters.generic_json import GenericJsonAdapter
+from job_alert.adapters.google import GoogleAdapter
 from job_alert.adapters.greenhouse import GreenhouseAdapter
 from job_alert.adapters.jsonld import JsonLdAdapter
 from job_alert.adapters.lever import LeverAdapter
@@ -89,6 +91,8 @@ PROVIDER_ADAPTERS: dict[str, SourceAdapter] = {
     "ashby": AshbyAdapter(),
     "smartrecruiters": SmartRecruitersAdapter(),
     "amazon": AmazonAdapter(),
+    "apple": AppleAdapter(),
+    "google": GoogleAdapter(),
     "workday": WorkdayAdapter(),
     "generic-json": GenericJsonAdapter(),
     "json-ld": JsonLdAdapter(),

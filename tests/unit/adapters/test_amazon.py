@@ -154,7 +154,7 @@ async def test_amazon_refuses_a_query_the_search_cap_truncates() -> None:
 
     assert result.complete is False
     assert route.call_count == 1  # no point walking a board that cannot be read whole
-    assert any("search cap" in warning for warning in result.warnings)
+    assert any("cap" in warning for warning in result.warnings)
 
 
 @respx.mock
@@ -190,7 +190,7 @@ async def test_amazon_reports_a_count_the_walk_never_reaches_as_incomplete() -> 
         result = await adapter().collect(source(), fetcher)
 
     assert result.complete is False
-    assert any("declared hits=2" in warning for warning in result.warnings)
+    assert any("declared 2" in warning for warning in result.warnings)
 
 
 @respx.mock

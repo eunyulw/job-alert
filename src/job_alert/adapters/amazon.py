@@ -44,6 +44,7 @@ from job_alert.adapters.common import (
     optional_text,
     resolve_https_url,
 )
+from job_alert.adapters.paged import UnusableRecord, walk_scoped
 from job_alert.fetch import HttpFetcher, HttpPayload, RequestSpec
 from job_alert.identity import build_dedupe_key, build_job_key, content_hash
 from job_alert.models import CollectionResult, NormalizedJob, SourceConfig
@@ -62,10 +63,6 @@ def _utcnow() -> datetime:
     return datetime.now(UTC)
 
 
-class _UnusableJob(ValueError):
-    """One provider record cannot be normalized, so the collection is incomplete."""
-
-
 class AmazonAdapter:
     """Normalize one scoped amazon.jobs query into jobs, one JSON page per request."""
 
@@ -75,29 +72,12 @@ class AmazonAdapter:
         self._now = now
 
     async def collect(self, source: SourceConfig, fetcher: HttpFetcher) -> CollectionResult:
-        first, shifted = await self._walk(source, fetcher)
-        if first.complete or not shifted:
-            return first
-        second, _ = await self._walk(source, fetcher)
-        return second
-
-    async def _walk(
-        self, source: SourceConfig, fetcher: HttpFetcher
-    ) -> tuple[CollectionResult, bool]:
-        """One pass over the query, and whether its only defects are a shifting board's."""
         tenant = (source.tenant or DEFAULT_TENANT).strip() or DEFAULT_TENANT
         page_size = _page_size(source)
         list_url = _list_url(str(source.endpoint))
         first_seen_at = self._now()
-        jobs: list[NormalizedJob] = []
-        warnings: list[str] = []
-        structural = False
-        seen: set[str] = set()
-        offset = 0
-        page_count = 0
-        declared: int | None = None
 
-        while True:
+        async def fetch_page(_: int, offset: int) -> tuple[list[object], int]:
             payload = await fetcher.get(
                 RequestSpec(
                     url=_page_url(list_url, offset=offset, limit=page_size),
@@ -105,54 +85,18 @@ class AmazonAdapter:
                     expected="json",
                 )
             )
-            records, declared = _parse_page(payload)
-            page_count += 1
-            if declared >= SEARCH_CAP:
-                structural = True
-                warnings.append(
-                    f"the query declares hits={declared}, the search cap, so it cannot be read"
-                    " whole: narrow the source's query"
-                )
-                break
-            for index_in_page, record in enumerate(records):
-                index = offset + index_in_page
-                try:
-                    job = _normalize_job(
-                        record, source=source, tenant=tenant, first_seen_at=first_seen_at
-                    )
-                except _UnusableJob as exc:
-                    structural = True
-                    warnings.append(f"skipped malformed job record at index {index}: {exc}")
-                    continue
-                if job.source_job_id in seen:
-                    warnings.append(
-                        f"skipped duplicate job record at index {index}: the id already appeared"
-                    )
-                    continue
-                seen.add(job.source_job_id)
-                jobs.append(job)
-            if not records or offset + len(records) >= declared:
-                break
-            if page_count >= MAX_PAGES:
-                structural = True
-                warnings.append(f"stopped after {page_count} pages: the page cap is reached")
-                break
-            offset += len(records)
+            return _parse_page(payload)
 
-        if declared is not None and declared < SEARCH_CAP and len(seen) != declared:
-            warnings.append(
-                f"collected {len(seen)} unique postings but the query declared hits={declared},"
-                " so the collection is incomplete"
-            )
-        result = CollectionResult(
+        return await walk_scoped(
             source_id=source.id,
-            complete=not warnings,
-            jobs=jobs,
-            warnings=warnings,
-            page_count=page_count,
-            declared_total=declared,
+            fetch_page=fetch_page,
+            normalize=lambda record: _normalize_job(
+                record, source=source, tenant=tenant, first_seen_at=first_seen_at
+            ),
+            cap=SEARCH_CAP,
+            max_pages=MAX_PAGES,
+            cap_advice="narrow the source's query",
         )
-        return result, not structural
 
 
 def _page_size(source: SourceConfig) -> int:
@@ -207,21 +151,21 @@ def _normalize_job(
     record: object, *, source: SourceConfig, tenant: str, first_seen_at: datetime
 ) -> NormalizedJob:
     if not isinstance(record, Mapping):
-        raise _UnusableJob("record is not a JSON object")
+        raise UnusableRecord("record is not a JSON object")
     source_job_id = optional_text(record.get("id_icims"))
     if source_job_id is None:
-        raise _UnusableJob("missing id_icims")
+        raise UnusableRecord("missing id_icims")
     title = record.get("title")
     if not isinstance(title, str) or not title.strip():
-        raise _UnusableJob("missing title")
+        raise UnusableRecord("missing title")
     try:
         posting_url = resolve_https_url(
             record.get("job_path"), origin=SITE_ORIGIN, field="job_path"
         )
     except ValueError as exc:
-        raise _UnusableJob(str(exc)) from exc
+        raise UnusableRecord(str(exc)) from exc
     if not posting_url.startswith(SITE_ORIGIN + "/"):
-        raise _UnusableJob("job_path does not resolve to an amazon.jobs posting")
+        raise UnusableRecord("job_path does not resolve to an amazon.jobs posting")
     next_step = optional_text(record.get("url_next_step"))
     apply_url = next_step if next_step and is_absolute_https(next_step) else posting_url
     locations, workplace_type = _locations(record)
@@ -270,7 +214,7 @@ def _normalize_job(
             },
         )
     except ValidationError as exc:
-        raise _UnusableJob("record does not normalize into a job") from exc
+        raise UnusableRecord("record does not normalize into a job") from exc
 
 
 def _locations(record: Mapping[str, object]) -> tuple[list[str], str | None]:

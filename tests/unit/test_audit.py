@@ -104,8 +104,10 @@ def test_provider_adapters_cover_every_registered_provider() -> None:
     # which is what the registry dispatches on.
     assert sorted(PROVIDER_ADAPTERS) == [
         "amazon",
+        "apple",
         "ashby",
         "generic-json",
+        "google",
         "greenhouse",
         "json-ld",
         "lever",
