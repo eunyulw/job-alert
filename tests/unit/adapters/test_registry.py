@@ -50,7 +50,7 @@ def test_registry_supports_is_false_for_unknown_provider() -> None:
     registry = AdapterRegistry.default()
 
     assert not registry.supports("unknown")
-    assert not registry.supports("successfactors")
+    assert not registry.supports("icims")
 
 
 def test_registry_default_reuses_the_audit_mapping() -> None:

@@ -1767,3 +1767,94 @@ companies:
     categories:
       - aerospace-defense
     aliases: []
+  # Unreachable-list pass (2026-10-15): boards found by fingerprinting careers pages.
+  - id: applied-intuition
+    name: "Applied Intuition"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: dusty-robotics
+    name: "Dusty Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: viam
+    name: "Viam"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: brain-corp
+    name: "Brain Corp"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: robust-ai
+    name: "Robust AI"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: xwing
+    name: "Xwing"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: saildrone
+    name: "Saildrone"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: wisk
+    name: "Wisk"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: axiom-space
+    name: "Axiom Space"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: apex-space
+    name: "Apex"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: true-anomaly
+    name: "True Anomaly"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: neros
+    name: "Neros"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: aerovironment
+    name: "AeroVironment"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  # SuccessFactors career sites (2026-10-15).
+  - id: lear
+    name: "Lear"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: paccar
+    name: "PACCAR"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: boston-scientific
+    name: "Boston Scientific"
+    categories:
+      - medical-robotics
+    aliases: []
+  - id: timken
+    name: "Timken"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []

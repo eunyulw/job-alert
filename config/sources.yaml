@@ -1602,40 +1602,30 @@ sources:
     - workday adapter collected 404 postings twice with identical canonical keys across 21 page(s)
   enabled: true
   audit_date: '2026-10-14'
-- id: teradyne-discovery
+- id: teradyne-successfactors
   company_id: teradyne
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.teradyne.com/careers/
-  interval_minutes: 30
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.teradyne.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: jobs.teradyne.com
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://www.teradyne.com/careers/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.teradyne.com/careers/'
-  enabled: false
-  audit_date: '2026-09-18'
-- id: keyence-discovery
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-15'
+- id: keyence-successfactors
   company_id: keyence
   provider: successfactors
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.keyence.com/careers/
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.keyence.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: careers.keyence.com
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: the official careers page links to https://careers.keyence.com/go/View-All-Careers/7816100/, which resolves to https://careers.keyence.com/go/View-All-Careers/7816100/ (careers page links to https://career4.successfactors.com)
-    audit_provider: successfactors
-    audit_http_status: 200
-    audit_final_url: https://www.keyence.com/ss/careers/?ad_local=item0705ka
-    audit_notes:
-    - successfactors provider evidence found (the official careers page links to https://careers.keyence.com/go/View-All-Careers/7816100/, which resolves to https://careers.keyence.com/go/View-All-Careers/7816100/ (careers page links to https://career4.successfactors.com)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-09-19'
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-15'
 - id: siemens-discovery
   company_id: siemens
   provider: discovery
@@ -1847,24 +1837,18 @@ sources:
     - 'careers landing page request failed: non-retryable HTTP 403 for https://www.denso.com/global/en/careers/'
   enabled: false
   audit_date: '2026-09-18'
-- id: epson-robots-discovery
+- id: epson-robots-successfactors
   company_id: epson-robots
   provider: successfactors
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://epson.com/careers
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.epson.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: jobs.epson.com
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: the official careers page links to https://jobs.epson.com/, which resolves to https://jobs.epson.com/ (careers page links to https://career4.successfactors.com/career?site=&amp;company=epsonameri&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE)
-    audit_provider: successfactors
-    audit_http_status: 200
-    audit_final_url: https://epson.com/careers
-    audit_notes:
-    - successfactors provider evidence found (the official careers page links to https://jobs.epson.com/, which resolves to https://jobs.epson.com/ (careers page links to https://career4.successfactors.com/career?site=&amp;company=epsonameri&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-09-19'
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-15'
 - id: anybotics-lever
   company_id: anybotics
   provider: lever
@@ -1881,24 +1865,18 @@ sources:
     - lever adapter collected 23 postings twice with identical canonical keys
   enabled: true
   audit_date: '2026-10-14'
-- id: doosan-robotics-discovery
+- id: doosan-robotics-successfactors
   company_id: doosan-robotics
   provider: successfactors
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.doosanrobotics.com/en/careers
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.doosan.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: jobs.doosan.com
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: the official careers page links to https://jobs.doosan.com/, which resolves to https://jobs.doosan.com/ (careers page links to https://career4.successfactors.com/career?site=&amp;company=doosancorp&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE)
-    audit_provider: successfactors
-    audit_http_status: 200
-    audit_final_url: https://www.doosanrobotics.com/en/
-    audit_notes:
-    - successfactors provider evidence found (the official careers page links to https://jobs.doosan.com/, which resolves to https://jobs.doosan.com/ (careers page links to https://career4.successfactors.com/career?site=&amp;company=doosancorp&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-09-19'
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-15'
 - id: johnson-johnson-workday
   company_id: johnson-johnson
   provider: workday
@@ -2307,24 +2285,18 @@ sources:
     - 'careers landing page request failed: request failed after 4 attempts for https://careers.subaru.com/'
   enabled: false
   audit_date: '2026-09-19'
-- id: tata-motors-jlr-discovery
+- id: tata-motors-jlr-successfactors
   company_id: tata-motors-jlr
   provider: successfactors
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://careers.tatamotors.com/
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://www.jaguarlandrovercareers.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: www.jaguarlandrovercareers.com
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: careers page links to https://career5.successfactors.eu/career?company=tataindiaP&amp;navBarLevel=MY_PROFILE
-    audit_provider: successfactors
-    audit_http_status: 200
-    audit_final_url: https://careers.tatamotors.com/
-    audit_notes:
-    - successfactors provider evidence found (careers page links to https://career5.successfactors.eu/career?company=tataindiaP&amp;navBarLevel=MY_PROFILE); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-09-19'
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-15'
 - id: ferrari-discovery
   company_id: ferrari
   provider: discovery
@@ -2414,24 +2386,18 @@ sources:
   tenant: Continental
   enabled: true
   audit_date: '2026-10-15'
-- id: zf-discovery
+- id: zf-successfactors
   company_id: zf
   provider: successfactors
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.zf.com/careers
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.zf.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: jobs.zf.com
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: the official careers page links to https://jobs.zf.com/, which resolves to https://jobs.zf.com/ (careers page links to https://career5.successfactors.eu)
-    audit_provider: successfactors
-    audit_http_status: 200
-    audit_final_url: https://www.zf.com/mobile/en/careers/careers.html
-    audit_notes:
-    - successfactors provider evidence found (the official careers page links to https://jobs.zf.com/, which resolves to https://jobs.zf.com/ (careers page links to https://career5.successfactors.eu)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-09-19'
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-15'
 - id: denso-discovery
   company_id: denso
   provider: discovery
@@ -2630,21 +2596,15 @@ sources:
 - id: exxon-mobil-successfactors
   company_id: exxon-mobil
   provider: successfactors
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://jobs.exxonmobil.com/
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.exxonmobil.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: jobs.exxonmobil.com
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-10-14'
-    audit_evidence: careers page links to https://career4.successfactors.com/career?site=&amp;company=exxonmobilP&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE
-    audit_provider: successfactors
-    audit_http_status: 200
-    audit_final_url: https://jobs.exxonmobil.com/
-    audit_notes:
-    - successfactors provider evidence found (careers page links to https://career4.successfactors.com/career?site=&amp;company=exxonmobilP&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-10-14'
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-15'
 - id: cencora-discovery
   company_id: cencora
   provider: discovery
@@ -2890,21 +2850,15 @@ sources:
 - id: phillips-66-successfactors
   company_id: phillips-66
   provider: successfactors
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://careers.phillips66.com/
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.phillips66.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: careers.phillips66.com
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-10-14'
-    audit_evidence: careers page links to https://career4.successfactors.com
-    audit_provider: successfactors
-    audit_http_status: 200
-    audit_final_url: https://careers.phillips66.com/
-    audit_notes:
-    - successfactors provider evidence found (careers page links to https://career4.successfactors.com); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-10-14'
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-15'
 - id: marathon-petroleum-discovery
   company_id: marathon-petroleum
   provider: discovery
@@ -5233,5 +5187,196 @@ sources:
   parameters:
     whole_board: true
     scope: whole board (374 postings at audit; no internship facet)
+  enabled: true
+  audit_date: '2026-10-15'
+- id: applied-intuition-ashby
+  company_id: applied-intuition
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/applied
+  interval_minutes: 10
+  tenant: applied
+  enabled: true
+  audit_date: '2026-10-15'
+- id: dusty-robotics-discovery
+  company_id: dusty-robotics
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://example.invalid/dusty-robotics
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_reason: placeholder until set-source validates the board found by probing
+  enabled: false
+  audit_date: '2026-10-15'
+- id: viam-greenhouse
+  company_id: viam
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/viamrobotics/jobs?content=true
+  interval_minutes: 5
+  tenant: viamrobotics
+  enabled: true
+  audit_date: '2026-10-15'
+- id: brain-corp-greenhouse
+  company_id: brain-corp
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/braincorporation/jobs?content=true
+  interval_minutes: 5
+  tenant: braincorporation
+  enabled: true
+  audit_date: '2026-10-15'
+- id: robust-ai-lever
+  company_id: robust-ai
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/robust-ai?mode=json
+  interval_minutes: 5
+  tenant: robust-ai
+  enabled: true
+  audit_date: '2026-10-15'
+- id: xwing-discovery
+  company_id: xwing
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://example.invalid/xwing
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_reason: placeholder until set-source validates the board found by probing
+  enabled: false
+  audit_date: '2026-10-15'
+- id: saildrone-greenhouse
+  company_id: saildrone
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/saildroneinc/jobs?content=true
+  interval_minutes: 5
+  tenant: saildroneinc
+  enabled: true
+  audit_date: '2026-10-15'
+- id: wisk-workday
+  company_id: wisk
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://wisk.wd108.myworkdayjobs.com/wday/cxs/wisk/Wisk_Careers/jobs
+  interval_minutes: 10
+  tenant: wisk
+  parameters:
+    whole_board: true
+    scope: whole board (found 2026-10-15 from the careers page)
+  enabled: true
+  audit_date: '2026-10-15'
+- id: axiom-space-workday
+  company_id: axiom-space
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://axiomspace.wd5.myworkdayjobs.com/wday/cxs/axiomspace/External_Career_Site/jobs
+  interval_minutes: 10
+  tenant: axiomspace
+  parameters:
+    whole_board: true
+    scope: whole board (found 2026-10-15 from the careers page)
+  enabled: true
+  audit_date: '2026-10-15'
+- id: apex-space-ashby
+  company_id: apex-space
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/apex-technology-inc
+  interval_minutes: 10
+  tenant: apex-technology-inc
+  enabled: true
+  audit_date: '2026-10-15'
+- id: true-anomaly-greenhouse
+  company_id: true-anomaly
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/trueanomalyinc/jobs?content=true
+  interval_minutes: 5
+  tenant: trueanomalyinc
+  enabled: true
+  audit_date: '2026-10-15'
+- id: neros-greenhouse
+  company_id: neros
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/nerostechnologies/jobs?content=true
+  interval_minutes: 5
+  tenant: nerostechnologies
+  enabled: true
+  audit_date: '2026-10-15'
+- id: aerovironment-workday
+  company_id: aerovironment
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://avav.wd1.myworkdayjobs.com/wday/cxs/avav/AVAV/jobs
+  interval_minutes: 10
+  tenant: avav
+  parameters:
+    whole_board: true
+    scope: whole board (found 2026-10-15 from the careers page)
+  enabled: true
+  audit_date: '2026-10-15'
+- id: lear-successfactors
+  company_id: lear
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.lear.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: jobs.lear.com
+  parameters:
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-15'
+- id: paccar-successfactors
+  company_id: paccar
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.paccar.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: jobs.paccar.com
+  parameters:
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-15'
+- id: boston-scientific-successfactors
+  company_id: boston-scientific
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.bostonscientific.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: jobs.bostonscientific.com
+  parameters:
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-15'
+- id: timken-successfactors
+  company_id: timken
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.timken.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: careers.timken.com
+  parameters:
+    scope: career-site search filtered to the United States
   enabled: true
   audit_date: '2026-10-15'

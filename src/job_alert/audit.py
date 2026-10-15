@@ -64,6 +64,7 @@ from job_alert.adapters.greenhouse import GreenhouseAdapter
 from job_alert.adapters.jsonld import JsonLdAdapter
 from job_alert.adapters.lever import LeverAdapter
 from job_alert.adapters.smartrecruiters import SmartRecruitersAdapter
+from job_alert.adapters.successfactors import SuccessFactorsAdapter
 from job_alert.adapters.workday import WorkdayAdapter
 from job_alert.config import AppConfig, load_app_config
 from job_alert.fetch import (
@@ -100,6 +101,7 @@ PROVIDER_ADAPTERS: dict[str, SourceAdapter] = {
     "workday": WorkdayAdapter(),
     "generic-json": GenericJsonAdapter(),
     "json-ld": JsonLdAdapter(),
+    "successfactors": SuccessFactorsAdapter(),
 }
 
 # Public endpoints that a provider documents earn SUPPORTED; a public endpoint the provider does

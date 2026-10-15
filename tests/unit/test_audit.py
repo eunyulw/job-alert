@@ -114,6 +114,7 @@ def test_provider_adapters_cover_every_registered_provider() -> None:
         "json-ld",
         "lever",
         "smartrecruiters",
+        "successfactors",
         "workday",
     ]
     for provider, adapter in PROVIDER_ADAPTERS.items():
