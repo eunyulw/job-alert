@@ -15,7 +15,9 @@
 # robotics startups on the every-internship filters and the aerospace, automotive and industrial
 # companies on the expansion filters, whose keywords gained aerospace and vehicle terms (aerodynam,
 # guidance, gnc, thermal, powertrain, battery, weld, assembly, ...). `engine` is deliberately
-# absent: it is a substring of "engineer".
+# absent: it is a substring of "engineer". Phase 3c (2026-10-15) added nine robotics startups to
+# the every-internship filters and 51 robotics-adjacent, mechanical and Fortune 500 industrial
+# companies to the expansion filters.
 # Every alerting filter is US-only (2026-10-14): a posting alerts only when at least one of its
 # locations is confidently in the US (job_alert/geo.py); an unknown or missing location does not.
 # Both filters name their companies, so they are a canary under the 90% broad-activation gate. See
@@ -45,7 +47,9 @@ filters:
        dexterity, nimble, locus-robotics, matic, collaborative-robotics, the-bot-company,
        pickle-robot, formic, path-robotics, carbon-robotics, mujin, bright-machines,
        cobalt-robotics, agtonomy, tutor-intelligence, aescape, dexory, anybotics, sanctuary-ai,
-       toyota-research-institute]
+       toyota-research-institute,
+       rai-institute, general-robotics, reframe-systems, glacier, diligent-robotics,
+       ambi-robotics, osaro, noah-medical, havocai]
     include_title_keywords: [intern, co-op, student]
     require_title_keywords: []
     exclude_title_keywords: []
@@ -68,7 +72,9 @@ filters:
        dexterity, nimble, locus-robotics, matic, collaborative-robotics, the-bot-company,
        pickle-robot, formic, path-robotics, carbon-robotics, mujin, bright-machines,
        cobalt-robotics, agtonomy, tutor-intelligence, aescape, dexory, anybotics, sanctuary-ai,
-       toyota-research-institute]
+       toyota-research-institute,
+       rai-institute, general-robotics, reframe-systems, glacier, diligent-robotics,
+       ambi-robotics, osaro, noah-medical, havocai]
     include_title_keywords: []
     require_title_keywords: []
     exclude_title_keywords: []
@@ -94,7 +100,15 @@ filters:
        chaos-industries, skyryse, scout-motors, harbinger, may-mobility, motional, torc-robotics,
        vast, ursa-major, electra-aero, shield-ai, hermeus, merlin-labs, helion, general-motors,
        medtronic, caterpillar, northrop-grumman, ge-aerospace, ge-vernova, aptiv, borgwarner, 3m,
-       bosch, nike]
+       bosch, nike,
+       micron-technology, abb, stryker, johnson-johnson, mobileye, magna-international,
+       continental, rtx, hp, rebuild-manufacturing, formlabs, markforged, carbon-3d, velo3d,
+       muon-space, jetzero, wing, loft-orbital, planet, commonwealth-fusion, kairos-power, oklo,
+       fervo, form-energy, redwood-materials, solid-power, mach-industries, aeva, avride,
+       illinois-tool-works, dover, carrier, trane-technologies, johnson-controls, abbott,
+       applied-materials, kla, analog-devices, polaris, trimble, cognex, sierra-nevada, xylem,
+       regal-rexnord, graco, stanley-black-decker, generac, sensata, woodward, moog,
+       curtiss-wright]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,
@@ -124,7 +138,15 @@ filters:
        chaos-industries, skyryse, scout-motors, harbinger, may-mobility, motional, torc-robotics,
        vast, ursa-major, electra-aero, shield-ai, hermeus, merlin-labs, helion, general-motors,
        medtronic, caterpillar, northrop-grumman, ge-aerospace, ge-vernova, aptiv, borgwarner, 3m,
-       bosch, nike]
+       bosch, nike,
+       micron-technology, abb, stryker, johnson-johnson, mobileye, magna-international,
+       continental, rtx, hp, rebuild-manufacturing, formlabs, markforged, carbon-3d, velo3d,
+       muon-space, jetzero, wing, loft-orbital, planet, commonwealth-fusion, kairos-power, oklo,
+       fervo, form-energy, redwood-materials, solid-power, mach-industries, aeva, avride,
+       illinois-tool-works, dover, carrier, trane-technologies, johnson-controls, abbott,
+       applied-materials, kla, analog-devices, polaris, trimble, cognex, sierra-nevada, xylem,
+       regal-rexnord, graco, stanley-black-decker, generac, sensata, woodward, moog,
+       curtiss-wright]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,
