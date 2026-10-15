@@ -3,6 +3,7 @@
     python3 scripts/macos_launch_agent.py install [--mode live-suppressed|live]
     python3 scripts/macos_launch_agent.py status
     python3 scripts/macos_launch_agent.py page      # open the openings page in the browser
+    python3 scripts/macos_launch_agent.py recent    # open the last-24-hours page
     python3 scripts/macos_launch_agent.py print [--mode live-suppressed|live]
     python3 scripts/macos_launch_agent.py uninstall
 
@@ -212,9 +213,9 @@ def status() -> int:
     return 0 if loaded else 1
 
 
-def page() -> int:
-    """Open the openings page the agent keeps current."""
-    target = openings_page(RUNTIME)
+def page(name: str = "openings.html") -> int:
+    """Open a page the agent keeps current: the openings page, or the last-24-hours page."""
+    target = openings_page(RUNTIME).with_name(name)
     if not target.is_file():
         print(f"no page yet at {target}: is the agent installed and running?", file=sys.stderr)
         return 1
@@ -232,7 +233,9 @@ def uninstall() -> int:
 
 def main(arguments: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("command", choices=("print", "install", "status", "page", "uninstall"))
+    parser.add_argument(
+        "command", choices=("print", "install", "status", "page", "recent", "uninstall")
+    )
     parser.add_argument("--mode", choices=MODES, default="live-suppressed")
     options = parser.parse_args(arguments)
     if options.command == "print":
@@ -244,6 +247,8 @@ def main(arguments: list[str]) -> int:
         return status()
     if options.command == "page":
         return page()
+    if options.command == "recent":
+        return page("recent.html")
     return uninstall()
 
 

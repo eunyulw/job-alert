@@ -1073,6 +1073,25 @@ class Repository:
                 detections[str(row["canonical_job_key"])] = moment
         return detections
 
+    def detections_since(self, since: datetime) -> list[tuple[NormalizedJob, datetime, bool]]:
+        """Postings detected as new or reopened at or after ``since``, newest first.
+
+        Each is returned with its latest such detection and whether it has closed since.
+        """
+        rows = self._connection.execute(
+            "SELECT jobs.*, latest.detected_at AS detected_at FROM jobs JOIN ("
+            " SELECT canonical_job_key, MAX(detected_at) AS detected_at FROM job_events"
+            " WHERE event_type IN (?, ?) AND detected_at >= ? GROUP BY canonical_job_key"
+            ") AS latest USING (canonical_job_key) ORDER BY latest.detected_at DESC",
+            (JobEventType.NEW.value, JobEventType.REOPENED.value, _utc_isoformat(since)),
+        ).fetchall()
+        detections: list[tuple[NormalizedJob, datetime, bool]] = []
+        for row in rows:
+            moment = _parse_timestamp(row["detected_at"])
+            if moment is not None:
+                detections.append((_job_from_row(row), moment, row["closed_at"] is not None))
+        return detections
+
     def last_complete_job_keys(self, source_id: str) -> set[str]:
         """Return the canonical keys observed by the most recent complete run of a source.
 

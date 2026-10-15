@@ -87,6 +87,7 @@ from job_alert.health import (
 from job_alert.models import CompanyTarget, RunOutcome, SourceConfig
 from job_alert.notifications.base import NotificationMessage, Notifier
 from job_alert.openings import write_openings_page
+from job_alert.recent import RECENT_PAGE_NAME, write_recent_page
 from job_alert.service import DELIVERABLE_EVENT_TYPES, CycleResult, JobAlertService, RunMode
 
 #: How long the loop waits between wakes when nothing else is scheduled sooner.
@@ -380,6 +381,16 @@ class Scheduler:
             )
         except Exception as exc:  # the page is a convenience; collection must go on
             self._log(f"openings page not written: {type(exc).__name__}: {exc}")
+        try:
+            write_recent_page(
+                self._openings_page_path.with_name(RECENT_PAGE_NAME),
+                self._repository,
+                filters=self._filters,
+                companies=self._companies,
+                now=moment,
+            )
+        except Exception as exc:
+            self._log(f"last-24-hours page not written: {type(exc).__name__}: {exc}")
 
     async def heartbeat(self, *, now: datetime | None = None) -> HeartbeatOutcome:
         """Evaluate source health, push what it earned, and retry anything still undelivered."""

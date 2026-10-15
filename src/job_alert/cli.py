@@ -65,6 +65,7 @@ from job_alert.notifications.base import (
     Notifier,
 )
 from job_alert.openings import write_openings_page
+from job_alert.recent import write_recent_page
 from job_alert.scheduler import (
     DEFAULT_ALERT_URL,
     Scheduler,
@@ -86,6 +87,7 @@ DEFAULT_DB_PATH = Path("data/job-alert.sqlite3")
 DEFAULT_COVERAGE_PATH = Path("reports/coverage.md")
 DEFAULT_DIGEST_PATH = Path("reports/daily-digest.md")
 DEFAULT_OPENINGS_PATH = Path("reports/openings.html")
+DEFAULT_RECENT_PATH = Path("reports/recent.html")
 DEFAULT_RETRY_LIMIT = 100
 TEST_MESSAGE_TITLE = "TEST \u2014 Fast Job Alert"
 #: Laptop notifications ship first; Pushover (Android) follows in Task 28 of the plan.
@@ -926,6 +928,32 @@ def report_openings(
     finally:
         repository.close()
     typer.echo(f"wrote {html_path} with {count} matching opening(s)")
+
+
+@report_app.command("recent")
+def report_recent(
+    html_path: Annotated[
+        Path, typer.Option("--html", help="Where to write the last-24-hours page")
+    ] = DEFAULT_RECENT_PATH,
+    db: DbPathOption = DEFAULT_DB_PATH,
+    config: ConfigPathOption = DEFAULT_CONFIG_DIR,
+) -> None:
+    """Write the page of every posting detected in the last 24 hours, matches highlighted."""
+    app_config = _config_or_refuse(config)
+    repository = _open_repository_for_read(db)
+    try:
+        count = write_recent_page(
+            html_path,
+            repository,
+            filters=app_config.filters,
+            companies=app_config.companies,
+            now=datetime.now(UTC),
+        )
+    except sqlite3.Error as exc:
+        _refuse(f"cannot read state from {db}: {exc}")
+    finally:
+        repository.close()
+    typer.echo(f"wrote {html_path} with {count} posting(s)")
 
 
 @app.command("notify-test")

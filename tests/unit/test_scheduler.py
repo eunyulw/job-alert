@@ -768,6 +768,8 @@ async def test_a_wake_writes_the_openings_page_and_only_again_when_due(tmp_path:
     await scheduler.wake(now=NOW)
 
     assert page.read_text(encoding="utf-8").startswith("<!doctype html>")
+    recent = page.with_name("recent.html")
+    assert "<title>Last 24 Hours</title>" in recent.read_text(encoding="utf-8")
     page.unlink()
     # Nothing changed and no heartbeat is due, so the next wake leaves the page alone.
     await scheduler.wake(now=NOW + timedelta(seconds=30))
