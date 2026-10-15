@@ -1296,22 +1296,16 @@ sources:
     - 'careers landing page request failed: non-retryable HTTP 404 for https://www.pudurobotics.com/careers'
   enabled: false
   audit_date: '2026-09-18'
-- id: agile-robots-discovery
+- id: agile-robots-workable
   company_id: agile-robots
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.agile-robots.com/career
-  interval_minutes: 30
-  parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 404
-    audit_final_url: https://www.agile-robots.com/career
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.agile-robots.com/career'
-  enabled: false
-  audit_date: '2026-09-18'
+  provider: workable
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://apply.workable.com/api/v1/widget/accounts/agile-robots
+  interval_minutes: 10
+  tenant: agile-robots
+  enabled: true
+  audit_date: '2026-10-15'
 - id: neura-robotics-discovery
   company_id: neura-robotics
   provider: discovery
@@ -1431,24 +1425,19 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: honeywell-discovery
+- id: honeywell-oracle
   company_id: honeywell
   provider: oracle
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://careers.honeywell.com/
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://ibqbjb.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=Honeywell
   interval_minutes: 30
+  tenant: ibqbjb/Honeywell
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: the official careers page links to https://www.honeywell.com/us/en/careers, which resolves to https://www.honeywell.com/us/en/careers (careers page links to https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/Honeywell/jobs)
-    audit_provider: oracle
-    audit_http_status: 200
-    audit_final_url: https://careers.honeywell.com/en/sites/Honeywell
-    audit_notes:
-    - oracle provider evidence found (the official careers page links to https://www.honeywell.com/us/en/careers, which resolves to https://www.honeywell.com/us/en/careers (careers page links to https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/Honeywell/jobs)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-09-19'
+    scope: whole board
+    slow_poll_reason: whole board over 1,000 postings; a keyword search matches descriptions, so it cannot narrow the board; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-15'
 - id: abb-workday
   company_id: abb
   provider: workday
@@ -1500,23 +1489,16 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: yaskawa-discovery
+- id: yaskawa-ukg
   company_id: yaskawa
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.motoman.com/en-us/about/company/careers
-  interval_minutes: 30
-  parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.motoman.com/en-us/about/company/careers
-    audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+  provider: ukg
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://recruiting.ultipro.com/YAS1000YAAMI/JobBoard/8a2317d2-a61e-4259-a857-722d164a211c/JobBoardView/LoadSearchResults
+  interval_minutes: 10
+  tenant: YAS1000YAAMI
+  enabled: true
+  audit_date: '2026-10-15'
 - id: universal-robots-discovery
   company_id: universal-robots
   provider: discovery
@@ -1949,24 +1931,19 @@ sources:
     - workday adapter collected 66 postings twice with identical canonical keys
   enabled: true
   audit_date: '2026-10-14'
-- id: emerson-discovery
+- id: emerson-oracle
   company_id: emerson
   provider: oracle
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.emerson.com/en-us/careers
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://hdjq.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=CX_1
   interval_minutes: 30
+  tenant: hdjq/CX_1
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: careers page links to https://hdjq.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs
-    audit_provider: oracle
-    audit_http_status: 200
-    audit_final_url: https://www.emerson.com/en/corporate/careers
-    audit_notes:
-    - oracle provider evidence found (careers page links to https://hdjq.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-09-19'
+    scope: whole board
+    slow_poll_reason: whole board over 1,000 postings; a keyword search matches descriptions, so it cannot narrow the board; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-15'
 - id: general-motors-workday
   company_id: general-motors
   provider: workday
@@ -2270,21 +2247,18 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-19'
-- id: subaru-discovery
+- id: subaru-oracle
   company_id: subaru
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://careers.subaru.com/
-  interval_minutes: 30
+  provider: oracle
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://hcal.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=CX_1
+  interval_minutes: 10
+  tenant: hcal/CX_1
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_final_url: https://careers.subaru.com/
-    audit_notes:
-    - 'careers landing page request failed: request failed after 4 attempts for https://careers.subaru.com/'
-  enabled: false
-  audit_date: '2026-09-19'
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-15'
 - id: tata-motors-jlr-successfactors
   company_id: tata-motors-jlr
   provider: successfactors
@@ -5204,11 +5178,11 @@ sources:
   provider: discovery
   source_class: fallback
   support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://example.invalid/dusty-robotics
+  endpoint: https://boards-api.greenhouse.io/v1/boards/dustyrobotics/jobs
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_reason: placeholder until set-source validates the board found by probing
+    audit_reason: '2026-10-15: the careers page links to Greenhouse board dustyrobotics, which answers HTTP 404; no live board found'
   enabled: false
   audit_date: '2026-10-15'
 - id: viam-greenhouse
@@ -5246,11 +5220,11 @@ sources:
   provider: discovery
   source_class: fallback
   support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://example.invalid/xwing
+  endpoint: https://boards-api.greenhouse.io/v1/boards/xwing/jobs
   interval_minutes: 30
   parameters:
     audit_status: NEEDS_MANUAL_REVIEW
-    audit_reason: placeholder until set-source validates the board found by probing
+    audit_reason: '2026-10-15: the careers page links to Greenhouse board xwing, which answers HTTP 404; no live board found'
   enabled: false
   audit_date: '2026-10-15'
 - id: saildrone-greenhouse
@@ -5378,5 +5352,127 @@ sources:
   tenant: careers.timken.com
   parameters:
     scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-15'
+- id: mytra-rippling
+  company_id: mytra
+  provider: rippling
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.rippling.com/platform/api/ats/v1/board/mytra/jobs
+  interval_minutes: 10
+  tenant: mytra
+  enabled: true
+  audit_date: '2026-10-15'
+- id: boom-supersonic-rippling
+  company_id: boom-supersonic
+  provider: rippling
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.rippling.com/platform/api/ats/v1/board/boom-supersonic/jobs
+  interval_minutes: 10
+  tenant: boom-supersonic
+  enabled: true
+  audit_date: '2026-10-15'
+- id: overland-ai-rippling
+  company_id: overland-ai
+  provider: rippling
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.rippling.com/platform/api/ats/v1/board/overland-ai/jobs
+  interval_minutes: 10
+  tenant: overland-ai
+  enabled: true
+  audit_date: '2026-10-15'
+- id: blue-water-autonomy-rippling
+  company_id: blue-water-autonomy
+  provider: rippling
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.rippling.com/platform/api/ats/v1/board/blue-water-autonomy/jobs
+  interval_minutes: 10
+  tenant: blue-water-autonomy
+  enabled: true
+  audit_date: '2026-10-15'
+- id: zap-energy-rippling
+  company_id: zap-energy
+  provider: rippling
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.rippling.com/platform/api/ats/v1/board/zap-energy-careers/jobs
+  interval_minutes: 10
+  tenant: zap-energy-careers
+  enabled: true
+  audit_date: '2026-10-15'
+- id: forterra-rippling
+  company_id: forterra
+  provider: rippling
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.rippling.com/platform/api/ats/v1/board/forterra/jobs
+  interval_minutes: 10
+  tenant: forterra
+  enabled: true
+  audit_date: '2026-10-15'
+- id: distalmotion-workable
+  company_id: distalmotion
+  provider: workable
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://apply.workable.com/api/v1/widget/accounts/distalmotion
+  interval_minutes: 10
+  tenant: distalmotion
+  enabled: true
+  audit_date: '2026-10-15'
+- id: plus-one-robotics-bamboohr
+  company_id: plus-one-robotics
+  provider: bamboohr
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://plusonerobotics.bamboohr.com/careers/list
+  interval_minutes: 10
+  tenant: plusonerobotics
+  enabled: true
+  audit_date: '2026-10-15'
+- id: impulse-space-pinpoint
+  company_id: impulse-space
+  provider: pinpoint
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://impulsespace.pinpointhq.com/postings.json
+  interval_minutes: 10
+  tenant: impulsespace
+  enabled: true
+  audit_date: '2026-10-15'
+- id: howmet-oracle
+  company_id: howmet
+  provider: oracle
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://fa-exty-saasfaprod1.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=CX_1
+  interval_minutes: 10
+  tenant: fa-exty-saasfaprod1/CX_1
+  parameters:
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-15'
+- id: our-next-energy-ukg
+  company_id: our-next-energy
+  provider: ukg
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://recruiting.ultipro.com/OUR1002ONXE/JobBoard/5c7eeefc-e61c-417a-8468-f976a704a34d/JobBoardView/LoadSearchResults
+  interval_minutes: 10
+  tenant: OUR1002ONXE
+  enabled: true
+  audit_date: '2026-10-15'
+- id: axon-greenhouse
+  company_id: axon
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/axon/jobs?content=true
+  interval_minutes: 5
+  tenant: axon
   enabled: true
   audit_date: '2026-10-15'

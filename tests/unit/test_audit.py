@@ -106,6 +106,7 @@ def test_provider_adapters_cover_every_registered_provider() -> None:
         "amazon",
         "apple",
         "ashby",
+        "bamboohr",
         "eightfold",
         "email-alerts",
         "generic-json",
@@ -113,8 +114,13 @@ def test_provider_adapters_cover_every_registered_provider() -> None:
         "greenhouse",
         "json-ld",
         "lever",
+        "oracle",
+        "pinpoint",
+        "rippling",
         "smartrecruiters",
         "successfactors",
+        "ukg",
+        "workable",
         "workday",
     ]
     for provider, adapter in PROVIDER_ADAPTERS.items():

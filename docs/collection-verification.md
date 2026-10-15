@@ -296,3 +296,26 @@ were already registered without a working source.
 Stanley Black & Decker's whole board came back incomplete, so it uses its intern and trainee
 facets. The companies that could not be reached, with the reason for each, are listed in
 [unreachable-companies.md](unreachable-companies.md).
+
+### Unreachable-list pass (2026-10-15)
+
+Careers pages were fingerprinted for the job system they link to, which found boards for companies
+the token probes missed. Seven adapters were added: SuccessFactors career-site search, Oracle
+Recruiting Cloud, Rippling, Workable, BambooHR, Pinpoint and UKG. Every source passed
+`audit set-source`.
+
+| Provider | Companies (postings at audit) |
+| --- | --- |
+| SuccessFactors (US search) | Teradyne/Universal Robots (294), Boston Scientific (290), PACCAR (182), ZF (151), Doosan (133), ExxonMobil (120), Lear (98), Phillips 66 (83), Epson (27), Keyence (10), JLR (9), Timken (1) |
+| Oracle | Honeywell (1235)\*, Emerson (1130)\*, Howmet (804), Subaru (55) |
+| Rippling | Overland AI (43), Forterra (40), Mytra (39), Boom Supersonic (30), Zap Energy (16), Blue Water Autonomy (6) |
+| Workable / BambooHR / Pinpoint / UKG | Distalmotion (6), Agile Robots (4) / Plus One Robotics (2) / Impulse Space (216) / Yaskawa (29), Our Next Energy (18) |
+| Existing providers | Axon (491), Applied Intuition (329), True Anomaly (206), Apex (139), Neros (105), AeroVironment (402), Axiom Space (98), Saildrone (43), Brain Corp (11), Robust AI (5), Wisk (0) |
+
+\* Polled every 30 minutes. Oracle pages by offset over a sort with ties, and some sites list one
+requisition twice yet count both; the adapter combines up to three walks and counts only an
+explained double listing toward the declared total. See `adapters/oracle.py`.
+
+All of these were allowlisted at once instead of after two clean cycles, because a new source's
+first collection only seeds and cannot alert. The remaining companies are in
+[unreachable-companies.md](unreachable-companies.md).

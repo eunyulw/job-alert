@@ -1858,3 +1858,68 @@ companies:
     categories:
       - industrial-automation-advanced-manufacturing
     aliases: []
+  # Boards on Rippling, Workable, BambooHR, Pinpoint, Oracle and UKG (2026-10-15).
+  - id: mytra
+    name: "Mytra"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: boom-supersonic
+    name: "Boom Supersonic"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: overland-ai
+    name: "Overland AI"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: blue-water-autonomy
+    name: "Blue Water Autonomy"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: zap-energy
+    name: "Zap Energy"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: forterra
+    name: "Forterra"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: distalmotion
+    name: "Distalmotion"
+    categories:
+      - medical-robotics
+    aliases: []
+  - id: plus-one-robotics
+    name: "Plus One Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: impulse-space
+    name: "Impulse Space"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: howmet
+    name: "Howmet Aerospace"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: our-next-energy
+    name: "Our Next Energy"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  # Second probe round (2026-10-15).
+  - id: axon
+    name: "Axon"
+    categories:
+      - aerospace-defense
+    aliases: []

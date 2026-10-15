@@ -49,6 +49,7 @@ from pydantic import BaseModel, ConfigDict, Field, HttpUrl, TypeAdapter, Validat
 from job_alert.adapters.amazon import AmazonAdapter
 from job_alert.adapters.apple import AppleAdapter
 from job_alert.adapters.ashby import AshbyAdapter
+from job_alert.adapters.bamboohr import BambooHrAdapter
 from job_alert.adapters.base import (
     AdapterError,
     PartialCollectionError,
@@ -63,8 +64,13 @@ from job_alert.adapters.google import GoogleAdapter
 from job_alert.adapters.greenhouse import GreenhouseAdapter
 from job_alert.adapters.jsonld import JsonLdAdapter
 from job_alert.adapters.lever import LeverAdapter
+from job_alert.adapters.oracle import OracleAdapter
+from job_alert.adapters.pinpoint import PinpointAdapter
+from job_alert.adapters.rippling import RipplingAdapter
 from job_alert.adapters.smartrecruiters import SmartRecruitersAdapter
 from job_alert.adapters.successfactors import SuccessFactorsAdapter
+from job_alert.adapters.ukg import UkgAdapter
+from job_alert.adapters.workable import WorkableAdapter
 from job_alert.adapters.workday import WorkdayAdapter
 from job_alert.config import AppConfig, load_app_config
 from job_alert.fetch import (
@@ -102,6 +108,12 @@ PROVIDER_ADAPTERS: dict[str, SourceAdapter] = {
     "generic-json": GenericJsonAdapter(),
     "json-ld": JsonLdAdapter(),
     "successfactors": SuccessFactorsAdapter(),
+    "rippling": RipplingAdapter(),
+    "workable": WorkableAdapter(),
+    "bamboohr": BambooHrAdapter(),
+    "pinpoint": PinpointAdapter(),
+    "oracle": OracleAdapter(),
+    "ukg": UkgAdapter(),
 }
 
 # Public endpoints that a provider documents earn SUPPORTED; a public endpoint the provider does
@@ -117,6 +129,11 @@ PROVIDER_SOURCE_CLASSES: dict[str, SourceClass] = {
     "icims": SourceClass.PUBLIC_ATS,
     "eightfold": SourceClass.PUBLIC_ATS,
     "oracle": SourceClass.PUBLIC_ATS,
+    "rippling": SourceClass.PUBLIC_ATS,
+    "workable": SourceClass.PUBLIC_ATS,
+    "bamboohr": SourceClass.PUBLIC_ATS,
+    "pinpoint": SourceClass.PUBLIC_ATS,
+    "ukg": SourceClass.PUBLIC_ATS,
     "generic-json": SourceClass.COMPANY_JSON,
     "json-ld": SourceClass.HTML,
 }
