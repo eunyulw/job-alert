@@ -273,3 +273,26 @@ locations; when a posting has no region, its label was "City, CC", and a country
 US state code read as that state (183 "bangalore, IN" postings looked like Indiana). The adapter
 now spells such codes out ("bangalore, India") when the region is blank. The preview then matched
 17 current US Bosch internships and none at Nike.
+
+### Phase 3c — robotics, mechanical and Fortune 500 industrial companies (2026-10-15)
+
+Robotics and mechanical companies came first, then Fortune 500 industrial, aerospace, medical-device
+and automotive companies. Workday tenants were found from the site names their `robots.txt` lists,
+which avoids guessing site names. Every source passed `audit set-source`. 51 companies are new to
+the registry; RTX, Stryker, Micron, HP, Magna, ABB, Johnson & Johnson, Continental and Mobileye
+were already registered without a working source.
+
+| Provider | Companies (postings at audit) |
+| --- | --- |
+| Greenhouse | Formlabs (241), Mach Industries (144), Redwood Materials (143), Muon Space (141), Re:Build Manufacturing (129), Planet (118), Avride (77), Oklo (73), Wing (50), Kairos Power (40), JetZero (22), Carbon (12), Diligent Robotics (10), Solid Power (7), Fervo (5), Noah Medical (5), Markforged (4) |
+| Lever | Mobileye (174, EU instance), Commonwealth Fusion (123), Loft Orbital (65), Velo3D (42), Aeva (40), Osaro (10), Ambi Robotics (5), RAI Institute (4) |
+| Ashby | Form Energy (208), Reframe Systems (34), HavocAI (28), General Robotics (14), Glacier (5) |
+| SmartRecruiters | Continental (558) |
+| Workday (intern facet) | RTX (322), Stryker (210), Micron (193), J&J (183), ABB (137), Applied Materials (87), HP (69), Abbott (66), Illinois Tool Works (55), Analog Devices (43), Sierra Nevada (35), KLA (34), JCI (24), Generac (21), Moog (18), Stanley Black & Decker (13), Sensata (11), Polaris (10), Trimble (8), Woodward (6), Dover (3) |
+| Workday (whole board) | Trane (1682)\*, Magna (1431)\*, Carrier (1088)\*, Xylem (476), Curtiss-Wright (374), Graco (185), Cognex (89), Regal Rexnord (34, early-career site) |
+
+\* Polled every 30 minutes: a whole board over 1,000 postings with no internship facet.
+
+Stanley Black & Decker's whole board came back incomplete, so it uses its intern and trainee
+facets. The companies that could not be reached, with the reason for each, are listed in
+[unreachable-companies.md](unreachable-companies.md).

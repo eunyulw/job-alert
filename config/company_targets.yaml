@@ -1504,3 +1504,266 @@ companies:
     categories:
       - robotics-autonomy-physical-ai
     aliases: []
+  # Robotics, mechanical and Fortune 500 industrial expansion (2026-10-15).
+  - id: rebuild-manufacturing
+    name: "Re:Build Manufacturing"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: formlabs
+    name: "Formlabs"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: markforged
+    name: "Markforged"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: carbon-3d
+    name: "Carbon"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: velo3d
+    name: "Velo3D"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: muon-space
+    name: "Muon Space"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: jetzero
+    name: "JetZero"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: wing
+    name: "Wing"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: loft-orbital
+    name: "Loft Orbital"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: planet
+    name: "Planet"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: commonwealth-fusion
+    name: "Commonwealth Fusion Systems"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: kairos-power
+    name: "Kairos Power"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: oklo
+    name: "Oklo"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: fervo
+    name: "Fervo Energy"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: form-energy
+    name: "Form Energy"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: redwood-materials
+    name: "Redwood Materials"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: solid-power
+    name: "Solid Power"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: mach-industries
+    name: "Mach Industries"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: havocai
+    name: "HavocAI"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: rai-institute
+    name: "RAI Institute"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: general-robotics
+    name: "General Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: reframe-systems
+    name: "Reframe Systems"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: glacier
+    name: "Glacier"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: diligent-robotics
+    name: "Diligent Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+      - medical-robotics
+    aliases: []
+  - id: ambi-robotics
+    name: "Ambi Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: osaro
+    name: "Osaro"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: noah-medical
+    name: "Noah Medical"
+    categories:
+      - medical-robotics
+    aliases: []
+  - id: aeva
+    name: "Aeva"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: avride
+    name: "Avride"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: illinois-tool-works
+    name: "Illinois Tool Works"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: dover
+    name: "Dover"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: carrier
+    name: "Carrier Global"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: trane-technologies
+    name: "Trane Technologies"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: johnson-controls
+    name: "Johnson Controls"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: abbott
+    name: "Abbott"
+    categories:
+      - medical-robotics
+    aliases: []
+  - id: applied-materials
+    name: "Applied Materials"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: kla
+    name: "KLA"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: analog-devices
+    name: "Analog Devices"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: polaris
+    name: "Polaris"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: trimble
+    name: "Trimble"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: cognex
+    name: "Cognex"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: sierra-nevada
+    name: "Sierra Nevada Corporation"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: xylem
+    name: "Xylem"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: regal-rexnord
+    name: "Regal Rexnord"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: graco
+    name: "Graco"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: stanley-black-decker
+    name: "Stanley Black & Decker"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: generac
+    name: "Generac"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: sensata
+    name: "Sensata Technologies"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: woodward
+    name: "Woodward"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: moog
+    name: "Moog"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: curtiss-wright
+    name: "Curtiss-Wright"
+    categories:
+      - aerospace-defense
+    aliases: []

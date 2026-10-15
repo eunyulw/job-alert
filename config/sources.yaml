@@ -632,21 +632,23 @@ sources:
     - icims provider evidence found (careers page links to https://earlycareers-arm.icims.com/jobs/login?loginOnly=1&redirect=dashboard); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
   audit_date: '2026-09-19'
-- id: micron-technology-discovery
+- id: micron-technology-workday
   company_id: micron-technology
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.micron.com/
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://micron.wd1.myworkdayjobs.com/wday/cxs/micron/External/jobs
+  interval_minutes: 10
+  tenant: micron
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://careers.micron.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
+    applied_facets:
+      workerSubType:
+      - bff7a31dbdd3016722f3aeb41a01cf81
+      - bff7a31dbdd301cd53c8aeb41a01ce81
+    scope: workerSubType = Intern - Regular or Intern - Trainee (Fixed Term)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
 - id: synopsys-discovery
   company_id: synopsys
   provider: discovery
@@ -1447,21 +1449,22 @@ sources:
     - oracle provider evidence found (the official careers page links to https://www.honeywell.com/us/en/careers, which resolves to https://www.honeywell.com/us/en/careers (careers page links to https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/Honeywell/jobs)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
   audit_date: '2026-09-19'
-- id: abb-discovery
+- id: abb-workday
   company_id: abb
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.abb/
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://abb.wd3.myworkdayjobs.com/wday/cxs/abb/External_Career_Page/jobs
+  interval_minutes: 10
+  tenant: abb
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://careers.abb/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
+    applied_facets:
+      workerSubType:
+      - 094a0cd6eed71000b6d0ebbfe9790000
+    scope: workerSubType = Intern/Student (Fixed Term)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
 - id: neuralink-greenhouse
   company_id: neuralink
   provider: greenhouse
@@ -1668,26 +1671,22 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-19'
-- id: stryker-discovery
+- id: stryker-workday
   company_id: stryker
   provider: workday
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://careers.stryker.com/
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://stryker.wd1.myworkdayjobs.com/wday/cxs/stryker/StrykerCareers/jobs
+  interval_minutes: 10
+  tenant: stryker
   parameters:
-    expansion_note: '2026-10-14 Task 29 Phase 2: the Workday intern facet (workerSubType Intern (Fixed Term), 213 declared) returned one stub posting with only a requisition id (R574890), no title and no link, so the collection is incomplete and was not waived. Re-check in the next pass.'
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: careers page links to https://stryker.wd1.myworkdayjobs.com/StrykerCareers/login
-    audit_provider: workday
-    audit_endpoint: https://stryker.wd1.myworkdayjobs.com/wday/cxs/stryker/StrykerCareers/jobs
-    audit_http_status: 200
-    audit_final_url: https://careers.stryker.com/
-    audit_notes:
-    - workday CXS confirmed 100 unique postings of 1464 declared, so pagination completeness is unproven until the Workday adapter exists
-  enabled: false
-  audit_date: '2026-09-19'
+    applied_facets:
+      workerSubType:
+      - 3156b848d19b01ca7b60bf0b1d12c30a
+    scope: workerSubType = Intern (Fixed Term)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
 - id: medtronic-workday
   company_id: medtronic
   provider: workday
@@ -1900,22 +1899,23 @@ sources:
     - successfactors provider evidence found (the official careers page links to https://jobs.doosan.com/, which resolves to https://jobs.doosan.com/ (careers page links to https://career4.successfactors.com/career?site=&amp;company=doosancorp&amp;lang=en%5FUS&amp;login_ns=register&amp;career_ns=home&amp;navBarLevel=MY_PROFILE)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
   audit_date: '2026-09-19'
-- id: johnson-johnson-discovery
+- id: johnson-johnson-workday
   company_id: johnson-johnson
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.careers.jnj.com/
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jj.wd5.myworkdayjobs.com/wday/cxs/jj/JJ/jobs
+  interval_minutes: 10
+  tenant: jj
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://www.careers.jnj.com/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.careers.jnj.com/'
-  enabled: false
-  audit_date: '2026-09-18'
+    applied_facets:
+      workerSubType:
+      - c8cdc206cb91013d31d96bb30f801468
+      - ca32b336cc4a472a863c62c03f6e63b6
+    scope: workerSubType = Co-Op or Intern (Fixed Term)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
 - id: anduril-greenhouse
   company_id: anduril
   provider: greenhouse
@@ -2356,25 +2356,16 @@ sources:
     - 'careers landing page request failed: request failed after 4 attempts for https://careers.porsche.com/'
   enabled: false
   audit_date: '2026-09-19'
-- id: mobileye-discovery
+- id: mobileye-lever
   company_id: mobileye
   provider: lever
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.mobileye.com/careers/
-  interval_minutes: 30
-  parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: the official careers page links to https://careers.mobileye.com/jobs, which resolves to https://careers.mobileye.com/jobs (careers page links to https://jobs.eu.lever.co/mobileye/bb661a53-79b8-459d-a8df-5dd419d62596/apply)
-    audit_provider: lever
-    audit_endpoint: https://api.lever.co/v0/postings/mobileye?mode=json
-    audit_http_status: 200
-    audit_final_url: https://careers.mobileye.com/
-    audit_notes:
-    - 'lever list request failed: non-retryable HTTP 404 for https://api.lever.co/v0/postings/mobileye?mode=json&skip=0&limit=100'
-  enabled: false
-  audit_date: '2026-09-19'
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.eu.lever.co/v0/postings/mobileye?mode=json
+  interval_minutes: 5
+  tenant: mobileye
+  enabled: true
+  audit_date: '2026-10-15'
 - id: aptiv-workday
   company_id: aptiv
   provider: workday
@@ -2399,40 +2390,30 @@ sources:
     - workday adapter collected 38 postings twice with identical canonical keys
   enabled: true
   audit_date: '2026-10-14'
-- id: magna-international-discovery
+- id: magna-international-workday
   company_id: magna-international
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.magna.com/careers/
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://magna.wd3.myworkdayjobs.com/wday/cxs/magna/Magna/jobs
   interval_minutes: 30
+  tenant: magna
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.magna.com/careers/
-    audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
-- id: continental-discovery
+    whole_board: true
+    scope: whole board (1431 postings at audit; no internship facet)
+    slow_poll_reason: whole board over 1,000 postings without an internship facet; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-15'
+- id: continental-smartrecruiters
   company_id: continental
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.continental.com/en/career/
-  interval_minutes: 30
-  parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.continental.com/en/career/
-    audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+  provider: smartrecruiters
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.smartrecruiters.com/v1/companies/Continental/postings
+  interval_minutes: 5
+  tenant: Continental
+  enabled: true
+  audit_date: '2026-10-15'
 - id: zf-discovery
   company_id: zf
   provider: successfactors
@@ -2544,21 +2525,22 @@ sources:
     - eightfold provider evidence found (the official careers page links to https://www.lockheedmartin.com/en-us/careers/index.html, which resolves to https://www.lockheedmartin.com/en-us/careers/index.html (careers page links to https://lockheedmartin.eightfold.ai/careers)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
   audit_date: '2026-09-19'
-- id: rtx-discovery
+- id: rtx-workday
   company_id: rtx
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.rtx.com/careers
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://globalhr.wd5.myworkdayjobs.com/wday/cxs/globalhr/REC_RTX_Ext_Gateway/jobs
+  interval_minutes: 10
+  tenant: globalhr
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://www.rtx.com/careers
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
+    applied_facets:
+      workerSubType:
+      - bac5186f63f2103219f0c765df903245
+    scope: workerSubType = Intern/Co-op (Fixed Term)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
 - id: walmart-discovery
   company_id: walmart
   provider: discovery
@@ -3662,22 +3644,22 @@ sources:
     - access challenge detected on the official careers landing page
   enabled: false
   audit_date: '2026-10-14'
-- id: hp-discovery
+- id: hp-workday
   company_id: hp
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://jobs.hp.com/
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://hp.wd5.myworkdayjobs.com/wday/cxs/hp/ExternalCareerSite/jobs
+  interval_minutes: 10
+  tenant: hp
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://jobs.hp.com/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://jobs.hp.com/'
-  enabled: false
-  audit_date: '2026-10-14'
+    applied_facets:
+      workerSubType:
+      - 98cbd30d374e1033353f1fbd0c2452f5
+    scope: workerSubType = Temp Intern (Fixed Term)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
 - id: charter-communications-discovery
   company_id: charter-communications
   provider: discovery
@@ -4628,3 +4610,628 @@ sources:
     asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
+- id: rebuild-manufacturing-greenhouse
+  company_id: rebuild-manufacturing
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/rebuildmanufacturing/jobs?content=true
+  interval_minutes: 5
+  tenant: rebuildmanufacturing
+  enabled: true
+  audit_date: '2026-10-15'
+- id: formlabs-greenhouse
+  company_id: formlabs
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/formlabs/jobs?content=true
+  interval_minutes: 5
+  tenant: formlabs
+  enabled: true
+  audit_date: '2026-10-15'
+- id: markforged-greenhouse
+  company_id: markforged
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/markforged/jobs?content=true
+  interval_minutes: 5
+  tenant: markforged
+  enabled: true
+  audit_date: '2026-10-15'
+- id: carbon-3d-greenhouse
+  company_id: carbon-3d
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/carbon/jobs?content=true
+  interval_minutes: 5
+  tenant: carbon
+  enabled: true
+  audit_date: '2026-10-15'
+- id: velo3d-lever
+  company_id: velo3d
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/velo3d?mode=json
+  interval_minutes: 5
+  tenant: velo3d
+  enabled: true
+  audit_date: '2026-10-15'
+- id: muon-space-greenhouse
+  company_id: muon-space
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/muonspace/jobs?content=true
+  interval_minutes: 5
+  tenant: muonspace
+  enabled: true
+  audit_date: '2026-10-15'
+- id: jetzero-greenhouse
+  company_id: jetzero
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/jetzero/jobs?content=true
+  interval_minutes: 5
+  tenant: jetzero
+  enabled: true
+  audit_date: '2026-10-15'
+- id: wing-greenhouse
+  company_id: wing
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/wing/jobs?content=true
+  interval_minutes: 5
+  tenant: wing
+  enabled: true
+  audit_date: '2026-10-15'
+- id: loft-orbital-lever
+  company_id: loft-orbital
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/loftorbital?mode=json
+  interval_minutes: 5
+  tenant: loftorbital
+  enabled: true
+  audit_date: '2026-10-15'
+- id: planet-greenhouse
+  company_id: planet
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/planetlabs/jobs?content=true
+  interval_minutes: 5
+  tenant: planetlabs
+  enabled: true
+  audit_date: '2026-10-15'
+- id: commonwealth-fusion-lever
+  company_id: commonwealth-fusion
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/cfsenergy?mode=json
+  interval_minutes: 5
+  tenant: cfsenergy
+  enabled: true
+  audit_date: '2026-10-15'
+- id: kairos-power-greenhouse
+  company_id: kairos-power
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/kairospower/jobs?content=true
+  interval_minutes: 5
+  tenant: kairospower
+  enabled: true
+  audit_date: '2026-10-15'
+- id: oklo-greenhouse
+  company_id: oklo
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/oklo/jobs?content=true
+  interval_minutes: 5
+  tenant: oklo
+  enabled: true
+  audit_date: '2026-10-15'
+- id: fervo-greenhouse
+  company_id: fervo
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/fervoenergy/jobs?content=true
+  interval_minutes: 5
+  tenant: fervoenergy
+  enabled: true
+  audit_date: '2026-10-15'
+- id: form-energy-ashby
+  company_id: form-energy
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/formenergy
+  interval_minutes: 10
+  tenant: formenergy
+  enabled: true
+  audit_date: '2026-10-15'
+- id: redwood-materials-greenhouse
+  company_id: redwood-materials
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/redwoodmaterials/jobs?content=true
+  interval_minutes: 5
+  tenant: redwoodmaterials
+  enabled: true
+  audit_date: '2026-10-15'
+- id: solid-power-greenhouse
+  company_id: solid-power
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/solidpower/jobs?content=true
+  interval_minutes: 5
+  tenant: solidpower
+  enabled: true
+  audit_date: '2026-10-15'
+- id: mach-industries-greenhouse
+  company_id: mach-industries
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/machindustries/jobs?content=true
+  interval_minutes: 5
+  tenant: machindustries
+  enabled: true
+  audit_date: '2026-10-15'
+- id: havocai-ashby
+  company_id: havocai
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/havocai
+  interval_minutes: 10
+  tenant: havocai
+  enabled: true
+  audit_date: '2026-10-15'
+- id: rai-institute-lever
+  company_id: rai-institute
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/rai?mode=json
+  interval_minutes: 5
+  tenant: rai
+  enabled: true
+  audit_date: '2026-10-15'
+- id: general-robotics-ashby
+  company_id: general-robotics
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/generalrobotics
+  interval_minutes: 10
+  tenant: generalrobotics
+  enabled: true
+  audit_date: '2026-10-15'
+- id: reframe-systems-ashby
+  company_id: reframe-systems
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/reframesystems
+  interval_minutes: 10
+  tenant: reframesystems
+  enabled: true
+  audit_date: '2026-10-15'
+- id: glacier-ashby
+  company_id: glacier
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/glacier
+  interval_minutes: 10
+  tenant: glacier
+  enabled: true
+  audit_date: '2026-10-15'
+- id: diligent-robotics-greenhouse
+  company_id: diligent-robotics
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/diligentrobotics/jobs?content=true
+  interval_minutes: 5
+  tenant: diligentrobotics
+  enabled: true
+  audit_date: '2026-10-15'
+- id: ambi-robotics-lever
+  company_id: ambi-robotics
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/ambirobotics?mode=json
+  interval_minutes: 5
+  tenant: ambirobotics
+  enabled: true
+  audit_date: '2026-10-15'
+- id: osaro-lever
+  company_id: osaro
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/osaro?mode=json
+  interval_minutes: 5
+  tenant: osaro
+  enabled: true
+  audit_date: '2026-10-15'
+- id: noah-medical-greenhouse
+  company_id: noah-medical
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/noahmedical/jobs?content=true
+  interval_minutes: 5
+  tenant: noahmedical
+  enabled: true
+  audit_date: '2026-10-15'
+- id: aeva-lever
+  company_id: aeva
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/aeva?mode=json
+  interval_minutes: 5
+  tenant: aeva
+  enabled: true
+  audit_date: '2026-10-15'
+- id: avride-greenhouse
+  company_id: avride
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/avride/jobs?content=true
+  interval_minutes: 5
+  tenant: avride
+  enabled: true
+  audit_date: '2026-10-15'
+- id: illinois-tool-works-workday
+  company_id: illinois-tool-works
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://itw.wd5.myworkdayjobs.com/wday/cxs/itw/External/jobs
+  interval_minutes: 10
+  tenant: itw
+  parameters:
+    applied_facets:
+      jobFamilyGroup:
+      - 63e32b7a58eb1000c7d20c9734730000
+    scope: jobFamilyGroup = Internship
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: dover-workday
+  company_id: dover
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://dover.wd103.myworkdayjobs.com/wday/cxs/dover/Dover/jobs
+  interval_minutes: 10
+  tenant: dover
+  parameters:
+    applied_facets:
+      workerSubType:
+      - fd26dd94fa9b10011f0a5a29b1840000
+    scope: workerSubType = Intern (Fixed Term) (Trainee)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: carrier-workday
+  company_id: carrier
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://carrier.wd5.myworkdayjobs.com/wday/cxs/carrier/jobs/jobs
+  interval_minutes: 30
+  tenant: carrier
+  parameters:
+    whole_board: true
+    scope: whole board (1088 postings at audit; no internship facet)
+    slow_poll_reason: whole board over 1,000 postings without an internship facet; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-15'
+- id: trane-technologies-workday
+  company_id: trane-technologies
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://tranetechnologies.wd12.myworkdayjobs.com/wday/cxs/tranetechnologies/Trane_Technologies_Careers/jobs
+  interval_minutes: 30
+  tenant: tranetechnologies
+  parameters:
+    whole_board: true
+    scope: whole board (1682 postings at audit; no internship facet)
+    slow_poll_reason: whole board over 1,000 postings without an internship facet; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-15'
+- id: johnson-controls-workday
+  company_id: johnson-controls
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jci.wd5.myworkdayjobs.com/wday/cxs/jci/JCI/jobs
+  interval_minutes: 10
+  tenant: jci
+  parameters:
+    applied_facets:
+      workerSubType:
+      - e6c5fb966d2f103a3269f4e23b050529
+    scope: workerSubType = Intern
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: abbott-workday
+  company_id: abbott
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://abbott.wd5.myworkdayjobs.com/wday/cxs/abbott/abbottcareers/jobs
+  interval_minutes: 10
+  tenant: abbott
+  parameters:
+    applied_facets:
+      workerSubType:
+      - d0663057a84410077d944a83d8896dd3
+    scope: workerSubType = Intern/Student (Fixed Term) (Trainee)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: applied-materials-workday
+  company_id: applied-materials
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://amat.wd1.myworkdayjobs.com/wday/cxs/amat/External/jobs
+  interval_minutes: 10
+  tenant: amat
+  parameters:
+    applied_facets:
+      workerSubType:
+      - ba9df317f7ac456da2faff4fd6a521c8
+    scope: workerSubType = Intern / Student
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: kla-workday
+  company_id: kla
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://kla.wd1.myworkdayjobs.com/wday/cxs/kla/Search/jobs
+  interval_minutes: 10
+  tenant: kla
+  parameters:
+    applied_facets:
+      workerSubType:
+      - bcb876733f86017814949a52051b230c
+    scope: workerSubType = Intern (Fixed Term)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: analog-devices-workday
+  company_id: analog-devices
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://analogdevices.wd1.myworkdayjobs.com/wday/cxs/analogdevices/External/jobs
+  interval_minutes: 10
+  tenant: analogdevices
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 633b03df4f5d1000ec10ab4627a80000
+    scope: workerSubType = Co-op/Intern (Fixed Term) (Trainee)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: polaris-workday
+  company_id: polaris
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://polaris.wd5.myworkdayjobs.com/wday/cxs/polaris/PolarisJobs/jobs
+  interval_minutes: 10
+  tenant: polaris
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 6236a7dc0277102c2f7cc69ac6a45817
+    scope: workerSubType = Intern/Co-op
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: trimble-workday
+  company_id: trimble
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://trimble.wd1.myworkdayjobs.com/wday/cxs/trimble/TrimbleCareers/jobs
+  interval_minutes: 10
+  tenant: trimble
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 90113db8ab8901793271cbb056016342
+    scope: workerSubType = Intern Employee (Fixed Term)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: cognex-workday
+  company_id: cognex
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://cognex.wd1.myworkdayjobs.com/wday/cxs/cognex/External_Career_Site/jobs
+  interval_minutes: 10
+  tenant: cognex
+  parameters:
+    whole_board: true
+    scope: whole board (89 postings at audit)
+  enabled: true
+  audit_date: '2026-10-15'
+- id: sierra-nevada-workday
+  company_id: sierra-nevada
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://snc.wd1.myworkdayjobs.com/wday/cxs/snc/SNC_External_Career_Site/jobs
+  interval_minutes: 10
+  tenant: snc
+  parameters:
+    applied_facets:
+      workerSubType:
+      - bd3f3405ddee105b4243e938c45a16d5
+    scope: workerSubType = Intern (Trainee)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: xylem-workday
+  company_id: xylem
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://xylem.wd5.myworkdayjobs.com/wday/cxs/xylem/xylem-careers/jobs
+  interval_minutes: 10
+  tenant: xylem
+  parameters:
+    whole_board: true
+    scope: whole board (476 postings at audit; no internship facet)
+  enabled: true
+  audit_date: '2026-10-15'
+- id: regal-rexnord-workday
+  company_id: regal-rexnord
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://regalrexnord.wd1.myworkdayjobs.com/wday/cxs/regalrexnord/Student_and_EarlyCareer/jobs
+  interval_minutes: 10
+  tenant: regalrexnord
+  parameters:
+    whole_board: true
+    scope: whole early-career site (34 postings at audit)
+  enabled: true
+  audit_date: '2026-10-15'
+- id: graco-workday
+  company_id: graco
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://graco.wd501.myworkdayjobs.com/wday/cxs/graco/Graco_Careers/jobs
+  interval_minutes: 10
+  tenant: graco
+  parameters:
+    whole_board: true
+    scope: whole board (185 postings at audit; no internship facet)
+  enabled: true
+  audit_date: '2026-10-15'
+- id: stanley-black-decker-workday
+  company_id: stanley-black-decker
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://sbdinc.wd1.myworkdayjobs.com/wday/cxs/sbdinc/Stanley_Black_Decker_Career_Site/jobs
+  interval_minutes: 10
+  tenant: sbdinc
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 138cf99b9c49100037bc171ebf690000
+      - 138cf99b9c49100037bc17b9cda70001
+    scope: workerSubType = Intern/Work Experience (Trainee) or Apprentice/Trainee (Trainee); the whole board (661) came back incomplete at audit
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: generac-workday
+  company_id: generac
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://generac.wd5.myworkdayjobs.com/wday/cxs/generac/External/jobs
+  interval_minutes: 10
+  tenant: generac
+  parameters:
+    applied_facets:
+      workerSubType:
+      - c86cfe6c46af1000c14be57b30450000
+    scope: workerSubType = Intern (Fixed Term) (Trainee)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: sensata-workday
+  company_id: sensata
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://sensata.wd1.myworkdayjobs.com/wday/cxs/sensata/Sensata-Careers/jobs
+  interval_minutes: 10
+  tenant: sensata
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 07fc7c539e55102fe3308f0d646c332c
+      - 07fc7c539e55102fe33097625b18332e
+    scope: workerSubType = Co-Op or Intern (Fixed Term)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: woodward-workday
+  company_id: woodward
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://woodward.wd5.myworkdayjobs.com/wday/cxs/woodward/woodward/jobs
+  interval_minutes: 10
+  tenant: woodward
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 6da8ebec461a1000e0b55f324cda0000
+    scope: workerSubType = Intern (Trainee)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: moog-workday
+  company_id: moog
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://moog.wd5.myworkdayjobs.com/wday/cxs/moog/MOOG_External_Career_Site/jobs
+  interval_minutes: 10
+  tenant: moog
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 5601b8111949102e1147d236ce4a0000
+    scope: workerSubType = Intern / Co-Op (Fixed Term)
+    asserted_employment_type: Intern
+  enabled: true
+  audit_date: '2026-10-15'
+- id: curtiss-wright-workday
+  company_id: curtiss-wright
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://curtisswright.wd1.myworkdayjobs.com/wday/cxs/curtisswright/CW_External_Career_Site/jobs
+  interval_minutes: 10
+  tenant: curtisswright
+  parameters:
+    whole_board: true
+    scope: whole board (374 postings at audit; no internship facet)
+  enabled: true
+  audit_date: '2026-10-15'
