@@ -24,6 +24,7 @@ from job_alert.adapters import smartrecruiters as smartrecruiters_module
 from job_alert.adapters.base import AdapterError, PartialCollectionError, validate_collection
 from job_alert.adapters.smartrecruiters import DEFAULT_PAGE_SIZE, SmartRecruitersAdapter
 from job_alert.fetch import ChallengeDetected, HttpFetcher
+from job_alert.geo import location_country
 from job_alert.identity import content_hash
 from job_alert.models import SourceClass, SourceConfig, SupportStatus
 from tests.helpers import assert_normalized_job, assert_repeat_is_stable
@@ -675,6 +676,8 @@ async def test_smartrecruiters_normalizes_the_location_object_and_workplace_flag
             ),
             page(record("3", location=None)),
             page(record("4", location={"city": "Toronto", "region": "ON", "country": "Canada"})),
+            page(record("5", location={"city": "bangalore", "region": None, "country": "in"})),
+            page(record("6", location={"city": "Pune", "region": "MH", "country": "in"})),
         ]
     )
 
@@ -683,6 +686,8 @@ async def test_smartrecruiters_normalizes_the_location_object_and_workplace_flag
         remote = await adapter().collect(make_smartrecruiters_source(), fetcher)
         missing = await adapter().collect(make_smartrecruiters_source(), fetcher)
         named_country = await adapter().collect(make_smartrecruiters_source(), fetcher)
+        no_region = await adapter().collect(make_smartrecruiters_source(), fetcher)
+        with_region = await adapter().collect(make_smartrecruiters_source(), fetcher)
 
     assert hyphenated.jobs[0].locations == ["Bucharest, RO"]
     assert hyphenated.jobs[0].workplace_type == "hybrid"
@@ -692,6 +697,10 @@ async def test_smartrecruiters_normalizes_the_location_object_and_workplace_flag
     assert missing.jobs[0].workplace_type is None
     # Only a two-letter ISO country code is upper-cased; a spelled-out country stays as published.
     assert named_country.jobs[0].locations == ["Toronto, ON, Canada"]
+    # Without a region, a country code that is also a US state code would read as that state.
+    assert no_region.jobs[0].locations == ["bangalore, India"]
+    assert location_country(no_region.jobs[0].locations[0]) == "other"
+    assert with_region.jobs[0].locations == ["Pune, MH, IN"]
 
 
 @respx.mock

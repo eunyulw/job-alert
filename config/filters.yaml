@@ -93,7 +93,8 @@ filters:
        waabi, stack-av, relativity-space, rocket-lab, varda, astranis, outrider, epirus,
        chaos-industries, skyryse, scout-motors, harbinger, may-mobility, motional, torc-robotics,
        vast, ursa-major, electra-aero, shield-ai, hermeus, merlin-labs, helion, general-motors,
-       medtronic, caterpillar, northrop-grumman, ge-aerospace, ge-vernova, aptiv, borgwarner, 3m]
+       medtronic, caterpillar, northrop-grumman, ge-aerospace, ge-vernova, aptiv, borgwarner, 3m,
+       bosch, nike]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,
@@ -122,7 +123,8 @@ filters:
        waabi, stack-av, relativity-space, rocket-lab, varda, astranis, outrider, epirus,
        chaos-industries, skyryse, scout-motors, harbinger, may-mobility, motional, torc-robotics,
        vast, ursa-major, electra-aero, shield-ai, hermeus, merlin-labs, helion, general-motors,
-       medtronic, caterpillar, northrop-grumman, ge-aerospace, ge-vernova, aptiv, borgwarner, 3m]
+       medtronic, caterpillar, northrop-grumman, ge-aerospace, ge-vernova, aptiv, borgwarner, 3m,
+       bosch, nike]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,

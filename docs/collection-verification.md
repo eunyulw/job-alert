@@ -214,7 +214,7 @@ announcement.
 | --- | --- | --- | --- | --- | --- |
 | 3 | Galaxy Digital | `galaxy-digital-greenhouse` | whole board (Greenhouse) | audit 2026-10-14: 39 twice | 2026-10-14, expansion filter |
 | 3 | Target | `target-workday` | facet Intern (unscoped board hits the cap) | 2026-10-14: 128 twice, 7 pages | 2026-10-14, expansion filter |
-| 3 | Nike | `nike-workday` (30 min) | whole board (478; no intern facet) | 2026-10-14: 478 twice, 24 pages | pending its second 30-minute cycle |
+| 3 | Nike | `nike-workday` (30 min) | whole board (478; no intern facet) | 2026-10-14: 478 twice, 24 pages | 2026-10-15, expansion filter |
 | 3 | Coca-Cola | `coca-cola-workday` | facet Interim & Interns (no asserted type) | 2026-10-14: 8 twice | 2026-10-14, expansion filter |
 | 3 | Elevance Health | `elevance-health-workday` | facet Interns | 2026-10-14: 7 twice | 2026-10-14, expansion filter |
 | 3 | Bank of America | `bank-of-america-workday` | facet EE - Intern (Fixed Term) | 2026-10-14: 2 twice | 2026-10-14, expansion filter |
@@ -266,3 +266,10 @@ Mobility, Outrider, Ursa Major, Standard Bots). Serve Robotics and Nimble do not
 also hold Canadian or unidentified sites. GE Aerospace and GE Vernova write bare city names
 across many countries and expose no country facet, so their postings alert only when the label
 says "USA".
+
+Bosch and Nike joined `expansion-matches` on 2026-10-15 after many clean cycles (Bosch had been
+collected since the canary without ever being allowlisted). Bosch writes SmartRecruiters
+locations; when a posting has no region, its label was "City, CC", and a country code that is also a
+US state code read as that state (183 "bangalore, IN" postings looked like Indiana). The adapter
+now spells such codes out ("bangalore, India") when the region is blank. The preview then matched
+17 current US Bosch internships and none at Nike.

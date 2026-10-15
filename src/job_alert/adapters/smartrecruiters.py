@@ -14,9 +14,12 @@ Mapping decisions the payload does not spell out:
 - ``locations`` is one string built from the structured ``location`` object: ``city``, ``region``
   and ``country`` joined with a comma and a space, skipping the parts the board left blank. A
   two-letter country code is upper-cased because SmartRecruiters publishes ISO 3166-1 alpha-2 codes
-  in lower case (``"ca"``, ``"gb"``). The board's ``location.fullLocation`` is display text that
-  follows the posting's language, so the structured fields are used instead of it. A posting whose
-  location object carries none of the three has no location rather than an empty string.
+  in lower case (``"ca"``, ``"gb"``). When the region is blank, a code that is also a US state
+  code is spelled out (``"bangalore, India"``, not ``"bangalore, IN"``), because a two-part label
+  ending in a state code reads as a US city. The board's ``location.fullLocation`` is display
+  text that follows the posting's language, so the structured fields are used instead of it. A
+  posting whose location object carries none of the three has no location rather than an empty
+  string.
 - ``department`` is ``department.label`` and ``employment_type`` is ``typeOfEmployment.label``.
   ``team`` stays empty: the list endpoint publishes no team field.
 - ``workplace_type`` is ``"remote"`` or ``"hybrid"`` taken from the ``location.remote`` and
@@ -110,6 +113,16 @@ PUBLIC_POSTING_URL = "https://jobs.smartrecruiters.com/{company}/{posting_id}"
 
 _POSTINGS_PATH = re.compile(r"/v1/companies/(?P<company>[^/]+)/postings/?$")
 _COUNTRY_CODE = re.compile(r"[a-zA-Z]{2}\Z")
+# ISO 3166-1 alpha-2 codes that are also US state codes. Without a region, "bangalore, IN" reads
+# as a city in Indiana, so these are spelled out when the board left the region blank.
+_STATE_CODE_COUNTRIES = {
+    "AL": "Albania", "AR": "Argentina", "AZ": "Azerbaijan", "CA": "Canada", "CO": "Colombia",
+    "DE": "Germany", "GA": "Gabon", "ID": "Indonesia", "IL": "Israel", "IN": "India",
+    "KY": "Cayman Islands", "LA": "Laos", "MA": "Morocco", "MD": "Moldova", "ME": "Montenegro",
+    "MN": "Mongolia", "MO": "Macao", "MS": "Montserrat", "MT": "Malta", "NC": "New Caledonia",
+    "NE": "Niger", "PA": "Panama", "SC": "Seychelles", "SD": "Sudan", "TN": "Tunisia",
+    "VA": "Vatican City",
+}
 
 
 def _utcnow() -> datetime:
@@ -465,11 +478,11 @@ def _locations(location: object) -> list[str]:
     """One location string built from the structured city, region and country parts."""
     if not isinstance(location, Mapping):
         return []
-    parts = [
-        optional_text(location.get("city")),
-        optional_text(location.get("region")),
-        _country(location.get("country")),
-    ]
+    region = optional_text(location.get("region"))
+    country = _country(location.get("country"))
+    if region is None and country is not None:
+        country = _STATE_CODE_COUNTRIES.get(country, country)
+    parts = [optional_text(location.get("city")), region, country]
     text = ", ".join(part for part in parts if part is not None)
     return [text] if text else []
 
