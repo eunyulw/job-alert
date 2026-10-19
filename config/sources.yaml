@@ -411,21 +411,19 @@ sources:
     - greenhouse adapter collected 609 postings twice with identical canonical keys across 1 page(s)
   enabled: true
   audit_date: '2026-09-19'
-- id: amd-discovery
+- id: amd-jibe
   company_id: amd
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.amd.com/en/corporate/careers.html
+  provider: jibe
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.amd.com/api/jobs?country=United+States
   interval_minutes: 30
+  tenant: careers.amd.com
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_final_url: https://www.amd.com/en/corporate/careers.html
-    audit_notes:
-    - 'careers landing page request failed: request timed out after 12.0 seconds for https://www.amd.com/en/corporate/careers.html'
-  enabled: false
-  audit_date: '2026-09-19'
+    scope: country=United States
+    slow_poll_reason: US board of about 660 postings, 7 pages; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
 - id: intel-workday
   company_id: intel
   provider: workday
@@ -1585,23 +1583,19 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: schneider-electric-discovery
+- id: schneider-electric-jibe
   company_id: schneider-electric
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.se.com/ww/en/about-us/careers/
+  provider: jibe
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.se.com/api/jobs?country=United+States
   interval_minutes: 30
+  tenant: careers.se.com
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-19'
-    audit_http_status: 200
-    audit_final_url: https://www.se.com/ww/en/
-    audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-19'
+    scope: country=United States
+    slow_poll_reason: US board of about 820 postings, 9 pages; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
 - id: stryker-workday
   company_id: stryker
   provider: workday
@@ -1955,22 +1949,19 @@ sources:
     scope: whole board (Toyota Motor North America)
   enabled: true
   audit_date: '2026-10-19'
-- id: volkswagen-group-discovery
+- id: volkswagen-group-successfactors
   company_id: volkswagen-group
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.volkswagen-group.com/en/career-2682
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.volkswagen-group.com/search/?q=&optionsFacetsDD_country=US
   interval_minutes: 30
+  tenant: jobs.volkswagen-group.com
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 404
-    audit_final_url: https://www.volkswagen-group.com/en/career-2682
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.volkswagen-group.com/en/career-2682'
-  enabled: false
-  audit_date: '2026-09-18'
+    scope: optionsFacetsDD_country=US
+    slow_poll_reason: HTML search pages of 25 rows; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
 - id: byd-discovery
   company_id: byd
   provider: discovery
@@ -2080,21 +2071,19 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-19'
-- id: nissan-motor-discovery
+- id: nissan-motor-workday
   company_id: nissan-motor
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://careers.nissan-global.com/
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://alliance.wd3.myworkdayjobs.com/wday/cxs/alliance/nissanjobs/jobs
+  interval_minutes: 10
+  tenant: alliance
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_final_url: https://careers.nissan-global.com/
-    audit_notes:
-    - 'careers landing page request failed: request failed after 4 attempts for https://careers.nissan-global.com/'
-  enabled: false
-  audit_date: '2026-09-19'
+    whole_board: true
+    scope: whole board (Nissan Americas)
+  enabled: true
+  audit_date: '2026-10-19'
 - id: geely-holding-discovery
   company_id: geely-holding
   provider: discovery
@@ -2307,38 +2296,30 @@ sources:
     scope: career-site search filtered to the United States
   enabled: true
   audit_date: '2026-10-15'
-- id: denso-discovery
+- id: denso-oracle
   company_id: denso
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.denso.com/global/en/careers/
-  interval_minutes: 30
+  provider: oracle
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://hcwt.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=CX
+  interval_minutes: 10
+  tenant: hcwt/CX
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://www.denso.com/global/en/careers/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.denso.com/global/en/careers/'
-  enabled: false
-  audit_date: '2026-09-18'
-- id: aisin-discovery
+    scope: whole board (DENSO North America)
+  enabled: true
+  audit_date: '2026-10-19'
+- id: aisin-adp
   company_id: aisin
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.aisin.com/en/careers/
-  interval_minutes: 30
+  provider: adp
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://myjobs.adp.com/public/staffing/v1/career-site/aisincareers
+  interval_minutes: 10
+  tenant: aisincareers
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 404
-    audit_final_url: https://www.aisin.com/en/careers/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 404 for https://www.aisin.com/en/careers/'
-  enabled: false
-  audit_date: '2026-09-18'
+    scope: whole board (AISIN USA)
+  enabled: true
+  audit_date: '2026-10-19'
 - id: borgwarner-workday
   company_id: borgwarner
   provider: workday
@@ -2951,23 +2932,18 @@ sources:
     - 'careers landing page request failed: non-retryable HTTP 403 for https://www.valero.com/careers'
   enabled: false
   audit_date: '2026-10-14'
-- id: dell-technologies-discovery
+- id: dell-technologies-oracle
   company_id: dell-technologies
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://jobs.dell.com/
-  interval_minutes: 30
+  provider: oracle
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://enterpriseplatform.dell.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=CX_1001
+  interval_minutes: 10
+  tenant: enterpriseplatform.dell.com/CX_1001
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 200
-    audit_final_url: https://enterpriseplatform.dell.com/hcmUI/CandidateExperience/en/sites/careers
-    audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-10-14'
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-19'
 - id: target-workday
   company_id: target
   provider: workday
@@ -3607,22 +3583,18 @@ sources:
     - 'careers landing page request failed: request timed out after 12.0 seconds for https://www.ingrammicro.com/en-us/careers'
   enabled: false
   audit_date: '2026-10-14'
-- id: general-dynamics-discovery
+- id: general-dynamics-icims
   company_id: general-dynamics
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.gd.com/careers
-  interval_minutes: 30
+  provider: icims
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers-gdeb.icims.com/jobs/search?ss=1
+  interval_minutes: 10
+  tenant: careers-gdeb.icims.com
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://www.gd.com/careers
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.gd.com/careers'
-  enabled: false
-  audit_date: '2026-10-14'
+    scope: whole board (General Dynamics Electric Boat)
+  enabled: true
+  audit_date: '2026-10-19'
 - id: usaa-discovery
   company_id: usaa
   provider: discovery
@@ -5708,5 +5680,217 @@ sources:
   endpoint: https://berkshiregrey.bamboohr.com/careers/list
   interval_minutes: 10
   tenant: berkshiregrey
+  enabled: true
+  audit_date: '2026-10-19'
+- id: gatik-greenhouse
+  company_id: gatik
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/gatikaiinc/jobs?content=true
+  interval_minutes: 5
+  tenant: gatikaiinc
+  enabled: true
+  audit_date: '2026-10-19'
+- id: ouster-jazzhr
+  company_id: ouster
+  provider: jazzhr
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://ouster.applytojob.com/apply
+  interval_minutes: 10
+  tenant: ouster
+  enabled: true
+  audit_date: '2026-10-19'
+- id: quantumscape-successfactors
+  company_id: quantumscape
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.quantumscape.com/search/?q=
+  interval_minutes: 30
+  tenant: careers.quantumscape.com
+  parameters:
+    scope: whole board
+    slow_poll_reason: HTML search pages of 25 rows; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: harley-davidson-successfactors
+  company_id: harley-davidson
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.harley-davidson.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 30
+  tenant: jobs.harley-davidson.com
+  parameters:
+    scope: optionsFacetsDD_country=US
+    slow_poll_reason: HTML search pages of 25 rows; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: otis-workday
+  company_id: otis
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://otis.wd504.myworkdayjobs.com/wday/cxs/otis/REC_Ext_Gateway/jobs
+  interval_minutes: 30
+  tenant: otis
+  parameters:
+    whole_board: true
+    scope: whole board
+    slow_poll_reason: whole board of about 1,400 postings with no internship facet; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: corning-successfactors
+  company_id: corning
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://corningjobs.corning.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 30
+  tenant: corningjobs.corning.com
+  parameters:
+    scope: optionsFacetsDD_country=US
+    slow_poll_reason: HTML search pages of 25 rows (about 23 per collection); polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: nordson-workday
+  company_id: nordson
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://nordsonhcm.wd501.myworkdayjobs.com/wday/cxs/nordsonhcm/nordsoncareers/jobs
+  interval_minutes: 10
+  tenant: nordsonhcm
+  parameters:
+    whole_board: true
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-19'
+- id: hubbell-successfactors
+  company_id: hubbell
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.hubbell.com/search/?q=
+  interval_minutes: 30
+  tenant: careers.hubbell.com
+  parameters:
+    scope: whole board
+    slow_poll_reason: HTML search pages of 25 rows (about 27 per collection); polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: ametek-successfactors
+  company_id: ametek
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.ametek.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 30
+  tenant: jobs.ametek.com
+  parameters:
+    scope: optionsFacetsDD_country=US
+    slow_poll_reason: HTML search pages of 25 rows (about 20 per collection); polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: snap-on-icims
+  company_id: snap-on
+  provider: icims
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers-snapon.icims.com/jobs/search?ss=1
+  interval_minutes: 10
+  tenant: careers-snapon.icims.com
+  parameters:
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-19'
+- id: tae-technologies-ukg
+  company_id: tae-technologies
+  provider: ukg
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://recruiting2.ultipro.com/tri1021triae/JobBoard/49386e5d-f909-4648-8335-415ce97e3f15/JobBoardView/LoadSearchResults
+  interval_minutes: 10
+  tenant: tri1021triae
+  enabled: true
+  audit_date: '2026-10-19'
+- id: x-energy-workday
+  company_id: x-energy
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://xenergy.wd5.myworkdayjobs.com/wday/cxs/xenergy/X-energyUS/jobs
+  interval_minutes: 10
+  tenant: xenergy
+  parameters:
+    whole_board: true
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-19'
+- id: western-digital-smartrecruiters
+  company_id: western-digital
+  provider: smartrecruiters
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.smartrecruiters.com/v1/companies/WesternDigital/postings
+  interval_minutes: 5
+  tenant: WesternDigital
+  parameters:
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-19'
+- id: microchip-workday
+  company_id: microchip
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://microchiphr.wd5.myworkdayjobs.com/wday/cxs/microchiphr/External/jobs
+  interval_minutes: 10
+  tenant: microchiphr
+  parameters:
+    whole_board: true
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-19'
+- id: archer-aviation-greenhouse
+  company_id: archer-aviation
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/archer56/jobs?content=true
+  interval_minutes: 5
+  tenant: archer56
+  enabled: true
+  audit_date: '2026-10-19'
+- id: bear-robotics-breezy
+  company_id: bear-robotics
+  provider: breezy
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://bear-robotics.breezy.hr/json
+  interval_minutes: 10
+  tenant: bear-robotics
+  enabled: true
+  audit_date: '2026-10-19'
+- id: righthand-robotics-breezy
+  company_id: righthand-robotics
+  provider: breezy
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://righthand-robotics.breezy.hr/json
+  interval_minutes: 10
+  tenant: righthand-robotics
+  enabled: true
+  audit_date: '2026-10-19'
+- id: miso-robotics-jazzhr
+  company_id: miso-robotics
+  provider: jazzhr
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://misorobotics.applytojob.com/apply
+  interval_minutes: 10
+  tenant: misorobotics
   enabled: true
   audit_date: '2026-10-19'

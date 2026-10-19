@@ -48,6 +48,7 @@ _FIELD = re.compile(
 _PAGES = re.compile(r"Page\s+\d+\s+of\s+(\d+)")
 _SITEMAP_JOB = re.compile(r"<loc>\s*https://[^<]*/jobs/(\d+)/[^<]*</loc>")
 _SITEMAP_INDEX = re.compile(r"<sitemap>\s*<loc>\s*(https://[^<\s]+)\s*</loc>")
+_LOCATION_FIELDS = frozenset({"Location", "Locations", "Job Locations"})
 _POSTED = re.compile(r'title="(\d{1,2}/\d{1,2}/\d{4} \d{1,2}:\d{2} [AP]M)"')
 
 
@@ -90,8 +91,12 @@ def _parse_card(chunk: str) -> Card:
                 moment = datetime.strptime(posted.group(1), "%m/%d/%Y %I:%M %p")
                 card.posted = moment.replace(tzinfo=UTC)
     for name, value in _FIELD.findall(chunk):
-        if html_text(name) == "Category":
+        label = html_text(name)
+        if label == "Category":
             card.category = html_text(value)
+        elif label in _LOCATION_FIELDS and not card.locations:
+            text = html_text(value) or ""
+            card.locations = unique(dashed_location(part) for part in text.split("|"))
     return card
 
 

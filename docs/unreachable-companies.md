@@ -7,18 +7,26 @@ that opens its API. Update this list on every expansion pass: remove a company w
 live, and add every company that was probed and missed.
 
 Robotics, mechanical, aerospace and automotive companies come first, because those are the search's
-priority. Last updated 2026-10-15, after the pass that added the SuccessFactors, Oracle, Rippling,
-Workable, BambooHR, Pinpoint and UKG adapters (49 companies moved off this list).
+priority. Last updated 2026-10-18, after the freehire board-catalog pass (see
+[collection-verification.md](collection-verification.md)), which moved 70 companies off this list.
+
+A company whose careers site refuses us can still be reachable when its job board is published
+somewhere else that answers an ordinary request: Ford, Cummins and DENSO run public Oracle boards;
+John Deere a SuccessFactors search; Rivian a Jibe API; Toyota and Symbotic Workday sites; Honda a
+Phenom site; Gecko an Ashby board; Daifuku and General Dynamics Electric Boat iCIMS sites. Those are
+plain public boards, so using them circumvents nothing. freehire (github.com/strelov1/freehire),
+whose catalog located most of them, also reaches refusing sites by spoofing a browser's TLS
+fingerprint, egressing through residential proxies, running a headless browser, and paying a hosted
+scraping service; none of that is used here.
 
 ## 1. Refused by the provider (not circumvented)
 
 | Company | What the provider answers | Route that could work |
 | --- | --- | --- |
 | Tesla | Careers API (`cua-api/apps/careers/state`, `/careers/search`) answers HTTP 403 Access Denied (Akamai) | Gmail source `tesla-email-alerts`, waiting on a LinkedIn alert and the keychain app password |
-| Lockheed Martin, Ford Motor Company, John Deere, Eaton, Whirlpool, Lam Research, Qualcomm | Eightfold jobs API answers 403 "Not authorized for PCSX". Ford's and Deere's careers sites also serve a bot challenge, and Qualcomm's Workday site lists 0 postings | Email alerts from each careers site |
-| Rivian, Toyota Motor, Gecko Robotics, Daifuku | Careers site serves a bot challenge; no public ATS board found | Email alerts |
-| Symbotic, OMRON, DENSO, DENSO Robotics, CMR Surgical, Honda Motor, Mercedes-Benz Group, Ferrari, General Dynamics | Careers site answers HTTP 403. General Dynamics' GDIT unit has a public Workday board, but GDIT is IT services | Email alerts |
-| Cummins, SAP | The SuccessFactors career-site search answers HTTP 403 | Email alerts |
+| Lockheed Martin, Eaton, Whirlpool, Lam Research, Qualcomm | Eightfold jobs API answers 403 "Not authorized for PCSX". freehire reads Eightfold only through residential proxies, so no alternative board exists | Email alerts from each careers site |
+| OMRON, DENSO Robotics, CMR Surgical, Mercedes-Benz Group, Ferrari | Careers site answers HTTP 403, and no other public board was found. OMRON's ADP site "Omron 247" is a service unit and is not used | Email alerts |
+| SAP | The SuccessFactors career-site search answers HTTP 403 | Email alerts |
 
 Outside the priority areas, these careers sites also serve a bot challenge or answer HTTP 403:
 Adobe, Broadcom, Cisco, Cloudflare, Microsoft, Snowflake, Cadence, OpenAI, ServiceNow, Synopsys,
@@ -31,64 +39,59 @@ Marathon Petroleum, Nationwide, Pfizer, Progressive, StoneX, Valero, Verizon and
 
 | Job system | Priority companies | Others |
 | --- | --- | --- |
-| iCIMS | Joby Aviation, AMD, Schneider Electric | Arm, PepsiCo, State Farm |
-| Phenom | BAE Systems, Oshkosh, Zimmer Biomet | |
-| Radancy | L3Harris, iRobot, SharkNinja | |
-| Kenexa BrassRing | General Atomics, ULA (BAE Systems also links one) | |
-| Oracle Taleo | Textron | UnitedHealth Group, Enterprise Products |
-| Teamtailor | Starship Technologies | |
+| SuccessFactors tile layout (no result total, so completeness cannot be judged) | KUKA, CNH Industrial, TE Connectivity | |
 | SuccessFactors without a career-site search | BMW Group | American Airlines |
+| Kenexa BrassRing | General Atomics | |
+| Paycor (listing built by JavaScript) | Vecna Robotics, Neocis | |
+| Teamtailor | Starship Technologies (1 posting) | |
+| Gem | Chef Robotics (1 posting) | |
+| Personio | Cartken (offices named without a country) | |
+| Beesite / Jobylon / Dayforce | Porsche / Einride / Amphenol (a UK unit) | |
 | Eightfold with no derivable list endpoint | none | Chevron, Citigroup, American Express, Capital One, Morgan Stanley |
 
-Next adapters to write, by priority companies unlocked: iCIMS (3), Phenom (3), Radancy (3),
-BrassRing (2).
+Jibe also serves Arm, PepsiCo and State Farm, which wait for the Fortune 500 pass.
 
 ## 3. Board found, but not usable as is
 
 | Company | Problem |
 | --- | --- |
-| Saronic | Ashby board answers (231 postings), but one record has no title, so every collection is incomplete. Re-check each pass. |
-| Intuitive Surgical | Workday tenant `intuitive` exposes only the `irtc_careers` site (30 postings, one research center). The main board was not found. |
-| Stellantis | Workday site `External_Career_Site_ID01` lists 25 postings outside the US. The US board was not found. |
-| Sierra Space | The `snc` Workday tenant has a Sierra Space site with 0 postings. |
-| Dusty Robotics, Xwing | The careers page links to a Greenhouse board that answers HTTP 404. |
-| TE Connectivity | The SuccessFactors career site answers, but its search returns no result rows. |
+| Xwing | The careers page links to a Greenhouse board that answers HTTP 404. |
+| Realtime Robotics | freehire lists Workable postings, but the account name behind them could not be identified. |
+| Kratos Defense | The only board found, on Paylocity, belongs to "Kratos Industries"; it could not be confirmed as Kratos Defense. |
+| TransDigm | Only subsidiary ADP sites (such as `whippany`) were found, not a group board. |
+| Hyundai Motor Group | Its SuccessFactors site lists European postings only. |
 | JPMorgan Chase | Its Oracle board holds 7,318 postings. A keyword search matches description text, so it cannot narrow the board. Deferred, since JPMorgan isn't a priority. |
+| Mitsubishi Electric, Daifuku | Covered by one board each (Mitsubishi Electric US `meus-mea`; Daifuku Intralogistics America). Their second boards, MEPPI (HRM Direct) and Wynright (iCIMS), wait, because the registry keeps one source per company. |
+| General Dynamics | Only Electric Boat is covered. GDIT has a public Workday board but is IT services; no board was found for the other units. |
 
-## 4. No public board found (probed 2026-10-14 and twice on 2026-10-15)
+## 4. No public board found (probed 2026-10-14, twice on 2026-10-15, and in freehire's catalog on 2026-10-18)
 
-These companies have no board under any guessed name on Greenhouse, Lever, Ashby, SmartRecruiters,
-Workday (whose robots.txt lists a tenant's sites), Eightfold, Rippling, Workable or Pinpoint. Their
-careers pages show no job-system link that a fetch can see; most render jobs with JavaScript or
-link out only after interaction.
+These companies have no board under any guessed name on the providers the monitor reads, and
+freehire's catalog of 294,000 companies has none either, or only aggregator reposts.
 
-- **Robotics:** Intuitive Surgical (main board), Aurora Innovation, Covariant, RightHand Robotics,
-  GreyOrange, NEURA Robotics, Engineered Arts, Unitree, AGIBOT, Pudu Robotics, Geek+, KUKA, FANUC,
-  Kawasaki Robotics, Mitsubishi Electric, Built Robotics, Sarcos, Vention, Realtime Robotics, Miso
-  Robotics, Chef Robotics, Simbe, Berkshire Grey, Vecna Robotics, Electric Sheep, Monarch Tractor,
-  Burro, Exotec, Bear Robotics, Persona AI, Hello Robot, Machina Labs, Hadrian, Cartken, Moon
-  Surgical, Vicarious Surgical, PROCEPT BioRobotics, Neocis.
-- **Aerospace and defense:** Archer Aviation, BETA Technologies, Reliable Robotics, Stoke Space,
-  Firefly Aerospace, K2 Space, Castelion, Huntington Ingalls, Spirit AeroSystems, HEICO, TransDigm,
-  Kratos.
-- **Automotive and mobility:** Hyundai Motor Group, Kia, Nissan, Porsche, Volvo Cars, Volkswagen
-  Group, BYD, Aisin, Renault, Mazda, Geely, SAIC, Chery, Gatik, Plus, Einride, Luminar, Ouster,
-  Canoo, QuantumScape, Dana, Harley-Davidson, AGCO, CNH.
-- **Industrial:** Siemens, Parker Hannifin, Otis, Corning, Ingersoll Rand, Nordson, Hubbell,
-  Amphenol, AMETEK, Snap-on, Garmin, TAE Technologies, X-energy, Western Digital, Seagate, Dell
-  Technologies, Texas Instruments, Microchip.
+- **Robotics:** Aurora Innovation, Covariant, GreyOrange, Unitree, AGIBOT, Pudu Robotics, Geek+,
+  Kawasaki Robotics, Sarcos, Vention, Electric Sheep, Monarch Tractor, Hello Robot, Moon Surgical,
+  Vicarious Surgical.
+- **Aerospace and defense:** Huntington Ingalls, Spirit AeroSystems.
+- **Automotive and mobility:** Kia, BYD, Renault, Mazda, Geely, SAIC, Chery, Plus, Luminar, Canoo,
+  Dana, AGCO, Volvo Cars.
+- **Industrial:** Siemens (only its Healthineers and Energy subsidiaries have boards), Parker
+  Hannifin, Ingersoll Rand, Garmin (only a Romanian office's Workable board), Seagate.
 
 ## Reachable, but deferred to a later pass
 
-Their public Workday boards answer, but they are less central to robotics and mechanical work, so
-they wait for the Fortune 500 pass: Thermo Fisher Scientific, Danaher, Hewlett Packard Enterprise,
-Leidos, GDIT (General Dynamics), NXP.
+Their public boards answer, but they are less central to robotics and mechanical work, so they wait
+for the Fortune 500 pass: Thermo Fisher Scientific, Danaher, Hewlett Packard Enterprise, Leidos,
+GDIT (General Dynamics), NXP, Arm, PepsiCo, State Farm.
 
 ## Rejected look-alike boards
 
 These board names belong to a different company, so they are not used: `figure` (Figure Lending),
-`archer` (a veterinary clinic), `radiant` (an AI cloud company, not Radiant Nuclear), `slate` (on
-Lever, the Slate podcast publisher; on Ashby, an unrelated video-software company), `sila` (Sila
-Services, an HVAC company, not Sila Nanotechnologies), `monogram` (an AI design startup, not
-Monogram Orthopaedics), `persona` on Ashby (Persona the identity-verification company, not Persona
-AI) and `emerson` on Workday (Emerson College).
+`archer` (a veterinary clinic; Archer Aviation's board is `archer56`), `radiant` (an AI cloud
+company, not Radiant Nuclear), `slate` (on Lever, the Slate podcast publisher; on Ashby, an
+unrelated video-software company), `sila` (Sila Services, an HVAC company, not Sila
+Nanotechnologies), `monogram` (an AI design startup, not Monogram Orthopaedics), `persona` on Ashby
+(Persona the identity-verification company; Persona AI's board is `persona.ai`), `emerson` on
+Workday (Emerson College), Vention's `join.ventionteams.com` and Teamtailor site (Vention the
+software outsourcer, not Vention the robotics company), and the Kia and Mazda boards in freehire's
+catalog (car dealerships).

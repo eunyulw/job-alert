@@ -319,3 +319,38 @@ explained double listing toward the declared total. See `adapters/oracle.py`.
 All of these were allowlisted at once instead of after two clean cycles, because a new source's
 first collection only seeds and cannot alert. The remaining companies are in
 [unreachable-companies.md](unreachable-companies.md).
+
+### freehire board-catalog pass (2026-10-18)
+
+freehire (github.com/strelov1/freehire, MIT) is a public job aggregator. Its keyless search API
+returns each posting's source and URL, which name the company's board, so its catalog located
+boards for companies the earlier passes missed. Its adapters for nine more job systems were
+reimplemented, reading listing pages only: iCIMS (search pages checked against the site sitemap),
+Phenom, Jibe, Taleo, ADP MyJobs, HRM Direct, Radancy, Breezy and JazzHR. freehire's tiers that
+reach refusing sites (TLS-fingerprint spoofing, residential proxies, a headless browser, a hosted
+scraping service) were not ported. Every source passed `audit set-source`.
+
+| Provider | Companies (postings at audit) |
+| --- | --- |
+| iCIMS | General Dynamics Electric Boat (231), Snap-on (205), Joby (169), Daifuku (162) |
+| Phenom | BAE Systems (2015)\*, Zimmer Biomet (423), Honda (303) |
+| Jibe | Rivian (947)\*, Schneider Electric (US, 822)\*, AMD (US, 662)\* |
+| Taleo | Textron (656 served of 717 counted)\* |
+| ADP | Stellantis (873)\*, HEICO (326)\*, FANUC (78), Aisin (165) |
+| HRM Direct / Radancy | Firefly (77), Mitsubishi Electric US (42) / L3Harris (2173)\*, SharkNinja (149), iRobot (4) |
+| Breezy / JazzHR | Bear Robotics (45), RightHand Robotics (3) / Ouster (24), Miso Robotics (6) |
+| Oracle | Cummins (1215)\*, Ford (869)\*, Texas Instruments (848)\*, Dell (446), DENSO (107) |
+| Workday (whole board) | Otis (1377)\*, Oshkosh (537)\*, Microchip (528), Nissan (327), Nordson (230), Sierra Space (203), Symbotic (127), Toyota (115), X-energy (115), PROCEPT (34) |
+| SuccessFactors | Hubbell (669)\*, Corning (US, 559)\*, AMETEK (US, 499)\*, John Deere (US, 228)\*, ULA (143)\*, Harley-Davidson (US, 82)\*, QuantumScape (29)\*, Volkswagen Group (US, 20)\* |
+| SmartRecruiters / UKG | Intuitive Surgical (752)\*, Western Digital (334) / TAE Technologies (23) |
+| Greenhouse / Lever / Ashby | K2 Space (250), Castelion (221), BETA (125), Archer Aviation (141), Stoke (71), Gatik (67) / Machina Labs (29), Simbe (14), Burro (10) / NEURA (378), Saronic (231), Hadrian (131), Reliable Robotics (59), Persona AI (27), Gecko (21), Built Robotics (7) |
+| Rippling / Workable / BambooHR | Engineered Arts (7), Dusty Robotics (4) / Exotec (64) / Berkshire Grey (21) |
+
+\* Polled every 30 minutes, with the reason recorded in the source's `slow_poll_reason`.
+
+Taleo sections can count requisitions they never serve (Textron's pages come back short with no
+repeat), so a short section is accepted only when two walks read the same postings. Radancy sites
+can count content pages in their total, so the job-only total is used, and a "Multiple Locations"
+or "Remote" label gains the place its posting link names. Robotics companies joined the
+every-internship filters; the rest joined the engineering-title filters. The remaining companies
+are in [unreachable-companies.md](unreachable-companies.md).

@@ -2064,3 +2064,95 @@ companies:
     categories:
       - robotics-autonomy-physical-ai
     aliases: []
+  - id: gatik
+    name: "Gatik"
+    categories:
+      - automotive-ev-autonomous-mobility
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: ouster
+    name: "Ouster"
+    categories:
+      - robotics-autonomy-physical-ai
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: quantumscape
+    name: "QuantumScape"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: harley-davidson
+    name: "Harley-Davidson"
+    categories:
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: otis
+    name: "Otis Worldwide"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: corning
+    name: "Corning"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: nordson
+    name: "Nordson"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: hubbell
+    name: "Hubbell"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: ametek
+    name: "AMETEK"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: snap-on
+    name: "Snap-on"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: tae-technologies
+    name: "TAE Technologies"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: x-energy
+    name: "X-energy"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: western-digital
+    name: "Western Digital"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: microchip
+    name: "Microchip Technology"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: archer-aviation
+    name: "Archer Aviation"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: bear-robotics
+    name: "Bear Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: righthand-robotics
+    name: "RightHand Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: miso-robotics
+    name: "Miso Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []

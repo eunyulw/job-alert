@@ -237,6 +237,28 @@ async def test_icims_walks_every_page_and_checks_the_ids_against_the_sitemap() -
 
 @respx.mock
 @pytest.mark.asyncio
+async def test_icims_reads_a_location_field_when_the_card_header_has_none() -> None:
+    respx.get(f"{ICIMS_HOST}/sitemap.xml").mock(return_value=httpx.Response(200, text=sitemap([7])))
+    card = (
+        '<li class="iCIMS_JobCardItem">\n<div class="row">\n<div class="col-xs-12 title">\n'
+        f'<a href="{ICIMS_HOST}/jobs/7/x/job?in_iframe=1" class="iCIMS_Anchor">\n'
+        "<h3 >\nEngineering Summer Internship</h3>\n</a>\n</div>\n"
+        '<dl class="iCIMS_JobHeaderGroup"><div class="iCIMS_JobHeaderTag">\n'
+        '<dt class="iCIMS_JobHeaderField">Location</dt>\n'
+        '<dd class="iCIMS_JobHeaderData"><span >\nUS-CT-Groton</span>\n</dd>\n</div></dl>\n</li>\n'
+    )
+    respx.get(url__startswith=f"{ICIMS_HOST}/jobs/search").mock(
+        return_value=httpx.Response(200, text=icims_page([card], 1))
+    )
+
+    result = await collect(IcimsAdapter(), source("icims", ICIMS))
+
+    assert result.complete
+    assert result.jobs[0].locations == ["Groton, CT, US"]
+
+
+@respx.mock
+@pytest.mark.asyncio
 async def test_icims_is_incomplete_when_the_sitemap_keeps_disagreeing() -> None:
     sitemap_route = respx.get(f"{ICIMS_HOST}/sitemap.xml").mock(
         return_value=httpx.Response(200, text=sitemap([1, 2]))

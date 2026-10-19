@@ -57,7 +57,8 @@ filters:
        saildrone, blue-water-autonomy, forterra, distalmotion, yaskawa,
        symbotic, fanuc, intuitive-surgical, procept-biorobotics, berkshire-grey, built-robotics,
        simbe-robotics, burro, exotec, persona-ai, gecko-robotics, neura-robotics, engineered-arts,
-       dusty-robotics, machina-labs, hadrian, reliable-robotics, irobot, saronic]
+       dusty-robotics, machina-labs, hadrian, reliable-robotics, irobot, saronic,
+       bear-robotics, righthand-robotics, miso-robotics]
     include_title_keywords: [intern, co-op, student]
     require_title_keywords: []
     exclude_title_keywords: []
@@ -87,7 +88,8 @@ filters:
        saildrone, blue-water-autonomy, forterra, distalmotion, yaskawa,
        symbotic, fanuc, intuitive-surgical, procept-biorobotics, berkshire-grey, built-robotics,
        simbe-robotics, burro, exotec, persona-ai, gecko-robotics, neura-robotics, engineered-arts,
-       dusty-robotics, machina-labs, hadrian, reliable-robotics, irobot, saronic]
+       dusty-robotics, machina-labs, hadrian, reliable-robotics, irobot, saronic,
+       bear-robotics, righthand-robotics, miso-robotics]
     include_title_keywords: []
     require_title_keywords: []
     exclude_title_keywords: []
@@ -129,7 +131,11 @@ filters:
        oshkosh, toyota-motor, sierra-space, cummins, ford-motor-company, texas-instruments,
        beta-technologies, stoke-space, k2-space, castelion, united-launch-alliance, john-deere,
        daifuku, joby-aviation, zimmer-biomet, honda-motor, bae-systems, rivian, textron,
-       stellantis, heico, firefly-aerospace, mitsubishi-electric, l3harris, sharkninja]
+       stellantis, heico, firefly-aerospace, mitsubishi-electric, l3harris, sharkninja,
+       nissan-motor, otis, nordson, x-energy, microchip, western-digital, dell-technologies, denso,
+       volkswagen-group, quantumscape, harley-davidson, corning, hubbell, ametek, aisin,
+       general-dynamics, snap-on, tae-technologies, gatik, archer-aviation, ouster,
+       amd, schneider-electric]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,
@@ -175,7 +181,11 @@ filters:
        oshkosh, toyota-motor, sierra-space, cummins, ford-motor-company, texas-instruments,
        beta-technologies, stoke-space, k2-space, castelion, united-launch-alliance, john-deere,
        daifuku, joby-aviation, zimmer-biomet, honda-motor, bae-systems, rivian, textron,
-       stellantis, heico, firefly-aerospace, mitsubishi-electric, l3harris, sharkninja]
+       stellantis, heico, firefly-aerospace, mitsubishi-electric, l3harris, sharkninja,
+       nissan-motor, otis, nordson, x-energy, microchip, western-digital, dell-technologies, denso,
+       volkswagen-group, quantumscape, harley-davidson, corning, hubbell, ametek, aisin,
+       general-dynamics, snap-on, tae-technologies, gatik, archer-aviation, ouster,
+       amd, schneider-electric]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,
