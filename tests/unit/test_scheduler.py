@@ -38,6 +38,7 @@ from job_alert.notifications.base import DeliveryResult, NotificationMessage
 from job_alert.scheduler import (
     DEFAULT_WAKE_INTERVAL_SECONDS,
     DIGEST_TITLE,
+    GLOBAL_CONCURRENCY,
     SHUTDOWN_GRACE_SECONDS,
     Scheduler,
     deterministic_jitter,
@@ -149,20 +150,19 @@ async def test_a_disabled_source_is_never_dispatched(tmp_path: Path) -> None:
     assert service.calls == []
 
 
-async def test_concurrent_collections_never_exceed_the_global_limit_of_eight(
-    tmp_path: Path,
-) -> None:
+async def test_concurrent_collections_never_exceed_the_global_limit(tmp_path: Path) -> None:
     repository = open_repository(tmp_path)
-    sources = [make_source(f"acme-{index}", host=f"host{index}") for index in range(10)]
+    total = GLOBAL_CONCURRENCY + 2
+    sources = [make_source(f"acme-{index:02d}", host=f"host{index}") for index in range(total)]
     service = RecordingService(gated=True)
     scheduler = build_scheduler(repository, sources, service)
 
     report = await scheduler.wake(now=NOW)
-    await wait_for(lambda: len(service.calls) == 8)
+    await wait_for(lambda: len(service.calls) == GLOBAL_CONCURRENCY)
 
-    assert len(report.dispatched) == 10
-    assert service.max_active == 8
-    assert service.calls == [f"acme-{index}" for index in range(8)]
+    assert len(report.dispatched) == total
+    assert service.max_active == GLOBAL_CONCURRENCY == 16
+    assert service.calls == [f"acme-{index:02d}" for index in range(GLOBAL_CONCURRENCY)]
 
     service.release.set()
     await scheduler.wait_for_idle()
