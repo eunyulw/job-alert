@@ -96,8 +96,11 @@ DEFAULT_WAKE_INTERVAL_SECONDS = 30
 #: How often the health heartbeat is evaluated.
 DEFAULT_HEARTBEAT_INTERVAL_SECONDS = 300
 
-#: Collections allowed to run at once, and against one provider host.
-GLOBAL_CONCURRENCY = 8
+#: Collections allowed to run at once, and against one provider host. 268 sources, some of them
+#: whole-board walks of several minutes (Otis's 69 Workday pages take about 12), kept 8 global
+#: slots about three-quarters busy, so 5-minute Greenhouse sources waited 20-30 minutes for a slot
+#: (measured 2026-10-19). The per-host limit is what keeps any one provider's load polite.
+GLOBAL_CONCURRENCY = 16
 PER_HOST_CONCURRENCY = 2
 
 #: How long a graceful shutdown waits for the collections already in flight.
