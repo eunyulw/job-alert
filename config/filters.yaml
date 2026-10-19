@@ -19,6 +19,8 @@
 # the every-internship filters and 51 robotics-adjacent, mechanical and Fortune 500 industrial
 # companies to the expansion filters. The unreachable-list pass (2026-10-15) added the companies
 # that new adapters (SuccessFactors, Oracle, Rippling, Workable, BambooHR, Pinpoint, UKG) reach.
+# The freehire board-catalog pass (2026-10-18) added the companies that the iCIMS, Phenom, Jibe,
+# Taleo, ADP, HRM Direct and Radancy adapters reach, plus boards found on existing providers.
 # Every alerting filter is US-only (2026-10-14): a posting alerts only when at least one of its
 # locations is confidently in the US (job_alert/geo.py); an unknown or missing location does not.
 # Both filters name their companies, so they are a canary under the 90% broad-activation gate. See
@@ -52,7 +54,10 @@ filters:
        rai-institute, general-robotics, reframe-systems, glacier, diligent-robotics,
        ambi-robotics, osaro, noah-medical, havocai,
        viam, brain-corp, robust-ai, mytra, overland-ai, plus-one-robotics, agile-robots,
-       saildrone, blue-water-autonomy, forterra, distalmotion, yaskawa]
+       saildrone, blue-water-autonomy, forterra, distalmotion, yaskawa,
+       symbotic, fanuc, intuitive-surgical, procept-biorobotics, berkshire-grey, built-robotics,
+       simbe-robotics, burro, exotec, persona-ai, gecko-robotics, neura-robotics, engineered-arts,
+       dusty-robotics, machina-labs, hadrian, reliable-robotics, irobot, saronic]
     include_title_keywords: [intern, co-op, student]
     require_title_keywords: []
     exclude_title_keywords: []
@@ -79,7 +84,10 @@ filters:
        rai-institute, general-robotics, reframe-systems, glacier, diligent-robotics,
        ambi-robotics, osaro, noah-medical, havocai,
        viam, brain-corp, robust-ai, mytra, overland-ai, plus-one-robotics, agile-robots,
-       saildrone, blue-water-autonomy, forterra, distalmotion, yaskawa]
+       saildrone, blue-water-autonomy, forterra, distalmotion, yaskawa,
+       symbotic, fanuc, intuitive-surgical, procept-biorobotics, berkshire-grey, built-robotics,
+       simbe-robotics, burro, exotec, persona-ai, gecko-robotics, neura-robotics, engineered-arts,
+       dusty-robotics, machina-labs, hadrian, reliable-robotics, irobot, saronic]
     include_title_keywords: []
     require_title_keywords: []
     exclude_title_keywords: []
@@ -117,7 +125,11 @@ filters:
        applied-intuition, true-anomaly, neros, aerovironment, axiom-space, apex-space, wisk,
        zf, teradyne, keyence, lear, boston-scientific, epson-robots, doosan-robotics, paccar,
        tata-motors-jlr, exxon-mobil, phillips-66, timken, boom-supersonic, zap-energy,
-       impulse-space, howmet, subaru, emerson, honeywell, our-next-energy, axon]
+       impulse-space, howmet, subaru, emerson, honeywell, our-next-energy, axon,
+       oshkosh, toyota-motor, sierra-space, cummins, ford-motor-company, texas-instruments,
+       beta-technologies, stoke-space, k2-space, castelion, united-launch-alliance, john-deere,
+       daifuku, joby-aviation, zimmer-biomet, honda-motor, bae-systems, rivian, textron,
+       stellantis, heico, firefly-aerospace, mitsubishi-electric, l3harris, sharkninja]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,
@@ -159,7 +171,11 @@ filters:
        applied-intuition, true-anomaly, neros, aerovironment, axiom-space, apex-space, wisk,
        zf, teradyne, keyence, lear, boston-scientific, epson-robots, doosan-robotics, paccar,
        tata-motors-jlr, exxon-mobil, phillips-66, timken, boom-supersonic, zap-energy,
-       impulse-space, howmet, subaru, emerson, honeywell, our-next-energy, axon]
+       impulse-space, howmet, subaru, emerson, honeywell, our-next-energy, axon,
+       oshkosh, toyota-motor, sierra-space, cummins, ford-motor-company, texas-instruments,
+       beta-technologies, stoke-space, k2-space, castelion, united-launch-alliance, john-deere,
+       daifuku, joby-aviation, zimmer-biomet, honda-motor, bae-systems, rivian, textron,
+       stellantis, heico, firefly-aerospace, mitsubishi-electric, l3harris, sharkninja]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,

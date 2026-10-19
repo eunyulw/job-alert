@@ -46,6 +46,7 @@ from urllib.parse import parse_qs, unquote, urljoin, urlsplit
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, TypeAdapter, ValidationError
 
+from job_alert.adapters.adp import AdpAdapter
 from job_alert.adapters.amazon import AmazonAdapter
 from job_alert.adapters.apple import AppleAdapter
 from job_alert.adapters.ashby import AshbyAdapter
@@ -57,18 +58,26 @@ from job_alert.adapters.base import (
     job_metrics,
     validate_collection,
 )
+from job_alert.adapters.breezy import BreezyAdapter
 from job_alert.adapters.eightfold import EightfoldAdapter
 from job_alert.adapters.email_alerts import EmailAlertAdapter
 from job_alert.adapters.generic_json import GenericJsonAdapter
 from job_alert.adapters.google import GoogleAdapter
 from job_alert.adapters.greenhouse import GreenhouseAdapter
+from job_alert.adapters.hrmdirect import HrmDirectAdapter
+from job_alert.adapters.icims import IcimsAdapter
+from job_alert.adapters.jazzhr import JazzHrAdapter
+from job_alert.adapters.jibe import JibeAdapter
 from job_alert.adapters.jsonld import JsonLdAdapter
 from job_alert.adapters.lever import LeverAdapter
 from job_alert.adapters.oracle import OracleAdapter
+from job_alert.adapters.phenom import PhenomAdapter
 from job_alert.adapters.pinpoint import PinpointAdapter
+from job_alert.adapters.radancy import RadancyAdapter
 from job_alert.adapters.rippling import RipplingAdapter
 from job_alert.adapters.smartrecruiters import SmartRecruitersAdapter
 from job_alert.adapters.successfactors import SuccessFactorsAdapter
+from job_alert.adapters.taleo import TaleoAdapter
 from job_alert.adapters.ukg import UkgAdapter
 from job_alert.adapters.workable import WorkableAdapter
 from job_alert.adapters.workday import WorkdayAdapter
@@ -114,6 +123,15 @@ PROVIDER_ADAPTERS: dict[str, SourceAdapter] = {
     "pinpoint": PinpointAdapter(),
     "oracle": OracleAdapter(),
     "ukg": UkgAdapter(),
+    "icims": IcimsAdapter(),
+    "phenom": PhenomAdapter(),
+    "jibe": JibeAdapter(),
+    "taleo": TaleoAdapter(),
+    "adp": AdpAdapter(),
+    "hrmdirect": HrmDirectAdapter(),
+    "radancy": RadancyAdapter(),
+    "breezy": BreezyAdapter(),
+    "jazzhr": JazzHrAdapter(),
 }
 
 # Public endpoints that a provider documents earn SUPPORTED; a public endpoint the provider does
@@ -134,6 +152,14 @@ PROVIDER_SOURCE_CLASSES: dict[str, SourceClass] = {
     "bamboohr": SourceClass.PUBLIC_ATS,
     "pinpoint": SourceClass.PUBLIC_ATS,
     "ukg": SourceClass.PUBLIC_ATS,
+    "phenom": SourceClass.PUBLIC_ATS,
+    "jibe": SourceClass.PUBLIC_ATS,
+    "taleo": SourceClass.PUBLIC_ATS,
+    "adp": SourceClass.PUBLIC_ATS,
+    "hrmdirect": SourceClass.PUBLIC_ATS,
+    "radancy": SourceClass.PUBLIC_ATS,
+    "breezy": SourceClass.PUBLIC_ATS,
+    "jazzhr": SourceClass.PUBLIC_ATS,
     "generic-json": SourceClass.COMPANY_JSON,
     "json-ld": SourceClass.HTML,
 }

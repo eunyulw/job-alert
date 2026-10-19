@@ -1923,3 +1923,144 @@ companies:
     categories:
       - aerospace-defense
     aliases: []
+  # Freehire board-catalog pass (2026-10-18).
+  - id: textron
+    name: "Textron"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: cummins
+    name: "Cummins"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - automotive-ev-autonomous-mobility
+    aliases: []
+  - id: texas-instruments
+    name: "Texas Instruments"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: oshkosh
+    name: "Oshkosh"
+    categories:
+      - automotive-ev-autonomous-mobility
+      - aerospace-defense
+    aliases: []
+  - id: zimmer-biomet
+    name: "Zimmer Biomet"
+    categories:
+      - medical-robotics
+    aliases: []
+  - id: united-launch-alliance
+    name: "United Launch Alliance"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: bae-systems
+    name: "BAE Systems"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: beta-technologies
+    name: "BETA Technologies"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: firefly-aerospace
+    name: "Firefly Aerospace"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: stoke-space
+    name: "Stoke Space"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: machina-labs
+    name: "Machina Labs"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: hadrian
+    name: "Hadrian"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - aerospace-defense
+    aliases: []
+  - id: l3harris
+    name: "L3Harris Technologies"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: irobot
+    name: "iRobot"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: sharkninja
+    name: "SharkNinja"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: built-robotics
+    name: "Built Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: simbe-robotics
+    name: "Simbe Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: burro
+    name: "Burro"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: exotec
+    name: "Exotec"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: persona-ai
+    name: "Persona AI"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: procept-biorobotics
+    name: "PROCEPT BioRobotics"
+    categories:
+      - medical-robotics
+    aliases: []
+  - id: reliable-robotics
+    name: "Reliable Robotics"
+    categories:
+      - aerospace-defense
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: k2-space
+    name: "K2 Space"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: castelion
+    name: "Castelion"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: heico
+    name: "HEICO"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: sierra-space
+    name: "Sierra Space"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: berkshire-grey
+    name: "Berkshire Grey"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []

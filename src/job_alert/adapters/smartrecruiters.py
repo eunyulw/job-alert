@@ -93,6 +93,7 @@ from urllib.parse import parse_qsl, quote, urlencode, urlsplit, urlunsplit
 from pydantic import HttpUrl, ValidationError
 
 from job_alert.adapters.base import AdapterError
+from job_alert.adapters.boards import STATE_CODE_COUNTRIES
 from job_alert.adapters.common import https_url, optional_text
 from job_alert.fetch import HttpFetcher, HttpPayload, RequestSpec
 from job_alert.identity import build_dedupe_key, build_job_key, content_hash
@@ -113,16 +114,6 @@ PUBLIC_POSTING_URL = "https://jobs.smartrecruiters.com/{company}/{posting_id}"
 
 _POSTINGS_PATH = re.compile(r"/v1/companies/(?P<company>[^/]+)/postings/?$")
 _COUNTRY_CODE = re.compile(r"[a-zA-Z]{2}\Z")
-# ISO 3166-1 alpha-2 codes that are also US state codes. Without a region, "bangalore, IN" reads
-# as a city in Indiana, so these are spelled out when the board left the region blank.
-_STATE_CODE_COUNTRIES = {
-    "AL": "Albania", "AR": "Argentina", "AZ": "Azerbaijan", "CA": "Canada", "CO": "Colombia",
-    "DE": "Germany", "GA": "Gabon", "ID": "Indonesia", "IL": "Israel", "IN": "India",
-    "KY": "Cayman Islands", "LA": "Laos", "MA": "Morocco", "MD": "Moldova", "ME": "Montenegro",
-    "MN": "Mongolia", "MO": "Macao", "MS": "Montserrat", "MT": "Malta", "NC": "New Caledonia",
-    "NE": "Niger", "PA": "Panama", "SC": "Seychelles", "SD": "Sudan", "TN": "Tunisia",
-    "VA": "Vatican City",
-}
 
 
 def _utcnow() -> datetime:
@@ -481,7 +472,7 @@ def _locations(location: object) -> list[str]:
     region = optional_text(location.get("region"))
     country = _country(location.get("country"))
     if region is None and country is not None:
-        country = _STATE_CODE_COUNTRIES.get(country, country)
+        country = STATE_CODE_COUNTRIES.get(country, country)
     parts = [optional_text(location.get("city")), region, country]
     text = ", ".join(part for part in parts if part is not None)
     return [text] if text else []

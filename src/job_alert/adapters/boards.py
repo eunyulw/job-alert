@@ -1,4 +1,5 @@
-"""Shared pieces for the small ATS adapters (Rippling, Workable, BambooHR, Pinpoint, Oracle, UKG).
+"""Shared pieces for the small ATS adapters (Rippling, Workable, BambooHR, Pinpoint, Oracle, UKG,
+iCIMS, Phenom, Jibe, Taleo, ADP, HRMDirect, Radancy).
 
 Each of those providers publishes a public JSON board whose records differ only in field names, so
 the adapters share two things:
@@ -10,12 +11,16 @@ the adapters share two things:
   record or a duplicate id is a warning that makes the collection incomplete, and a board that
   declares its size must match it.
 
-The paged providers (Oracle, UKG) walk with ``paged.walk_scoped`` instead of ``collect_document()``.
+The paged providers (Oracle, UKG, Phenom, Jibe, Taleo, ADP, Radancy) walk with ``paged.walk_scoped``
+instead of ``collect_document()``. ``html_text()`` and ``dashed_location()`` serve the adapters that
+read server-rendered HTML or ``US-CA-City`` location labels.
 """
 
 from __future__ import annotations
 
+import html
 import json
+import re
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from datetime import UTC, date, datetime
 from typing import Any
@@ -28,6 +33,19 @@ from job_alert.adapters.paged import UnusableRecord
 from job_alert.fetch import HttpPayload
 from job_alert.identity import build_dedupe_key, build_job_key, content_hash
 from job_alert.models import CollectionResult, NormalizedJob, SourceConfig
+
+# ISO 3166-1 alpha-2 codes that are also US state codes. A label with a country code and no region
+# ("bangalore, IN", "IN-Bangalore") would read as a place in Indiana, so these are spelled out.
+STATE_CODE_COUNTRIES = {
+    "AL": "Albania", "AR": "Argentina", "AZ": "Azerbaijan", "CA": "Canada", "CO": "Colombia",
+    "DE": "Germany", "GA": "Gabon", "ID": "Indonesia", "IL": "Israel", "IN": "India",
+    "KY": "Cayman Islands", "LA": "Laos", "MA": "Morocco", "MD": "Moldova", "ME": "Montenegro",
+    "MN": "Mongolia", "MO": "Macao", "MS": "Montserrat", "MT": "Malta", "NC": "New Caledonia",
+    "NE": "Niger", "PA": "Panama", "SC": "Seychelles", "SD": "Sudan", "TN": "Tunisia",
+    "VA": "Vatican City",
+}
+_TAG = re.compile(r"<[^>]+>")
+_DASHED = re.compile(r"^([A-Z]{2})-(.+)$")
 
 
 def utcnow() -> datetime:
@@ -49,6 +67,33 @@ def joined(*parts: object) -> str | None:
     """Nonblank parts joined with ``, `` (``"Austin, Texas, US"``), or ``None`` if all blank."""
     texts = [text for text in (optional_text(part) for part in parts) if text is not None]
     return ", ".join(texts) or None
+
+
+def html_text(fragment: str | None) -> str | None:
+    """The visible text of an HTML fragment, whitespace collapsed, or ``None`` when blank."""
+    if fragment is None:
+        return None
+    return " ".join(html.unescape(_TAG.sub(" ", fragment)).split()) or None
+
+
+def dashed_location(label: str | None) -> str | None:
+    """``US-CA-Marina`` as ``Marina, CA, US``; a label not in that shape is returned as is.
+
+    iCIMS and Taleo write a location as country code, region and city joined by hyphens. The
+    country goes last, as the geography reader expects, and a country code that is also a US state
+    code is spelled out (``CA-ON-Toronto`` is ``Toronto, ON, Canada``). The city keeps any hyphen
+    of its own (``US-NC-Winston-Salem``).
+    """
+    text = optional_text(label)
+    if text is None:
+        return None
+    match = _DASHED.match(text)
+    if match is None:
+        return text
+    code, rest = match.groups()
+    country = code if code == "US" else STATE_CODE_COUNTRIES.get(code, code)
+    region, _, city = rest.partition("-")
+    return joined(city, region, country) if city else joined(region, country)
 
 
 def unique(values: Iterable[str | None]) -> list[str]:

@@ -860,23 +860,19 @@ sources:
     - lever adapter collected 240 postings twice with identical canonical keys
   enabled: true
   audit_date: '2026-10-14'
-- id: intuitive-surgical-discovery
+- id: intuitive-surgical-smartrecruiters
   company_id: intuitive-surgical
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.intuitive.com/en-us/about-us/careers
+  provider: smartrecruiters
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.smartrecruiters.com/v1/companies/Intuitive/postings
   interval_minutes: 30
+  tenant: Intuitive
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.intuitive.com/en-us/about-us/careers
-    audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    scope: whole board
+    slow_poll_reason: whole board of about 750 postings, 8 pages; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
 - id: skydio-ashby
   company_id: skydio
   provider: ashby
@@ -943,22 +939,19 @@ sources:
     - greenhouse adapter collected 351 postings twice with identical canonical keys
   enabled: true
   audit_date: '2026-10-14'
-- id: symbotic-discovery
+- id: symbotic-workday
   company_id: symbotic
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.symbotic.com/careers/
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://symbotic.wd504.myworkdayjobs.com/wday/cxs/symbotic/Symbotic/jobs
+  interval_minutes: 10
+  tenant: symbotic
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://www.symbotic.com/careers/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.symbotic.com/careers/'
-  enabled: false
-  audit_date: '2026-09-18'
+    whole_board: true
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-19'
 - id: apptronik-greenhouse
   company_id: apptronik
   provider: greenhouse
@@ -1095,21 +1088,16 @@ sources:
     asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
-- id: gecko-robotics-discovery
+- id: gecko-robotics-ashby
   company_id: gecko-robotics
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.geckorobotics.com/careers
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://www.geckorobotics.com/careers
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/gecko-robotics
+  interval_minutes: 10
+  tenant: gecko-robotics
+  enabled: true
+  audit_date: '2026-10-19'
 - id: kuka-discovery
   company_id: kuka
   provider: discovery
@@ -1162,23 +1150,18 @@ sources:
     - greenhouse adapter collected 453 postings twice with identical canonical keys
   enabled: true
   audit_date: '2026-10-14'
-- id: joby-aviation-discovery
+- id: joby-aviation-icims
   company_id: joby-aviation
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.jobyaviation.com/careers/
-  interval_minutes: 30
+  provider: icims
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers-jobyaviation.icims.com/jobs/search?ss=1
+  interval_minutes: 10
+  tenant: careers-jobyaviation.icims.com
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.jobyaviation.com/careers
-    audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-19'
 - id: hyundai-motor-group-discovery
   company_id: hyundai-motor-group
   provider: discovery
@@ -1230,23 +1213,16 @@ sources:
     - ashby adapter collected 88 postings twice with identical canonical keys across 1 page(s)
   enabled: true
   audit_date: '2026-09-18'
-- id: engineered-arts-discovery
+- id: engineered-arts-rippling
   company_id: engineered-arts
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.engineeredarts.co.uk/careers/
-  interval_minutes: 30
-  parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://engineeredarts.com
-    audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+  provider: rippling
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.rippling.com/platform/api/ats/v1/board/engineeredarts/jobs
+  interval_minutes: 10
+  tenant: engineeredarts
+  enabled: true
+  audit_date: '2026-10-19'
 - id: agility-robotics-greenhouse
   company_id: agility-robotics
   provider: greenhouse
@@ -1306,22 +1282,16 @@ sources:
   tenant: agile-robots
   enabled: true
   audit_date: '2026-10-15'
-- id: neura-robotics-discovery
+- id: neura-robotics-ashby
   company_id: neura-robotics
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://neura-robotics.com/career/
-  interval_minutes: 30
-  parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 404
-    audit_final_url: https://neura-robotics.com/career/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 404 for https://neura-robotics.com/career/'
-  enabled: false
-  audit_date: '2026-09-18'
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/neura-robotics-gmbh
+  interval_minutes: 10
+  tenant: neura-robotics-gmbh
+  enabled: true
+  audit_date: '2026-10-19'
 - id: agibot-discovery
   company_id: agibot
   provider: discovery
@@ -1472,23 +1442,18 @@ sources:
     - greenhouse adapter collected 77 postings twice with identical canonical keys across 1 page(s)
   enabled: true
   audit_date: '2026-09-19'
-- id: fanuc-discovery
+- id: fanuc-adp
   company_id: fanuc
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.fanucamerica.com/careers
-  interval_minutes: 30
+  provider: adp
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://myjobs.adp.com/public/staffing/v1/career-site/fanuc
+  interval_minutes: 10
+  tenant: fanuc
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.fanucamerica.com/careers
-    audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    scope: whole board (FANUC America)
+  enabled: true
+  audit_date: '2026-10-19'
 - id: yaskawa-ukg
   company_id: yaskawa
   provider: ukg
@@ -1532,24 +1497,18 @@ sources:
     - 'careers landing page request failed: non-retryable HTTP 404 for https://kawasakirobotics.com/careers/'
   enabled: false
   audit_date: '2026-09-18'
-- id: mitsubishi-electric-discovery
+- id: mitsubishi-electric-hrmdirect
   company_id: mitsubishi-electric
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.mitsubishielectric.com/en/careers/index.html
-  interval_minutes: 30
+  provider: hrmdirect
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://meus-mea.hrmdirect.com/employment/job-openings.php?search=true
+  interval_minutes: 10
+  tenant: meus-mea
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://www.mitsubishielectric.com/en/careers/
-    audit_notes:
-    - 'linked careers page https://careers.mitsubishielectric.co.th/ could not be read: request timed out after 12.0 seconds for https://careers.mitsubishielectric.co.th/'
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
+    scope: Mitsubishi Electric US (meus-mea)
+  enabled: true
+  audit_date: '2026-10-19'
 - id: omron-discovery
   company_id: omron
   provider: discovery
@@ -1783,25 +1742,18 @@ sources:
     - workday adapter collected 10 postings twice with identical canonical keys across 1 page(s)
   enabled: true
   audit_date: '2026-10-14'
-- id: daifuku-discovery
+- id: daifuku-icims
   company_id: daifuku
   provider: icims
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.daifuku.com/careers/
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers-daifuku-america.icims.com/jobs/search?ss=1
+  interval_minutes: 10
+  tenant: careers-daifuku-america.icims.com
   parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: the official careers page links to https://www.daifuku.com/careers/ca/, which resolves to https://www.daifuku.com/us/careers/dmca/ (careers page links to https://careers-daifuku-canada.icims.com/jobs/search?ss=1&in_iframe=1)
-    audit_provider: icims
-    audit_http_status: 200
-    audit_final_url: https://www.daifuku.com/careers/
-    audit_notes:
-    - linked careers page https://www.daifukuoccareers.com/ served an access challenge
-    - icims provider evidence found (the official careers page links to https://www.daifuku.com/careers/ca/, which resolves to https://www.daifuku.com/us/careers/dmca/ (careers page links to https://careers-daifuku-canada.icims.com/jobs/search?ss=1&in_iframe=1)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-09-19'
+    scope: whole board (Daifuku Intralogistics America)
+  enabled: true
+  audit_date: '2026-10-19'
 - id: denso-robotics-discovery
   company_id: denso-robotics
   provider: discovery
@@ -1894,21 +1846,19 @@ sources:
     - greenhouse adapter collected 2522 postings twice with identical canonical keys
   enabled: true
   audit_date: '2026-10-14'
-- id: john-deere-discovery
+- id: john-deere-successfactors
   company_id: john-deere
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.deere.com/
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.deere.com/search/?q=&optionsFacetsDD_country=US
   interval_minutes: 30
+  tenant: jobs.deere.com
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://careers.deere.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
+    scope: optionsFacetsDD_country=US
+    slow_poll_reason: HTML search pages of 25 rows (about 10 per collection); polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
 - id: caterpillar-workday
   company_id: caterpillar
   provider: workday
@@ -1966,51 +1916,45 @@ sources:
     - workday adapter collected 79 postings twice with identical canonical keys
   enabled: true
   audit_date: '2026-10-14'
-- id: rivian-discovery
+- id: rivian-jibe
   company_id: rivian
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.rivian.com/
+  provider: jibe
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.rivian.com/api/jobs
   interval_minutes: 30
+  tenant: careers.rivian.com
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-19'
-    audit_final_url: https://careers.rivian.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-19'
-- id: ford-motor-company-discovery
+    scope: whole board
+    slow_poll_reason: whole board of about 950 postings, 10 pages; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: ford-motor-company-oracle
   company_id: ford-motor-company
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.ford.com/
+  provider: oracle
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://efds.fa.em5.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=CX_1
   interval_minutes: 30
+  tenant: efds/CX_1
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://careers.ford.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
-- id: toyota-motor-discovery
+    scope: whole board
+    slow_poll_reason: whole board of about 870 postings walked up to three times; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: toyota-motor-workday
   company_id: toyota-motor
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.toyota.com/
-  interval_minutes: 30
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://toyota.wd503.myworkdayjobs.com/wday/cxs/toyota/TMNA/jobs
+  interval_minutes: 10
+  tenant: toyota
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://careers.toyota.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
+    whole_board: true
+    scope: whole board (Toyota Motor North America)
+  enabled: true
+  audit_date: '2026-10-19'
 - id: volkswagen-group-discovery
   company_id: volkswagen-group
   provider: discovery
@@ -2060,22 +2004,18 @@ sources:
     - 'careers landing page request failed: request failed after 4 attempts for https://careers.kia.com/'
   enabled: false
   audit_date: '2026-09-19'
-- id: honda-motor-discovery
+- id: honda-motor-phenom
   company_id: honda-motor
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.honda.com/careers/
-  interval_minutes: 30
+  provider: phenom
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.honda.com/widgets
+  interval_minutes: 10
+  tenant: careers.honda.com
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://www.honda.com/careers/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.honda.com/careers/'
-  enabled: false
-  audit_date: '2026-09-18'
+    scope: whole board (American Honda)
+  enabled: true
+  audit_date: '2026-10-19'
 - id: mercedes-benz-group-discovery
   company_id: mercedes-benz-group
   provider: discovery
@@ -2110,24 +2050,19 @@ sources:
     - successfactors provider evidence found (the official careers page links to https://www.bmwgroup.jobs/de/de.html, which resolves to https://www.bmwgroup.jobs/de/de.html (careers page links to https://career5.successfactors.eu/career?company=bmwag&lang=de_DE&site=&loginFlowRequired=true)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
   audit_date: '2026-09-19'
-- id: stellantis-discovery
+- id: stellantis-adp
   company_id: stellantis
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://careers.stellantis.com/
+  provider: adp
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://myjobs.adp.com/public/staffing/v1/career-site/stellantisexternalcx
   interval_minutes: 30
+  tenant: stellantisexternalcx
   parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-19'
-    audit_http_status: 200
-    audit_final_url: https://careers.stellantis.com/
-    audit_notes:
-    - 'linked careers page https://jobsapi-google.m-cloud.io/api/ could not be read: non-retryable HTTP 404 for https://jobsapi-google.m-cloud.io/api/'
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-19'
+    scope: whole board (Stellantis North America)
+    slow_poll_reason: whole board of about 870 postings, 9 pages; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
 - id: renault-group-discovery
   company_id: renault-group
   provider: discovery
@@ -4119,18 +4054,16 @@ sources:
     asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
-- id: saronic-discovery
+- id: saronic-ashby
   company_id: saronic
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
   endpoint: https://api.ashbyhq.com/posting-api/job-board/saronic
-  interval_minutes: 30
-  parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_reason: '2026-10-14: board api.ashbyhq.com/posting-api/job-board/saronic answers (231 postings) but record 57 has no title, so every collection is incomplete; not waived. Re-check next pass.'
-  enabled: false
-  audit_date: '2026-10-14'
+  interval_minutes: 10
+  tenant: saronic
+  enabled: true
+  audit_date: '2026-10-19'
 - id: shield-ai-lever
   company_id: shield-ai
   provider: lever
@@ -5173,18 +5106,16 @@ sources:
   tenant: applied
   enabled: true
   audit_date: '2026-10-15'
-- id: dusty-robotics-discovery
+- id: dusty-robotics-rippling
   company_id: dusty-robotics
-  provider: discovery
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://boards-api.greenhouse.io/v1/boards/dustyrobotics/jobs
-  interval_minutes: 30
-  parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_reason: '2026-10-15: the careers page links to Greenhouse board dustyrobotics, which answers HTTP 404; no live board found'
-  enabled: false
-  audit_date: '2026-10-15'
+  provider: rippling
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.rippling.com/platform/api/ats/v1/board/dusty-robotics-inc/jobs
+  interval_minutes: 10
+  tenant: dusty-robotics-inc
+  enabled: true
+  audit_date: '2026-10-19'
 - id: viam-greenhouse
   company_id: viam
   provider: greenhouse
@@ -5476,3 +5407,306 @@ sources:
   tenant: axon
   enabled: true
   audit_date: '2026-10-15'
+- id: textron-taleo
+  company_id: textron
+  provider: taleo
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://textron.taleo.net/careersection/textron/jobsearch.ftl
+  interval_minutes: 30
+  tenant: textron.taleo.net/textron
+  parameters:
+    scope: whole board
+    slow_poll_reason: Taleo pages hold 25 postings and a short board needs two walks (up to 58 requests); polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: cummins-oracle
+  company_id: cummins
+  provider: oracle
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://fa-espx-saasfaprod1.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=CX_1
+  interval_minutes: 30
+  tenant: fa-espx-saasfaprod1/CX_1
+  parameters:
+    scope: whole board
+    slow_poll_reason: whole board over 1,200 postings walked up to three times; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: texas-instruments-oracle
+  company_id: texas-instruments
+  provider: oracle
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://edbz.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=jobsearch
+  interval_minutes: 30
+  tenant: edbz/jobsearch
+  parameters:
+    scope: whole board
+    slow_poll_reason: whole board of about 850 postings walked up to three times; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: oshkosh-workday
+  company_id: oshkosh
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://oshkoshcorporation.wd5.myworkdayjobs.com/wday/cxs/oshkoshcorporation/Oshkosh/jobs
+  interval_minutes: 30
+  tenant: oshkoshcorporation
+  parameters:
+    whole_board: true
+    scope: whole board
+    slow_poll_reason: whole board of about 540 postings with no internship facet; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: zimmer-biomet-phenom
+  company_id: zimmer-biomet
+  provider: phenom
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.zimmerbiomet.com/widgets
+  interval_minutes: 10
+  tenant: careers.zimmerbiomet.com
+  parameters:
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-19'
+- id: united-launch-alliance-successfactors
+  company_id: united-launch-alliance
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.ulalaunch.com/search/?q=
+  interval_minutes: 30
+  tenant: jobs.ulalaunch.com
+  parameters:
+    scope: whole board
+    slow_poll_reason: HTML search pages of 25 rows; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: bae-systems-phenom
+  company_id: bae-systems
+  provider: phenom
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.baesystems.com/widgets
+  interval_minutes: 30
+  tenant: jobs.baesystems.com
+  parameters:
+    scope: whole board (BAE Systems, Inc., US)
+    slow_poll_reason: whole board over 2,000 postings, 21 pages; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: beta-technologies-greenhouse
+  company_id: beta-technologies
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/betatechnologiesinc/jobs?content=true
+  interval_minutes: 5
+  tenant: betatechnologiesinc
+  enabled: true
+  audit_date: '2026-10-19'
+- id: firefly-aerospace-hrmdirect
+  company_id: firefly-aerospace
+  provider: hrmdirect
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://firefly.hrmdirect.com/employment/job-openings.php?search=true
+  interval_minutes: 10
+  tenant: firefly
+  enabled: true
+  audit_date: '2026-10-19'
+- id: stoke-space-greenhouse
+  company_id: stoke-space
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/stokespacetechnologies/jobs?content=true
+  interval_minutes: 5
+  tenant: stokespacetechnologies
+  enabled: true
+  audit_date: '2026-10-19'
+- id: machina-labs-lever
+  company_id: machina-labs
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/MachinaLabs?mode=json
+  interval_minutes: 5
+  tenant: MachinaLabs
+  enabled: true
+  audit_date: '2026-10-19'
+- id: hadrian-ashby
+  company_id: hadrian
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/hadrian-automation
+  interval_minutes: 10
+  tenant: hadrian-automation
+  enabled: true
+  audit_date: '2026-10-19'
+- id: l3harris-radancy
+  company_id: l3harris
+  provider: radancy
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.l3harris.com/search-jobs/results?SearchResultsModuleName=Search+Results&SearchFiltersModuleName=Search+Filters&SortCriteria=0&SortDirection=0&SearchType=5
+  interval_minutes: 30
+  tenant: careers.l3harris.com
+  parameters:
+    scope: whole board
+    slow_poll_reason: whole board over 2,100 postings, 22 pages; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: irobot-radancy
+  company_id: irobot
+  provider: radancy
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.irobot.com/search-jobs/results?SearchResultsModuleName=Search+Results&SearchFiltersModuleName=Search+Filters&SortCriteria=0&SortDirection=0&SearchType=5
+  interval_minutes: 10
+  tenant: careers.irobot.com
+  enabled: true
+  audit_date: '2026-10-19'
+- id: sharkninja-radancy
+  company_id: sharkninja
+  provider: radancy
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.sharkninja.com/search-jobs/results?SearchResultsModuleName=Search+Results&SearchFiltersModuleName=Search+Filters&SortCriteria=0&SortDirection=0&SearchType=5
+  interval_minutes: 10
+  tenant: careers.sharkninja.com
+  enabled: true
+  audit_date: '2026-10-19'
+- id: built-robotics-ashby
+  company_id: built-robotics
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/built-robotics
+  interval_minutes: 10
+  tenant: built-robotics
+  enabled: true
+  audit_date: '2026-10-19'
+- id: simbe-robotics-lever
+  company_id: simbe-robotics
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/SimbeRobotics?mode=json
+  interval_minutes: 5
+  tenant: SimbeRobotics
+  enabled: true
+  audit_date: '2026-10-19'
+- id: burro-lever
+  company_id: burro
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/Burro?mode=json
+  interval_minutes: 5
+  tenant: Burro
+  enabled: true
+  audit_date: '2026-10-19'
+- id: exotec-workable
+  company_id: exotec
+  provider: workable
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://apply.workable.com/api/v1/widget/accounts/exotec
+  interval_minutes: 10
+  tenant: exotec
+  enabled: true
+  audit_date: '2026-10-19'
+- id: persona-ai-ashby
+  company_id: persona-ai
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/persona.ai
+  interval_minutes: 10
+  tenant: persona.ai
+  enabled: true
+  audit_date: '2026-10-19'
+- id: procept-biorobotics-workday
+  company_id: procept-biorobotics
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://proceptbiorobotics.wd108.myworkdayjobs.com/wday/cxs/proceptbiorobotics/PROCEPT/jobs
+  interval_minutes: 10
+  tenant: proceptbiorobotics
+  parameters:
+    whole_board: true
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-19'
+- id: reliable-robotics-ashby
+  company_id: reliable-robotics
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/reliable-robotics
+  interval_minutes: 10
+  tenant: reliable-robotics
+  enabled: true
+  audit_date: '2026-10-19'
+- id: k2-space-greenhouse
+  company_id: k2-space
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/k2spacecorporation/jobs?content=true
+  interval_minutes: 5
+  tenant: k2spacecorporation
+  enabled: true
+  audit_date: '2026-10-19'
+- id: castelion-greenhouse
+  company_id: castelion
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/castelioncorporation/jobs?content=true
+  interval_minutes: 5
+  tenant: castelioncorporation
+  enabled: true
+  audit_date: '2026-10-19'
+- id: heico-adp
+  company_id: heico
+  provider: adp
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://myjobs.adp.com/public/staffing/v1/career-site/heico
+  interval_minutes: 30
+  tenant: heico
+  parameters:
+    scope: whole board
+    slow_poll_reason: whole board of about 330 postings across HEICO's subsidiaries; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-19'
+- id: sierra-space-workday
+  company_id: sierra-space
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://sierraspace.wd1.myworkdayjobs.com/wday/cxs/sierraspace/Sierra_Space_External_Career_Site/jobs
+  interval_minutes: 10
+  tenant: sierraspace
+  parameters:
+    whole_board: true
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-19'
+- id: berkshire-grey-bamboohr
+  company_id: berkshire-grey
+  provider: bamboohr
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://berkshiregrey.bamboohr.com/careers/list
+  interval_minutes: 10
+  tenant: berkshiregrey
+  enabled: true
+  audit_date: '2026-10-19'
