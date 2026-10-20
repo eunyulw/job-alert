@@ -224,3 +224,80 @@ async def test_workday_repeats_as_stable_normalized_jobs() -> None:
         second = await WorkdayAdapter().collect(source(), fetcher)
 
     assert_repeat_is_stable(first, second)
+
+
+def facet_page(total: int, eng: int = 2, ops: int = 1) -> httpx.Response:
+    families = {
+        "facetParameter": "jobFamilyGroup",
+        "values": [{"id": "eng", "count": eng}, {"id": "ops", "count": ops}],
+    }
+    return httpx.Response(200, json={"total": total, "jobPostings": [], "facets": [families]})
+
+
+def partitioned() -> SourceConfig:
+    return source().model_copy(
+        update={"parameters": {"whole_board": True, "partition_facet": "jobFamilyGroup"}}
+    )
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_workday_reads_a_capped_board_one_partition_at_a_time() -> None:
+    # The unfiltered total is capped; each family is a filtered search with its own total.
+    route = respx.post(ENDPOINT).mock(
+        side_effect=[
+            facet_page(TOTAL_CAP, eng=1500, ops=900),
+            page(posting("A"), posting("B"), total=2),
+            page(posting("C"), total=1),
+        ]
+    )
+
+    async with HttpFetcher() as fetcher:
+        result = validate_collection(await WorkdayAdapter().collect(partitioned(), fetcher))
+
+    assert result.complete is True
+    assert sorted(job.source_job_id for job in result.jobs) == ["A", "B", "C"]
+    assert [body["appliedFacets"] for body in bodies(route)] == [
+        {},
+        {"jobFamilyGroup": ["eng"]},
+        {"jobFamilyGroup": ["ops"]},
+    ]
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_workday_partitions_that_miss_part_of_the_board_are_incomplete() -> None:
+    # The board declares 5 postings, but its families only account for 3 of them.
+    respx.post(ENDPOINT).mock(
+        side_effect=[
+            facet_page(5),
+            page(posting("A"), posting("B"), total=2),
+            page(posting("C"), total=1),
+        ]
+    )
+
+    async with HttpFetcher() as fetcher:
+        result = await WorkdayAdapter().collect(partitioned(), fetcher)
+
+    assert result.complete is False
+    assert any("carry no jobFamilyGroup" in warning for warning in result.warnings)
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_workday_one_short_partition_makes_the_board_incomplete() -> None:
+    respx.post(ENDPOINT).mock(
+        side_effect=[
+            facet_page(3),
+            page(posting("A"), total=2),  # declares 2, delivers 1
+            page(total=0),
+            page(posting("A"), total=2),  # the re-walk a short walk earns
+            page(total=0),
+            page(posting("C"), total=1),
+        ]
+    )
+
+    async with HttpFetcher() as fetcher:
+        result = await WorkdayAdapter().collect(partitioned(), fetcher)
+
+    assert result.complete is False

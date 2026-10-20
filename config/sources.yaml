@@ -11,21 +11,15 @@ sources:
   source_class: public_ats
   support_status: SUPPORTED_UNDOCUMENTED
   endpoint: https://nvidia.wd5.myworkdayjobs.com/wday/cxs/nvidia/NVIDIAExternalCareerSite/jobs
-  interval_minutes: 10
+  interval_minutes: 20
   tenant: nvidia
   parameters:
-    applied_facets:
-      workerSubType:
-      - 0c40f6bd1d8f10adf6dae42e46d44a17
-    scope: workerSubType = Intern (Fixed Term); Workday caps the unscoped board at total=2000
-    asserted_employment_type: Intern
-    audit_status: SUPPORTED_UNDOCUMENTED
-    audit_probed_at: '2026-10-14'
-    audit_evidence: Workday CXS search behind nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite
-    audit_notes:
-    - workday adapter collected 163 postings twice with identical canonical keys across 9 page(s)
+    whole_board: true
+    partition_facet: jobFamilyGroup
+    scope: whole board, one jobFamilyGroup at a time (over the 2,000 cap; internships tagged Regular sat outside the intern subtype, 2026-10-20)
+    slow_poll_reason: a whole-board walk of 100-240 pages; 20 minutes keeps it near 12 requests a minute
   enabled: true
-  audit_date: '2026-10-14'
+  audit_date: '2026-10-20'
 - id: apple-apple
   company_id: apple
   provider: apple
@@ -2018,16 +2012,15 @@ sources:
   source_class: public_ats
   support_status: SUPPORTED_UNDOCUMENTED
   endpoint: https://globalhr.wd5.myworkdayjobs.com/wday/cxs/globalhr/REC_RTX_Ext_Gateway/jobs
-  interval_minutes: 10
+  interval_minutes: 20
   tenant: globalhr
   parameters:
-    applied_facets:
-      workerSubType:
-      - bac5186f63f2103219f0c765df903245
-    scope: workerSubType = Intern/Co-op (Fixed Term)
-    asserted_employment_type: Intern
+    whole_board: true
+    partition_facet: jobFamilyGroup
+    scope: whole board, one jobFamilyGroup at a time (over the 2,000 cap; internships tagged Regular sat outside the intern subtype, 2026-10-20)
+    slow_poll_reason: a whole-board walk of 100-240 pages; 20 minutes keeps it near 12 requests a minute
   enabled: true
-  audit_date: '2026-10-15'
+  audit_date: '2026-10-20'
 - id: walmart-discovery
   company_id: walmart
   provider: discovery
@@ -3950,32 +3943,30 @@ sources:
   source_class: public_ats
   support_status: SUPPORTED_UNDOCUMENTED
   endpoint: https://abbott.wd5.myworkdayjobs.com/wday/cxs/abbott/abbottcareers/jobs
-  interval_minutes: 10
+  interval_minutes: 20
   tenant: abbott
   parameters:
-    applied_facets:
-      workerSubType:
-      - d0663057a84410077d944a83d8896dd3
-    scope: workerSubType = Intern/Student (Fixed Term) (Trainee)
-    asserted_employment_type: Intern
+    whole_board: true
+    partition_facet: jobFamilyGroup
+    scope: whole board, one jobFamilyGroup at a time (over the 2,000 cap; internships tagged Regular sat outside the intern subtype, 2026-10-20)
+    slow_poll_reason: a whole-board walk of 100-240 pages; 20 minutes keeps it near 12 requests a minute
   enabled: true
-  audit_date: '2026-10-15'
+  audit_date: '2026-10-20'
 - id: applied-materials-workday
   company_id: applied-materials
   provider: workday
   source_class: public_ats
   support_status: SUPPORTED_UNDOCUMENTED
   endpoint: https://amat.wd1.myworkdayjobs.com/wday/cxs/amat/External/jobs
-  interval_minutes: 10
+  interval_minutes: 20
   tenant: amat
   parameters:
-    applied_facets:
-      workerSubType:
-      - ba9df317f7ac456da2faff4fd6a521c8
-    scope: workerSubType = Intern / Student
-    asserted_employment_type: Intern
+    whole_board: true
+    partition_facet: jobFamilyGroup
+    scope: whole board, one jobFamilyGroup at a time (over the 2,000 cap; internships tagged Regular sat outside the intern subtype, 2026-10-20)
+    slow_poll_reason: a whole-board walk of 100-240 pages; 20 minutes keeps it near 12 requests a minute
   enabled: true
-  audit_date: '2026-10-15'
+  audit_date: '2026-10-20'
 - id: kla-workday
   company_id: kla
   provider: workday

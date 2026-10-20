@@ -28,13 +28,23 @@ Mapping decisions:
 
 A walk whose only defects are those of a board shifting mid-walk (a repeated id, a count short of
 the total) is walked once more, and that second walk's verdict stands.
+
+A board over the cap can still be read whole with ``partition_facet`` (for example
+``jobFamilyGroup``): the adapter reads that facet's values from the board's first page, walks each
+value as its own scoped search, and merges the walks. Workday caps only an unfiltered total (a
+filtered search reports and pages past 2,000), so every partition can be walked to its own total.
+The merged result is complete only when every partition is, and the partitions' totals add up to
+the board's total, or reach at least the cap when the board's own total is capped. Each
+partition walk is judged against its own total, as a scoped walk is. Measured
+2026-10-20: RTX, NVIDIA, Abbott and Applied Materials tag some internships ``Regular``, outside
+their intern worker subtype, and every one of their job families is under 2,400 postings.
 """
 
 from __future__ import annotations
 
 import json
 import re
-from collections.abc import Callable, Mapping
+from collections.abc import Awaitable, Callable, Mapping
 from datetime import UTC, datetime
 from typing import Any
 from urllib.parse import urlsplit
@@ -52,6 +62,8 @@ PROVIDER = "workday"
 DEFAULT_PAGE_SIZE = 20
 TOTAL_CAP = 2000
 MAX_PAGES = TOTAL_CAP // 10
+#: A filtered search is not capped, so one partition may run past 2,000; this bounds a runaway walk.
+PARTITION_CAP = 10_000
 _CXS_PATH = re.compile(r"^/wday/cxs/(?P<tenant>[^/]+)/(?P<site>[^/]+)/jobs/?$")
 _LOCATION_COUNT = re.compile(r"^\d+\s+locations?$", re.IGNORECASE)
 
@@ -85,16 +97,19 @@ class WorkdayAdapter:
         facets, search_text = _scope(source)
         page_size = _page_size(source)
         first_seen_at = self._now()
+        partition = _partition_facet(source)
 
-        async def fetch_page(page_index: int, offset: int) -> tuple[list[Any], int | None]:
+        async def search(
+            applied: dict[str, list[str]], limit: int, offset: int
+        ) -> tuple[list[Any], int, Any]:
             payload = await fetcher.post(
                 RequestSpec(
                     url=str(source.endpoint),
                     headers=dict(source.headers),
                     expected="json",
                     json_body={
-                        "appliedFacets": facets,
-                        "limit": page_size,
+                        "appliedFacets": applied,
+                        "limit": limit,
                         "offset": offset,
                         "searchText": search_text,
                     },
@@ -102,25 +117,39 @@ class WorkdayAdapter:
                     idempotent=True,
                 )
             )
-            records, total = _parse_page(payload)
-            # Workday reports the total on the first page only; later pages say 0.
-            return records, total if page_index == 0 else None
+            return _parse_page(payload)
 
-        return await walk_scoped(
-            source_id=source.id,
-            fetch_page=fetch_page,
-            normalize=lambda record: _normalize_job(
-                record,
-                source=source,
-                origin=origin,
-                tenant=f"{tenant}/{site}",
-                site=site,
-                first_seen_at=first_seen_at,
-            ),
-            cap=TOTAL_CAP,
-            max_pages=MAX_PAGES,
-            cap_advice="narrow the source's applied_facets or search_text",
-        )
+        def walk(applied: dict[str, list[str]], *, cap: int) -> Awaitable[CollectionResult]:
+            async def fetch_page(page_index: int, offset: int) -> tuple[list[Any], int | None]:
+                records, total, _ = await search(applied, page_size, offset)
+                # Workday reports the total on the first page only; later pages say 0.
+                return records, total if page_index == 0 else None
+
+            return walk_scoped(
+                source_id=source.id,
+                fetch_page=fetch_page,
+                normalize=lambda record: _normalize_job(
+                    record,
+                    source=source,
+                    origin=origin,
+                    tenant=f"{tenant}/{site}",
+                    site=site,
+                    first_seen_at=first_seen_at,
+                ),
+                cap=cap,
+                max_pages=cap // 10,
+                cap_advice="narrow the source's applied_facets or search_text",
+            )
+
+        if partition is None:
+            return await walk(facets, cap=TOTAL_CAP)
+        _, board_total, document_facets = await search(facets, 1, 0)
+        values = _facet_values(document_facets, partition, source.id)
+        results = [
+            await walk({**facets, partition: [value_id]}, cap=PARTITION_CAP)
+            for value_id, _ in values
+        ]
+        return _merge_partitions(source, partition, board_total, values, results)
 
 
 def _scope(source: SourceConfig) -> tuple[dict[str, list[str]], str]:
@@ -157,7 +186,74 @@ def _page_size(source: SourceConfig) -> int:
     return int(value)
 
 
-def _parse_page(payload: HttpPayload) -> tuple[list[Any], int]:
+def _partition_facet(source: SourceConfig) -> str | None:
+    value = source.parameters.get("partition_facet")
+    if value is None:
+        return None
+    if not isinstance(value, str) or not value.strip():
+        raise AdapterError(f"workday source {source.id} has an unusable partition_facet: {value!r}")
+    return value
+
+
+def _facet_values(facets: Any, name: str, source_id: str) -> list[tuple[str, int]]:
+    """The ``(id, count)`` of each value of one facet, as the board's first page lists them."""
+    group = next(
+        (
+            facet
+            for facet in (facets if isinstance(facets, list) else [])
+            if isinstance(facet, Mapping) and facet.get("facetParameter") == name
+        ),
+        None,
+    )
+    raw = group.get("values") if group is not None else None
+    values = [
+        (value["id"], value["count"])
+        for value in raw or ()
+        if isinstance(value, Mapping)
+        and isinstance(value.get("id"), str)
+        and isinstance(value.get("count"), int)
+        and not isinstance(value.get("count"), bool)
+    ]
+    if not values:
+        raise AdapterError(f"workday source {source_id} found no values for facet {name}")
+    return values
+
+
+def _merge_partitions(
+    source: SourceConfig,
+    partition: str,
+    board_total: int,
+    values: list[tuple[str, int]],
+    results: list[CollectionResult],
+) -> CollectionResult:
+    """One result from the partition walks, complete only if they cover the board between them."""
+    jobs: dict[str, NormalizedJob] = {}
+    warnings: list[str] = []
+    for (value_id, _), result in zip(values, results, strict=True):
+        warnings.extend(f"{partition}={value_id}: {warning}" for warning in result.warnings)
+        for job in result.jobs:
+            jobs.setdefault(job.canonical_job_key, job)
+    # The facet counts and the board total come from one response, so comparing them cannot be
+    # thrown off by postings that change during the walks; each walk judges its own total.
+    counted = sum(count for _, count in values)
+    covered = counted == board_total or (board_total >= TOTAL_CAP and counted >= TOTAL_CAP)
+    if not covered:
+        warnings.append(
+            f"the {partition} values count {counted} postings but the board declares"
+            f" {board_total}, so some postings carry no {partition} value"
+        )
+    declared = sum(result.declared_total or 0 for result in results)
+    return CollectionResult(
+        source_id=source.id,
+        complete=covered and all(result.complete for result in results),
+        jobs=list(jobs.values()),
+        warnings=warnings,
+        page_count=1 + sum(result.page_count for result in results),
+        declared_total=declared,
+    )
+
+
+def _parse_page(payload: HttpPayload) -> tuple[list[Any], int, Any]:
     if payload.not_modified:
         raise AdapterError(f"workday returned 304 Not Modified for {payload.final_url}")
     try:
@@ -172,7 +268,7 @@ def _parse_page(payload: HttpPayload) -> tuple[list[Any], int]:
         raise AdapterError("workday payload has no non-negative integer total")
     if not isinstance(postings, list):
         raise AdapterError("workday payload has no jobPostings array")
-    return postings, total
+    return postings, total, document.get("facets")
 
 
 def _normalize_job(
