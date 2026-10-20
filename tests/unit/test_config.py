@@ -175,6 +175,8 @@ def test_repository_filters_are_the_approved_internship_canary(app_config: AppCo
         "production-matches-intern-type",
         "expansion-matches",
         "expansion-matches-intern-type",
+        "generic-engineering-matches",
+        "generic-engineering-matches-intern-type",
     }
     dry_run = records["all-jobs-dry-run"]
     assert dry_run.enabled is True and dry_run.notify is False
@@ -185,6 +187,8 @@ def test_repository_filters_are_the_approved_internship_canary(app_config: AppCo
     for pair in (
         ("production-matches", "production-matches-intern-type"),
         ("expansion-matches", "expansion-matches-intern-type"),
+        ("expansion-matches", "generic-engineering-matches"),
+        ("generic-engineering-matches", "generic-engineering-matches-intern-type"),
     ):
         # Each pair alerts on the same companies through a title rule and a type rule.
         assert set(records[pair[0]].include_companies) == set(records[pair[1]].include_companies)
@@ -199,13 +203,63 @@ def test_repository_filters_are_the_approved_internship_canary(app_config: AppCo
         # Alerts are strictly US-only.
         assert record.countries == ["us"]
     assert canary <= set(records["production-matches"].include_companies)
-    assert records["production-matches"].include_title_keywords == ["intern", "co-op", "student"]
+    intern_words = [
+        "intern", "co-op", "coop", "co op", "student", "fellowship",
+        "summer 20", "spring 20", "fall 20", "winter 20",
+    ]
+    assert records["production-matches"].include_title_keywords == intern_words
     assert records["production-matches-intern-type"].employment_types == ["intern"]
     # Expansion companies alert only on internships that name robotics or mechanical work.
     expansion = records["expansion-matches"]
-    assert expansion.require_title_keywords == ["intern", "co-op", "student"]
+    assert expansion.require_title_keywords == intern_words
     assert {"robot", "mechanical"} <= set(expansion.include_title_keywords)
     assert records["expansion-matches-intern-type"].employment_types == ["intern"]
     assert not set(records["production-matches"].include_companies) & set(
         expansion.include_companies
     )
+
+
+ALERTS = [
+    ("varda", "Structures Engineering Internship - Summer 2027"),
+    ("rocket-lab", "Turbomachinery Intern Summer 2027"),
+    ("bae-systems", "Mechanical Engineering Coop (Spring/Summer 2027), Onsite"),
+    ("bae-systems", "Electronic Combat Solutions Operations - Mechanical Engineering Intern II"),
+    ("emerson", "Controls & Automation Engineering Co\u2011Op \u2013 Latham, NY - Summer 2027"),
+    ("astranis", "Mechanical Associate Engineer (Summer 2027)"),
+    ("caterpillar", "2027 Summer Corporate Intern - Engineering"),
+    ("rtx", "Industrial Engineering Co-Op (Spring/Summer 2027)"),
+]
+SILENT = [
+    ("3m", "2027 Undergraduate Sales Intern \u2013 Transportation & Electronics Business"),
+    ("abbvie", "Associate Director, International Regulatory Affairs Advertising & Promotion"),
+    ("caterpillar", "Software Engineering Intern - Summer 2027"),
+    ("openai", "Engineering Manager, Cooperative Systems"),
+    ("oshkosh", "Maintenance Repair Technician - Phoenix Sky Harbor International Airport"),
+]
+
+
+@pytest.mark.parametrize(("company", "title"), ALERTS + SILENT)
+def test_repository_filters_alert_on_mechanical_internships_only(
+    app_config: AppConfig, company: str, title: str
+) -> None:
+    """Titles from the 2026-10-20 scan of rejected internships, alerting or not as intended."""
+    from datetime import UTC, datetime
+
+    from job_alert.filters import evaluate_filters
+    from job_alert.models import NormalizedJob
+
+    job = NormalizedJob(
+        company_id=company,
+        source_id=f"{company}-test",
+        source_job_id="1",
+        canonical_job_key=f"test:{company}:1",
+        dedupe_key=f"test:{company}:1",
+        title=title,
+        locations=["Cedar Rapids, Iowa, United States"],
+        posting_url="https://jobs.example.com/1",
+        apply_url="https://jobs.example.com/1",
+        first_seen_at=datetime(2026, 10, 20, tzinfo=UTC),
+    )
+    alerting = [record for record in app_config.filters if record.enabled and record.notify]
+    decisions = evaluate_filters(job, alerting, now=datetime(2026, 10, 20, tzinfo=UTC))
+    assert any(decision.notify for decision in decisions) is ((company, title) in ALERTS)

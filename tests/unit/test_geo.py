@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from job_alert.geo import location_country
+from job_alert.geo import explicit_location_country, location_country
 
 US = [
     "Cupertino, United States of America",  # Apple
@@ -32,6 +32,14 @@ US = [
     "1 Mifflin St PhiladelphiaPA 19148 2017",  # Target: state code glued to a ZIP
     "Lancaster, Tx",  # Kodiak
     "Kermit, TX or Odessa, TX",  # Kodiak: places joined by "or"
+    "North Chicago, IL, us",  # AbbVie: a lower-case country code
+    "Boise, ID - Main Site",  # Micron: a state code, then a site name
+    "Mooresville, NC (SSC) 1999",  # Lowe's
+    "Remote-MO",  # Centene
+    "McGregor TX  182 Cotton Belt",  # Trane: city, state code, street number
+    "San Francisco",  # a bare city on the US list
+    "Evendale",  # GE Aerospace's Workday site name
+    "US-CT-EAST HARTFORD-ETC ~ 400 Main St ~ BLDG ETC",  # RTX
 ]
 OTHER = [
     "Ahmedabad, GUJARAT, IN",  # India: a three-part SmartRecruiters label ends in the country
@@ -51,9 +59,11 @@ OTHER = [
     "CAN Kanata (2), ON - WR",  # Aptiv: leading ISO-3 code
     "PRC Shanghai",  # Intel
     "SGP",  # Amazon
+    "Ludwigshafen, RP, de",  # AbbVie: a lower-case country code
+    "CA-QC-LONGUEUIL-J01 ~ 1000 Blvd Marie-Victorin ~ J01 BLDG",  # RTX: Canada, not California
 ]
 UNKNOWN = [
-    "Austin", "Austin - ATX1", "APAC", "", "2 Locations", "Remote", "San Francisco",
+    "Austin - ATX1", "APAC", "", "2 Locations", "Remote", "London", "Melbourne", "San Jose",
     "Greater Seattle Area", "Chennai Tamil Nadu", "Toronto, On",
 ]
 
@@ -71,3 +81,10 @@ def test_other_countries(text: str) -> None:
 @pytest.mark.parametrize("text", UNKNOWN)
 def test_ambiguous_locations_are_unknown(text: str) -> None:
     assert location_country(text) is None
+
+
+def test_a_bare_city_places_a_posting_but_never_overrides_a_stated_country() -> None:
+    # Filters read "San Francisco" as the US; adapters still append a country the provider states.
+    assert location_country("San Francisco") == "us"
+    assert explicit_location_country("San Francisco") is None
+    assert explicit_location_country("San Francisco, CA") == "us"

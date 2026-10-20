@@ -23,6 +23,11 @@
 # Taleo, ADP, HRM Direct and Radancy adapters reach, plus boards found on existing providers.
 # The freehire fallback pass (2026-10-19) adds the provider-refused companies whose Freehire
 # company feed answers ordinary HTTPS and links back to the original source posting.
+# The rejected-internship scan (2026-10-20) added the generic-engineering filters, mechanical
+# keywords the expansion list lacked (structures, mechanism, turbomachin, gear, ...), the intern
+# spellings "coop", "co op", "fellowship" and a season with a year ("summer 20"), and title
+# exclusions for the substrings that misfired ("International" contains "intern", "Promotion"
+# contains "motion", "Combat" contains "mba"). Terms are trimmed, so a trailing space does nothing.
 # Every alerting filter is US-only (2026-10-14): a posting alerts only when at least one of its
 # locations is confidently in the US (job_alert/geo.py); an unknown or missing location does not.
 # Both filters name their companies, so they are a canary under the 90% broad-activation gate. See
@@ -64,9 +69,9 @@ filters:
        microagi, genesis-ai, mind-robotics, xdof, maven-robotics, walden-robotics, sunday-robotics,
        scout-ai, atoms, lightwheel, generalist-ai, allen-control-systems, dyna-robotics, rhoda-ai,
        terrafirma, monumental]
-    include_title_keywords: [intern, co-op, student]
+    include_title_keywords: [intern, co-op, coop, co op, student, fellowship, summer 20, spring 20, fall 20, winter 20]
     require_title_keywords: []
-    exclude_title_keywords: []
+    exclude_title_keywords: [cooperative]
     include_locations: []
     countries: [us]
     workplace_types: []
@@ -114,7 +119,7 @@ filters:
   - id: expansion-matches
     enabled: true
     notify: true
-    include_companies:
+    include_companies: &expansion_companies
       [amazon, nvidia, netflix, apple, alphabet-google, rockwell-automation, zebra-technologies,
        boeing, intel, samsung, crowdstrike, galaxy-digital, target, coca-cola, elevance-health,
        bank-of-america, comcast, allstate,
@@ -156,9 +161,17 @@ filters:
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,
        aerodynam, guidance, gnc, thermal, fluid, battery, powertrain, vehicle, additive, weld,
-       assembly, reliability, systems engineer, design engineer, integration, hardware test]
-    require_title_keywords: [intern, co-op, student]
-    exclude_title_keywords: []
+       assembly, reliability, systems engineer, design engineer, integration, hardware test,
+       structures, mechanism, turbomachin, combustion, hydraulic, dynamics, gear, motor, tooling,
+       composite, machinist, cnc, machining, harness, electronic, electrification, flight test,
+       r&d, research and development, product development, process development,
+       process improvement, supplier quality, quality control, quality intern, quality co-op, hvac,
+       loads]
+    require_title_keywords: [intern, co-op, coop, co op, student, fellowship, summer 20, spring 20, fall 20, winter 20]
+    exclude_title_keywords: &non_engineering_titles
+      [cooperative, international, internal -, promotion, marketing, sales, finance, financial,
+       business, tax, merchandising, mba intern, "(mba", "mba)", apparel, skillbridge, director, senior, principal,
+       product designer, data science, biostatistics]
     include_locations: []
     countries: [us]
     workplace_types: []
@@ -214,9 +227,67 @@ filters:
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,
        aerodynam, guidance, gnc, thermal, fluid, battery, powertrain, vehicle, additive, weld,
-       assembly, reliability, systems engineer, design engineer, integration, hardware test]
+       assembly, reliability, systems engineer, design engineer, integration, hardware test,
+       structures, mechanism, turbomachin, combustion, hydraulic, dynamics, gear, motor, tooling,
+       composite, machinist, cnc, machining, harness, electronic, electrification, flight test,
+       r&d, research and development, product development, process development,
+       process improvement, supplier quality, quality control, quality intern, quality co-op, hvac,
+       loads]
     require_title_keywords: []
-    exclude_title_keywords: []
+    exclude_title_keywords: *non_engineering_titles
+    include_locations: []
+    countries: [us]
+    workplace_types: []
+    categories: []
+    departments: []
+    description_keywords: []
+    employment_types: [intern]
+    priority: normal
+
+  # Engineering internships whose title names no discipline the keyword list knows ("Engineering
+  # Intern", "Summer 2027 Engineering Internship/Co-op", "Industrial Engineer Co-op") at the same
+  # expansion companies. Added 2026-10-20 after a scan of rejected internships found these were the
+  # largest group of mechanical-relevant misses. Software, data, chip-design, chemical, civil and
+  # business titles are excluded here; embedded, firmware and the like still match the keyword
+  # filters above.
+  - id: generic-engineering-matches
+    enabled: true
+    notify: true
+    include_companies: *expansion_companies
+    include_title_keywords: [engineer]
+    require_title_keywords: [intern, co-op, coop, co op, student, fellowship, summer 20, spring 20,
+       fall 20, winter 20]
+    exclude_title_keywords: &non_mechanical_engineering
+      [software, data, machine learning, ml engineer, ai engineer, ai/ml, ai research, llm,
+       large language, security, cyber, cloud, network, web, frontend, front end, front-end,
+       backend, back end, back-end, full stack, full-stack, fullstack, devops, site reliability,
+       compiler, asic, fpga, silicon, design verification, verification engineer, digital design,
+       circuit, analog, mixed signal, mixed-signal, serdes, rf/, rf engineer, rf systems, (rf),
+       wireless, antenna, chemical, chemist, civil, environmental engineer, sales, marketing,
+       finance, business, customer, user experience, penetration, product manag, program manag,
+       forward deployed, prompt, solutions engineer, support engineer, it engineer, new grad,
+       graduate engineer, apprentice, cooperative, international, internal -, promotion,
+       financial, tax, merchandising, mba intern, "(mba", "mba)", skillbridge, director, senior, principal,
+       engineering manager, staff engineer, ai applied, ai-driven, ai training, ai &, ai and, gpu,
+       cuda, algorithm, image processing, signal processing, operations research, analytics,
+       infrastructure engineer, ml performance, ml/]
+    include_locations: []
+    countries: [us]
+    workplace_types: []
+    categories: []
+    departments: []
+    description_keywords: []
+    employment_types: []
+    priority: normal
+
+  # The same, for postings a provider-classified scope types as Intern.
+  - id: generic-engineering-matches-intern-type
+    enabled: true
+    notify: true
+    include_companies: *expansion_companies
+    include_title_keywords: [engineer]
+    require_title_keywords: []
+    exclude_title_keywords: *non_mechanical_engineering
     include_locations: []
     countries: [us]
     workplace_types: []

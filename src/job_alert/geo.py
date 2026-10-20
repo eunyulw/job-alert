@@ -9,9 +9,14 @@ as "Austin" or a count such as "2 Locations" proves nothing.
 One label may hold several places separated by ``;``, ``|`` or `` or ``; it is US if any place
 is, otherwise ``"other"`` if any place is.
 
-Ambiguities settled here: a trailing two-letter code ends a three-part label as a *country* code
-("Ahmedabad, GUJARAT, IN" is India, "Toronto, ON, CA" is Canada), but ends a two-part label as a US
-*state* ("Chicago, IL", "San Francisco, CA"). "Georgia" is read as the US state.
+Ambiguities settled here: a trailing two-letter code ends a three-part label as a *country* code,
+in either case ("Ahmedabad, GUJARAT, IN" is India, "North Chicago, IL, us" is the US), but ends a
+two-part label as a US *state* ("Chicago, IL", "San Francisco, CA", "Boise, ID - Main Site").
+"Georgia" is read as the US state.
+
+A bare city name is US only when it is on ``US_CITY_NAMES``: cities where US employers in the
+registry post jobs, minus any name a large city abroad shares ("London", "Melbourne", "Cambridge",
+"Waterloo", "San Jose", "Hamilton", "Richmond", "Newark", "Burlington" stay unknown).
 """
 
 from __future__ import annotations
@@ -57,6 +62,28 @@ OTHER_COUNTRIES = frozenset(
     )
 )
 
+# Bare labels such as "San Francisco" or "Evendale" (a GE Aerospace site), compared casefolded.
+US_CITY_NAMES = frozenset(
+    name.casefold()
+    for name in (
+        "San Francisco", "South San Francisco", "Oakland", "Fremont", "Hayward", "Livermore",
+        "Sunnyvale", "Mountain View", "Palo Alto", "Menlo Park", "Redwood City", "San Mateo",
+        "Santa Clara", "Cupertino", "Milpitas", "Sacramento", "Los Angeles", "Pasadena",
+        "Hawthorne", "El Segundo", "Long Beach", "Torrance", "Huntington Beach", "Redondo Beach",
+        "Costa Mesa", "Irvine", "San Diego", "Mojave", "Seattle", "Redmond", "Bellevue",
+        "Kirkland", "Everett", "Boston", "Somerville", "Waltham", "New York", "New York City",
+        "Brooklyn", "Chicago", "Houston", "Dallas", "Fort Worth", "Austin", "San Antonio",
+        "Starbase", "McGregor", "Denver", "Boulder", "Salt Lake City", "Phoenix", "Tempe",
+        "Scottsdale", "Chandler", "Albuquerque", "Las Vegas", "Atlanta", "Pittsburgh",
+        "Philadelphia", "Detroit", "Ann Arbor", "Dearborn", "Auburn Hills", "Grand Rapids",
+        "Minneapolis", "Milwaukee", "Cleveland", "Columbus", "Cincinnati", "Dayton", "Evendale",
+        "West Chester", "Indianapolis", "Huntsville", "Orlando", "Miami", "Tampa", "Palm Bay",
+        "Raleigh", "Durham", "Charlotte", "Nashville", "Knoxville", "Arlington", "Reston",
+        "Herndon", "Bethesda", "Baltimore", "Schenectady", "Greenville", "Peoria", "Moline",
+        "Loves Park", "Hooksett", "Lynn", "Kansas City", "St. Louis", "Saint Louis", "Portland",
+    )
+)
+
 # ISO-3 codes and "PRC" that open a label ("CAN Kanata", "GBR Bristol UK", "PRC Shanghai", "SGP").
 LEADING_COUNTRY_CODES = frozenset(
     (
@@ -87,14 +114,38 @@ _GLUED_ZIP = re.compile(r"([A-Z]{2})\s\d{5}(?:[\s-]\d{4})?\b")
 _US_TOKEN = re.compile(r"(?<![A-Za-z])(US|USA|U\.S\.A?\.?)(?![A-Za-z])")
 _STATE_AND_ZIP = re.compile(r"^([A-Z]{2})\s+\d{5}(?:-\d{4})?$")
 _TWO_LETTERS = re.compile(r"^[A-Z]{2}$")
+# "Boise, ID - Main Site", "Mooresville, NC (SSC) 1999": a state code, then a site suffix.
+_STATE_THEN_SUFFIX = re.compile(r"^([A-Z]{2})(?:\s*[-–(]|\s+\d)")
+# "US-CT-EAST HARTFORD-ETC", "CA-QC-LONGUEUIL-J01": country, region, then city (RTX's labels).
+_COUNTRY_REGION_CITY = re.compile(r"^([A-Z]{2})-([A-Z]{2,3})-\S")
+# "Remote-MO", "Remote - TX".
+_REMOTE_STATE = re.compile(r"^remote\s*[-–:]\s*([A-Z]{2})$", re.IGNORECASE)
+# "McGregor TX  182 Cotton Belt": a city, a state code, then a street number.
+_CITY_STATE_STREET = re.compile(r"^[A-Z][A-Za-z .'-]* ([A-Z]{2})\s+\d")
 _THREE_LETTERS = re.compile(r"^[A-Z]{3}$")
 
 
 def location_country(label: str | None) -> str | None:
     """``"us"``, ``"other"``, or ``None`` for one provider location label."""
+    return _label_country(label, bare_cities=True)
+
+
+def explicit_location_country(label: str | None) -> str | None:
+    """The same verdict from what the label writes out, ignoring ``US_CITY_NAMES``.
+
+    Adapters use it to decide whether a label still needs the provider's own country appended:
+    a country the provider states ("Portland" posted in Canada) outranks a guess from a city name.
+    """
+    return _label_country(label, bare_cities=False)
+
+
+def _label_country(label: str | None, *, bare_cities: bool) -> str | None:
     if not label or not label.strip():
         return None
-    verdicts = [_place_country(place) for place in re.split(r"[;|]| or ", label)]
+    verdicts = [
+        _place_country(place, bare_cities=bare_cities)
+        for place in re.split(r"[;|]| or ", label)
+    ]
     if "us" in verdicts:
         return "us"
     if "other" in verdicts:
@@ -102,11 +153,19 @@ def location_country(label: str | None) -> str | None:
     return None
 
 
-def _place_country(place: str) -> str | None:
+def _place_country(place: str, *, bare_cities: bool) -> str | None:
     text = " ".join(place.split())
     if not text:
         return None
     if _UNITED_STATES.search(text) or _US_TOKEN.search(text):
+        return "us"
+    if bare_cities and text.casefold() in US_CITY_NAMES:
+        return "us"
+    if _COUNTRY_REGION_CITY.match(text):
+        # A country code leads, so "CA" is Canada here, not California; "US-..." was caught above.
+        return "other"
+    remote = _REMOTE_STATE.match(text)
+    if remote and remote.group(1).upper() in US_STATE_CODES:
         return "us"
     parts = [part.strip() for part in text.split(",") if part.strip()]
     if any(part.casefold() in OTHER_COUNTRIES for part in parts) or (
@@ -116,13 +175,17 @@ def _place_country(place: str) -> str | None:
     last = parts[-1]
     if _THREE_LETTERS.match(last) and len(parts) >= 2:
         return "other"  # an ISO-3 country code that is not USA ("ESP", "CAN")
-    if _TWO_LETTERS.match(last) and len(parts) >= 3:
-        return "other"  # a country code ending "City, Region, CC"; "US" was caught above
+    if len(parts) >= 3 and re.fullmatch(r"[A-Za-z]{2}", last):
+        # A country code ending "City, Region, CC", in either case: "IL, us" is the US.
+        return "us" if last.casefold() == "us" else "other"
     zipped = _STATE_AND_ZIP.match(last)
     if zipped and zipped.group(1) in US_STATE_CODES:
         return "us"
     # "Chicago, IL"; also "Lancaster, Tx", since no country code is written in title case.
     if len(parts) == 2 and re.fullmatch(r"[A-Z][A-Za-z]", last) and last.upper() in US_STATE_CODES:
+        return "us"
+    suffixed = _STATE_THEN_SUFFIX.match(last) if len(parts) == 2 else None
+    if suffixed and suffixed.group(1) in US_STATE_CODES:
         return "us"
     if any(part.casefold() in US_STATE_NAMES for part in parts):
         return "us"
@@ -136,7 +199,7 @@ def _free_text_country(text: str) -> str | None:
     """
     if _STATE_NAME_WORDS.search(text):
         return "us"
-    for pattern in (_TRAILING_STATE, _LEADING_STATE, _GLUED_ZIP):
+    for pattern in (_TRAILING_STATE, _LEADING_STATE, _GLUED_ZIP, _CITY_STATE_STREET):
         match = pattern.search(text)
         if match and match.group(1) in US_STATE_CODES:
             return "us"

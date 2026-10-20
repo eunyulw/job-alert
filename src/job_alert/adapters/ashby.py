@@ -46,7 +46,7 @@ from pydantic import HttpUrl, ValidationError
 from job_alert.adapters.base import AdapterError
 from job_alert.adapters.common import html_to_text, https_url, optional_text
 from job_alert.fetch import HttpFetcher, HttpPayload, RequestSpec
-from job_alert.geo import location_country
+from job_alert.geo import explicit_location_country
 from job_alert.identity import build_dedupe_key, build_job_key, content_hash
 from job_alert.models import CollectionResult, NormalizedJob, SourceConfig
 
@@ -247,7 +247,7 @@ def _locations(record: Mapping[str, object]) -> list[str]:
             continue
         seen.add(key)
         country = _address_country(address)
-        if country and location_country(text) is None:
+        if country and explicit_location_country(text) is None:
             text = f"{text}, {country}"
         locations.append(text)
     return locations

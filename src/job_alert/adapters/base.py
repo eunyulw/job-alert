@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Protocol
 
 from job_alert.fetch import HttpFetcher
-from job_alert.geo import location_country
+from job_alert.geo import explicit_location_country
 from job_alert.models import CollectionResult, SourceConfig
 
 #: A source parameter naming the employment type its provider-side scope guarantees.
@@ -82,7 +82,7 @@ def apply_source_assertions(result: CollectionResult, source: SourceConfig) -> C
         jobs = [job.model_copy(update={"employment_type": asserted.strip()}) for job in jobs]
     country = source.parameters.get(ASSERTED_COUNTRY)
     if country is not None:
-        if not isinstance(country, str) or location_country(country) is None:
+        if not isinstance(country, str) or explicit_location_country(country) is None:
             raise AdapterError(
                 f"source {source.id} has an unusable {ASSERTED_COUNTRY}: expected a country name"
             )
@@ -104,6 +104,6 @@ def _with_country(locations: list[str], country: str) -> list[str]:
     if not locations:
         return [country]
     return [
-        label if location_country(label) is not None else f"{label}, {country}"
+        label if explicit_location_country(label) is not None else f"{label}, {country}"
         for label in locations
     ]

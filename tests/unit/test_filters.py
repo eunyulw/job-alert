@@ -450,7 +450,7 @@ def test_countries_keep_only_postings_with_a_us_location(engineering_job, filter
     assert verdict("Toronto, ON, CA", "Austin, Texas").matched is True
     assert verdict("London, United Kingdom").reason == "location not in included countries: us"
     # Strict: a place the rule cannot place, or no place at all, is not the US.
-    assert verdict("Austin").reason == "location country unknown, expected: us"
+    assert verdict("Melbourne").reason == "location country unknown, expected: us"
     assert verdict().reason == "location unknown, expected: us"
 
 
@@ -458,3 +458,11 @@ def test_countries_accept_only_known_codes(filter_config) -> None:
     with pytest.raises(ValueError, match="countries"):
         filter_config(countries=["mars"])
     assert filter_config(countries=["US"]).countries == ["US"]
+
+
+def test_dash_variants_match_a_plain_hyphen(
+    engineering_job: JobBuilder, filter_config: FilterBuilder
+) -> None:
+    assert normalize_text("Controls Co\u2011Op \u2013 Summer") == "controls co-op - summer"
+    rule = filter_config(include_title_keywords=["co-op"])
+    assert evaluate_filters(engineering_job(title="Engineering Co\u2011Op"), [rule])[0].matched

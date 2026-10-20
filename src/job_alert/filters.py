@@ -121,9 +121,15 @@ _WHITESPACE = re.compile(r"\s+")
 _QUIET_WINDOW_SEARCH_DAYS = 3
 
 
+# Hyphen and dash variants a title may use ("Co‑Op" with U+2011, "Intern – Summer"). NFKC leaves
+# them distinct from "-", so a configured "co-op" would miss them.
+_DASHES = re.compile("[\u2010\u2011\u2012\u2013\u2014\u2015\u2212]")
+
+
 def normalize_text(value: str) -> str:
-    """NFKC-normalize, casefold, and collapse whitespace so comparisons ignore cosmetics."""
-    return _WHITESPACE.sub(" ", unicodedata.normalize("NFKC", value)).strip().casefold()
+    """NFKC-normalize, unify dashes, casefold, and collapse whitespace to ignore cosmetics."""
+    text = _DASHES.sub("-", unicodedata.normalize("NFKC", value))
+    return _WHITESPACE.sub(" ", text).strip().casefold()
 
 
 def canonical_workplace_type(value: str | None) -> str | None:
