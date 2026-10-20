@@ -126,3 +126,19 @@ async def test_the_page_is_written_atomically(
     assert count == 2
     assert target.read_text(encoding="utf-8").startswith("<!doctype html>")
     assert not target.with_name("openings.html.tmp").exists()
+
+
+def test_the_page_warns_when_no_source_has_completed_for_half_an_hour() -> None:
+    fresh = render_openings_page(
+        [], generated_at=FIXED_NOW, last_complete_at=FIXED_NOW - timedelta(minutes=29)
+    )
+    stale = render_openings_page(
+        [], generated_at=FIXED_NOW, last_complete_at=FIXED_NOW - timedelta(hours=22)
+    )
+
+    assert '<p id="stale" role="alert" hidden></p>' in fresh
+    assert "No source has completed a collection since" in stale
+    assert 'role="alert" hidden' not in stale
+    assert "No source has completed a collection yet" in render_openings_page(
+        [], generated_at=FIXED_NOW, last_complete_at=None
+    )

@@ -40,6 +40,7 @@ from job_alert.scheduler import (
     DIGEST_TITLE,
     GLOBAL_CONCURRENCY,
     SHUTDOWN_GRACE_SECONDS,
+    STALL_MIN_FAILURES,
     Scheduler,
     deterministic_jitter,
     next_digest_at,
@@ -647,7 +648,9 @@ class RecordingService:
         *,
         gated: bool = False,
         health_writer: Callable[[SourceConfig], tuple[HealthEvent, ...]] | None = None,
+        outcome: RunOutcome = RunOutcome.COMPLETE,
     ) -> None:
+        self.outcome = outcome
         self.calls: list[str] = []
         self.finished: list[str] = []
         self.deliveries: list[str] = []
@@ -681,8 +684,9 @@ class RecordingService:
                 source_id=source.id,
                 mode=mode,
                 run_id=1,
-                outcome=RunOutcome.COMPLETE,
-                complete=True,
+                outcome=self.outcome,
+                complete=self.outcome is RunOutcome.COMPLETE,
+                error_code=None if self.outcome is RunOutcome.COMPLETE else "collection_failed",
                 health_events=events,
             )
         finally:
@@ -775,3 +779,59 @@ async def test_a_wake_writes_the_openings_page_and_only_again_when_due(tmp_path:
     await scheduler.wake(now=NOW + timedelta(seconds=30))
     assert not page.exists()
     await scheduler.wait_for_idle()
+
+
+# ------------------------------------------------------------------ the stall watchdog
+
+
+def ten_minute_steps(clock: list[datetime]) -> Callable[[float, asyncio.Event], object]:
+    """A pause that lets the dispatched collections finish, then moves the clock ten minutes."""
+
+    async def pause(seconds: float, stop: asyncio.Event) -> None:
+        for _ in range(5):
+            await asyncio.sleep(0)
+        clock[0] += timedelta(minutes=10)
+
+    return pause
+
+
+async def test_the_watchdog_stops_the_loop_once_nothing_completes_for_thirty_minutes(
+    tmp_path: Path,
+) -> None:
+    repository = open_repository(tmp_path)
+    sources = [make_source(f"acme-{index:02d}", host=f"h{index}") for index in range(20)]
+    assert len(sources) >= STALL_MIN_FAILURES
+    clock = [NOW]
+    scheduler = build_scheduler(
+        repository,
+        sources,
+        RecordingService(outcome=RunOutcome.PARTIAL),
+        clock=lambda: clock[0],
+        pause=ten_minute_steps(clock),
+    )
+
+    report = await scheduler.run(max_wakes=10)
+
+    assert report.stalled
+    # Wakes at 0, 10, 20 and 30 minutes: the fourth is the first a full half hour after the start.
+    assert len(report.wakes) == 4
+
+
+async def test_the_watchdog_leaves_a_loop_alone_while_collections_complete(
+    tmp_path: Path,
+) -> None:
+    repository = open_repository(tmp_path)
+    sources = [make_source(f"acme-{index:02d}", host=f"h{index}") for index in range(20)]
+    clock = [NOW]
+    scheduler = build_scheduler(
+        repository,
+        sources,
+        RecordingService(),
+        clock=lambda: clock[0],
+        pause=ten_minute_steps(clock),
+    )
+
+    report = await scheduler.run(max_wakes=6)
+
+    assert not report.stalled
+    assert len(report.wakes) == 6

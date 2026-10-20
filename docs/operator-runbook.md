@@ -114,6 +114,29 @@ Reports, backups, source disabling, `429` handling, and schema changes work as d
 laptop, run each command directly with `uv run job-alert …` and `--db` pointed at the runtime database,
 and use `python3 scripts/backup_sqlite.py` without Docker. After editing `config/`, run `install` again.
 
+## GitHub Actions (always on, without the laptop)
+
+`.github/workflows/monitor.yml` runs the scheduler on GitHub's runners, so alerts keep arriving
+while the laptop sleeps or is offline.
+
+- **Schedule.** Each run drives the scheduler for 50 minutes (`run --stop-after-minutes 50`). A run
+  is scheduled every 30 minutes and queues behind the one in progress, so polling is continuous.
+- **State.** The SQLite database travels between runs in the Actions cache. If the cache is ever
+  evicted, the next run starts fresh. Each source's first complete snapshot then seeds silently,
+  so nothing is announced twice.
+- **Alerts.** Alerts go to ntfy. Repository secrets `NTFY_TOPIC_URL` and `NTFY_ACCESS_TOKEN` hold
+  a random topic on ntfy.sh and an access token from a free ntfy.sh account. The notifier refuses an
+  open public topic without a token.
+- **Dashboard.** The openings page is force-pushed to the `gh-pages` branch every 10 minutes as one
+  orphan commit. GitHub Pages serves it from that branch.
+- **Watchdog.** If no collection completes for 30 minutes while at least 20 fail in a row, the run
+  exits with code 75 and the next queued run starts in a fresh process. On the laptop, launchd
+  restarts the agent the same way.
+- **Inactivity.** GitHub disables scheduled workflows in a public repository after 60 days with no
+  commits. Re-enable the workflow from the Actions tab, or push any commit.
+
+The laptop agent can keep running alongside it: it notifies on the Mac, the workflow on ntfy.
+
 ## Server container (later: always-on and mobile)
 
 Every command below runs from the repository root on the deployment host. `dc` is shorthand for:

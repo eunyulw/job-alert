@@ -517,6 +517,36 @@ LIMIT 1
 
 RUN_OBSERVATIONS_SQL = "SELECT canonical_job_key FROM job_observations WHERE run_id = ?"
 
+#: How long an unfinished run's observations survive the prune.
+UNFINISHED_RUN_RETENTION = timedelta(days=1)
+
+# Observations are read only for the run being applied, for each source's latest complete run, and
+# for its latest applied snapshot. Every other run's rows are dead weight -- one row per posting per
+# poll, about 2.6 million a day across the registry -- so the prune keeps exactly those runs. An
+# unfinished run is kept for a day, which covers a laptop that slept mid-walk; a run a shutdown
+# abandoned never finishes, so its rows go after that.
+PRUNE_OBSERVATIONS_SQL = """
+DELETE FROM job_observations
+WHERE observed_at < ?
+AND run_id NOT IN (SELECT id FROM poll_runs WHERE finished_at IS NULL AND started_at >= ?)
+AND run_id NOT IN (
+    SELECT id FROM (
+        SELECT id, ROW_NUMBER() OVER (
+            PARTITION BY source_id ORDER BY COALESCE(finished_at, started_at) DESC, id DESC
+        ) AS rank
+        FROM poll_runs WHERE outcome = ? AND finished_at IS NOT NULL
+    ) WHERE rank = 1
+)
+AND run_id NOT IN (
+    SELECT run_id FROM (
+        SELECT run_id, ROW_NUMBER() OVER (
+            PARTITION BY source_id ORDER BY applied_at DESC, run_id DESC
+        ) AS rank
+        FROM snapshot_applications
+    ) WHERE rank = 1
+)
+"""
+
 # Every dedupe key storage already holds as an active job, plus every dedupe key a delivered
 # alert already covered. The service reads this before creating a deliverable event so one public
 # posting is announced once even when two boards publish it.
@@ -740,6 +770,24 @@ class Repository:
                 "UPDATE source_state SET backoff_until = ? WHERE source_id = ?",
                 (_optional_isoformat(until), source_id),
             )
+
+    def prune_observations(self, before: datetime) -> int:
+        """Delete observations no later read can reach, and return how many went.
+
+        Rows newer than ``before`` stay, and so do the rows of each source's latest complete run, of
+        its latest applied snapshot, and of a run started within a day of ``before`` that has not
+        finished yet, which are all a cycle ever reads.
+        """
+        with self._transaction() as connection:
+            deleted = connection.execute(
+                PRUNE_OBSERVATIONS_SQL,
+                (
+                    _utc_isoformat(before),
+                    _utc_isoformat(before - UNFINISHED_RUN_RETENTION),
+                    RunOutcome.COMPLETE.value,
+                ),
+            )
+            return int(deleted.rowcount)
 
     def upsert_observations(
         self,

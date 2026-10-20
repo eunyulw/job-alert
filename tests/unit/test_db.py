@@ -892,3 +892,42 @@ def test_the_schema_ships_inside_the_package() -> None:
     path = _schema_path()
     assert path.is_file()
     assert package in path.parents
+
+
+def observation_runs(path: Path) -> set[int]:
+    with sqlite3.connect(path) as connection:
+        return {row[0] for row in connection.execute("SELECT run_id FROM job_observations")}
+
+
+def test_prune_keeps_only_the_observations_a_later_read_can_reach(tmp_path: Path) -> None:
+    path = tmp_path / "state.sqlite3"
+    start = datetime(2026, 9, 18, tzinfo=UTC)
+    with Repository.open(path) as repo:
+        repo.initialize()
+
+        def run(outcome: RunOutcome | None, hours: int, *, apply: bool = False) -> int:
+            at = start + timedelta(hours=hours)
+            run_id = repo.start_run("openai-greenhouse", at)
+            repo.upsert_observations(run_id, [make_job()], observed_at=at)
+            if outcome is not None:
+                repo.finish_run(run_id, outcome, at, jobs_seen=1)
+            if apply:
+                repo.apply_complete_snapshot(run_id)
+            return run_id
+
+        abandoned = run(None, -30)
+        superseded = run(RunOutcome.COMPLETE, 0, apply=True)
+        applied = run(RunOutcome.COMPLETE, 1, apply=True)
+        latest_complete = run(RunOutcome.COMPLETE, 2)
+        failed = run(RunOutcome.FAILED, 3)
+        unfinished = run(None, 4)
+        recent = run(RunOutcome.FAILED, 10)
+
+        pruned = repo.prune_observations(start + timedelta(hours=9))
+
+        assert pruned == 3
+        assert observation_runs(path) == {applied, latest_complete, unfinished, recent}
+        assert not {abandoned, superseded, failed} & observation_runs(path)
+        assert repo.last_complete_job_keys("openai-greenhouse") == {JOB_KEY}
+        snapshot = repo.last_applied_snapshot("openai-greenhouse")
+        assert snapshot is not None and snapshot.run_id == applied

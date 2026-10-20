@@ -20,7 +20,7 @@ import html
 import json
 from collections.abc import Sequence
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from job_alert.config import FilterConfig
@@ -32,6 +32,10 @@ DETECTED = "detected"
 POSTED = "posted"
 BEFORE_MONITORING = "before monitoring"
 REFRESH_SECONDS = 300
+#: The page warns when no enabled source has completed a collection for this long.
+STALE_AFTER = timedelta(minutes=30)
+#: The page's own script warns when the page itself has not been rewritten for this long.
+PAGE_STALE_SECONDS = 900
 
 
 @dataclass(frozen=True, slots=True)
@@ -110,7 +114,25 @@ def _hours_text(opening: Opening, now: datetime) -> str:
     return f"{prefix}{hours:.1f}" if hours < 100 else f"{prefix}{hours:.0f}"
 
 
-def render_openings_page(openings: Sequence[Opening], *, generated_at: datetime) -> str:
+def _stale_notice(last_complete_at: datetime | None, generated_at: datetime) -> str:
+    """A warning when the monitor has stopped collecting, so stale rows are not read as current."""
+    if last_complete_at is None:
+        return "No source has completed a collection yet, so this list may be incomplete."
+    if generated_at - last_complete_at < STALE_AFTER:
+        return ""
+    since = last_complete_at.astimezone(UTC)
+    return (
+        f"No source has completed a collection since {since:%Y-%m-%d %H:%M} UTC."
+        " The monitor is offline or stuck, so postings opened since then are missing."
+    )
+
+
+def render_openings_page(
+    openings: Sequence[Opening],
+    *,
+    generated_at: datetime,
+    last_complete_at: datetime | None = None,
+) -> str:
     """The page as one self-contained HTML document."""
     rows: list[str] = []
     for opening in openings:
@@ -139,6 +161,8 @@ def render_openings_page(openings: Sequence[Opening], *, generated_at: datetime)
     empty = '<tr><td colspan="5" class="empty">No matching openings yet.</td></tr>'
     body = "\n".join(rows) or empty
     generated = json.dumps(generated_at.astimezone(UTC).isoformat())
+    notice = _stale_notice(last_complete_at, generated_at)
+    hidden = "" if notice else " hidden"
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -148,10 +172,10 @@ def render_openings_page(openings: Sequence[Opening], *, generated_at: datetime)
 <title>Job Openings</title>
 <style>
 :root {{ --bg: #ffffff; --fg: #1d1d1f; --muted: #6e6e73; --line: #e5e5ea; --accent: #0a66c2;
-  --new: #e8f3ff; }}
+  --new: #e8f3ff; --warn: #fff1d6; }}
 @media (prefers-color-scheme: dark) {{
   :root {{ --bg: #1c1c1e; --fg: #f2f2f7; --muted: #a1a1a6; --line: #38383a; --accent: #64a8ff;
-    --new: #1f2d3d; }}
+    --new: #1f2d3d; --warn: #4a3a12; }}
 }}
 body {{ margin: 0; padding: 16px; background: var(--bg); color: var(--fg);
   font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }}
@@ -167,11 +191,14 @@ td.basis, td.empty {{ color: var(--muted); }}
 tr[data-lower-bound="0"] {{ background: var(--new); }}
 a {{ color: var(--accent); text-decoration: none; }}
 a:hover {{ text-decoration: underline; }}
+#stale {{ margin: 0 0 12px; padding: 8px 12px; border-radius: 6px; color: var(--fg);
+  background: var(--warn); }}
 </style>
 </head>
 <body>
 <h1>Job openings</h1>
 <p id="summary">{html.escape(summary)}</p>
+<p id="stale" role="alert"{hidden}>{html.escape(notice)}</p>
 <div class="wrap"><table>
 <thead><tr><th>Hours open</th><th>Company</th><th>Role</th><th>Location</th><th>Opened</th>
 </tr></thead>
@@ -193,6 +220,15 @@ a:hover {{ text-decoration: underline; }}
   }}
   refresh();
   setInterval(refresh, 60000);
+  function checkPage() {{
+    if (Date.now() - generated.getTime() < {PAGE_STALE_SECONDS * 1000}) return;
+    var stale = document.getElementById("stale");
+    stale.textContent = "This page has not been rewritten since " + generated.toLocaleString() +
+      ". The monitor is not running, so postings opened since then are missing.";
+    stale.hidden = false;
+  }}
+  checkPage();
+  setInterval(checkPage, 60000);
   var summary = document.getElementById("summary");
   summary.textContent = summary.textContent.replace(/Updated .*$/,
     "Updated " + generated.toLocaleString() + ".");
@@ -216,8 +252,20 @@ def write_openings_page(
     openings = collect_openings(
         repository, sources=sources, filters=filters, companies=companies, now=now
     )
+    completions = [
+        state.last_complete_at
+        for source in sources
+        if source.enabled
+        and (state := repository.source_health(source.id)) is not None
+        and state.last_complete_at is not None
+    ]
+    last_complete_at = max(
+        (moment if moment.tzinfo else moment.replace(tzinfo=UTC) for moment in completions),
+        default=None,
+    )
+    page = render_openings_page(openings, generated_at=now, last_complete_at=last_complete_at)
     path.parent.mkdir(parents=True, exist_ok=True)
     staging = path.with_name(path.name + ".tmp")
-    staging.write_text(render_openings_page(openings, generated_at=now), encoding="utf-8")
+    staging.write_text(page, encoding="utf-8")
     staging.replace(path)
     return len(openings)

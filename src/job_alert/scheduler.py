@@ -103,6 +103,17 @@ DEFAULT_HEARTBEAT_INTERVAL_SECONDS = 300
 GLOBAL_CONCURRENCY = 16
 PER_HOST_CONCURRENCY = 2
 
+#: The stall watchdog: when no collection has completed for this long and at least this many have
+#: failed in a row, the loop stops so the supervisor restarts it in a fresh process. On 2026-10-19
+#: the laptop agent timed out on every request for 22 hours while a fresh process on the same
+#: network collected normally. A real outage only costs a restart every half hour.
+STALL_SECONDS = 30 * 60
+STALL_MIN_FAILURES = 20
+
+#: Observation rows younger than this are always kept, whatever run they belong to; the heartbeat
+#: prunes the rest down to the runs a cycle still reads (see Repository.prune_observations).
+OBSERVATION_RETENTION = timedelta(hours=1)
+
 #: How long a graceful shutdown waits for the collections already in flight.
 SHUTDOWN_GRACE_SECONDS = 30.0
 
@@ -241,6 +252,7 @@ class SchedulerReport:
     started_at: datetime
     finished_at: datetime
     wakes: tuple[WakeReport, ...] = ()
+    stalled: bool = False
 
 
 class Scheduler:
@@ -311,6 +323,8 @@ class Scheduler:
         self._closed = False
 
         started = _as_utc(clock())
+        self._last_completion_at = started
+        self._failures_since_completion = 0
         self._next_heartbeat_at = started + timedelta(seconds=self._heartbeat_interval_seconds)
         self._next_digest_at = next_digest_at(
             started, timezone=timezone, hour=digest_hour, minute=digest_minute
@@ -329,10 +343,19 @@ class Scheduler:
         stop = asyncio.Event() if stop is None else stop
         started = _as_utc(self._clock())
         wakes: list[WakeReport] = []
+        stalled = False
         try:
             while not stop.is_set():
                 moment = _as_utc(self._clock())
                 wakes.append(await self.wake(now=moment))
+                if self.stalled(moment):
+                    stalled = True
+                    self._log(
+                        f"watchdog: no collection has completed since {self._last_completion_at}"
+                        f" and {self._failures_since_completion} failed in a row; stopping so the"
+                        " supervisor restarts the monitor in a fresh process"
+                    )
+                    break
                 if max_wakes is not None and len(wakes) >= max_wakes:
                     break
                 if stop.is_set():
@@ -342,7 +365,17 @@ class Scheduler:
         finally:
             await self.close()
         return SchedulerReport(
-            started_at=started, finished_at=_as_utc(self._clock()), wakes=tuple(wakes)
+            started_at=started,
+            finished_at=_as_utc(self._clock()),
+            wakes=tuple(wakes),
+            stalled=stalled,
+        )
+
+    def stalled(self, moment: datetime) -> bool:
+        """True when collections keep failing and none has completed for the stall window."""
+        return (
+            self._failures_since_completion >= STALL_MIN_FAILURES
+            and (moment - self._last_completion_at).total_seconds() >= STALL_SECONDS
         )
 
     async def wake(self, *, now: datetime | None = None) -> WakeReport:
@@ -410,6 +443,7 @@ class Scheduler:
             await self._push_health(outcome.events)
             for event in outcome.events:
                 self._log(f"health: {event.title}: {event.body}")
+        self._prune_observations(moment)
         if outcome.pending_deliveries:
             self._log(
                 f"heartbeat: {outcome.pending_deliveries} event(s) are still undelivered;"
@@ -417,6 +451,16 @@ class Scheduler:
             )
             await self._retry_pending(moment)
         return outcome
+
+    def _prune_observations(self, moment: datetime) -> None:
+        """Drop observation rows no cycle reads again; a failure waits for the next heartbeat."""
+        try:
+            pruned = self._repository.prune_observations(moment - OBSERVATION_RETENTION)
+        except Exception as exc:  # housekeeping must never stop collection
+            self._log(f"observation prune failed: {type(exc).__name__}: {exc}")
+            return
+        if pruned:
+            self._log(f"pruned {pruned} observation row(s) no cycle reads again")
 
     async def send_digest(self, *, now: datetime | None = None) -> DigestDelivery:
         """Build the digest, write its report, and hand it to the notifier when there is one."""
@@ -546,8 +590,14 @@ class Scheduler:
             raise
         except Exception as exc:  # one source can never take the loop down with it
             self._log(f"{source.id}: collection failed: {type(exc).__name__}: {exc}")
+            self._failures_since_completion += 1
             return
         self._log(_cycle_line(result))
+        if result.outcome is RunOutcome.COMPLETE:
+            self._last_completion_at = _as_utc(self._clock())
+            self._failures_since_completion = 0
+        elif result.error_code not in DIAGNOSTIC_ERROR_CODES:
+            self._failures_since_completion += 1
         if result.new_count or result.reopened_count or result.closed_count:
             self._openings_dirty = True
         self._record_backoff(source, result)

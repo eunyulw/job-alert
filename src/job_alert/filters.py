@@ -88,6 +88,7 @@ same decisions in the same order.
 
 from __future__ import annotations
 
+import functools
 import re
 import unicodedata
 from collections.abc import Iterable, Sequence
@@ -307,6 +308,14 @@ def _rejected(record: FilterConfig, reason: str) -> FilterDecision:
 
 def _terms(values: Iterable[str]) -> tuple[str, ...]:
     """Configured terms, normalized, with blanks dropped so none of them can match everything."""
+    return _normalized_terms(tuple(values))
+
+
+@functools.lru_cache(maxsize=256)
+def _normalized_terms(values: tuple[str, ...]) -> tuple[str, ...]:
+    # Cached because the same configured lists are normalized for every job on every page write:
+    # 1,300 openings against filters naming 190 companies came to 10 million normalizations and 26
+    # seconds with the scheduler's loop blocked, long enough to time out every request in flight.
     return tuple(term for term in (normalize_text(value) for value in values) if term)
 
 

@@ -2156,3 +2156,108 @@ companies:
     categories:
       - robotics-autonomy-physical-ai
     aliases: []
+  - id: eaton
+    name: "Eaton"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - aerospace-defense
+    aliases:
+      - "Eaton Corporation"
+  - id: whirlpool
+    name: "Whirlpool"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases:
+      - "Whirlpool Corporation"
+  - id: lam-research
+    name: "Lam Research"
+    categories:
+      - big-tech-ai
+      - industrial-automation-advanced-manufacturing
+    aliases:
+      - "Lam Research Corporation"
+  # Robotics list from the user (2026-10-20).
+  - id: microagi
+    name: "MicroAGI"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: genesis-ai
+    name: "Genesis AI"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: mind-robotics
+    name: "Mind Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: xdof
+    name: "XDOF"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: maven-robotics
+    name: "Maven Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: walden-robotics
+    name: "Walden Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: sunday-robotics
+    name: "Sunday"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: scout-ai
+    name: "Scout AI"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: atoms
+    name: "Atoms"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: lightwheel
+    name: "Lightwheel"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: generalist-ai
+    name: "Generalist"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: allen-control-systems
+    name: "Allen Control Systems"
+    categories:
+      - robotics-autonomy-physical-ai
+      - aerospace-defense
+    aliases: []
+  - id: dyna-robotics
+    name: "Dyna Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: rhoda-ai
+    name: "Rhoda AI"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: terrafirma
+    name: "TerraFirma"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: monumental
+    name: "Monumental"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []

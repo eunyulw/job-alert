@@ -1,41 +1,46 @@
-# Companies the monitor cannot reach
+# Company source gaps and fallbacks
 
-Every company here is wanted but has no working source. Each entry gives the specific reason. A
-provider's refusal (a bot challenge, an HTTP 403, or an API that answers "not authorized") is never
-worked around; those companies wait for a legitimate route, such as an email alert or a provider
-that opens its API. Update this list on every expansion pass: remove a company when a source goes
-live, and add every company that was probed and missed.
+Every company here is wanted but has no working source with a verified company identity. Each entry
+gives the specific reason. Update this list on every expansion pass: remove a company when a source
+goes live, and add every company that was probed and missed.
 
 Robotics, mechanical, aerospace and automotive companies come first, because those are the search's
-priority. Last updated 2026-10-18, after the freehire board-catalog pass (see
-[collection-verification.md](collection-verification.md)), which moved 70 companies off this list.
+priority. Last updated 2026-10-20, after the user's robotics list added 16 direct
+sources, and after the freehire company-feed fallback pass (see
+[collection-verification.md](collection-verification.md)), which moved 55 more companies to enabled
+`FALLBACK_ONLY` sources. The board-catalog pass on 2026-10-18 moved 70 companies to direct sources.
 
 A company whose careers site refuses us can still be reachable when its job board is published
-somewhere else that answers an ordinary request: Ford, Cummins and DENSO run public Oracle boards;
-John Deere a SuccessFactors search; Rivian a Jibe API; Toyota and Symbotic Workday sites; Honda a
-Phenom site; Gecko an Ashby board; Daifuku and General Dynamics Electric Boat iCIMS sites. Those are
-plain public boards, so using them circumvents nothing. freehire (github.com/strelov1/freehire),
-whose catalog located most of them, also reaches refusing sites by spoofing a browser's TLS
-fingerprint, egressing through residential proxies, running a headless browser, and paying a hosted
-scraping service; none of that is used here.
+somewhere else that answers an ordinary request. The fallback uses Freehire's keyless public API
+(github.com/strelov1/freehire): each source names one exact Freehire company slug, requires every
+returned record to carry that same slug, and keeps the original source provider and direct URL.
+This monitor does not use Freehire's TLS-fingerprint spoofing, residential proxy, headless-browser,
+or hosted-scraping tiers.
 
-## 1. Refused by the provider (not circumvented)
+## 1. Reached through Freehire's public company feed
 
-| Company | What the provider answers | Route that could work |
+These sources are enabled at `FALLBACK_ONLY` and poll every 60 minutes. The first group was listed
+as provider-refused in the previous pass.
+
+- **Robotics, industrial and mobility:** Tesla, Lockheed Martin, Eaton, Whirlpool, Lam Research,
+  Qualcomm, OMRON, CMR Surgical, Mercedes-Benz Group, Ferrari, SAP.
+- **Big tech and semiconductors:** Adobe, Broadcom, Cisco, Cloudflare, Microsoft, Snowflake,
+  Cadence, OpenAI, ServiceNow, Synopsys, TSMC, Tencent, xAI.
+- **Fortune 100:** AbbVie, Archer Daniels Midland, CVS Health, Cencora, Cigna Group, Freddie Mac,
+  Humana, Lowe's, Merck, Performance Food Group, Procter & Gamble, Sysco, TJX, UPS, USAA, United
+  Airlines, Albertsons, Bristol-Myers Squibb, Centene, ConocoPhillips, Eli Lilly, Fannie Mae,
+  Liberty Mutual, Marathon Petroleum, Nationwide, Pfizer, Progressive, StoneX Group, Valero Energy,
+  Verizon and Wells Fargo.
+
+## 2. Still refused with no exact Freehire company feed
+
+| Company | What the provider answers | Why the fallback is not configured |
 | --- | --- | --- |
-| Tesla | Careers API (`cua-api/apps/careers/state`, `/careers/search`) answers HTTP 403 Access Denied (Akamai) | Gmail source `tesla-email-alerts`, waiting on a LinkedIn alert and the keychain app password |
-| Lockheed Martin, Eaton, Whirlpool, Lam Research, Qualcomm | Eightfold jobs API answers 403 "Not authorized for PCSX". freehire reads Eightfold only through residential proxies, so no alternative board exists | Email alerts from each careers site |
-| OMRON, DENSO Robotics, CMR Surgical, Mercedes-Benz Group, Ferrari | Careers site answers HTTP 403, and no other public board was found. OMRON's ADP site "Omron 247" is a service unit and is not used | Email alerts |
-| SAP | The SuccessFactors career-site search answers HTTP 403 | Email alerts |
+| AT&T | Careers site serves a bot challenge or HTTP 403 | Freehire's name search returns AT&T subsidiaries, a conference center and authorized retailers, but no canonical AT&T company record |
+| HCA Healthcare | Careers site answers HTTP 403 | Freehire's `hca-healthcare` record is HCA Healthcare UK; attaching its London hospital postings to the US company would be wrong |
+| DENSO Robotics | The main DENSO careers site answers HTTP 403 | DENSO North America is already collected by `denso-oracle`; Freehire does not separate robotics from the parent company, so a second feed would duplicate the same employer |
 
-Outside the priority areas, these careers sites also serve a bot challenge or answer HTTP 403:
-Adobe, Broadcom, Cisco, Cloudflare, Microsoft, Snowflake, Cadence, OpenAI, ServiceNow, Synopsys,
-TSMC, Tencent and xAI. Among Fortune 100 companies: AT&T, AbbVie, ADM, CVS Health, Cencora, Cigna,
-Freddie Mac, Humana, Lowe's, Merck, Performance Food Group, P&G, Sysco, TJX, UPS, USAA, United
-Airlines, Albertsons, BMS, Centene, ConocoPhillips, Eli Lilly, Fannie Mae, HCA, Liberty Mutual,
-Marathon Petroleum, Nationwide, Pfizer, Progressive, StoneX, Valero, Verizon and Wells Fargo.
-
-## 2. Reachable job system, but no adapter for it yet
+## 3. Reachable job system, but no adapter for it yet
 
 | Job system | Priority companies | Others |
 | --- | --- | --- |
@@ -46,12 +51,14 @@ Marathon Petroleum, Nationwide, Pfizer, Progressive, StoneX, Valero, Verizon and
 | Teamtailor | Starship Technologies (1 posting) | |
 | Gem | Chef Robotics (1 posting) | |
 | Personio | Cartken (offices named without a country) | |
+| Factorial | THEKER Robotics | |
+| Y Combinator Work at a Startup (no ATS behind it) | Ultra (warehouse robots) | |
 | Beesite / Jobylon / Dayforce | Porsche / Einride / Amphenol (a UK unit) | |
 | Eightfold with no derivable list endpoint | none | Chevron, Citigroup, American Express, Capital One, Morgan Stanley |
 
 Jibe also serves Arm, PepsiCo and State Farm, which wait for the Fortune 500 pass.
 
-## 3. Board found, but not usable as is
+## 4. Board found, but not usable as is
 
 | Company | Problem |
 | --- | --- |
@@ -64,14 +71,17 @@ Jibe also serves Arm, PepsiCo and State Farm, which wait for the Fortune 500 pas
 | Mitsubishi Electric, Daifuku | Covered by one board each (Mitsubishi Electric US `meus-mea`; Daifuku Intralogistics America). Their second boards, MEPPI (HRM Direct) and Wynright (iCIMS), wait, because the registry keeps one source per company. |
 | General Dynamics | Only Electric Boat is covered. GDIT has a public Workday board but is IT services; no board was found for the other units. |
 
-## 4. No public board found (probed 2026-10-14, twice on 2026-10-15, and in freehire's catalog on 2026-10-18)
+## 5. No public board found (probed 2026-10-14, twice on 2026-10-15, and in freehire's catalog on 2026-10-18)
 
 These companies have no board under any guessed name on the providers the monitor reads, and
 freehire's catalog of 294,000 companies has none either, or only aggregator reposts.
 
 - **Robotics:** Aurora Innovation, Covariant, GreyOrange, Unitree, AGIBOT, Pudu Robotics, Geek+,
   Kawasaki Robotics, Sarcos, Vention, Electric Sheep, Monarch Tractor, Hello Robot, Moon Surgical,
-  Vicarious Surgical.
+  Vicarious Surgical. From the 2026-10-20 list: Booster Robotics, X Square Robot, EngineAI, LimX
+  Dynamics, ROBOTERA, Sharpa, CenoBots, August Robotics, AITAN eyesAtop and Mecka (freehire has
+  only aggregator reposts of Mecka). The Chinese companies recruit through domestic systems such as
+  Moka and Feishu, which the monitor does not read.
 - **Aerospace and defense:** Huntington Ingalls, Spirit AeroSystems.
 - **Automotive and mobility:** Kia, BYD, Renault, Mazda, Geely, SAIC, Chery, Plus, Luminar, Canoo,
   Dana, AGCO, Volvo Cars.
@@ -94,4 +104,7 @@ Nanotechnologies), `monogram` (an AI design startup, not Monogram Orthopaedics),
 (Persona the identity-verification company; Persona AI's board is `persona.ai`), `emerson` on
 Workday (Emerson College), Vention's `join.ventionteams.com` and Teamtailor site (Vention the
 software outsourcer, not Vention the robotics company), and the Kia and Mazda boards in freehire's
-catalog (car dealerships).
+catalog (car dealerships), `ultra` on Ashby (a nicotine-pouch brand, not Ultra the robotics
+company), and `genesis-molecular-ai` on Ashby (a drug-discovery company; Genesis AI's board is
+`genesis`). Allen Control Systems also has a Greenhouse board (`allencontrolsystems`), but nothing
+on it has changed since March 2026; its Ashby board is the live one.

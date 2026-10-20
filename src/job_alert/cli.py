@@ -92,6 +92,8 @@ DEFAULT_RETRY_LIMIT = 100
 TEST_MESSAGE_TITLE = "TEST \u2014 Fast Job Alert"
 #: Laptop notifications ship first; Pushover (Android) follows in Task 28 of the plan.
 DEFAULT_PROVIDER = "macos"
+#: The run command exits with this code when the stall watchdog stopped the loop (EX_TEMPFAIL).
+STALLED_EXIT_CODE = 75
 
 app = typer.Typer(
     help="Fast company job alert monitor.", no_args_is_help=True, add_completion=False
@@ -670,10 +672,14 @@ def _collect_and_close(
         repository.close()
 
 
-async def _run_scheduler(scheduler: Scheduler, *, max_wakes: int | None) -> SchedulerReport:
+async def _run_scheduler(
+    scheduler: Scheduler, *, max_wakes: int | None, stop_after_seconds: float | None = None
+) -> SchedulerReport:
     """Run the loop until it stops, turning SIGINT and SIGTERM into a graceful shutdown."""
     stop = asyncio.Event()
     loop = asyncio.get_running_loop()
+    if stop_after_seconds is not None:
+        loop.call_later(stop_after_seconds, stop.set)
     for name in ("SIGINT", "SIGTERM"):
         number = getattr(signal, name, None)
         if number is None:
@@ -785,6 +791,13 @@ def run_monitor(
     max_wakes: Annotated[
         int | None, typer.Option("--max-wakes", help="Stop after this many wake cycles")
     ] = None,
+    stop_after_minutes: Annotated[
+        float | None,
+        typer.Option(
+            "--stop-after-minutes",
+            help="Shut down gracefully after this long, for a scheduled job with a time limit",
+        ),
+    ] = None,
     alert_url: Annotated[
         str, typer.Option("--alert-url", help="Link a health or digest push opens")
     ] = DEFAULT_ALERT_URL,
@@ -807,6 +820,8 @@ def run_monitor(
         _require_live_activation(app_config)
     if max_wakes is not None and max_wakes < 1:
         _refuse("--max-wakes must be at least 1")
+    if stop_after_minutes is not None and stop_after_minutes <= 0:
+        _refuse("--stop-after-minutes must be positive")
     notifier = build_notifier(provider) if mode is RunMode.LIVE else None
     repository = _open_repository(db)
     fetcher = HttpFetcher()
@@ -825,8 +840,16 @@ def run_monitor(
         filters=app_config.filters,
         logger=lambda line: typer.secho(line, err=True),
     )
-    report = asyncio.run(_run_scheduler(scheduler, max_wakes=1 if once else max_wakes))
+    stop_after = None if stop_after_minutes is None else stop_after_minutes * 60
+    report = asyncio.run(
+        _run_scheduler(
+            scheduler, max_wakes=1 if once else max_wakes, stop_after_seconds=stop_after
+        )
+    )
     typer.secho(f"stopped after {len(report.wakes)} wake cycle(s) in {mode} mode", err=True)
+    if report.stalled:
+        # A distinct non-zero code, so launchd or the workflow restarts the monitor afresh.
+        raise typer.Exit(code=STALLED_EXIT_CODE)
 
 
 report_app = typer.Typer(

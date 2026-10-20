@@ -97,49 +97,6 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: microsoft-discovery
-  company_id: microsoft
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://careers.microsoft.com/
-  interval_minutes: 30
-  parameters:
-    expansion_note: '2026-10-14 Task 29: apply.careers.microsoft.com/api/pcsx/search answers publicly (query=intern declared 101, 10 per page) but returned HTTP 429 after about four requests in a few minutes, and /api/apply/v2/jobs answers 403 ''Not authorized for PCSX''. Deferred until a paced Eightfold PCSX source (60+ minute interval) is built.'
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://careers.microsoft.com/v2/global/en/home.html
-    audit_notes:
-    - linked careers page https://apply.careers.microsoft.com/careers served an access challenge
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
-- id: tesla-email-alerts
-  company_id: tesla
-  provider: email-alerts
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://mail.google.com/
-  interval_minutes: 30
-  parameters:
-    companies:
-    - Tesla
-    senders:
-    - jobalerts-noreply@linkedin.com
-    lookback_days: 45
-    keychain_service: job-alert-gmail
-    scope: LinkedIn job-alert emails in the user's own Gmail (Task 30); Tesla's careers site refuses automated access
-    expansion_note: '2026-10-14 Task 29 (user asked for Tesla): www.tesla.com/cua-api/apps/careers/state and /careers/search both answer HTTP 403 Access Denied from Akamai to an ordinary request. Tesla refuses automated access, so no source is configured and nothing is circumvented. Options: a documented aggregator under Task 27, or checking tesla.com/careers manually.'
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://www.tesla.com/careers
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.tesla.com/careers'
-  enabled: false
-  audit_date: '2026-09-18'
 - id: samsung-workday
   company_id: samsung
   provider: workday
@@ -178,24 +135,6 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: qualcomm-discovery
-  company_id: qualcomm
-  provider: eightfold
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://careers.qualcomm.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: careers page links to https://app.eightfold.ai/careers?domain=qualcomm.com
-    audit_provider: eightfold
-    audit_http_status: 200
-    audit_final_url: https://careers.qualcomm.com/careers
-    audit_notes:
-    - eightfold provider evidence found (careers page links to https://app.eightfold.ai/careers?domain=qualcomm.com); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-09-19'
 - id: netflix-eightfold
   company_id: netflix
   provider: eightfold
@@ -245,36 +184,6 @@ sources:
     audit_notes:
     - no positive provider evidence on the official careers landing page
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
-- id: adobe-discovery
-  company_id: adobe
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.adobe.com/us/en
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://careers.adobe.com/us/en
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
-- id: cisco-discovery
-  company_id: cisco
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://jobs.cisco.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://jobs.cisco.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
   enabled: false
   audit_date: '2026-09-18'
 - id: palantir-lever
@@ -362,37 +271,6 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-09-18'
-- id: snowflake-discovery
-  company_id: snowflake
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.snowflake.com/us/en
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://careers.snowflake.com/us/en
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
-- id: openai-discovery
-  company_id: openai
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://openai.com/careers/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://openai.com/careers/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://openai.com/careers/'
-  enabled: false
-  audit_date: '2026-09-18'
 - id: anthropic-greenhouse
   company_id: anthropic
   provider: greenhouse
@@ -445,71 +323,6 @@ sources:
     - workday adapter collected 84 postings twice with identical canonical keys across 5 page(s)
   enabled: true
   audit_date: '2026-10-14'
-- id: broadcom-discovery
-  company_id: broadcom
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.broadcom.com/company/careers
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://www.broadcom.com/company/careers
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
-- id: tsmc-discovery
-  company_id: tsmc
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.tsmc.com/static/english/careers/index.htm
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://www.tsmc.com/static/english/careers/index.htm
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.tsmc.com/static/english/careers/index.htm'
-  enabled: false
-  audit_date: '2026-09-18'
-- id: servicenow-discovery
-  company_id: servicenow
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.servicenow.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://careers.servicenow.com/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://careers.servicenow.com/'
-  enabled: false
-  audit_date: '2026-09-18'
-- id: sap-discovery
-  company_id: sap
-  provider: successfactors
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://jobs.sap.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: careers page links to https://career5.successfactors.eu/career?career_company=SAP&lang=en_US&company=SAP&site=&loginFlowRequired=true&_s.crb=FPX8lbWGt3yk6uxsmGyYBKLyRl2Q6jqtQoTRBxl4aco%3d
-    audit_provider: successfactors
-    audit_http_status: 200
-    audit_final_url: https://jobs.sap.com/
-    audit_notes:
-    - successfactors provider evidence found (careers page links to https://career5.successfactors.eu/career?career_company=SAP&lang=en_US&company=SAP&site=&loginFlowRequired=true&_s.crb=FPX8lbWGt3yk6uxsmGyYBKLyRl2Q6jqtQoTRBxl4aco%3d); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-09-19'
 - id: ibm-discovery
   company_id: ibm
   provider: discovery
@@ -540,25 +353,6 @@ sources:
     audit_http_status: 200
     audit_final_url: https://joinbytedance.com
     audit_notes:
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-09-18'
-- id: tencent-discovery
-  company_id: tencent
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://careers.tencent.com/en-us/home.html
-  interval_minutes: 30
-  parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 200
-    audit_final_url: https://careers.tencent.com/en-us/home.html
-    audit_notes:
-    - 'linked careers page https://cdn.multilingualres.hr.tencent.com/careersmlr/Home_en-us.js could not be read: non-retryable HTTP 403 for https://cdn.multilingualres.hr.tencent.com/careersmlr/Home_en-us.js'
-    - 'linked careers page https://cdn.multilingualres.hr.tencent.com/careersmlr/HostMsg_en-us.js could not be read: non-retryable HTTP 403 for https://cdn.multilingualres.hr.tencent.com/careersmlr/HostMsg_en-us.js'
     - no positive provider evidence on the official careers landing page
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
@@ -647,38 +441,6 @@ sources:
     asserted_employment_type: Intern
   enabled: true
   audit_date: '2026-10-15'
-- id: synopsys-discovery
-  company_id: synopsys
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.synopsys.com/careers.html
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://www.synopsys.com/careers.html
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.synopsys.com/careers.html'
-  enabled: false
-  audit_date: '2026-09-18'
-- id: cadence-discovery
-  company_id: cadence
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.cadence.com/en_US/home/company/careers.html
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://www.cadence.com/en_US/home/company/careers.html
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.cadence.com/en_US/home/company/careers.html'
-  enabled: false
-  audit_date: '2026-09-18'
 - id: crowdstrike-workday
   company_id: crowdstrike
   provider: workday
@@ -700,21 +462,6 @@ sources:
     - workday adapter collected 4 postings twice with identical canonical keys across 1 page(s)
   enabled: true
   audit_date: '2026-10-14'
-- id: cloudflare-discovery
-  company_id: cloudflare
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.cloudflare.com/careers/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_final_url: https://www.cloudflare.com/careers/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-09-18'
 - id: coreweave-discovery
   company_id: coreweave
   provider: discovery
@@ -750,22 +497,6 @@ sources:
     audit_notes:
     - ashby adapter collected 199 postings twice with identical canonical keys across 1 page(s)
   enabled: true
-  audit_date: '2026-09-18'
-- id: xai-discovery
-  company_id: xai
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://x.ai/careers
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://x.ai/careers
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://x.ai/careers'
-  enabled: false
   audit_date: '2026-09-18'
 - id: cohere-ashby
   company_id: cohere
@@ -1507,22 +1238,6 @@ sources:
     scope: Mitsubishi Electric US (meus-mea)
   enabled: true
   audit_date: '2026-10-19'
-- id: omron-discovery
-  company_id: omron
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.omron.com/global/en/careers/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://www.omron.com/global/en/careers/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.omron.com/global/en/careers/'
-  enabled: false
-  audit_date: '2026-09-18'
 - id: rockwell-automation-workday
   company_id: rockwell-automation
   provider: workday
@@ -1633,22 +1348,6 @@ sources:
     - workday adapter collected 56 postings twice with identical canonical keys
   enabled: true
   audit_date: '2026-10-14'
-- id: cmr-surgical-discovery
-  company_id: cmr-surgical
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.cmrsurgical.com/careers
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://www.cmrsurgical.com/careers
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.cmrsurgical.com/careers'
-  enabled: false
-  audit_date: '2026-09-18'
 - id: figure-ai-greenhouse
   company_id: figure-ai
   provider: greenhouse
@@ -2007,22 +1706,6 @@ sources:
     scope: whole board (American Honda)
   enabled: true
   audit_date: '2026-10-19'
-- id: mercedes-benz-group-discovery
-  company_id: mercedes-benz-group
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://group.mercedes-benz.com/careers/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://group.mercedes-benz.com/careers/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://group.mercedes-benz.com/careers/'
-  enabled: false
-  audit_date: '2026-09-18'
 - id: bmw-group-discovery
   company_id: bmw-group
   provider: successfactors
@@ -2195,22 +1878,6 @@ sources:
     scope: career-site search filtered to the United States
   enabled: true
   audit_date: '2026-10-15'
-- id: ferrari-discovery
-  company_id: ferrari
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.ferrari.com/en-EN/corporate/careers
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-09-18'
-    audit_http_status: 403
-    audit_final_url: https://www.ferrari.com/en-EN/corporate/careers
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.ferrari.com/en-EN/corporate/careers'
-  enabled: false
-  audit_date: '2026-09-18'
 - id: porsche-discovery
   company_id: porsche
   provider: discovery
@@ -2363,24 +2030,6 @@ sources:
     - workday adapter collected 46 postings twice with identical canonical keys across 3 page(s)
   enabled: true
   audit_date: '2026-10-14'
-- id: lockheed-martin-discovery
-  company_id: lockheed-martin
-  provider: eightfold
-  source_class: fallback
-  support_status: NEEDS_MANUAL_REVIEW
-  endpoint: https://www.lockheedmartinjobs.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: NEEDS_MANUAL_REVIEW
-    audit_probed_at: '2026-09-19'
-    audit_evidence: the official careers page links to https://www.lockheedmartin.com/en-us/careers/index.html, which resolves to https://www.lockheedmartin.com/en-us/careers/index.html (careers page links to https://lockheedmartin.eightfold.ai/careers)
-    audit_provider: eightfold
-    audit_http_status: 200
-    audit_final_url: https://www.lockheedmartinjobs.com/cgi-bin/ext_redir.pl
-    audit_notes:
-    - eightfold provider evidence found (the official careers page links to https://www.lockheedmartin.com/en-us/careers/index.html, which resolves to https://www.lockheedmartin.com/en-us/careers/index.html (careers page links to https://lockheedmartin.eightfold.ai/careers)); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-09-19'
 - id: rtx-workday
   company_id: rtx
   provider: workday
@@ -2433,21 +2082,6 @@ sources:
     - oracle provider evidence found (careers page links to https://uhg.taleo.net/careersection/10000/mysubmissions.ftl?lang=en); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
   audit_date: '2026-10-14'
-- id: cvs-health-discovery
-  company_id: cvs-health
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://jobs.cvshealth.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://jobs.cvshealth.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-10-14'
 - id: berkshire-hathaway-discovery
   company_id: berkshire-hathaway
   provider: discovery
@@ -2495,21 +2129,6 @@ sources:
     scope: career-site search filtered to the United States
   enabled: true
   audit_date: '2026-10-15'
-- id: cencora-discovery
-  company_id: cencora
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.cencora.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://careers.cencora.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-10-14'
 - id: jpmorgan-chase-oracle
   company_id: jpmorgan-chase
   provider: oracle
@@ -2543,21 +2162,6 @@ sources:
     audit_notes:
     - no positive provider evidence on the official careers landing page
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-10-14'
-- id: cigna-group-discovery
-  company_id: cigna-group
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://jobs.thecignagroup.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://jobs.thecignagroup.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
   enabled: false
   audit_date: '2026-10-14'
 - id: cardinal-health-discovery
@@ -2597,22 +2201,6 @@ sources:
     audit_notes:
     - workday adapter collected 7 postings twice with identical canonical keys across 1 page(s)
   enabled: true
-  audit_date: '2026-10-14'
-- id: centene-discovery
-  company_id: centene
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://jobs.centene.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://jobs.centene.com/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://jobs.centene.com/'
-  enabled: false
   audit_date: '2026-10-14'
 - id: bank-of-america-workday
   company_id: bank-of-america
@@ -2688,22 +2276,6 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-10-14'
-- id: fannie-mae-discovery
-  company_id: fannie-mae
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.fanniemae.com/careers
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://www.fanniemae.com/careers
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.fanniemae.com/careers'
-  enabled: false
-  audit_date: '2026-10-14'
 - id: kroger-discovery
   company_id: kroger
   provider: discovery
@@ -2721,22 +2293,6 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-10-14'
-- id: verizon-discovery
-  company_id: verizon
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://mycareer.verizon.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://mycareer.verizon.com/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://mycareer.verizon.com/'
-  enabled: false
-  audit_date: '2026-10-14'
 - id: phillips-66-successfactors
   company_id: phillips-66
   provider: successfactors
@@ -2749,38 +2305,6 @@ sources:
     scope: career-site search filtered to the United States
   enabled: true
   audit_date: '2026-10-15'
-- id: marathon-petroleum-discovery
-  company_id: marathon-petroleum
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.marathonpetroleum.com/Careers/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://www.marathonpetroleum.com/Careers/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.marathonpetroleum.com/Careers/'
-  enabled: false
-  audit_date: '2026-10-14'
-- id: stonex-group-discovery
-  company_id: stonex-group
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.stonex.com/en/careers/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://www.stonex.com/en/careers/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.stonex.com/en/careers/'
-  enabled: false
-  audit_date: '2026-10-14'
 - id: state-farm-icims
   company_id: state-farm
   provider: icims
@@ -2797,36 +2321,6 @@ sources:
     audit_final_url: https://www.statefarm.com/careers
     audit_notes:
     - icims provider evidence found (careers page links to https://events-statefarm.icims.com/jobs/search?_sp=25275787-8bc0-44ef-9b77-3b8bcb4495d9.1653086551237); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
-  enabled: false
-  audit_date: '2026-10-14'
-- id: freddie-mac-discovery
-  company_id: freddie-mac
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.freddiemac.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://careers.freddiemac.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-10-14'
-- id: humana-discovery
-  company_id: humana
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.humana.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://careers.humana.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
   enabled: false
   audit_date: '2026-10-14'
 - id: att-discovery
@@ -2882,22 +2376,6 @@ sources:
     - workday adapter collected 2 postings twice with identical canonical keys across 1 page(s)
   enabled: true
   audit_date: '2026-10-14'
-- id: wells-fargo-discovery
-  company_id: wells-fargo
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.wellsfargojobs.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://www.wellsfargojobs.com/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.wellsfargojobs.com/'
-  enabled: false
-  audit_date: '2026-10-14'
 - id: morgan-stanley-eightfold
   company_id: morgan-stanley
   provider: eightfold
@@ -2914,22 +2392,6 @@ sources:
     audit_final_url: https://www.morganstanley.com/people
     audit_notes:
     - eightfold evidence found but no list endpoint could be derived
-  enabled: false
-  audit_date: '2026-10-14'
-- id: valero-energy-discovery
-  company_id: valero-energy
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.valero.com/careers
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://www.valero.com/careers
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.valero.com/careers'
   enabled: false
   audit_date: '2026-10-14'
 - id: dell-technologies-oracle
@@ -3000,21 +2462,6 @@ sources:
     - icims provider evidence found (careers page links to https://pepjobs-pepsico.icims.com/jobs/login); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
   audit_date: '2026-10-14'
-- id: ups-discovery
-  company_id: ups
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.jobs-ups.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://www.jobs-ups.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-10-14'
 - id: fedex-discovery
   company_id: fedex
   provider: discovery
@@ -3030,37 +2477,6 @@ sources:
     audit_notes:
     - no positive provider evidence on the official careers landing page
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-10-14'
-- id: progressive-discovery
-  company_id: progressive
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.progressive.com/careers/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://www.progressive.com/careers/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.progressive.com/careers/'
-  enabled: false
-  audit_date: '2026-10-14'
-- id: lowes-discovery
-  company_id: lowes
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://talent.lowes.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://talent.lowes.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
   enabled: false
   audit_date: '2026-10-14'
 - id: energy-transfer-discovery
@@ -3080,36 +2496,6 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-10-14'
-- id: procter-gamble-discovery
-  company_id: procter-gamble
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.pgcareers.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://www.pgcareers.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-10-14'
-- id: sysco-discovery
-  company_id: sysco
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.sysco.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://careers.sysco.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-10-14'
 - id: american-express-eightfold
   company_id: american-express
   provider: eightfold
@@ -3126,41 +2512,6 @@ sources:
     audit_final_url: https://www.americanexpress.com/en-us/careers/
     audit_notes:
     - eightfold evidence found but no list endpoint could be derived
-  enabled: false
-  audit_date: '2026-10-14'
-- id: albertsons-discovery
-  company_id: albertsons
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.albertsonscompanies.com/careers/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://www.albertsonscompanies.com/careers/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.albertsonscompanies.com/careers/'
-  enabled: false
-  audit_date: '2026-10-14'
-- id: archer-daniels-midland-discovery
-  company_id: archer-daniels-midland
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.adm.com/en-us/careers/
-  interval_minutes: 30
-  parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 200
-    audit_final_url: https://www.adm.com/en-us/careers/
-    audit_notes:
-    - linked careers page https://sjobs.brassring.com/TGnewUI/Search/Home/Home?partnerid=25416&siteid=5998 served an access challenge
-    - linked careers page https://sjobs.brassring.com/TGnewUI/Search/home/HomeWithPreLoad?partnerid=25416&siteid=5429&PageType=searchResults&SearchType=linkquery&LinkID=4393909 served an access challenge
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-10-14'
 - id: metlife-discovery
@@ -3252,55 +2603,6 @@ sources:
     - workday adapter collected 1 postings twice with identical canonical keys across 1 page(s)
   enabled: true
   audit_date: '2026-10-14'
-- id: eli-lilly-discovery
-  company_id: eli-lilly
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.lilly.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://careers.lilly.com/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://careers.lilly.com/'
-  enabled: false
-  audit_date: '2026-10-14'
-- id: merck-discovery
-  company_id: merck
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://jobs.merck.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://jobs.merck.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-10-14'
-- id: nationwide-discovery
-  company_id: nationwide
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.nationwide.com/personal/about-us/careers/
-  interval_minutes: 30
-  parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 200
-    audit_final_url: https://www.nationwide.com/personal/about-us/careers/
-    audit_notes:
-    - 'linked careers page https://careers.nationwide.com/ could not be read: non-retryable HTTP 403 for https://careers.nationwide.com/'
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-10-14'
 - id: delta-air-lines-discovery
   company_id: delta-air-lines
   provider: discovery
@@ -3336,22 +2638,6 @@ sources:
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
   enabled: false
   audit_date: '2026-10-14'
-- id: pfizer-discovery
-  company_id: pfizer
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.pfizer.com/about/careers
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://www.pfizer.com/about/careers
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.pfizer.com/about/careers'
-  enabled: false
-  audit_date: '2026-10-14'
 - id: td-synnex-discovery
   company_id: td-synnex
   provider: discovery
@@ -3366,22 +2652,6 @@ sources:
     audit_final_url: https://www.tdsynnex.com/na/us/careers/
     audit_notes:
     - 'careers landing page request failed: non-retryable HTTP 404 for https://www.tdsynnex.com/na/us/careers/'
-  enabled: false
-  audit_date: '2026-10-14'
-- id: conocophillips-discovery
-  company_id: conocophillips
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.conocophillips.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://careers.conocophillips.com/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://careers.conocophillips.com/'
   enabled: false
   audit_date: '2026-10-14'
 - id: galaxy-digital-greenhouse
@@ -3402,21 +2672,6 @@ sources:
     - greenhouse adapter collected 39 postings twice with identical canonical keys across 1 page(s)
   enabled: true
   audit_date: '2026-10-14'
-- id: abbvie-discovery
-  company_id: abbvie
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.abbvie.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://careers.abbvie.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-10-14'
 - id: prudential-financial-discovery
   company_id: prudential-financial
   provider: discovery
@@ -3432,55 +2687,6 @@ sources:
     audit_notes:
     - no positive provider evidence on the official careers landing page
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-10-14'
-- id: tjx-discovery
-  company_id: tjx
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://jobs.tjx.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://jobs.tjx.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-10-14'
-- id: performance-food-group-discovery
-  company_id: performance-food-group
-  provider: discovery
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://www.pfgc.com/careers
-  interval_minutes: 30
-  parameters:
-    audit_status: FALLBACK_ONLY
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 200
-    audit_final_url: https://www.pfgc.com/careers
-    audit_notes:
-    - linked careers page https://sjobs.brassring.com/TGnewUI/Search/Home/Home?partnerid=26350&siteid=6930 served an access challenge
-    - 'linked careers page https://sjobs.brassring.com/TGnewUI/Search/Home/Home?partnerid=26350&amp;siteid=6930 could not be read: request failed after 4 attempts: HTTP 500 for https://sjobs.brassring.com/TGnewUI/Search/Home/Home?partnerid=26350&amp;siteid=6930'
-    - no positive provider evidence on the official careers landing page
-    - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-10-14'
-- id: united-airlines-discovery
-  company_id: united-airlines
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.united.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://careers.united.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
   enabled: false
   audit_date: '2026-10-14'
 - id: hp-workday
@@ -3595,21 +2801,6 @@ sources:
     scope: whole board (General Dynamics Electric Boat)
   enabled: true
   audit_date: '2026-10-19'
-- id: usaa-discovery
-  company_id: usaa
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.usaajobs.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://www.usaajobs.com/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-10-14'
 - id: tiaa-discovery
   company_id: tiaa
   provider: discovery
@@ -3625,22 +2816,6 @@ sources:
     audit_notes:
     - no positive provider evidence on the official careers landing page
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-10-14'
-- id: liberty-mutual-discovery
-  company_id: liberty-mutual
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://jobs.libertymutualgroup.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://jobs.libertymutualgroup.com/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://jobs.libertymutualgroup.com/'
   enabled: false
   audit_date: '2026-10-14'
 - id: travelers-discovery
@@ -3659,22 +2834,6 @@ sources:
     - 'linked careers page https://careers.travelers.comhttps://careers.travelers.com/ could not be read: request failed after 4 attempts for https://careers.travelers.comhttps://careers.travelers.com/'
     - no positive provider evidence on the official careers landing page
     - official careers landing page responded but publishes no provider feed and no machine-readable job documents, so a fallback source is needed
-  enabled: false
-  audit_date: '2026-10-14'
-- id: bristol-myers-squibb-discovery
-  company_id: bristol-myers-squibb
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://careers.bms.com/
-  interval_minutes: 30
-  parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_http_status: 403
-    audit_final_url: https://careers.bms.com/
-    audit_notes:
-    - 'careers landing page request failed: non-retryable HTTP 403 for https://careers.bms.com/'
   enabled: false
   audit_date: '2026-10-14'
 - id: coca-cola-workday
@@ -5894,3 +5053,903 @@ sources:
   tenant: misorobotics
   enabled: true
   audit_date: '2026-10-19'
+- id: tesla-freehire
+  company_id: tesla
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=tesla
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: tesla
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: tesla-email-alerts
+  company_id: tesla
+  provider: email-alerts
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://mail.google.com/
+  interval_minutes: 30
+  parameters:
+    companies:
+    - Tesla
+    senders:
+    - jobalerts-noreply@linkedin.com
+    lookback_days: 45
+    keychain_service: job-alert-gmail
+    scope: LinkedIn job-alert emails in the user's own Gmail (Task 30); Tesla's careers site refuses automated access
+    us_coverage_note: '2026-10-19: the tesla-freehire fallback carries no US postings (the Freehire tesla feed holds 3 reposts from Singapore, Thailand and Australia, and every US Tesla result there is Tesla Laboratories, Inc.), so this LinkedIn alert, set to United States, is the US route. Enable it once the job-alert-gmail keychain entry exists.'
+    expansion_note: '2026-10-14 Task 29 (user asked for Tesla): www.tesla.com/cua-api/apps/careers/state and /careers/search both answer HTTP 403 Access Denied from Akamai to an ordinary request. Tesla refuses automated access, so no source is configured and nothing is circumvented. Options: a documented aggregator under Task 27, or checking tesla.com/careers manually.'
+    audit_status: BLOCKED
+    audit_probed_at: '2026-09-18'
+    audit_http_status: 403
+    audit_final_url: https://www.tesla.com/careers
+    audit_notes:
+    - 'careers landing page request failed: non-retryable HTTP 403 for https://www.tesla.com/careers'
+  enabled: false
+  audit_date: '2026-09-18'
+- id: lockheed-martin-freehire
+  company_id: lockheed-martin
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=lockheed-martin
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: lockheed-martin
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: eaton-freehire
+  company_id: eaton
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=eaton
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: eaton
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: whirlpool-freehire
+  company_id: whirlpool
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=whirlpoolcorp-gr8people-com
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: whirlpoolcorp-gr8people-com
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: lam-research-freehire
+  company_id: lam-research
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=lam-research
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: lam-research
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: qualcomm-freehire
+  company_id: qualcomm
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=qualcomm
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: qualcomm
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: omron-freehire
+  company_id: omron
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=omron
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: omron
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: cmr-surgical-freehire
+  company_id: cmr-surgical
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cmr-surgical
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: cmr-surgical
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: mercedes-benz-group-freehire
+  company_id: mercedes-benz-group
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=mercedes-benz-group
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: mercedes-benz-group
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: ferrari-freehire
+  company_id: ferrari
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=ferrari
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: ferrari
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: sap-freehire
+  company_id: sap
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=sap
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: sap
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: adobe-freehire
+  company_id: adobe
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=adobe
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: adobe
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: broadcom-freehire
+  company_id: broadcom
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=broadcom
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: broadcom
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: cisco-freehire
+  company_id: cisco
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cisco
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: cisco
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: cloudflare-freehire
+  company_id: cloudflare
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cloudflare
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: cloudflare
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: microsoft-freehire
+  company_id: microsoft
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=microsoft
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: microsoft
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: snowflake-freehire
+  company_id: snowflake
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=snowflake
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: snowflake
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: cadence-freehire
+  company_id: cadence
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cadence
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: cadence
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: openai-freehire
+  company_id: openai
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=openai
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: openai
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: servicenow-freehire
+  company_id: servicenow
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=servicenow
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: servicenow
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: synopsys-freehire
+  company_id: synopsys
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=synopsys
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: synopsys
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: tsmc-freehire
+  company_id: tsmc
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=tsmc
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: tsmc
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: tencent-freehire
+  company_id: tencent
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=tencent
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: tencent
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: xai-freehire
+  company_id: xai
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=xai
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: xai
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: abbvie-freehire
+  company_id: abbvie
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=abbvie
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: abbvie
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: archer-daniels-midland-freehire
+  company_id: archer-daniels-midland
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=archer-daniels-midland
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: archer-daniels-midland
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: cvs-health-freehire
+  company_id: cvs-health
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cvs-health
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: cvs-health
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: cencora-freehire
+  company_id: cencora
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cencora
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: cencora
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: cigna-group-freehire
+  company_id: cigna-group
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cigna-group
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: cigna-group
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: freddie-mac-freehire
+  company_id: freddie-mac
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=freddie-mac
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: freddie-mac
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: humana-freehire
+  company_id: humana
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=humana
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: humana
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: lowes-freehire
+  company_id: lowes
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=lowes
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: lowes
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: merck-freehire
+  company_id: merck
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=merck
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: merck
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: performance-food-group-freehire
+  company_id: performance-food-group
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=performance-food-group
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: performance-food-group
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: procter-gamble-freehire
+  company_id: procter-gamble
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=procter-gamble
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: procter-gamble
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: sysco-freehire
+  company_id: sysco
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=sysco
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: sysco
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: tjx-freehire
+  company_id: tjx
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=tjx
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: tjx
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: ups-freehire
+  company_id: ups
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=ups
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: ups
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: usaa-freehire
+  company_id: usaa
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=usaa
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: usaa
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: united-airlines-freehire
+  company_id: united-airlines
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=united-airlines
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: united-airlines
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: albertsons-freehire
+  company_id: albertsons
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=albertsons
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: albertsons
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: bristol-myers-squibb-freehire
+  company_id: bristol-myers-squibb
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=bristol-myers-squibb
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: bristol-myers-squibb
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: centene-freehire
+  company_id: centene
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=centene
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: centene
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: conocophillips-freehire
+  company_id: conocophillips
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=conocophillips
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: conocophillips
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: eli-lilly-freehire
+  company_id: eli-lilly
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=eli-lilly
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: eli-lilly
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: fannie-mae-freehire
+  company_id: fannie-mae
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=fannie-mae
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: fannie-mae
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: liberty-mutual-freehire
+  company_id: liberty-mutual
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=liberty-mutual
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: liberty-mutual
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: marathon-petroleum-freehire
+  company_id: marathon-petroleum
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=marathon-petroleum
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: marathon-petroleum
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: nationwide-freehire
+  company_id: nationwide
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=nationwide
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: nationwide
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: pfizer-freehire
+  company_id: pfizer
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=pfizer
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: pfizer
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: progressive-freehire
+  company_id: progressive
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=progressive
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: progressive
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: stonex-group-freehire
+  company_id: stonex-group
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=stonex-group
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: stonex-group
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: valero-energy-freehire
+  company_id: valero-energy
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=valero
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: valero
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: verizon-freehire
+  company_id: verizon
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=verizon
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: verizon
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: wells-fargo-freehire
+  company_id: wells-fargo
+  provider: freehire
+  source_class: fallback
+  support_status: FALLBACK_ONLY
+  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=wells-fargo
+  interval_minutes: 60
+  parameters:
+    freehire_company_slug: wells-fargo
+    scope: Freehire company feed; original source URLs retained
+    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  enabled: true
+  audit_date: '2026-10-19'
+- id: microagi-ashby
+  company_id: microagi
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/microagi
+  interval_minutes: 10
+  tenant: microagi
+  enabled: true
+  audit_date: '2026-10-20'
+- id: genesis-ai-ashby
+  company_id: genesis-ai
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/genesis
+  interval_minutes: 10
+  tenant: genesis
+  enabled: true
+  audit_date: '2026-10-20'
+- id: mind-robotics-ashby
+  company_id: mind-robotics
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/mindrobotics
+  interval_minutes: 10
+  tenant: mindrobotics
+  enabled: true
+  audit_date: '2026-10-20'
+- id: xdof-ashby
+  company_id: xdof
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/xdof
+  interval_minutes: 10
+  tenant: xdof
+  enabled: true
+  audit_date: '2026-10-20'
+- id: maven-robotics-greenhouse
+  company_id: maven-robotics
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/mavenrobotics/jobs?content=true
+  interval_minutes: 5
+  tenant: mavenrobotics
+  enabled: true
+  audit_date: '2026-10-20'
+- id: walden-robotics-rippling
+  company_id: walden-robotics
+  provider: rippling
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.rippling.com/platform/api/ats/v1/board/walden-robotics/jobs
+  interval_minutes: 10
+  tenant: walden-robotics
+  enabled: true
+  audit_date: '2026-10-20'
+- id: sunday-robotics-ashby
+  company_id: sunday-robotics
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/sunday
+  interval_minutes: 10
+  tenant: sunday
+  enabled: true
+  audit_date: '2026-10-20'
+- id: scout-ai-ashby
+  company_id: scout-ai
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/scout-ai
+  interval_minutes: 10
+  tenant: scout-ai
+  enabled: true
+  audit_date: '2026-10-20'
+- id: atoms-greenhouse
+  company_id: atoms
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/atoms/jobs?content=true
+  interval_minutes: 5
+  tenant: atoms
+  enabled: true
+  audit_date: '2026-10-20'
+- id: lightwheel-ashby
+  company_id: lightwheel
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/lightwheel
+  interval_minutes: 10
+  tenant: lightwheel
+  enabled: true
+  audit_date: '2026-10-20'
+- id: generalist-ai-ashby
+  company_id: generalist-ai
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/generalist
+  interval_minutes: 10
+  tenant: generalist
+  enabled: true
+  audit_date: '2026-10-20'
+- id: allen-control-systems-ashby
+  company_id: allen-control-systems
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/allen-control-systems
+  interval_minutes: 10
+  tenant: allen-control-systems
+  enabled: true
+  audit_date: '2026-10-20'
+- id: dyna-robotics-ashby
+  company_id: dyna-robotics
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/dyna-robotics
+  interval_minutes: 10
+  tenant: dyna-robotics
+  enabled: true
+  audit_date: '2026-10-20'
+- id: rhoda-ai-ashby
+  company_id: rhoda-ai
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/rhoda-ai
+  interval_minutes: 10
+  tenant: rhoda-ai
+  enabled: true
+  audit_date: '2026-10-20'
+- id: terrafirma-ashby
+  company_id: terrafirma
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/TerraFirma-Inc
+  interval_minutes: 10
+  tenant: TerraFirma-Inc
+  enabled: true
+  audit_date: '2026-10-20'
+- id: monumental-ashby
+  company_id: monumental
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/monumental
+  interval_minutes: 10
+  tenant: monumental
+  enabled: true
+  audit_date: '2026-10-20'
