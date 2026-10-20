@@ -3071,22 +3071,16 @@ sources:
     asserted_country: United States
   enabled: true
   audit_date: '2026-10-14'
-- id: carbon-robotics-greenhouse
+- id: carbon-robotics-ashby
   company_id: carbon-robotics
-  provider: greenhouse
-  source_class: documented_api
-  support_status: SUPPORTED
-  endpoint: https://boards-api.greenhouse.io/v1/boards/carbonrobotics/jobs?content=true
-  interval_minutes: 5
-  tenant: carbonrobotics
-  parameters:
-    audit_status: SUPPORTED
-    audit_probed_at: '2026-10-14'
-    audit_evidence: public greenhouse board probed directly at https://boards-api.greenhouse.io/v1/boards/carbonrobotics/jobs?content=true
-    audit_notes:
-    - greenhouse adapter collected 11 postings twice with identical canonical keys
+  provider: ashby
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/carbon-robotics
+  interval_minutes: 10
+  tenant: carbon-robotics
   enabled: true
-  audit_date: '2026-10-14'
+  audit_date: '2026-10-20'
 - id: mujin-lever
   company_id: mujin
   provider: lever
