@@ -544,19 +544,10 @@ sources:
   interval_minutes: 10
   tenant: blueorigin
   parameters:
-    applied_facets:
-      workerSubType:
-      - f3db39143e3e01ea6d86269150283618
-    scope: workerSubType = Intern (Fixed Term)
-    asserted_employment_type: Intern
-    audit_status: SUPPORTED_UNDOCUMENTED
-    audit_probed_at: '2026-10-14'
-    audit_evidence: public workday board probed directly at https://blueorigin.wd5.myworkdayjobs.com/wday/cxs/blueorigin/BlueOrigin/jobs
-    audit_notes:
-    - workday adapter collected 28 postings twice with identical canonical keys
-    asserted_country: United States
+    whole_board: true
+    scope: whole board (1,823 postings on 2026-10-20); internships tagged Regular sat outside the intern worker subtype
   enabled: true
-  audit_date: '2026-10-14'
+  audit_date: '2026-10-20'
 - id: waymo-greenhouse
   company_id: waymo
   provider: greenhouse
@@ -1596,19 +1587,10 @@ sources:
   interval_minutes: 10
   tenant: generalmotors
   parameters:
-    applied_facets:
-      workerSubType:
-      - 81219c91208501e94c213185a61a320a
-      - 81219c91208501ec00823185a61a360a
-    scope: workerSubType = Intern (Fixed Term) (Trainee) or Co-Op (Fixed Term)
-    asserted_employment_type: Intern
-    audit_status: SUPPORTED_UNDOCUMENTED
-    audit_probed_at: '2026-10-14'
-    audit_evidence: public workday board probed directly at https://generalmotors.wd5.myworkdayjobs.com/wday/cxs/generalmotors/Careers_GM/jobs
-    audit_notes:
-    - workday adapter collected 79 postings twice with identical canonical keys
+    whole_board: true
+    scope: whole board (802 postings on 2026-10-20); internships tagged Regular sat outside the intern worker subtype
   enabled: true
-  audit_date: '2026-10-14'
+  audit_date: '2026-10-20'
 - id: rivian-jibe
   company_id: rivian
   provider: jibe
@@ -4003,13 +3985,10 @@ sources:
   interval_minutes: 10
   tenant: kla
   parameters:
-    applied_facets:
-      workerSubType:
-      - bcb876733f86017814949a52051b230c
-    scope: workerSubType = Intern (Fixed Term)
-    asserted_employment_type: Intern
+    whole_board: true
+    scope: whole board (1,086 postings on 2026-10-20); internships tagged Regular sat outside the intern worker subtype
   enabled: true
-  audit_date: '2026-10-15'
+  audit_date: '2026-10-20'
 - id: analog-devices-workday
   company_id: analog-devices
   provider: workday
@@ -4080,13 +4059,10 @@ sources:
   interval_minutes: 10
   tenant: snc
   parameters:
-    applied_facets:
-      workerSubType:
-      - bd3f3405ddee105b4243e938c45a16d5
-    scope: workerSubType = Intern (Trainee)
-    asserted_employment_type: Intern
+    whole_board: true
+    scope: whole board (372 postings on 2026-10-20); internships tagged Regular sat outside the intern worker subtype
   enabled: true
-  audit_date: '2026-10-15'
+  audit_date: '2026-10-20'
 - id: xylem-workday
   company_id: xylem
   provider: workday
@@ -4135,14 +4111,10 @@ sources:
   interval_minutes: 10
   tenant: sbdinc
   parameters:
-    applied_facets:
-      workerSubType:
-      - 138cf99b9c49100037bc171ebf690000
-      - 138cf99b9c49100037bc17b9cda70001
-    scope: workerSubType = Intern/Work Experience (Trainee) or Apprentice/Trainee (Trainee); the whole board (661) came back incomplete at audit
-    asserted_employment_type: Intern
+    whole_board: true
+    scope: whole board (630 postings on 2026-10-20); internships tagged Regular sat outside the intern worker subtype
   enabled: true
-  audit_date: '2026-10-15'
+  audit_date: '2026-10-20'
 - id: generac-workday
   company_id: generac
   provider: workday
