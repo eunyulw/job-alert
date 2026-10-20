@@ -119,8 +119,8 @@ and use `python3 scripts/backup_sqlite.py` without Docker. After editing `config
 `.github/workflows/monitor.yml` runs the scheduler on GitHub's runners, so alerts keep arriving
 while the laptop sleeps or is offline.
 
-- **Schedule.** Each run drives the scheduler for 50 minutes (`run --stop-after-minutes 50`). A run
-  is scheduled every 30 minutes and queues behind the one in progress, so polling is continuous.
+- **Schedule.** Each run drives the scheduler for 50 minutes (`run --stop-after-minutes 50`) and
+  queues its successor first, so polling is continuous; the 30-minute schedule restarts a broken chain.
 - **State.** The SQLite database travels between runs in the Actions cache. If the cache is ever
   evicted, the next run starts fresh. Each source's first complete snapshot then seeds silently,
   so nothing is announced twice.

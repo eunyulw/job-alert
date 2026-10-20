@@ -1,8 +1,8 @@
 # Runs the monitor on GitHub's runners, so alerts keep coming while the laptop sleeps.
 #
-# Each run drives the scheduler for 50 minutes. A run is scheduled every 30 minutes and the
-# concurrency group queues it behind the one in progress, so the next run starts as soon as the
-# current one ends and polling stays continuous. The SQLite state travels between runs in the
+# Each run drives the scheduler for 50 minutes and queues the next run as its first step; the
+# concurrency group holds that run until this one ends, so polling is continuous. The schedule
+# only restarts the chain if it breaks. The SQLite state travels between runs in the
 # Actions cache; if the cache is ever evicted, the next run starts fresh and the first complete
 # snapshot of each source seeds silently instead of announcing every open posting.
 #
@@ -21,6 +21,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   monitor:
@@ -32,6 +33,14 @@ jobs:
       NTFY_TOPIC_URL: ${{ secrets.NTFY_TOPIC_URL }}
       NTFY_ACCESS_TOKEN: ${{ secrets.NTFY_ACCESS_TOKEN }}
     steps:
+      # GitHub's schedule is best effort and can skip slots for hours on a new repository, so each
+      # run queues its successor first. The concurrency group holds it until this run ends, and the
+      # schedule above only restarts the chain if it ever breaks.
+      - name: Queue the next run
+        run: gh workflow run monitor.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - uses: actions/checkout@v4
 
       - uses: astral-sh/setup-uv@v6
