@@ -354,3 +354,28 @@ can count content pages in their total, so the job-only total is used, and a "Mu
 or "Remote" label gains the place its posting link names. Robotics companies joined the
 every-internship filters; the rest joined the engineering-title filters. The remaining companies
 are in [unreachable-companies.md](unreachable-companies.md).
+
+### Freehire company-feed fallback (2026-10-19)
+
+Fifty-five companies that still had no direct source now use Freehire's keyless public
+`GET /api/v1/jobs/search` endpoint as an enabled fallback. Each source names exactly one
+`company_slug`; the adapter rejects any result carrying a different slug and pages until Freehire's
+declared total is read. Postings keep the original ATS source and URL, so the normal cross-source
+dedupe and geography filters still apply.
+
+This covers Tesla, Lockheed Martin, Eaton, Whirlpool, Lam Research, Qualcomm, OMRON, CMR Surgical,
+Mercedes-Benz Group, Ferrari and SAP in the priority set; Adobe, Broadcom, Cisco, Cloudflare,
+Microsoft, Snowflake, Cadence, OpenAI, ServiceNow, Synopsys, TSMC, Tencent and xAI among big tech;
+and 31 of the provider-refused Fortune 100 entries. The fallback is polled every 60 minutes and is
+recorded as `FALLBACK_ONLY`, not counted as direct coverage.
+
+The adapter leaves Freehire's transport tiers untouched. It does not spoof a TLS fingerprint, use a
+residential proxy, launch a headless browser, or call a hosted scraping service; it reads the same
+ordinary public API available to any HTTP client. Unit tests cover mapping, pagination, company
+isolation, malformed envelopes and original-link retention. An opt-in live test collects the CMR
+Surgical feed twice and requires complete, stable output.
+
+AT&T and HCA Healthcare remain unconfigured because Freehire has no exact canonical company record
+for either. DENSO Robotics remains part of `denso-oracle`, because Freehire exposes the parent
+company rather than a separately identifiable robotics feed. The exact unresolved entries are in
+[unreachable-companies.md](unreachable-companies.md).

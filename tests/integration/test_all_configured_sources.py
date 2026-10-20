@@ -9,6 +9,7 @@ from __future__ import annotations
 from job_alert.adapters.registry import AdapterRegistry
 from job_alert.audit import DIRECT_STATUSES
 from job_alert.config import AppConfig
+from job_alert.models import SourceClass, SupportStatus
 
 
 def test_every_enabled_source_has_registered_adapter(app_config: AppConfig) -> None:
@@ -21,11 +22,11 @@ def test_every_enabled_source_has_registered_adapter(app_config: AppConfig) -> N
     assert missing == []
 
 
-def test_every_enabled_source_is_a_direct_audited_source(app_config: AppConfig) -> None:
+def test_every_enabled_source_is_direct_or_an_approved_secondary(app_config: AppConfig) -> None:
     """Only SUPPORTED or SUPPORTED_UNDOCUMENTED evidence may put a source on the schedule.
 
-    The one exception is an email-alert source (Task 30): a secondary channel the user subscribed
-    to, for a company that refuses automated access to its own careers site.
+    Two narrow exceptions exist: an email-alert source the user subscribed to for a refusing
+    careers site, and the explicitly fallback-classified Freehire company feed.
     """
     undirect = sorted(
         (source.id, str(source.support_status))
@@ -33,6 +34,11 @@ def test_every_enabled_source_is_a_direct_audited_source(app_config: AppConfig) 
         if source.enabled
         and source.support_status not in DIRECT_STATUSES
         and source.provider != "email-alerts"
+        and not (
+            source.provider == "freehire"
+            and source.source_class is SourceClass.FALLBACK
+            and source.support_status is SupportStatus.FALLBACK_ONLY
+        )
     )
     assert undirect == []
 

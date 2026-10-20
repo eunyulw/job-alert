@@ -10,10 +10,10 @@ from job_alert.adapters.registry import AdapterRegistry
 
 DOCUMENTED_PROVIDERS = ("greenhouse", "lever", "ashby", "smartrecruiters")
 
-# The audited fallbacks: a company JSON endpoint the audit verified by hand, and a careers page that
-# publishes `JobPosting` JSON-LD. Both are registered in `audit.PROVIDER_ADAPTERS` like every other
-# provider, so the registry dispatches them without knowing how they parse.
-FALLBACK_PROVIDERS = ("generic-json", "json-ld")
+# The audited fallbacks: generic company JSON, `JobPosting` JSON-LD, and the company-scoped Freehire
+# feed. All are registered in `audit.PROVIDER_ADAPTERS` like every other provider, so the registry
+# dispatches them without knowing how they parse.
+FALLBACK_PROVIDERS = ("generic-json", "json-ld", "freehire")
 
 
 def test_registry_returns_documented_adapter() -> None:

@@ -8,11 +8,15 @@ next (the notifier exists; rollout is Task 28 of the plan). The design is in
 
 ## Status
 
-- 148 companies audited (`docs/source-audit.md`), 10 with a verified direct source
-  (`docs/collection-verification.md`). The 90% broad-activation gate does not pass, so only a canary
-  filter with an `include_companies` allowlist may alert.
-- Supported providers: Greenhouse, Lever, Ashby, SmartRecruiters, plus generic JSON and JSON-LD
-  fallbacks. Enterprise ATS adapters are gated on audit evidence (`docs/enterprise-adapter-gates.md`).
+- 399 companies are registered, 268 have a verified direct source (67.17%), and 323 sources are
+  enabled (`docs/collection-verification.md`). The 90% broad-activation gate does not pass, so only
+  a canary filter with an `include_companies` allowlist may alert.
+- Supported providers include Greenhouse, Lever, Ashby, SmartRecruiters, Workday, Eightfold,
+  SuccessFactors, Oracle, Phenom, Jibe, Taleo, ADP, iCIMS and the other adapters listed in
+  `src/job_alert/audit.py`. Generic JSON and JSON-LD remain available as fallbacks.
+- Fifty-five provider-refused companies use an enabled, 60-minute Freehire company-feed fallback.
+  It reads Freehire's keyless public API, keeps original source URLs, and is recorded as
+  `FALLBACK_ONLY` rather than direct coverage.
 
 ## Local development
 

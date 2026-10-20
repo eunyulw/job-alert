@@ -61,6 +61,7 @@ from job_alert.adapters.base import (
 from job_alert.adapters.breezy import BreezyAdapter
 from job_alert.adapters.eightfold import EightfoldAdapter
 from job_alert.adapters.email_alerts import EmailAlertAdapter
+from job_alert.adapters.freehire import FreehireAdapter
 from job_alert.adapters.generic_json import GenericJsonAdapter
 from job_alert.adapters.google import GoogleAdapter
 from job_alert.adapters.greenhouse import GreenhouseAdapter
@@ -113,6 +114,7 @@ PROVIDER_ADAPTERS: dict[str, SourceAdapter] = {
     "google": GoogleAdapter(),
     "eightfold": EightfoldAdapter(),
     "email-alerts": EmailAlertAdapter(),
+    "freehire": FreehireAdapter(),
     "workday": WorkdayAdapter(),
     "generic-json": GenericJsonAdapter(),
     "json-ld": JsonLdAdapter(),
@@ -160,6 +162,7 @@ PROVIDER_SOURCE_CLASSES: dict[str, SourceClass] = {
     "radancy": SourceClass.PUBLIC_ATS,
     "breezy": SourceClass.PUBLIC_ATS,
     "jazzhr": SourceClass.PUBLIC_ATS,
+    "freehire": SourceClass.FALLBACK,
     "generic-json": SourceClass.COMPANY_JSON,
     "json-ld": SourceClass.HTML,
 }
