@@ -577,16 +577,15 @@ sources:
 - id: intuitive-surgical-smartrecruiters
   company_id: intuitive-surgical
   provider: smartrecruiters
-  source_class: documented_api
-  support_status: SUPPORTED
-  endpoint: https://api.smartrecruiters.com/v1/companies/Intuitive/postings
-  interval_minutes: 30
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.smartrecruiters.com/v1/companies/Intuitive/postings?country=us
+  interval_minutes: 10
   tenant: Intuitive
   parameters:
-    scope: whole board
-    slow_poll_reason: whole board of about 750 postings, 8 pages; polled every 30 minutes
+    scope: country=us (alerts are US-only; the whole board was slow and shifted mid-walk, 2026-10-20)
   enabled: true
-  audit_date: '2026-10-19'
+  audit_date: '2026-10-20'
 - id: skydio-ashby
   company_id: skydio
   provider: ashby
@@ -832,22 +831,15 @@ sources:
 - id: bosch-smartrecruiters
   company_id: bosch
   provider: smartrecruiters
-  source_class: documented_api
-  support_status: SUPPORTED
-  endpoint: https://api.smartrecruiters.com/v1/companies/BoschGroup/postings
-  interval_minutes: 5
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.smartrecruiters.com/v1/companies/BoschGroup/postings?country=us
+  interval_minutes: 10
   tenant: BoschGroup
   parameters:
-    audit_status: SUPPORTED
-    audit_probed_at: '2026-09-19'
-    audit_evidence: the official careers page links to https://jobs.bosch.com/en/, which resolves to https://jobs.bosch.com/en/ (careers page links to https://careers.smartrecruiters.com/BoschGroup/chinahongkong)
-    audit_http_status: 200
-    audit_final_url: https://www.bosch.com/careers/
-    audit_notes:
-    - smartrecruiters adapter collected 4819 postings twice with identical canonical keys across 49 page(s)
-    - derived SmartRecruiters posting URL https://jobs.smartrecruiters.com/BoschGroup/744000150470642 returned HTTP 200
+    scope: country=us (alerts are US-only; the whole board was slow and shifted mid-walk, 2026-10-20)
   enabled: true
-  audit_date: '2026-09-19'
+  audit_date: '2026-10-20'
 - id: lucid-motors-greenhouse
   company_id: lucid-motors
   provider: greenhouse
@@ -1920,13 +1912,15 @@ sources:
 - id: continental-smartrecruiters
   company_id: continental
   provider: smartrecruiters
-  source_class: documented_api
-  support_status: SUPPORTED
-  endpoint: https://api.smartrecruiters.com/v1/companies/Continental/postings
-  interval_minutes: 5
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.smartrecruiters.com/v1/companies/Continental/postings?country=us
+  interval_minutes: 10
   tenant: Continental
+  parameters:
+    scope: country=us (alerts are US-only; the whole board was slow and shifted mid-walk, 2026-10-20)
   enabled: true
-  audit_date: '2026-10-15'
+  audit_date: '2026-10-20'
 - id: zf-successfactors
   company_id: zf
   provider: successfactors
@@ -4948,15 +4942,15 @@ sources:
 - id: western-digital-smartrecruiters
   company_id: western-digital
   provider: smartrecruiters
-  source_class: documented_api
-  support_status: SUPPORTED
-  endpoint: https://api.smartrecruiters.com/v1/companies/WesternDigital/postings
-  interval_minutes: 5
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://api.smartrecruiters.com/v1/companies/WesternDigital/postings?country=us
+  interval_minutes: 10
   tenant: WesternDigital
   parameters:
-    scope: whole board
+    scope: country=us (alerts are US-only; the whole board was slow and shifted mid-walk, 2026-10-20)
   enabled: true
-  audit_date: '2026-10-19'
+  audit_date: '2026-10-20'
 - id: microchip-workday
   company_id: microchip
   provider: workday
