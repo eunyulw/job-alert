@@ -184,6 +184,121 @@ async def test_workday_rewalks_once_when_the_board_shifts() -> None:
 
 @respx.mock
 @pytest.mark.asyncio
+async def test_workday_pools_two_walks_that_each_hide_a_different_posting() -> None:
+    # Nothing is published between the walks; the board's order is unstable, so each walk repeats
+    # one posting across a page boundary and hides another.
+    route = respx.post(ENDPOINT).mock(
+        side_effect=[
+            page(posting("A"), posting("B"), total=3),
+            page(posting("B"), total=0),
+            page(posting("C"), posting("A"), total=3),
+            page(posting("A"), total=0),
+        ]
+    )
+
+    async with HttpFetcher() as fetcher:
+        result = validate_collection(
+            await WorkdayAdapter().collect(source(page_size=2), fetcher)
+        )
+
+    assert sorted(job.source_job_id for job in result.jobs) == ["A", "B", "C"]
+    assert result.warnings == [] and result.page_count == 4
+    assert route.call_count == 4
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_workday_rewalks_a_posting_served_without_a_title() -> None:
+    respx.post(ENDPOINT).mock(
+        side_effect=[
+            page(posting("A"), posting("B", title=None)),
+            page(posting("A"), posting("B")),
+        ]
+    )
+
+    async with HttpFetcher() as fetcher:
+        result = validate_collection(await WorkdayAdapter().collect(source(), fetcher))
+
+    assert sorted(job.source_job_id for job in result.jobs) == ["A", "B"]
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_workday_counts_a_bare_requisition_toward_the_total_without_a_job() -> None:
+    route = respx.post(ENDPOINT).mock(
+        return_value=page(posting("A"), {"bulletFields": ["R2628975"]}, posting("B"))
+    )
+
+    async with HttpFetcher() as fetcher:
+        result = validate_collection(await WorkdayAdapter().collect(source(), fetcher))
+
+    assert [job.source_job_id for job in result.jobs] == ["A", "B"]
+    assert result.declared_total == 2 and result.warnings == []
+    assert route.call_count == 1
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_workday_counts_a_repeated_bare_requisition_once() -> None:
+    respx.post(ENDPOINT).mock(
+        return_value=page(
+            posting("A"), {"bulletFields": ["R1"]}, {"bulletFields": ["R1"]}, total=3
+        )
+    )
+
+    async with HttpFetcher() as fetcher:
+        result = await WorkdayAdapter().collect(source(), fetcher)
+
+    assert result.complete is False
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_workday_pooled_walks_that_still_miss_a_posting_stay_incomplete() -> None:
+    respx.post(ENDPOINT).mock(
+        side_effect=[
+            page(posting("A"), posting("B"), total=4),
+            page(posting("B"), total=0),
+            page(total=0),
+            page(posting("C"), posting("A"), total=4),
+            page(posting("A"), total=0),
+            page(total=0),
+        ]
+    )
+
+    async with HttpFetcher() as fetcher:
+        result = await WorkdayAdapter().collect(source(page_size=2), fetcher)
+
+    assert result.complete is False
+    assert result.warnings[-1] == (
+        "collected 3 unique postings across two walks but the search declared 4,"
+        " so the collection is incomplete"
+    )
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_workday_does_not_pool_walks_that_declare_different_totals() -> None:
+    # The board grew between the walks, so the first walk's postings say nothing about the second.
+    respx.post(ENDPOINT).mock(
+        side_effect=[
+            page(posting("A"), posting("B"), total=3),
+            page(posting("B"), total=0),
+            page(posting("C"), posting("A"), total=4),
+            page(posting("A"), total=0),
+            page(total=0),
+        ]
+    )
+
+    async with HttpFetcher() as fetcher:
+        result = await WorkdayAdapter().collect(source(page_size=2), fetcher)
+
+    assert result.complete is False
+    assert sorted(job.source_job_id for job in result.jobs) == ["A", "C"]
+
+
+@respx.mock
+@pytest.mark.asyncio
 async def test_workday_marks_a_posting_without_a_usable_path_incomplete() -> None:
     respx.post(ENDPOINT).mock(
         return_value=page(posting("A"), posting("B", externalPath="https://evil.example/x"))

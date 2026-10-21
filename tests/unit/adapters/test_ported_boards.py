@@ -130,6 +130,7 @@ async def test_jibe_keeps_the_query_splits_multiple_locations_and_checks_the_tot
     def reply(request: httpx.Request) -> httpx.Response:
         query = dict(parse_qsl(urlsplit(str(request.url)).query))
         assert query["location"] == "United States" and query["limit"] == "100"
+        assert (query["sortBy"], query["descending"]) == ("posted_date", "true")
         if query["page"] == "1":
             jobs = [
                 {

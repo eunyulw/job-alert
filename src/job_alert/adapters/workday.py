@@ -27,7 +27,16 @@ Mapping decisions:
   and ``source_published_at`` stay ``None``.
 
 A walk whose only defects are those of a board shifting mid-walk (a repeated id, a count short of
-the total) is walked once more, and that second walk's verdict stands.
+the total) is walked once more, and the two walks are pooled when the second is short too (see
+``job_alert.adapters.paged``). Workday's order is unstable between requests, so a whole board
+repeats and hides postings at page boundaries with nothing published. A record without a title
+earns the re-walk as well: on 2026-10-21 KLA, Caterpillar, Magna and Trane each served title-less
+records at indexes that moved from walk to walk, and a later read of KLA and Caterpillar found none.
+
+A record that is nothing but its requisition (``{"bulletFields": ["R2628975"]}``, no title and no
+``externalPath``) is counted in ``total`` but publishes no posting, so it is a placeholder: it makes
+no job, and it counts toward the total once. Applied Materials served two in one job family on
+every walk on 2026-10-21, which no number of walks could otherwise complete.
 
 A board over the cap can still be read whole with ``partition_facet`` (for example
 ``jobFamilyGroup``): the adapter reads that facet's values from the board's first page, walks each
@@ -53,7 +62,7 @@ from pydantic import HttpUrl, ValidationError
 
 from job_alert.adapters.base import AdapterError
 from job_alert.adapters.common import optional_text
-from job_alert.adapters.paged import UnusableRecord, walk_scoped
+from job_alert.adapters.paged import Placeholder, UnusableRecord, walk_scoped
 from job_alert.fetch import HttpFetcher, HttpPayload, RequestSpec
 from job_alert.identity import build_dedupe_key, build_job_key, content_hash
 from job_alert.models import CollectionResult, NormalizedJob, SourceConfig
@@ -139,6 +148,7 @@ class WorkdayAdapter:
                 cap=cap,
                 max_pages=cap // 10,
                 cap_advice="narrow the source's applied_facets or search_text",
+                rewalk_malformed=True,
             )
 
         if partition is None:
@@ -283,16 +293,18 @@ def _normalize_job(
     if not isinstance(record, Mapping):
         raise UnusableRecord("record is not a JSON object")
     title = record.get("title")
-    if not isinstance(title, str) or not title.strip():
-        raise UnusableRecord("missing title")
     path = optional_text(record.get("externalPath"))
+    bullets = record.get("bulletFields")
+    requisition = optional_text(bullets[0]) if isinstance(bullets, list) and bullets else None
+    if not isinstance(title, str) or not title.strip():
+        if path is None and requisition is not None:
+            raise Placeholder(requisition)
+        raise UnusableRecord("missing title")
     if path is None or not path.startswith("/job/") or "//" in path:
         raise UnusableRecord("externalPath is not a relative /job/ path")
     source_job_id = path.rsplit("_", 1)[-1].strip()
     if "_" not in path or not source_job_id or "/" in source_job_id:
         raise UnusableRecord("externalPath carries no requisition suffix")
-    bullets = record.get("bulletFields")
-    requisition = optional_text(bullets[0]) if isinstance(bullets, list) and bullets else None
     posting_url = f"{origin}/{site}{path}"
     location_text = optional_text(record.get("locationsText"))
     if location_text and not _LOCATION_COUNT.match(location_text):

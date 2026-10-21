@@ -24,8 +24,9 @@ Mapping decisions the payload does not spell out:
   ``updated_time`` is relative (``"8 minutes"``) and is not stored as a timestamp.
 
 The list is newest first, so a posting published mid-walk shifts every later offset: one record
-repeats and the new one is missed. A walk whose only defects are those is walked once more and that
-second walk's verdict stands; a malformed record or the page cap never earns a re-walk.
+repeats and the new one is missed. A walk whose only defects are those is walked once more, and the
+two walks are pooled when the second is short too (see ``job_alert.adapters.paged``); a malformed
+record or the page cap never earns a re-walk.
 """
 
 from __future__ import annotations

@@ -2,7 +2,10 @@
 
 ``GET https://{site}/api/jobs?page={n}&limit=100`` answers ``{"totalCount": N, "jobs": [{"data":
 {...}}]}``. The adapter keeps any configured query (a ``location`` or ``categories`` filter), owns
-``page`` and ``limit``, and judges completeness against ``totalCount``.
+``page`` and ``limit``, and judges completeness against ``totalCount``. A query without ``sortBy``
+is sorted by ``posted_date``: the default relevance order is not a total order, and measured
+2026-10-21 it served Rivian's posting 34390 at both ends of a page boundary and hid another on every
+walk, while the date order served all 950 postings once each.
 
 Mapping: ``slug`` (falling back to ``req_id``) is the id and identity is ``jibe:{site}:{slug}``;
 ``title`` the title; ``full_location`` (``;``-separated when ``multipleLocations``), else ``city``,
@@ -54,6 +57,8 @@ class JibeAdapter:
             for name, value in parse_qsl(parts.query, keep_blank_values=True)
             if name not in OWNED
         ]
+        if not any(name == "sortBy" for name, _ in query):
+            query += [("sortBy", "posted_date"), ("descending", "true")]
         first_seen_at = self._now()
 
         async def fetch_page(index: int, _: int) -> tuple[Sequence[object], int]:
