@@ -1,12 +1,13 @@
 """Optional ntfy delivery, for a self-hosted topic or an authenticated public one.
 
-ntfy publishes to a topic URL, so the topic itself travels in the request. That makes an
+ntfy publishes to a topic, so the topic itself travels in the request. That makes an
 unauthenticated public ``ntfy.sh`` topic a shared secret that leaks through any proxy log, which
 is why constructing a notifier for one refuses to work without an explicit opt-in. The notifier
-sends one JSON body with a title, priority, tags, and a click URL, attaches a bearer token when it
-has one, and classifies the answer the same way the Pushover notifier does: ``429`` and server
-failures are retryable, other ``4xx`` responses are permanent, and an unreadable success body is
-not a delivery.
+sends one JSON body with the topic, a title, priority, tags, and a click URL to the server's root
+URL (ntfy reads a JSON body as message fields only there; posted to the topic URL itself, the whole
+document arrives as the message text), attaches a bearer token when it has one, and classifies
+the answer the same way the Pushover notifier does: ``429`` and server failures are retryable,
+other ``4xx`` responses are permanent, and an unreadable success body is not a delivery.
 
 ntfy has no idempotency key on this endpoint either, so delivery is at-least-once. A transport
 failure that provably never reached the server (a connect, pool, or protocol-setup failure) stays
@@ -23,7 +24,7 @@ import json
 import os
 from collections.abc import Mapping
 from typing import Any
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urlunsplit
 
 import httpx
 
@@ -89,12 +90,13 @@ class NtfyNotifier:
                 " token or set allow_public_topic=True deliberately"
             )
         self._public_topic = is_public_topic(self._topic_url)
+        self._root_url, self._topic = split_topic_url(self._topic_url)
         self._fetcher = fetcher
 
     async def send(self, message: NotificationMessage) -> DeliveryResult:
         """Send one message once and classify what the ntfy server answered."""
         spec = RequestSpec(
-            url=self._topic_url,
+            url=self._root_url,
             method="POST",
             headers=self._headers(),
             json_body=self._body(message),
@@ -108,6 +110,7 @@ class NtfyNotifier:
 
     def _body(self, message: NotificationMessage) -> dict[str, Any]:
         body: dict[str, Any] = {
+            "topic": self._topic,
             "title": message.title,
             "message": message.body,
             "priority": NTFY_PRIORITIES[message.priority],
@@ -219,12 +222,14 @@ class NtfyNotifier:
         return redact_secrets(text, self._sensitive())
 
     def _sensitive(self) -> tuple[str | None, ...]:
-        """The access token, plus the topic URL when the topic is public.
+        """The access token, plus the topic URL and name when the topic is public.
 
-        On a public host the topic path is the only thing protecting the subscription, so it belongs
+        On a public host the topic name is the only thing protecting the subscription, so it belongs
         in the redaction set even though the notifier was allowed to publish there.
         """
-        return (self._access_token, self._topic_url if self._public_topic else None)
+        if not self._public_topic:
+            return (self._access_token,)
+        return (self._access_token, self._topic_url, self._topic)
 
 
 def validate_topic_url(value: str | None) -> str:
@@ -244,6 +249,18 @@ def validate_topic_url(value: str | None) -> str:
     if not parts.path.strip("/"):
         raise NotificationConfigurationError("the ntfy topic URL must name a topic")
     return topic
+
+
+def split_topic_url(value: str) -> tuple[str, str]:
+    """The server root a JSON publish goes to, and the topic name it carries.
+
+    The topic is the last path segment, so a server behind a path prefix keeps that prefix:
+    ``https://host/ntfy/alerts`` publishes to ``https://host/ntfy/`` with topic ``alerts``.
+    """
+    parts = urlsplit(value)
+    prefix, _, topic = parts.path.strip("/").rpartition("/")
+    path = f"/{prefix}/" if prefix else "/"
+    return urlunsplit((parts.scheme, parts.netloc, path, "", "")), topic
 
 
 def is_public_topic(value: str) -> bool:

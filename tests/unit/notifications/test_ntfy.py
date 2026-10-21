@@ -9,9 +9,11 @@ import pytest
 import respx
 
 from job_alert.notifications.base import NotificationConfigurationError, NotificationMessage
-from job_alert.notifications.ntfy import NTFY_PRIORITIES, NtfyNotifier
+from job_alert.notifications.ntfy import NTFY_PRIORITIES, NtfyNotifier, split_topic_url
 
 TOPIC = "https://ntfy.sh/job-alerts-7f3a9c"
+#: ntfy reads a JSON body as message fields only when it is posted to the server root.
+ROOT = "https://ntfy.sh/"
 ACCESS_TOKEN = "secret-access-token"
 
 
@@ -40,7 +42,7 @@ def sent_body(route: respx.Route) -> dict[str, object]:
 @respx.mock
 @pytest.mark.asyncio
 async def test_ntfy_posts_authenticated_alert_with_click_url_and_tags() -> None:
-    route = respx.post(TOPIC).mock(
+    route = respx.post(ROOT).mock(
         return_value=httpx.Response(200, json={"id": "msg-1", "topic": "job-alerts"})
     )
 
@@ -54,14 +56,14 @@ async def test_ntfy_posts_authenticated_alert_with_click_url_and_tags() -> None:
     assert body["message"].startswith("Robotics Software Engineer")
     assert body["click"] == "https://example.com/jobs/123"
     assert body["tags"] == ["robot", "briefcase"]
-    assert "topic" not in body
+    assert body["topic"] == "job-alerts-7f3a9c"
 
 
 @respx.mock
 @pytest.mark.asyncio
 @pytest.mark.parametrize(("priority", "expected"), [("low", 2), ("normal", 3), ("high", 4)])
 async def test_ntfy_maps_priorities_without_using_max(priority: str, expected: int) -> None:
-    route = respx.post(TOPIC).mock(return_value=httpx.Response(200, json={"id": "msg-1"}))
+    route = respx.post(ROOT).mock(return_value=httpx.Response(200, json={"id": "msg-1"}))
 
     await build_notifier().send(message(priority=priority))
 
@@ -72,7 +74,7 @@ async def test_ntfy_maps_priorities_without_using_max(priority: str, expected: i
 @respx.mock
 @pytest.mark.asyncio
 async def test_ntfy_omits_tags_when_the_message_has_none() -> None:
-    route = respx.post(TOPIC).mock(return_value=httpx.Response(200, json={"id": "msg-1"}))
+    route = respx.post(ROOT).mock(return_value=httpx.Response(200, json={"id": "msg-1"}))
 
     await build_notifier().send(message(tags=()))
 
@@ -82,7 +84,7 @@ async def test_ntfy_omits_tags_when_the_message_has_none() -> None:
 @respx.mock
 @pytest.mark.asyncio
 async def test_ntfy_rate_limit_is_retryable_and_not_replayed() -> None:
-    route = respx.post(TOPIC).mock(return_value=httpx.Response(429, headers={"Retry-After": "12"}))
+    route = respx.post(ROOT).mock(return_value=httpx.Response(429, headers={"Retry-After": "12"}))
 
     result = await build_notifier().send(message())
 
@@ -96,7 +98,7 @@ async def test_ntfy_rate_limit_is_retryable_and_not_replayed() -> None:
 @respx.mock
 @pytest.mark.asyncio
 async def test_ntfy_server_failure_is_retryable_no_sooner_than_five_seconds() -> None:
-    respx.post(TOPIC).mock(return_value=httpx.Response(502))
+    respx.post(ROOT).mock(return_value=httpx.Response(502))
 
     result = await build_notifier().send(message())
 
@@ -108,7 +110,7 @@ async def test_ntfy_server_failure_is_retryable_no_sooner_than_five_seconds() ->
 @respx.mock
 @pytest.mark.asyncio
 async def test_ntfy_client_error_is_permanent_and_redacted() -> None:
-    respx.post(TOPIC).mock(return_value=httpx.Response(403, text=f"forbidden for {ACCESS_TOKEN}"))
+    respx.post(ROOT).mock(return_value=httpx.Response(403, text=f"forbidden for {ACCESS_TOKEN}"))
 
     result = await build_notifier().send(message())
 
@@ -121,7 +123,7 @@ async def test_ntfy_client_error_is_permanent_and_redacted() -> None:
 @respx.mock
 @pytest.mark.asyncio
 async def test_ntfy_unreadable_success_body_is_not_a_delivery() -> None:
-    respx.post(TOPIC).mock(return_value=httpx.Response(200, text="ok"))
+    respx.post(ROOT).mock(return_value=httpx.Response(200, text="ok"))
 
     result = await build_notifier().send(message())
 
@@ -148,7 +150,7 @@ async def test_ntfy_unreadable_success_body_is_not_a_delivery() -> None:
     ],
 )
 async def test_ntfy_classifies_transport_failures(failure: Exception, uncertain: bool) -> None:
-    route = respx.post(TOPIC).mock(side_effect=failure)
+    route = respx.post(ROOT).mock(side_effect=failure)
 
     result = await build_notifier().send(message())
 
@@ -173,7 +175,7 @@ async def test_ntfy_classifies_transport_failures(failure: Exception, uncertain:
 async def test_ntfy_definitive_answers_are_not_uncertain(
     response: httpx.Response, delivered: bool
 ) -> None:
-    respx.post(TOPIC).mock(return_value=response)
+    respx.post(ROOT).mock(return_value=response)
 
     result = await build_notifier().send(message())
 
@@ -198,7 +200,7 @@ def test_ntfy_treats_a_trailing_dot_public_host_as_public() -> None:
 @pytest.mark.asyncio
 async def test_ntfy_redacts_an_opted_in_public_topic_path_from_errors() -> None:
     topic = "https://ntfy.sh/unguessable-topic-name"
-    respx.post(topic).mock(
+    respx.post(ROOT).mock(
         return_value=httpx.Response(
             200,
             headers={"Content-Type": "text/html"},
@@ -212,7 +214,7 @@ async def test_ntfy_redacts_an_opted_in_public_topic_path_from_errors() -> None:
     assert result.uncertain is True
     assert result.error is not None
     assert "unguessable-topic-name" not in result.error
-    assert "ntfy.sh" not in result.error
+    assert topic not in result.error
 
 
 def test_ntfy_allows_a_public_topic_only_with_the_explicit_opt_in() -> None:
@@ -225,6 +227,20 @@ def test_ntfy_allows_a_self_hosted_topic_without_a_token() -> None:
     notifier = NtfyNotifier(topic_url="https://push.example.com/job-alerts")
 
     assert notifier.provider == "ntfy"
+
+
+@pytest.mark.parametrize(
+    ("topic_url", "root", "topic"),
+    [
+        ("https://ntfy.sh/job-alerts", "https://ntfy.sh/", "job-alerts"),
+        ("https://ntfy.sh/job-alerts/", "https://ntfy.sh/", "job-alerts"),
+        ("https://push.example.com/ntfy/alerts", "https://push.example.com/ntfy/", "alerts"),
+    ],
+)
+def test_ntfy_splits_a_topic_url_into_its_server_root_and_topic(
+    topic_url: str, root: str, topic: str
+) -> None:
+    assert split_topic_url(topic_url) == (root, topic)
 
 
 @pytest.mark.parametrize(
