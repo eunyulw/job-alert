@@ -1,0 +1,26 @@
+# Manual only: can a visible browser on a GitHub runner (virtual display) load Tesla's careers
+# board? Reports statuses and counts, nothing else.
+name: tesla-probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - run: uvx --from playwright==1.64.0 playwright install --with-deps chromium
+      - name: Probe with Google Chrome and Playwright Chromium
+        run: |
+          for channel in chrome chromium; do
+            xvfb-run -a uv run --no-project --with playwright==1.64.0 \
+              python scripts/tesla_probe.py "$channel" || true
+          done
