@@ -9,7 +9,7 @@ A posting's opening time is the best evidence the monitor has, and the page says
 - ``before monitoring``: already open when monitoring began, with no published time, so the page
   can only say it has been open *at least* since it was first seen.
 
-Every row also gives the exact UTC instant this monitor first saw the posting.
+Every row also gives the exact instant this monitor first saw the posting, in US Central time.
 
 The page is a single static HTML file with no external requests. Every value from a provider is
 escaped, links are kept only when they are absolute HTTP(S) URLs, and a short inline script keeps
@@ -24,6 +24,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from job_alert.config import FilterConfig
 from job_alert.db import Repository
@@ -38,6 +39,8 @@ REFRESH_SECONDS = 300
 STALE_AFTER = timedelta(minutes=30)
 #: The page's own script warns when the page itself has not been rewritten for this long.
 PAGE_STALE_SECONDS = 900
+#: The first-seen column is shown in US Central time, labelled CST or CDT for the date.
+DISPLAY_ZONE = ZoneInfo("America/Chicago")
 
 
 @dataclass(frozen=True, slots=True)
@@ -141,6 +144,7 @@ def render_openings_page(
     rows: list[str] = []
     for opening in openings:
         href = _safe_href(opening.url)
+        seen = opening.first_seen_at.astimezone(DISPLAY_ZONE)
         title = html.escape(opening.title)
         role = title
         if href:
@@ -151,7 +155,7 @@ def render_openings_page(
             f' data-opened="{html.escape(opening.opened_at.isoformat())}"'
             f' data-lower-bound="{"1" if opening.basis == BEFORE_MONITORING else "0"}">'
             f'<td class="hours">{html.escape(_hours_text(opening, generated_at))}</td>'
-            f'<td class="seen">{opening.first_seen_at:%Y-%m-%d %H:%M:%S}</td>'
+            f'<td class="seen">{seen:%Y-%m-%d %H:%M:%S %Z}</td>'
             f"<td>{html.escape(opening.company)}</td>"
             f"<td>{role}</td>"
             f"<td>{location}</td>"
@@ -206,7 +210,7 @@ a:hover {{ text-decoration: underline; }}
 <p id="summary">{html.escape(summary)}</p>
 <p id="stale" role="alert"{hidden}>{html.escape(notice)}</p>
 <div class="wrap"><table>
-<thead><tr><th>Hours open</th><th>First seen (UTC)</th><th>Company</th><th>Role</th>
+<thead><tr><th>Hours open</th><th>First seen (Central)</th><th>Company</th><th>Role</th>
 <th>Location</th><th>Opened</th></tr></thead>
 <tbody>
 {body}

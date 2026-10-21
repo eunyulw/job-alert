@@ -96,7 +96,7 @@ def test_the_page_escapes_provider_text_and_refuses_unsafe_links() -> None:
     assert "javascript:alert" not in page
     assert "Acme &lt;b&gt;" in page and "Palo Alto &amp; Remote" in page
     assert '<td class="hours">2.0</td>' in page
-    assert '<td class="seen">2026-09-18 10:05:07</td>' in page
+    assert '<td class="seen">2026-09-18 05:05:07 CDT</td>' in page
     assert "1 matching openings, 1 detected since monitoring began" in page
 
 
@@ -104,9 +104,11 @@ def test_a_lower_bound_is_marked_and_an_empty_page_says_so() -> None:
     old = Opening(
         company="Acme", title="Intern", url="https://acme.example/1", locations=(),
         opened_at=FIXED_NOW - timedelta(hours=250), basis=BEFORE_MONITORING, filter_id="f",
-        first_seen_at=FIXED_NOW - timedelta(hours=250),
+        first_seen_at=datetime(2026, 1, 5, 18, 0, tzinfo=UTC),
     )
-    assert '<td class="hours">≥ 250</td>' in render_openings_page([old], generated_at=FIXED_NOW)
+    page = render_openings_page([old], generated_at=FIXED_NOW)
+    assert '<td class="hours">≥ 250</td>' in page
+    assert '<td class="seen">2026-01-05 12:00:00 CST</td>' in page
     assert "No matching openings yet." in render_openings_page([], generated_at=FIXED_NOW)
 
 
