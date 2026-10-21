@@ -9,6 +9,8 @@ A posting's opening time is the best evidence the monitor has, and the page says
 - ``before monitoring``: already open when monitoring began, with no published time, so the page
   can only say it has been open *at least* since it was first seen.
 
+Every row also gives the exact UTC instant this monitor first saw the posting.
+
 The page is a single static HTML file with no external requests. Every value from a provider is
 escaped, links are kept only when they are absolute HTTP(S) URLs, and a short inline script keeps
 the "hours open" column current between regenerations.
@@ -49,6 +51,7 @@ class Opening:
     opened_at: datetime
     basis: str
     filter_id: str
+    first_seen_at: datetime
 
     def hours_open(self, now: datetime) -> float:
         return max(0.0, (now - self.opened_at).total_seconds() / 3600)
@@ -96,6 +99,7 @@ def collect_openings(
                     opened_at=opened_at.astimezone(UTC),
                     basis=basis,
                     filter_id=matched.filter_id,
+                    first_seen_at=job.first_seen_at.astimezone(UTC),
                 )
             )
     # Detected and posted times are real openings, newest first; "before monitoring" rows only
@@ -151,6 +155,7 @@ def render_openings_page(
             f"<td>{role}</td>"
             f"<td>{location}</td>"
             f'<td class="basis">{html.escape(opening.basis)}</td>'
+            f'<td class="seen">{opening.first_seen_at:%Y-%m-%d %H:%M:%S}</td>'
             "</tr>"
         )
     fresh = sum(1 for opening in openings if opening.basis == DETECTED)
@@ -158,7 +163,7 @@ def render_openings_page(
         f"{len(openings)} matching openings, {fresh} detected since monitoring began."
         f" Updated {generated_at.astimezone(UTC):%Y-%m-%d %H:%M} UTC."
     )
-    empty = '<tr><td colspan="5" class="empty">No matching openings yet.</td></tr>'
+    empty = '<tr><td colspan="6" class="empty">No matching openings yet.</td></tr>'
     body = "\n".join(rows) or empty
     generated = json.dumps(generated_at.astimezone(UTC).isoformat())
     notice = _stale_notice(last_complete_at, generated_at)
@@ -187,7 +192,8 @@ th, td {{ text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--lin
   vertical-align: top; }}
 th {{ font-weight: 600; color: var(--muted); white-space: nowrap; }}
 td.hours {{ font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }}
-td.basis, td.empty {{ color: var(--muted); }}
+td.seen {{ font-variant-numeric: tabular-nums; white-space: nowrap; }}
+td.basis, td.seen, td.empty {{ color: var(--muted); }}
 tr[data-lower-bound="0"] {{ background: var(--new); }}
 a {{ color: var(--accent); text-decoration: none; }}
 a:hover {{ text-decoration: underline; }}
@@ -201,7 +207,7 @@ a:hover {{ text-decoration: underline; }}
 <p id="stale" role="alert"{hidden}>{html.escape(notice)}</p>
 <div class="wrap"><table>
 <thead><tr><th>Hours open</th><th>Company</th><th>Role</th><th>Location</th><th>Opened</th>
-</tr></thead>
+<th>First seen (UTC)</th></tr></thead>
 <tbody>
 {body}
 </tbody>
