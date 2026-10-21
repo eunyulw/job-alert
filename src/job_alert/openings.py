@@ -151,11 +151,11 @@ def render_openings_page(
             f' data-opened="{html.escape(opening.opened_at.isoformat())}"'
             f' data-lower-bound="{"1" if opening.basis == BEFORE_MONITORING else "0"}">'
             f'<td class="hours">{html.escape(_hours_text(opening, generated_at))}</td>'
+            f'<td class="seen">{opening.first_seen_at:%Y-%m-%d %H:%M:%S}</td>'
             f"<td>{html.escape(opening.company)}</td>"
             f"<td>{role}</td>"
             f"<td>{location}</td>"
             f'<td class="basis">{html.escape(opening.basis)}</td>'
-            f'<td class="seen">{opening.first_seen_at:%Y-%m-%d %H:%M:%S}</td>'
             "</tr>"
         )
     fresh = sum(1 for opening in openings if opening.basis == DETECTED)
@@ -206,8 +206,8 @@ a:hover {{ text-decoration: underline; }}
 <p id="summary">{html.escape(summary)}</p>
 <p id="stale" role="alert"{hidden}>{html.escape(notice)}</p>
 <div class="wrap"><table>
-<thead><tr><th>Hours open</th><th>Company</th><th>Role</th><th>Location</th><th>Opened</th>
-<th>First seen (UTC)</th></tr></thead>
+<thead><tr><th>Hours open</th><th>First seen (UTC)</th><th>Company</th><th>Role</th>
+<th>Location</th><th>Opened</th></tr></thead>
 <tbody>
 {body}
 </tbody>
