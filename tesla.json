@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-22T00:39:14.709Z",
- "board_total": 8245,
+ "generated_at": "2026-10-22T00:39:43.940Z",
+ "board_total": 8249,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3530,6 +3530,12 @@
    "id": "287407",
    "location": "Palo Alto, California",
    "title": "Internship, Electrical Engineer, Embedded Systems & Test Engineering, Supply Chain (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "287443",
+   "location": "Fremont, California",
+   "title": "Internship, Product Management, Megapack Services (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
