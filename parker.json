@@ -1,0 +1,428 @@
+{
+ "schema": 1,
+ "board": "parker",
+ "generated_at": "2026-10-22T08:42:20.000Z",
+ "declared_total": 60,
+ "jobs": [
+  {
+   "id": "17239573",
+   "title": "Quality Engineering Intern",
+   "location": "Simi Valley, CA, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/17239573-quality-engineering-intern",
+   "posted": "2026-07-01T00:00:00.000Z"
+  },
+  {
+   "id": "17350209",
+   "title": "2027 Automation Engineering Co-Op",
+   "location": "MANITOWOC, WI, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/17350209-2027-automation-engineering-co-op",
+   "posted": "2026-07-01T00:00:00.000Z"
+  },
+  {
+   "id": "17433311",
+   "title": "Operational Excellence / Lean Intern",
+   "location": "OGDEN, UT, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/17433311-operational-excellence-slash-lean-intern",
+   "posted": "2026-08-03T00:00:00.000Z"
+  },
+  {
+   "id": "17946927",
+   "title": "Fall Intern- Supply Chain",
+   "location": "MINERAL WELLS, TX, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/17946927-fall-intern-supply-chain",
+   "posted": "2026-09-09T00:00:00.000Z"
+  },
+  {
+   "id": "17961750",
+   "title": "Accounting LDA",
+   "location": "Cleveland, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/17961750-accounting-lda",
+   "posted": "2026-08-24T00:00:00.000Z"
+  },
+  {
+   "id": "17966924",
+   "title": "Supply Chain Leadership Development Associate",
+   "location": "Cleveland, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/17966924-supply-chain-leadership-development-associate",
+   "posted": "2026-08-25T00:00:00.000Z"
+  },
+  {
+   "id": "17984974",
+   "title": "EHS LDA",
+   "location": "Cleveland, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/17984974-ehs-lda",
+   "posted": "2026-08-24T00:00:00.000Z"
+  },
+  {
+   "id": "17984975",
+   "title": "Digital & IT LDA",
+   "location": "Cleveland, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/17984975-digital-and-it-lda",
+   "posted": "2026-10-14T00:00:00.000Z"
+  },
+  {
+   "id": "17984980",
+   "title": "Lean and Quality LDA",
+   "location": "Cleveland, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/17984980-lean-and-quality-lda",
+   "posted": "2026-08-24T00:00:00.000Z"
+  },
+  {
+   "id": "17988267",
+   "title": "Human Resources LDA",
+   "location": "Cleveland, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/17988267-human-resources-lda",
+   "posted": "2026-08-24T00:00:00.000Z"
+  },
+  {
+   "id": "18010198",
+   "title": "Program Management Leadership Development Associate (LDA)",
+   "location": "CLEVELAND, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18010198-program-management-leadership-development-associate-lda",
+   "posted": "2026-08-24T00:00:00.000Z"
+  },
+  {
+   "id": "18015837",
+   "title": "Export Control Leadership Development Associate",
+   "location": "CLEVELAND, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18015837-export-control-leadership-development-associate",
+   "posted": "2026-09-30T00:00:00.000Z"
+  },
+  {
+   "id": "18025632",
+   "title": "Intern - Engineering",
+   "location": "RICHMOND, CA, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18025632-intern-engineering",
+   "posted": "2026-07-23T00:00:00.000Z"
+  },
+  {
+   "id": "18026610",
+   "title": "Engineering Intern (Fall 2026)",
+   "location": "MASON, MI, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18026610-engineering-intern-fall-2026",
+   "posted": "2026-07-23T00:00:00.000Z"
+  },
+  {
+   "id": "18029907",
+   "title": "Contract Management Leadership Development Associate",
+   "location": "CLEVELAND, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18029907-contract-management-leadership-development-associate",
+   "posted": "2026-09-30T00:00:00.000Z"
+  },
+  {
+   "id": "18046080",
+   "title": "Manufacturing Engineer",
+   "location": "LEWISBURG, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18046080-manufacturing-engineer",
+   "posted": "2026-10-01T00:00:00.000Z"
+  },
+  {
+   "id": "18067023",
+   "title": "Maintenance Apprentice",
+   "location": "SLATER, MO, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18067023-maintenance-apprentice",
+   "posted": "2026-07-31T00:00:00.000Z"
+  },
+  {
+   "id": "18088167",
+   "title": "Intern Manufacturing Eng",
+   "location": "NORTH HOLLYWOOD, CA, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18088167-intern-manufacturing-eng",
+   "posted": "2026-10-20T00:00:00.000Z"
+  },
+  {
+   "id": "18117887",
+   "title": "Corporate Supply Chain Intern (Year-Round)",
+   "location": "CLEVELAND, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18117887-corporate-supply-chain-intern-year-round",
+   "posted": "2026-09-24T00:00:00.000Z"
+  },
+  {
+   "id": "18187386",
+   "title": "Inside Sales Intern – Customer Service Focus (Summer 2027)",
+   "location": "ERIE, PA, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18187386-inside-sales-intern-customer-service-focus-summer-2027",
+   "posted": "2026-09-10T00:00:00.000Z"
+  },
+  {
+   "id": "18215253",
+   "title": "Engineering Intern (Drafting)",
+   "location": "ELYRIA, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18215253-engineering-intern-drafting",
+   "posted": "2026-09-08T00:00:00.000Z"
+  },
+  {
+   "id": "18215254",
+   "title": "Engineering Intern",
+   "location": "ELYRIA, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18215254-engineering-intern",
+   "posted": "2026-09-08T00:00:00.000Z"
+  },
+  {
+   "id": "18215526",
+   "title": "AI/ML Engineering Co-op",
+   "location": "ELYRIA, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18215526-ai-slash-ml-engineering-co-op",
+   "posted": "2026-10-20T00:00:00.000Z"
+  },
+  {
+   "id": "18215527",
+   "title": "R&D Lab Engineering Intern",
+   "location": "ELYRIA, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18215527-r-and-d-lab-engineering-intern",
+   "posted": "2026-09-08T00:00:00.000Z"
+  },
+  {
+   "id": "18215528",
+   "title": "Engineering Intern",
+   "location": "ELYRIA, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18215528-engineering-intern",
+   "posted": "2026-09-08T00:00:00.000Z"
+  },
+  {
+   "id": "18220704",
+   "title": "Pneumatic Actuator Engineering Co-op - Spring 2027",
+   "location": "WADSWORTH, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18220704-pneumatic-actuator-engineering-co-op-spring-2027",
+   "posted": "2026-09-09T00:00:00.000Z"
+  },
+  {
+   "id": "18222815",
+   "title": "Supply Chain Intern - Summer 2027 - Erie, PA",
+   "location": "ERIE, PA, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18222815-supply-chain-intern-summer-2027-erie-pa",
+   "posted": "2026-09-09T00:00:00.000Z"
+  },
+  {
+   "id": "18223715",
+   "title": "Analytical Services Intern (Chemical) - Summer 2027 - Erie, PA",
+   "location": "ERIE, PA, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18223715-analytical-services-intern-chemical-summer-2027-erie-pa",
+   "posted": "2026-09-09T00:00:00.000Z"
+  },
+  {
+   "id": "18224103",
+   "title": "Intern EHS",
+   "location": "Simi Valley, CA, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18224103-intern-ehs",
+   "posted": "2026-09-09T00:00:00.000Z"
+  },
+  {
+   "id": "18226913",
+   "title": "Elastomer Adhesives and Coatings Application Engineering Intern - Summer 2027 - Erie, PA",
+   "location": "ERIE, PA, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18226913-elastomer-adhesives-and-coatings-application-engineering-intern-summer-2027-erie-pa",
+   "posted": "2026-09-10T00:00:00.000Z"
+  },
+  {
+   "id": "18229623",
+   "title": "Product Design Engineering Co-Op - Aerospace January-August 2027",
+   "location": "FORT WORTH, TX, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18229623-product-design-engineering-co-op-aerospace-january-august-2027",
+   "posted": "2026-09-10T00:00:00.000Z"
+  },
+  {
+   "id": "18231765",
+   "title": "Accounting Intern (Northeast Ohio Locations) - Summer 2027",
+   "location": "CLEVELAND, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18231765-accounting-intern-northeast-ohio-locations-summer-2027",
+   "posted": "2026-09-11T00:00:00.000Z"
+  },
+  {
+   "id": "18234434",
+   "title": "Regulatory Compliance Intern - Summer 2027 - Erie, PA",
+   "location": "ERIE, PA, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18234434-regulatory-compliance-intern-summer-2027-erie-pa",
+   "posted": "2026-09-11T00:00:00.000Z"
+  },
+  {
+   "id": "18236510",
+   "title": "Intern Supply Chain",
+   "location": "HOUSTON, TX, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18236510-intern-supply-chain",
+   "posted": "2026-10-20T00:00:00.000Z"
+  },
+  {
+   "id": "18239892",
+   "title": "Engineering Intern",
+   "location": "KEARNEY, NE, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18239892-engineering-intern",
+   "posted": "2026-09-14T00:00:00.000Z"
+  },
+  {
+   "id": "18243361",
+   "title": "Rotary Actuator Engineering Co-op - Spring 2027",
+   "location": "WADSWORTH, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18243361-rotary-actuator-engineering-co-op-spring-2027",
+   "posted": "2026-09-16T00:00:00.000Z"
+  },
+  {
+   "id": "18252413",
+   "title": "Applications Engineer Intern - Summer 2027",
+   "location": "WIXOM, MI, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18252413-applications-engineer-intern-summer-2027",
+   "posted": "2026-09-17T00:00:00.000Z"
+  },
+  {
+   "id": "18252804",
+   "title": "Manufacturing Engineer Intern - Aerospace",
+   "location": "FORT WORTH, TX, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18252804-manufacturing-engineer-intern-aerospace",
+   "posted": "2026-09-17T00:00:00.000Z"
+  },
+  {
+   "id": "18259250",
+   "title": "R&D Engineering Co-op - Spring / Summer 2027",
+   "location": "MENTOR, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18259250-r-and-d-engineering-co-op-spring-slash-summer-2027",
+   "posted": "2026-09-18T00:00:00.000Z"
+  },
+  {
+   "id": "18262397",
+   "title": "Spring 2027 - Engineering Co-op",
+   "location": "Akron, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18262397-spring-2027-engineering-co-op",
+   "posted": "2026-09-21T00:00:00.000Z"
+  },
+  {
+   "id": "18267824",
+   "title": "Intern Manufacturing Operations",
+   "location": "METAMORA, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18267824-intern-manufacturing-operations",
+   "posted": "2026-09-22T00:00:00.000Z"
+  },
+  {
+   "id": "18273164",
+   "title": "Associate Quality Engineer",
+   "location": "OGDEN, UT, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18273164-associate-quality-engineer",
+   "posted": "2026-09-23T00:00:00.000Z"
+  },
+  {
+   "id": "18274858",
+   "title": "Intern Engineering Product Development",
+   "location": "METAMORA, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18274858-intern-engineering-product-development",
+   "posted": "2026-09-23T00:00:00.000Z"
+  },
+  {
+   "id": "18276666",
+   "title": "Corporate HR Intern (Year-Round)",
+   "location": "CLEVELAND, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18276666-corporate-hr-intern-year-round",
+   "posted": "2026-10-02T00:00:00.000Z"
+  },
+  {
+   "id": "18277105",
+   "title": "Fall Intern EHS",
+   "location": "MINERAL WELLS, TX, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18277105-fall-intern-ehs",
+   "posted": "2026-09-24T00:00:00.000Z"
+  },
+  {
+   "id": "18277874",
+   "title": "Intern HR",
+   "location": "MINERAL WELLS, TX, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18277874-intern-hr",
+   "posted": "2026-09-24T00:00:00.000Z"
+  },
+  {
+   "id": "18300599",
+   "title": "Elastomer Adhesives and Coatings Chemical Research Technology Internship - Summer 2027 - Erie, PA",
+   "location": "ERIE, PA, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18300599-elastomer-adhesives-and-coatings-chemical-research-technology-internship-summer-2027-erie-pa",
+   "posted": "2026-10-01T00:00:00.000Z"
+  },
+  {
+   "id": "18305949",
+   "title": "Supply Chain Intern",
+   "location": "KEARNEY, NE, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18305949-supply-chain-intern",
+   "posted": "2026-10-02T00:00:00.000Z"
+  },
+  {
+   "id": "18311200",
+   "title": "Intern – Mechanical Engineering (Aerospace)",
+   "location": "KENT, WA, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18311200-intern-mechanical-engineering-aerospace",
+   "posted": "2026-10-21T00:00:00.000Z"
+  },
+  {
+   "id": "18312685",
+   "title": "Supply Chain Intern, Trade Compliance",
+   "location": "CLEVELAND, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18312685-supply-chain-intern-trade-compliance",
+   "posted": "2026-10-05T00:00:00.000Z"
+  },
+  {
+   "id": "18346564",
+   "title": "Supply Chain Intern- Summer 2027",
+   "location": "KALAMAZOO, MI, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18346564-supply-chain-intern-summer-2027",
+   "posted": "2026-10-12T00:00:00.000Z"
+  },
+  {
+   "id": "18346565",
+   "title": "Aerospace Engineer Intern- Summer 2027",
+   "location": "KALAMAZOO, MI, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18346565-aerospace-engineer-intern-summer-2027",
+   "posted": "2026-10-11T00:00:00.000Z"
+  },
+  {
+   "id": "18354896",
+   "title": "Spring 2027 Accounting Intern",
+   "location": "COLUMBUS, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18354896-spring-2027-accounting-intern",
+   "posted": "2026-10-13T00:00:00.000Z"
+  },
+  {
+   "id": "18357281",
+   "title": "Spring 2027 Economics Intern",
+   "location": "CLEVELAND, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18357281-spring-2027-economics-intern",
+   "posted": "2026-10-14T00:00:00.000Z"
+  },
+  {
+   "id": "18360971",
+   "title": "Intern Product Development",
+   "location": "GREENEVILLE, TN, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18360971-intern-product-development",
+   "posted": "2026-10-14T00:00:00.000Z"
+  },
+  {
+   "id": "18369443",
+   "title": "Intern Manufacturing Engineering - HPS Otsego",
+   "location": "OTSEGO, MI, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18369443-intern-manufacturing-engineering-hps-otsego",
+   "posted": "2026-10-16T00:00:00.000Z"
+  },
+  {
+   "id": "18377560",
+   "title": "Intern Supply Chain",
+   "location": "KINGS MOUNTAIN, NC, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18377560-intern-supply-chain",
+   "posted": "2026-10-20T00:00:00.000Z"
+  },
+  {
+   "id": "18379018",
+   "title": "Engineering Intern - Summer 2027",
+   "location": "MARYSVILLE, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18379018-engineering-intern-summer-2027",
+   "posted": "2026-10-20T00:00:00.000Z"
+  },
+  {
+   "id": "18379019",
+   "title": "Data Analytics IT Intern",
+   "location": "MARYSVILLE, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18379019-data-analytics-it-intern",
+   "posted": "2026-10-20T00:00:00.000Z"
+  },
+  {
+   "id": "18379020",
+   "title": "Supply Chain Intern - Summer 2027",
+   "location": "MARYSVILLE, OH, United States",
+   "url": "https://parkercareers.ttcportals.com/jobs/18379020-supply-chain-intern-summer-2027",
+   "posted": "2026-10-20T00:00:00.000Z"
+  }
+ ]
+}
