@@ -14,9 +14,9 @@ next (the notifier exists; rollout is Task 28 of the plan). The design is in
 - Supported providers include Greenhouse, Lever, Ashby, SmartRecruiters, Workday, Eightfold,
   SuccessFactors, Oracle, Phenom, Jibe, Taleo, ADP, iCIMS and the other adapters listed in
   `src/job_alert/audit.py`. Generic JSON and JSON-LD remain available as fallbacks.
-- Fifty-four provider-refused companies use an enabled, 60-minute Freehire company-feed fallback.
-  It reads Freehire's keyless public API, keeps original source URLs, and is recorded as
-  `FALLBACK_ONLY` rather than direct coverage.
+- No aggregator or LinkedIn-based source is used. The Freehire fallback was removed on 2026-10-22;
+  its companies read their own boards, or are listed with a reason in
+  `docs/unreachable-companies.md`.
 - Tesla answers only a real browser, so the `extension/tesla-relay` Chrome extension reads its
   official careers board in your Chrome every 10 minutes and commits the internships to the
   `tesla-feed` branch, which the `tesla-relay` source reads. Setup is in

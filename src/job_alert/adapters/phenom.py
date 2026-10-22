@@ -5,7 +5,10 @@ from ``POST https://{site}/widgets`` with the body ``{"ddoKey": "refineSearch", 
 "from": n, "size": 100, ...}``. It answers ``{"refineSearch": {"totalHits": N, "data": {"jobs":
 [...]}}}``; the adapter pages by ``from`` and judges completeness against ``totalHits``. A source
 can narrow the search with ``parameters.selected_fields`` (Phenom's facet filter, for example
-``{"country": ["United States"]}``), which the adapter sends unchanged.
+``{"country": ["United States"]}``), which the adapter sends unchanged, and with
+``parameters.keywords``, the site's own keyword search (``"intern"``). That match is loose, the way
+an Eightfold ``query`` is, and the filters decide; it narrows boards whose facets have no
+internship value, such as Lowe's (4,540 postings, 39 for ``intern`` on 2026-10-22).
 
 Mapping: ``jobSeqNo`` is the id and identity is ``phenom:{site}:{jobSeqNo}``; ``title`` the title;
 ``multi_location`` (or ``location`` when that is empty) the locations; ``category`` the department;
@@ -53,6 +56,9 @@ class PhenomAdapter:
         selected = source.parameters.get("selected_fields")
         if selected is not None and not isinstance(selected, Mapping):
             raise AdapterError(f"phenom source {source.id} selected_fields is not an object")
+        keywords = source.parameters.get("keywords")
+        if keywords is not None and (not isinstance(keywords, str) or not keywords.strip()):
+            raise AdapterError(f"phenom source {source.id} keywords is not non-blank text")
         first_seen_at = self._now()
 
         async def fetch_page(_: int, offset: int) -> tuple[Sequence[object], int]:
@@ -65,6 +71,8 @@ class PhenomAdapter:
             }
             if selected:
                 body["selected_fields"] = dict(selected)
+            if keywords:
+                body["keywords"] = keywords
             payload = await fetcher.post(
                 RequestSpec(
                     url=str(source.endpoint),
@@ -87,7 +95,7 @@ class PhenomAdapter:
             normalize=normalize,
             cap=SEARCH_CAP,
             max_pages=MAX_PAGES,
-            cap_advice="narrow the source with parameters.selected_fields",
+            cap_advice="narrow the source with parameters.selected_fields or keywords",
         )
 
 

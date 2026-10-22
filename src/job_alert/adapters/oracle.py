@@ -131,6 +131,7 @@ class OracleAdapter:
                 cap=SEARCH_CAP,
                 max_pages=MAX_PAGES,
                 cap_advice="narrow the source's finder",
+                page_size=PAGE_SIZE,
             )
             pages += result.page_count
             if result.complete or any(_structural(warning) for warning in result.warnings):

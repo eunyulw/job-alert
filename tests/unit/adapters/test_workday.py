@@ -278,6 +278,31 @@ async def test_workday_pooled_walks_that_still_miss_a_posting_stay_incomplete() 
 
 @respx.mock
 @pytest.mark.asyncio
+async def test_workday_accepts_a_board_that_counts_one_percent_more_than_it_serves() -> None:
+    # Both walks serve the same 100 postings of a declared 101: the board overcounts by one.
+    served = [posting(f"R{n}") for n in range(100)]
+    pages = [page(*served[i : i + 20], total=101 if i == 0 else 0) for i in range(0, 100, 20)]
+    respx.post(ENDPOINT).mock(side_effect=[*pages, page(total=0), *pages, page(total=0)])
+
+    async with HttpFetcher() as fetcher:
+        result = validate_collection(await WorkdayAdapter().collect(source(), fetcher))
+
+    assert len(result.jobs) == 100 and result.declared_total == 100 and result.warnings == []
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_workday_keeps_a_small_board_that_serves_fewer_than_it_counts_incomplete() -> None:
+    respx.post(ENDPOINT).mock(side_effect=[page(posting("A"), total=2), page(total=0)] * 2)
+
+    async with HttpFetcher() as fetcher:
+        result = await WorkdayAdapter().collect(source(), fetcher)
+
+    assert result.complete is False
+
+
+@respx.mock
+@pytest.mark.asyncio
 async def test_workday_does_not_pool_walks_that_declare_different_totals() -> None:
     # The board grew between the walks, so the first walk's postings say nothing about the second.
     respx.post(ENDPOINT).mock(

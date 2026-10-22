@@ -5,60 +5,47 @@ gives the specific reason. Update this list on every expansion pass: remove a co
 goes live, and add every company that was probed and missed.
 
 Robotics, mechanical, aerospace and automotive companies come first, because those are the search's
-priority. Last updated 2026-10-20, after the user's robotics list added 16 direct
-sources, and after the freehire company-feed fallback pass (see
-[collection-verification.md](collection-verification.md)), which moved 54 more companies to enabled
-`FALLBACK_ONLY` sources. Tesla left that list on 2026-10-21 for the Chrome relay (see below). The board-catalog pass on 2026-10-18 moved 70 companies to direct sources.
+priority. Last updated 2026-10-22, when the Freehire fallback was removed entirely at the user's
+request (it is not used for any company). 45 of its 54 companies, and AT&T, now read their own
+boards (see [collection-verification.md](collection-verification.md)); the other nine are listed
+below with their reasons. The board-catalog pass on 2026-10-18 moved 70 companies to direct sources.
 
-A company whose careers site refuses us can still be reachable when its job board is published
-somewhere else that answers an ordinary request. The fallback uses Freehire's keyless public API
-(github.com/strelov1/freehire): each source names one exact Freehire company slug, requires every
-returned record to carry that same slug, and keeps the original source provider and direct URL.
-This monitor does not use Freehire's TLS-fingerprint spoofing, residential proxy, headless-browser,
-or hosted-scraping tiers.
-
-Tesla is the exception. Its careers API answers only a real browser, refusing ordinary HTTP,
-Playwright-driven browsers and GitHub's runners alike, and its Freehire feed held only three non-US
-reposts. The `tesla-relay` source reads Tesla's own internships, which the `extension/tesla-relay`
-Chrome extension reads in the user's Chrome and commits to the `tesla-feed` branch; see
+No aggregator or LinkedIn-based source is used. Tesla answers only a real browser, so the
+`tesla-relay` source reads Tesla's own internships, which the `extension/tesla-relay` Chrome
+extension reads in the user's Chrome and commits to the `tesla-feed` branch; see
 [operator-runbook.md](operator-runbook.md).
 
-## 1. Reached through Freehire's public company feed
+## 1. Careers site refuses ordinary requests
 
-These sources are enabled at `FALLBACK_ONLY` and poll every 60 minutes. The first group was listed
-as provider-refused in the previous pass.
-
-- **Robotics, industrial and mobility:** Lockheed Martin, Eaton, Whirlpool, Lam Research,
-  Qualcomm, OMRON, CMR Surgical, Mercedes-Benz Group, Ferrari, SAP.
-- **Big tech and semiconductors:** Adobe, Broadcom, Cisco, Cloudflare, Microsoft, Snowflake,
-  Cadence, OpenAI, ServiceNow, Synopsys, TSMC, Tencent, xAI.
-- **Fortune 100:** AbbVie, Archer Daniels Midland, CVS Health, Cencora, Cigna Group, Freddie Mac,
-  Humana, Lowe's, Merck, Performance Food Group, Procter & Gamble, Sysco, TJX, UPS, USAA, United
-  Airlines, Albertsons, Bristol-Myers Squibb, Centene, ConocoPhillips, Eli Lilly, Fannie Mae,
-  Liberty Mutual, Marathon Petroleum, Nationwide, Pfizer, Progressive, StoneX Group, Valero Energy,
-  Verizon and Wells Fargo.
-
-## 2. Still refused with no exact Freehire company feed
-
-| Company | What the provider answers | Why the fallback is not configured |
+| Company | What the provider answers | Note |
 | --- | --- | --- |
-| AT&T | Careers site serves a bot challenge or HTTP 403 | Freehire's name search returns AT&T subsidiaries, a conference center and authorized retailers, but no canonical AT&T company record |
-| HCA Healthcare | Careers site answers HTTP 403 | Freehire's `hca-healthcare` record is HCA Healthcare UK; attaching its London hospital postings to the US company would be wrong |
-| DENSO Robotics | The main DENSO careers site answers HTTP 403 | DENSO North America is already collected by `denso-oracle`; Freehire does not separate robotics from the parent company, so a second feed would duplicate the same employer |
+| Verizon | Its job API (`mycareer.verizon.com/api/jobs`) answers a Cloudflare challenge (HTTP 403) | A real browser reads it, so the Tesla relay approach would work |
+| TSMC | Avature career site answers HTTP 403 | Also no Avature adapter |
+| SAP | `jobs.sap.com` answers HTTP 403 and says current openings are still on the classic SuccessFactors page (`career5.successfactors.eu`, `career_company=SAP`) | The classic page has no career-site search the adapter reads |
+| HCA Healthcare | Careers site answers HTTP 403 | Not a priority |
+| DENSO Robotics | The main DENSO careers site answers HTTP 403 | DENSO North America is already collected by `denso-oracle` |
+
+## 2. No US roles
+
+| Company | Note |
+| --- | --- |
+| CMR Surgical | Its job search lists only UK, India and Brazil locations |
+| StoneX | The careers page is a talent-network sign-up with no public job board |
 
 ## 3. Reachable job system, but no adapter for it yet
 
 | Job system | Priority companies | Others |
 | --- | --- | --- |
-| SuccessFactors tile layout (no result total, so completeness cannot be judged) | KUKA, CNH Industrial, TE Connectivity | |
+| SuccessFactors tile layout (no result total, so completeness cannot be judged) | KUKA, CNH Industrial, TE Connectivity, Ferrari | |
 | SuccessFactors without a career-site search | BMW Group | American Airlines |
-| Kenexa BrassRing | General Atomics | |
+| Kenexa BrassRing | General Atomics | Archer Daniels Midland |
 | Paycor (listing built by JavaScript) | Vecna Robotics, Neocis | |
 | Teamtailor | Starship Technologies (1 posting) | |
 | Gem | Chef Robotics (1 posting) | |
 | Personio | Cartken (offices named without a country) | |
 | Factorial | THEKER Robotics | |
 | Y Combinator Work at a Startup (no ATS behind it) | Ultra (warehouse robots) | |
+| Custom server-rendered job list (no JSON API) | | AbbVie, Progressive |
 | Beesite / Jobylon / Dayforce | Porsche / Einride / Amphenol (a UK unit) | |
 | Eightfold with no derivable list endpoint | none | Chevron, Citigroup, American Express, Capital One, Morgan Stanley |
 

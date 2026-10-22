@@ -141,3 +141,103 @@ async def test_eightfold_repeats_as_stable_normalized_jobs() -> None:
         second = await EightfoldAdapter().collect(source(), fetcher)
 
     assert_repeat_is_stable(first, second)
+
+
+# The pcsx search (``/api/pcsx/search``), which tenants that refuse the v2 API still answer.
+PCSX = "https://lockheedmartin.eightfold.ai/api/pcsx/search"
+PCSX_ENDPOINT = (
+    f"{PCSX}?domain=lockheedmartin.com&query=intern&location=United%20States&sort_by=timestamp"
+)
+
+
+def pcsx_position(job_id: int, **overrides: object) -> dict[str, Any]:
+    # Shape captured from lockheedmartin.eightfold.ai on 2026-10-22.
+    record: dict[str, Any] = {
+        "id": job_id,
+        "displayJobId": "19602",
+        "name": "Systems Engineer (Modeling & Simulation) - Intern",
+        "locations": ["Camden, NJ"],
+        "standardizedLocations": ["Camden, NJ, US"],
+        "postedTs": 1792614081,
+        "department": "RMS Core",
+        "creationTs": 1791907092,
+        "workLocationOption": "onsite",
+        "atsJobId": "19602",
+        "positionUrl": f"/careers/job/{job_id}",
+    }
+    record.update(overrides)
+    return record
+
+
+def pcsx_page(*records: object, count: int | None = None) -> httpx.Response:
+    data = {"positions": list(records), "count": len(records) if count is None else count}
+    return httpx.Response(200, json={"status": 200, "error": None, "data": data})
+
+
+def pcsx_source() -> SourceConfig:
+    return source().model_copy(
+        update={
+            "id": "lockheed-martin-eightfold",
+            "company_id": "lockheed-martin",
+            "endpoint": PCSX_ENDPOINT,
+        }
+    )
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_eightfold_pcsx_maps_a_position() -> None:
+    respx.get(url__startswith=PCSX).mock(return_value=pcsx_page(pcsx_position(996477362267)))
+
+    async with HttpFetcher() as fetcher:
+        collection = validate_collection(await EightfoldAdapter().collect(pcsx_source(), fetcher))
+
+    job = collection.jobs[0]
+    assert job.canonical_job_key == "eightfold:lockheedmartin.com:996477362267"
+    assert job.title == "Systems Engineer (Modeling & Simulation) - Intern"
+    assert job.locations == ["Camden, NJ, US"]
+    assert (job.requisition_id, job.department, job.workplace_type) == (
+        "19602",
+        "RMS Core",
+        "onsite",
+    )
+    assert str(job.posting_url) == "https://lockheedmartin.eightfold.ai/careers/job/996477362267"
+    assert job.source_published_at == datetime.fromtimestamp(1792614081, tz=UTC)
+    assert_normalized_job(job)
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_eightfold_pcsx_pages_by_start_and_keeps_the_scope() -> None:
+    route = respx.get(url__startswith=PCSX).mock(
+        side_effect=[
+            pcsx_page(pcsx_position(1), pcsx_position(2), count=3),
+            pcsx_page(pcsx_position(3), count=3),
+        ]
+    )
+
+    async with HttpFetcher() as fetcher:
+        collection = validate_collection(await EightfoldAdapter().collect(pcsx_source(), fetcher))
+
+    assert [job.source_job_id for job in collection.jobs] == ["1", "2", "3"]
+    queries = [dict(parse_qsl(urlsplit(str(call.request.url)).query)) for call in route.calls]
+    assert [query["start"] for query in queries] == ["0", "2"]
+    assert all(query["sort_by"] == "timestamp" for query in queries)
+
+
+@respx.mock
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "body",
+    [
+        {"status": 403, "error": "Not authorized", "data": None},
+        {"positions": [], "count": 0},
+        {"status": 200, "data": {"count": 1}},
+    ],
+)
+async def test_eightfold_pcsx_rejects_an_envelope_it_cannot_trust(body: object) -> None:
+    respx.get(url__startswith=PCSX).mock(return_value=httpx.Response(200, json=body))
+
+    async with HttpFetcher() as fetcher:
+        with pytest.raises(AdapterError, match="eightfold"):
+            await EightfoldAdapter().collect(pcsx_source(), fetcher)

@@ -2292,21 +2292,19 @@ sources:
     - icims provider evidence found (careers page links to https://events-statefarm.icims.com/jobs/search?_sp=25275787-8bc0-44ef-9b77-3b8bcb4495d9.1653086551237); no adapter exists yet, so pagination, stable identity, and direct links stay unverified
   enabled: false
   audit_date: '2026-10-14'
-- id: att-discovery
+- id: att-radancy
   company_id: att
-  provider: discovery
-  source_class: fallback
-  support_status: BLOCKED
-  endpoint: https://www.att.jobs/
+  provider: radancy
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://www.att.jobs/search-jobs/results?SearchResultsModuleName=Search+Results&SearchFiltersModuleName=Search+Filters&SortCriteria=0&SortDirection=0&SearchType=5
   interval_minutes: 30
+  tenant: www.att.jobs
   parameters:
-    audit_status: BLOCKED
-    audit_probed_at: '2026-10-14'
-    audit_final_url: https://www.att.jobs/
-    audit_notes:
-    - access challenge detected on the official careers landing page
-  enabled: false
-  audit_date: '2026-10-14'
+    scope: whole board
+    slow_poll_reason: whole Radancy board walked page by page; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-22'
 - id: goldman-sachs-discovery
   company_id: goldman-sachs
   provider: discovery
@@ -5043,708 +5041,733 @@ sources:
     - 'careers landing page request failed: non-retryable HTTP 403 for https://www.tesla.com/careers'
   enabled: false
   audit_date: '2026-09-18'
-- id: lockheed-martin-freehire
+- id: lockheed-martin-eightfold
   company_id: lockheed-martin
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=lockheed-martin
-  interval_minutes: 60
+  provider: eightfold
+  source_class: company_json
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://lockheedmartin.eightfold.ai/api/pcsx/search?domain=lockheedmartin.com&query=intern&location=United%20States&sort_by=timestamp
+  interval_minutes: 15
+  tenant: lockheedmartin.com
   parameters:
-    freehire_company_slug: lockheed-martin
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    scope: pcsx search query=intern in the United States, newest first (loose text match; the filter decides)
   enabled: true
-  audit_date: '2026-10-19'
-- id: eaton-freehire
+  audit_date: '2026-10-22'
+- id: eaton-eightfold
   company_id: eaton
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=eaton
-  interval_minutes: 60
+  provider: eightfold
+  source_class: company_json
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://eaton.eightfold.ai/api/pcsx/search?domain=eaton.com&query=intern&location=United%20States&sort_by=timestamp
+  interval_minutes: 15
+  tenant: eaton.com
   parameters:
-    freehire_company_slug: eaton
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    scope: pcsx search query=intern in the United States, newest first (loose text match; the filter decides)
   enabled: true
-  audit_date: '2026-10-19'
-- id: whirlpool-freehire
+  audit_date: '2026-10-22'
+- id: whirlpool-eightfold
   company_id: whirlpool
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=whirlpoolcorp-gr8people-com
-  interval_minutes: 60
+  provider: eightfold
+  source_class: company_json
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.whirlpool.com/api/pcsx/search?domain=whirlpool.com&query=intern&location=United%20States&sort_by=timestamp
+  interval_minutes: 15
+  tenant: whirlpool.com
   parameters:
-    freehire_company_slug: whirlpoolcorp-gr8people-com
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    scope: pcsx search query=intern in the United States, newest first (loose text match; the filter decides)
   enabled: true
-  audit_date: '2026-10-19'
-- id: lam-research-freehire
+  audit_date: '2026-10-22'
+- id: lam-research-eightfold
   company_id: lam-research
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=lam-research
-  interval_minutes: 60
+  provider: eightfold
+  source_class: company_json
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.lamresearch.com/api/pcsx/search?domain=lamresearch.com&query=intern&location=United%20States&sort_by=timestamp
+  interval_minutes: 15
+  tenant: lamresearch.com
   parameters:
-    freehire_company_slug: lam-research
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    scope: pcsx search query=intern in the United States, newest first (loose text match; the filter decides)
   enabled: true
-  audit_date: '2026-10-19'
-- id: qualcomm-freehire
+  audit_date: '2026-10-22'
+- id: qualcomm-eightfold
   company_id: qualcomm
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=qualcomm
-  interval_minutes: 60
+  provider: eightfold
+  source_class: company_json
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.qualcomm.com/api/pcsx/search?domain=qualcomm.com&query=intern&location=United%20States&sort_by=timestamp
+  interval_minutes: 15
+  tenant: qualcomm.com
   parameters:
-    freehire_company_slug: qualcomm
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    scope: pcsx search query=intern in the United States, newest first (loose text match; the filter decides)
   enabled: true
-  audit_date: '2026-10-19'
-- id: omron-freehire
+  audit_date: '2026-10-22'
+- id: omron-adp
   company_id: omron
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=omron
-  interval_minutes: 60
+  provider: adp
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://myjobs.adp.com/public/staffing/v1/career-site/omron247cs
+  interval_minutes: 10
+  tenant: omron247cs
   parameters:
-    freehire_company_slug: omron
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    scope: whole board (OMRON)
   enabled: true
-  audit_date: '2026-10-19'
-- id: cmr-surgical-freehire
+  audit_date: '2026-10-22'
+- id: cmr-surgical-discovery
   company_id: cmr-surgical
-  provider: freehire
+  provider: discovery
   source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cmr-surgical
-  interval_minutes: 60
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://us.cmrsurgical.com/job-search/
+  interval_minutes: 30
   parameters:
-    freehire_company_slug: cmr-surgical
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
-  enabled: true
-  audit_date: '2026-10-19'
-- id: mercedes-benz-group-freehire
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - the job search lists only UK, India and Brazil locations, so there is no US role to collect
+    replaced: the freehire fallback, removed 2026-10-22 at the user's request
+  enabled: false
+  audit_date: '2026-10-22'
+- id: mercedes-benz-group-taleo
   company_id: mercedes-benz-group
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=mercedes-benz-group
-  interval_minutes: 60
+  provider: taleo
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://tas-daimler.taleo.net/careersection/ex/jobsearch.ftl
+  interval_minutes: 30
+  tenant: tas-daimler.taleo.net/ex
   parameters:
-    freehire_company_slug: mercedes-benz-group
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    scope: whole board (Mercedes-Benz external career section)
+    slow_poll_reason: Taleo pages hold 25 postings and a short board needs two walks (up to 38 requests); polled every 30 minutes
   enabled: true
-  audit_date: '2026-10-19'
-- id: ferrari-freehire
+  audit_date: '2026-10-22'
+- id: ferrari-discovery
   company_id: ferrari
-  provider: freehire
+  provider: discovery
   source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=ferrari
-  interval_minutes: 60
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://jobs.ferrari.com/search/
+  interval_minutes: 30
   parameters:
-    freehire_company_slug: ferrari
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
-  enabled: true
-  audit_date: '2026-10-19'
-- id: sap-freehire
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - 'SuccessFactors tile layout: the search page declares no result total, so completeness cannot be judged'
+    replaced: the freehire fallback, removed 2026-10-22 at the user's request
+  enabled: false
+  audit_date: '2026-10-22'
+- id: sap-discovery
   company_id: sap
-  provider: freehire
+  provider: discovery
   source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=sap
-  interval_minutes: 60
+  support_status: BLOCKED
+  endpoint: https://careers.sap.com/
+  interval_minutes: 30
   parameters:
-    freehire_company_slug: sap
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
-  enabled: true
-  audit_date: '2026-10-19'
-- id: adobe-freehire
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - jobs.sap.com answers HTTP 403 and says current openings are still on the classic SuccessFactors page (career5.successfactors.eu, career_company=SAP), which has no career-site search the adapter reads
+    replaced: the freehire fallback, removed 2026-10-22 at the user's request
+  enabled: false
+  audit_date: '2026-10-22'
+- id: adobe-workday
   company_id: adobe
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=adobe
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://adobe.wd5.myworkdayjobs.com/wday/cxs/adobe/external_experienced/jobs
+  interval_minutes: 10
+  tenant: adobe
   parameters:
-    freehire_company_slug: adobe
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    applied_facets:
+      workerSubType:
+      - 3ba4ecdf4893100b2f8d08d56d8d6c8e
+    scope: worker subtype Intern (Fixed Term)
   enabled: true
-  audit_date: '2026-10-19'
-- id: broadcom-freehire
+  audit_date: '2026-10-22'
+- id: broadcom-workday
   company_id: broadcom
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=broadcom
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://broadcom.wd1.myworkdayjobs.com/wday/cxs/broadcom/External_Career/jobs
+  interval_minutes: 10
+  tenant: broadcom
   parameters:
-    freehire_company_slug: broadcom
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    whole_board: true
+    scope: whole board (372 postings on 2026-10-22; no intern facet)
   enabled: true
-  audit_date: '2026-10-19'
-- id: cisco-freehire
+  audit_date: '2026-10-22'
+- id: cisco-workday
   company_id: cisco
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cisco
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://cisco.wd5.myworkdayjobs.com/wday/cxs/cisco/Cisco_Careers/jobs
+  interval_minutes: 10
+  tenant: cisco
   parameters:
-    freehire_company_slug: cisco
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    applied_facets:
+      workerSubType:
+      - a5e1942e7b2c01c6907030106001b700
+    scope: worker subtype Intern (Fixed Term) (Seasonal) (Trainee)
   enabled: true
-  audit_date: '2026-10-19'
-- id: cloudflare-freehire
+  audit_date: '2026-10-22'
+- id: cloudflare-greenhouse
   company_id: cloudflare
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cloudflare
-  interval_minutes: 60
-  parameters:
-    freehire_company_slug: cloudflare
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/cloudflare/jobs?content=true
+  interval_minutes: 5
+  tenant: cloudflare
   enabled: true
-  audit_date: '2026-10-19'
-- id: microsoft-freehire
+  audit_date: '2026-10-22'
+- id: microsoft-eightfold
   company_id: microsoft
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=microsoft
-  interval_minutes: 60
+  provider: eightfold
+  source_class: company_json
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://apply.careers.microsoft.com/api/pcsx/search?domain=microsoft.com&query=intern&location=United%20States&sort_by=timestamp
+  interval_minutes: 15
+  tenant: microsoft.com
   parameters:
-    freehire_company_slug: microsoft
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    scope: pcsx search query=intern in the United States, newest first (loose text match; the filter decides)
   enabled: true
-  audit_date: '2026-10-19'
-- id: snowflake-freehire
+  audit_date: '2026-10-22'
+- id: snowflake-ashby
   company_id: snowflake
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=snowflake
-  interval_minutes: 60
-  parameters:
-    freehire_company_slug: snowflake
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/snowflake
+  interval_minutes: 5
+  tenant: snowflake
   enabled: true
-  audit_date: '2026-10-19'
-- id: cadence-freehire
+  audit_date: '2026-10-22'
+- id: cadence-workday
   company_id: cadence
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cadence
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://cadence.wd1.myworkdayjobs.com/wday/cxs/cadence/External_Careers/jobs
+  interval_minutes: 10
+  tenant: cadence
   parameters:
-    freehire_company_slug: cadence
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    applied_facets:
+      workerSubType:
+      - 631f97c41c2749729ac5abe683f281d0
+    scope: worker subtype Intern
   enabled: true
-  audit_date: '2026-10-19'
-- id: openai-freehire
+  audit_date: '2026-10-22'
+- id: openai-ashby
   company_id: openai
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=openai
-  interval_minutes: 60
-  parameters:
-    freehire_company_slug: openai
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/openai
+  interval_minutes: 5
+  tenant: openai
   enabled: true
-  audit_date: '2026-10-19'
-- id: servicenow-freehire
+  audit_date: '2026-10-22'
+- id: servicenow-smartrecruiters
   company_id: servicenow
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=servicenow
-  interval_minutes: 60
-  parameters:
-    freehire_company_slug: servicenow
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  provider: smartrecruiters
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.smartrecruiters.com/v1/companies/ServiceNow/postings?country=us
+  interval_minutes: 5
+  tenant: ServiceNow
   enabled: true
-  audit_date: '2026-10-19'
-- id: synopsys-freehire
+  audit_date: '2026-10-22'
+- id: synopsys-radancy
   company_id: synopsys
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=synopsys
-  interval_minutes: 60
+  provider: radancy
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.synopsys.com/search-jobs/results?SearchResultsModuleName=Search+Results&SearchFiltersModuleName=Search+Filters&SortCriteria=0&SortDirection=0&SearchType=5
+  interval_minutes: 30
+  tenant: careers.synopsys.com
   parameters:
-    freehire_company_slug: synopsys
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    scope: whole board
+    slow_poll_reason: whole Radancy board walked page by page; polled every 30 minutes
   enabled: true
-  audit_date: '2026-10-19'
-- id: tsmc-freehire
+  audit_date: '2026-10-22'
+- id: tsmc-discovery
   company_id: tsmc
-  provider: freehire
+  provider: discovery
   source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=tsmc
-  interval_minutes: 60
+  support_status: BLOCKED
+  endpoint: https://careers.tsmc.com/en_US/careers/SearchJobs
+  interval_minutes: 30
   parameters:
-    freehire_company_slug: tsmc
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
-  enabled: true
-  audit_date: '2026-10-19'
-- id: tencent-freehire
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - Avature career site; answers HTTP 403 to ordinary requests and no Avature adapter exists
+    replaced: the freehire fallback, removed 2026-10-22 at the user's request
+  enabled: false
+  audit_date: '2026-10-22'
+- id: tencent-workday
   company_id: tencent
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=tencent
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://tencent.wd1.myworkdayjobs.com/wday/cxs/tencent/Tencent_Careers/jobs
+  interval_minutes: 10
+  tenant: tencent
   parameters:
-    freehire_company_slug: tencent
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    applied_facets:
+      workerSubType:
+      - b32f1ee18078012df7b19ebd5d8f0002
+    scope: worker subtype Intern (Fixed Term)
   enabled: true
-  audit_date: '2026-10-19'
-- id: xai-freehire
+  audit_date: '2026-10-22'
+- id: xai-greenhouse
   company_id: xai
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=xai
-  interval_minutes: 60
-  parameters:
-    freehire_company_slug: xai
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/xai/jobs?content=true
+  interval_minutes: 5
+  tenant: xai
   enabled: true
-  audit_date: '2026-10-19'
-- id: abbvie-freehire
+  audit_date: '2026-10-22'
+- id: abbvie-discovery
   company_id: abbvie
-  provider: freehire
+  provider: discovery
   source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=abbvie
-  interval_minutes: 60
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.abbvie.com/en/jobs
+  interval_minutes: 30
   parameters:
-    freehire_company_slug: abbvie
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
-  enabled: true
-  audit_date: '2026-10-19'
-- id: archer-daniels-midland-freehire
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - custom server-rendered job list with no JSON API or JobPosting data; needs a site-specific adapter
+    replaced: the freehire fallback, removed 2026-10-22 at the user's request
+  enabled: false
+  audit_date: '2026-10-22'
+- id: archer-daniels-midland-discovery
   company_id: archer-daniels-midland
-  provider: freehire
+  provider: discovery
   source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=archer-daniels-midland
-  interval_minutes: 60
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.adm.com/en-us/careers/
+  interval_minutes: 30
   parameters:
-    freehire_company_slug: archer-daniels-midland
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
-  enabled: true
-  audit_date: '2026-10-19'
-- id: cvs-health-freehire
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - jobs are on Kenexa BrassRing (sjobs.brassring.com), which no adapter reads
+    replaced: the freehire fallback, removed 2026-10-22 at the user's request
+  enabled: false
+  audit_date: '2026-10-22'
+- id: cvs-health-workday
   company_id: cvs-health
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cvs-health
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://cvshealth.wd1.myworkdayjobs.com/wday/cxs/cvshealth/CVS_Health_Careers/jobs
+  interval_minutes: 10
+  tenant: cvshealth
   parameters:
-    freehire_company_slug: cvs-health
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    applied_facets:
+      workerSubType:
+      - 183bb31d97231001005066125c530000
+    scope: worker subtype Intern (Seasonal) (Trainee); pharmacy interns left out
   enabled: true
-  audit_date: '2026-10-19'
-- id: cencora-freehire
+  audit_date: '2026-10-22'
+- id: cencora-phenom
   company_id: cencora
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cencora
-  interval_minutes: 60
+  provider: phenom
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.cencora.com/widgets
+  interval_minutes: 10
+  tenant: careers.cencora.com
   parameters:
-    freehire_company_slug: cencora
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    keywords: intern
+    scope: keyword search intern (loose text match; the filter decides); 43 of 1,013 postings on 2026-10-22
   enabled: true
-  audit_date: '2026-10-19'
-- id: cigna-group-freehire
+  audit_date: '2026-10-22'
+- id: cigna-group-workday
   company_id: cigna-group
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=cigna-group
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://cigna.wd5.myworkdayjobs.com/wday/cxs/cigna/cignacareers/jobs
+  interval_minutes: 10
+  tenant: cigna
   parameters:
-    freehire_company_slug: cigna-group
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    applied_facets:
+      workerSubType:
+      - b7947bbbfff2018a3282f98c340c7508
+    scope: worker subtype CoOp / Intern (Seasonal) (Trainee)
   enabled: true
-  audit_date: '2026-10-19'
-- id: freddie-mac-freehire
+  audit_date: '2026-10-22'
+- id: freddie-mac-phenom
   company_id: freddie-mac
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=freddie-mac
-  interval_minutes: 60
+  provider: phenom
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.freddiemac.com/widgets
+  interval_minutes: 10
+  tenant: careers.freddiemac.com
   parameters:
-    freehire_company_slug: freddie-mac
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    scope: whole board (76 postings on 2026-10-22)
   enabled: true
-  audit_date: '2026-10-19'
-- id: humana-freehire
+  audit_date: '2026-10-22'
+- id: humana-workday
   company_id: humana
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=humana
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://humana.wd5.myworkdayjobs.com/wday/cxs/humana/Humana_External_Career_Site/jobs
+  interval_minutes: 10
+  tenant: humana
   parameters:
-    freehire_company_slug: humana
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    whole_board: true
+    scope: whole board (286 postings on 2026-10-22; interns sit in a Business Services job family)
   enabled: true
-  audit_date: '2026-10-19'
-- id: lowes-freehire
+  audit_date: '2026-10-22'
+- id: lowes-phenom
   company_id: lowes
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=lowes
-  interval_minutes: 60
+  provider: phenom
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://talent.lowes.com/widgets
+  interval_minutes: 10
+  tenant: talent.lowes.com
   parameters:
-    freehire_company_slug: lowes
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    keywords: intern
+    scope: keyword search intern (loose text match; the filter decides); 39 of 4,540 postings on 2026-10-22
   enabled: true
-  audit_date: '2026-10-19'
-- id: merck-freehire
+  audit_date: '2026-10-22'
+- id: merck-workday
   company_id: merck
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=merck
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://msd.wd5.myworkdayjobs.com/wday/cxs/msd/SearchJobs/jobs
+  interval_minutes: 10
+  tenant: msd
   parameters:
-    freehire_company_slug: merck
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    applied_facets:
+      workerSubType:
+      - 778f59ec4f0a0198986b520b021105b1
+    scope: worker subtype Intern/Co-op (Fixed Term)
   enabled: true
-  audit_date: '2026-10-19'
-- id: performance-food-group-freehire
+  audit_date: '2026-10-22'
+- id: performance-food-group-workday
   company_id: performance-food-group
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=performance-food-group
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://pfg.wd3.myworkdayjobs.com/wday/cxs/pfg/PFGCareers/jobs
+  interval_minutes: 10
+  tenant: pfg
   parameters:
-    freehire_company_slug: performance-food-group
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    whole_board: true
+    scope: whole board (13 postings on 2026-10-22)
   enabled: true
-  audit_date: '2026-10-19'
-- id: procter-gamble-freehire
+  audit_date: '2026-10-22'
+- id: procter-gamble-workday
   company_id: procter-gamble
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=procter-gamble
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://pg.wd5.myworkdayjobs.com/wday/cxs/pg/1000/jobs
+  interval_minutes: 10
+  tenant: pg
   parameters:
-    freehire_company_slug: procter-gamble
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    applied_facets:
+      Job_Profiles:
+      - 558feaebc8b80143191bd8c90a066fb4
+      - 558feaebc8b801780e67d7c90a066db4
+      - 558feaebc8b80138cdb274df0a06f0ef
+    scope: job profiles Intern/Co-op (Management, Non-Management) and Apprentice/Intern/Co-op
   enabled: true
-  audit_date: '2026-10-19'
-- id: sysco-freehire
+  audit_date: '2026-10-22'
+- id: sysco-workday
   company_id: sysco
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=sysco
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://sysco.wd5.myworkdayjobs.com/wday/cxs/sysco/syscocareers/jobs
+  interval_minutes: 10
+  tenant: sysco
   parameters:
-    freehire_company_slug: sysco
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    applied_facets:
+      workerSubType:
+      - b014cc62fe6601ac5a96d6b1da283744
+    scope: worker subtype Intern (Trainee)
   enabled: true
-  audit_date: '2026-10-19'
-- id: tjx-freehire
+  audit_date: '2026-10-22'
+- id: tjx-workday
   company_id: tjx
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=tjx
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://tjx.wd1.myworkdayjobs.com/wday/cxs/tjx/TJX_EXTERNAL/jobs
+  interval_minutes: 10
+  tenant: tjx
   parameters:
-    freehire_company_slug: tjx
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    applied_facets:
+      workerSubType:
+      - 50690cc8a2de1000cd31f12fa3ad0001
+      - 50690cc8a2de1000cd31f12fa3ad0000
+    scope: worker subtypes Intern (Fixed Term) and Co-op (Fixed Term)
   enabled: true
-  audit_date: '2026-10-19'
-- id: ups-freehire
+  audit_date: '2026-10-22'
+- id: ups-phenom
   company_id: ups
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=ups
-  interval_minutes: 60
+  provider: phenom
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://www.jobs-ups.com/widgets
+  interval_minutes: 10
+  tenant: www.jobs-ups.com
   parameters:
-    freehire_company_slug: ups
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    keywords: intern
+    scope: keyword search intern (loose text match; the filter decides); 38 of 2,267 postings on 2026-10-22
   enabled: true
-  audit_date: '2026-10-19'
-- id: usaa-freehire
+  audit_date: '2026-10-22'
+- id: usaa-workday
   company_id: usaa
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=usaa
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://usaa.wd1.myworkdayjobs.com/wday/cxs/usaa/USAAJOBSWD/jobs
+  interval_minutes: 10
+  tenant: usaa
   parameters:
-    freehire_company_slug: usaa
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    whole_board: true
+    scope: whole board (222 postings on 2026-10-22; no intern facet)
   enabled: true
-  audit_date: '2026-10-19'
-- id: united-airlines-freehire
+  audit_date: '2026-10-22'
+- id: united-airlines-phenom
   company_id: united-airlines
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=united-airlines
-  interval_minutes: 60
+  provider: phenom
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.united.com/widgets
+  interval_minutes: 10
+  tenant: careers.united.com
   parameters:
-    freehire_company_slug: united-airlines
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    selected_fields:
+      country:
+      - United States
+    scope: country United States (112 postings on 2026-10-22)
   enabled: true
-  audit_date: '2026-10-19'
-- id: albertsons-freehire
+  audit_date: '2026-10-22'
+- id: albertsons-oracle
   company_id: albertsons
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=albertsons
-  interval_minutes: 60
+  provider: oracle
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://eofd.fa.us6.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=CX_1001,keyword=intern
+  interval_minutes: 10
+  tenant: eofd.fa.us6.oraclecloud.com
   parameters:
-    freehire_company_slug: albertsons
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    scope: keyword intern (loose text match; the filter decides); the board counts 401 and serves the same 398 in every order (2026-10-22)
   enabled: true
-  audit_date: '2026-10-19'
-- id: bristol-myers-squibb-freehire
+  audit_date: '2026-10-22'
+- id: bristol-myers-squibb-workday
   company_id: bristol-myers-squibb
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=bristol-myers-squibb
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://bristolmyerssquibb.wd5.myworkdayjobs.com/wday/cxs/bristolmyerssquibb/BMS/jobs
+  interval_minutes: 10
+  tenant: bristolmyerssquibb
   parameters:
-    freehire_company_slug: bristol-myers-squibb
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    applied_facets:
+      workerSubType:
+      - 40c4d5a6baf6105264a4f0ea997b474a
+    scope: worker subtype Intern (Fixed Term)
   enabled: true
-  audit_date: '2026-10-19'
-- id: centene-freehire
+  audit_date: '2026-10-22'
+- id: centene-workday
   company_id: centene
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=centene
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://centene.wd5.myworkdayjobs.com/wday/cxs/centene/Centene_External/jobs
+  interval_minutes: 10
+  tenant: centene
   parameters:
-    freehire_company_slug: centene
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    whole_board: true
+    scope: whole board (339 postings on 2026-10-22)
   enabled: true
-  audit_date: '2026-10-19'
-- id: conocophillips-freehire
+  audit_date: '2026-10-22'
+- id: conocophillips-workday
   company_id: conocophillips
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=conocophillips
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://conocophillips.wd1.myworkdayjobs.com/wday/cxs/conocophillips/External/jobs
+  interval_minutes: 10
+  tenant: conocophillips
   parameters:
-    freehire_company_slug: conocophillips
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    whole_board: true
+    scope: whole board (38 postings on 2026-10-22)
   enabled: true
-  audit_date: '2026-10-19'
-- id: eli-lilly-freehire
+  audit_date: '2026-10-22'
+- id: eli-lilly-phenom
   company_id: eli-lilly
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=eli-lilly
-  interval_minutes: 60
+  provider: phenom
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.lilly.com/widgets
+  interval_minutes: 10
+  tenant: careers.lilly.com
   parameters:
-    freehire_company_slug: eli-lilly
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    keywords: intern
+    scope: keyword search intern (loose text match; the filter decides)
   enabled: true
-  audit_date: '2026-10-19'
-- id: fannie-mae-freehire
+  audit_date: '2026-10-22'
+- id: fannie-mae-workday
   company_id: fannie-mae
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=fannie-mae
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://fanniemae.wd1.myworkdayjobs.com/wday/cxs/fanniemae/FannieMaeCareers/jobs
+  interval_minutes: 10
+  tenant: fanniemae
   parameters:
-    freehire_company_slug: fannie-mae
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    whole_board: true
+    scope: whole board (56 postings on 2026-10-22)
   enabled: true
-  audit_date: '2026-10-19'
-- id: liberty-mutual-freehire
+  audit_date: '2026-10-22'
+- id: liberty-mutual-eightfold
   company_id: liberty-mutual
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=liberty-mutual
-  interval_minutes: 60
+  provider: eightfold
+  source_class: company_json
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://searchjobs.libertymutualgroup.com/api/apply/v2/jobs?domain=libertymutual.com&query=intern&location=United%20States
+  interval_minutes: 15
+  tenant: libertymutual.com
   parameters:
-    freehire_company_slug: liberty-mutual
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    scope: v2 query=intern in the United States (loose text match; the filter decides)
   enabled: true
-  audit_date: '2026-10-19'
-- id: marathon-petroleum-freehire
+  audit_date: '2026-10-22'
+- id: marathon-petroleum-workday
   company_id: marathon-petroleum
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=marathon-petroleum
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://mpc.wd1.myworkdayjobs.com/wday/cxs/mpc/MPCCareers/jobs
+  interval_minutes: 10
+  tenant: mpc
   parameters:
-    freehire_company_slug: marathon-petroleum
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    applied_facets:
+      workerSubType:
+      - 762d3bc5687201008504b33faf520000
+    scope: worker subtype Intern
   enabled: true
-  audit_date: '2026-10-19'
-- id: nationwide-freehire
+  audit_date: '2026-10-22'
+- id: nationwide-workday
   company_id: nationwide
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=nationwide
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://nationwide.wd1.myworkdayjobs.com/wday/cxs/nationwide/Nationwide_Career/jobs
+  interval_minutes: 10
+  tenant: nationwide
   parameters:
-    freehire_company_slug: nationwide
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    whole_board: true
+    scope: whole board (180 postings on 2026-10-22; no intern facet)
   enabled: true
-  audit_date: '2026-10-19'
-- id: pfizer-freehire
+  audit_date: '2026-10-22'
+- id: pfizer-workday
   company_id: pfizer
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=pfizer
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://pfizer.wd1.myworkdayjobs.com/wday/cxs/pfizer/PfizerCareers/jobs
+  interval_minutes: 30
+  tenant: pfizer
   parameters:
-    freehire_company_slug: pfizer
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    whole_board: true
+    scope: whole board (562 postings on 2026-10-22; no intern facet)
+    slow_poll_reason: whole board of about 29 pages; polled every 30 minutes
   enabled: true
-  audit_date: '2026-10-19'
-- id: progressive-freehire
+  audit_date: '2026-10-22'
+- id: progressive-discovery
   company_id: progressive
-  provider: freehire
+  provider: discovery
   source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=progressive
-  interval_minutes: 60
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://careers.progressive.com/search/jobs
+  interval_minutes: 30
   parameters:
-    freehire_company_slug: progressive
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
-  enabled: true
-  audit_date: '2026-10-19'
-- id: stonex-group-freehire
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - custom server-rendered job portal with no JSON API; needs a site-specific adapter
+    replaced: the freehire fallback, removed 2026-10-22 at the user's request
+  enabled: false
+  audit_date: '2026-10-22'
+- id: stonex-group-discovery
   company_id: stonex-group
-  provider: freehire
+  provider: discovery
   source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=stonex-group
-  interval_minutes: 60
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://www.stonex.com/en/careers/
+  interval_minutes: 30
   parameters:
-    freehire_company_slug: stonex-group
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
-  enabled: true
-  audit_date: '2026-10-19'
-- id: valero-energy-freehire
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - the careers page is a talent-network sign-up with no public job board
+    replaced: the freehire fallback, removed 2026-10-22 at the user's request
+  enabled: false
+  audit_date: '2026-10-22'
+- id: valero-energy-taleo
   company_id: valero-energy
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=valero
-  interval_minutes: 60
+  provider: taleo
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://valero.taleo.net/careersection/2/jobsearch.ftl
+  interval_minutes: 30
+  tenant: valero.taleo.net/2
   parameters:
-    freehire_company_slug: valero
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    scope: whole board (career section 2)
+    slow_poll_reason: Taleo pages hold 25 postings and a short board needs two walks; polled every 30 minutes
   enabled: true
-  audit_date: '2026-10-19'
-- id: verizon-freehire
+  audit_date: '2026-10-22'
+- id: verizon-discovery
   company_id: verizon
-  provider: freehire
+  provider: discovery
   source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=verizon
-  interval_minutes: 60
+  support_status: BLOCKED
+  endpoint: https://mycareer.verizon.com/jobs/
+  interval_minutes: 30
   parameters:
-    freehire_company_slug: verizon
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
-  enabled: true
-  audit_date: '2026-10-19'
-- id: wells-fargo-freehire
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - its job API (mycareer.verizon.com/api/jobs) answers a Cloudflare challenge (HTTP 403) to ordinary requests; a real browser reads it
+    replaced: the freehire fallback, removed 2026-10-22 at the user's request
+  enabled: false
+  audit_date: '2026-10-22'
+- id: wells-fargo-workday
   company_id: wells-fargo
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=wells-fargo
-  interval_minutes: 60
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://wf.wd1.myworkdayjobs.com/wday/cxs/wf/WellsFargoJobs/jobs
+  interval_minutes: 10
+  tenant: wf
   parameters:
-    freehire_company_slug: wells-fargo
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    applied_facets:
+      workerSubType:
+      - 2d264dd4beb00100f05a7d60652a0000
+    scope: worker subtype Intern (Fixed Term) (Trainee)
   enabled: true
-  audit_date: '2026-10-19'
+  audit_date: '2026-10-22'
 - id: microagi-ashby
   company_id: microagi
   provider: ashby

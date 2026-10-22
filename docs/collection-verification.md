@@ -355,30 +355,42 @@ or "Remote" label gains the place its posting link names. Robotics companies joi
 every-internship filters; the rest joined the engineering-title filters. The remaining companies
 are in [unreachable-companies.md](unreachable-companies.md).
 
-### Freehire company-feed fallback (2026-10-19)
+### Freehire fallback removed; direct boards instead (2026-10-22)
 
-Fifty-four companies that still had no direct source now use Freehire's keyless public
-`GET /api/v1/jobs/search` endpoint as an enabled fallback. Each source names exactly one
-`company_slug`; the adapter rejects any result carrying a different slug and pages until Freehire's
-declared total is read. Postings keep the original ATS source and URL, so the normal cross-source
-dedupe and geography filters still apply.
+The Freehire company-feed fallback (2026-10-19, 54 companies) was removed at the user's request, and
+its adapter deleted. Its feeds were poor: Lockheed Martin's was an unrelated Manatal
+`careers-page.com` account, Qualcomm's held Telegram reposts, and it lagged the monitor by up to 39
+hours. Every company was probed directly instead, and each source below passed `audit set-source`.
 
-This covers Lockheed Martin, Eaton, Whirlpool, Lam Research, Qualcomm, OMRON, CMR Surgical,
-Mercedes-Benz Group, Ferrari and SAP in the priority set; Adobe, Broadcom, Cisco, Cloudflare,
-Microsoft, Snowflake, Cadence, OpenAI, ServiceNow, Synopsys, TSMC, Tencent and xAI among big tech;
-and 31 of the provider-refused Fortune 100 entries. The fallback is polled every 60 minutes and is
-recorded as `FALLBACK_ONLY`, not counted as direct coverage.
+| Provider | Companies |
+| --- | --- |
+| Eightfold `pcsx` search | Lockheed Martin, Eaton, Whirlpool, Lam Research, Qualcomm, Microsoft |
+| Eightfold v2 | Liberty Mutual |
+| Workday | Adobe, Broadcom, Cisco, Cadence, Tencent, CVS Health, Cigna, Humana, Merck, Performance Food Group, Procter & Gamble, Sysco, TJX, USAA, Bristol-Myers Squibb, Centene, ConocoPhillips, Fannie Mae, Marathon Petroleum, Nationwide, Pfizer, Wells Fargo |
+| Phenom (keyword `intern` where facets have no internship value) | Lowe's, UPS, Cencora, Freddie Mac, United Airlines, Eli Lilly |
+| Greenhouse / Ashby / SmartRecruiters | Cloudflare, xAI / OpenAI, Snowflake / ServiceNow |
+| Taleo | Mercedes-Benz Group, Valero |
+| Radancy | Synopsys, AT&T (new) |
+| ADP / Oracle | OMRON / Albertsons |
 
-The adapter leaves Freehire's transport tiers untouched. It does not spoof a TLS fingerprint, use a
-residential proxy, launch a headless browser, or call a hosted scraping service; it reads the same
-ordinary public API available to any HTTP client. Unit tests cover mapping, pagination, company
-isolation, malformed envelopes and original-link retention. An opt-in live test collects the CMR
-Surgical feed twice and requires complete, stable output.
+Three adapter changes made this possible:
+- **Eightfold `pcsx`.** Eightfold tenants that refuse the v2 API with HTTP 403 answer its newer
+  `/api/pcsx/search`, and the Eightfold adapter now reads either. Microsoft rate-limits that search
+  hard (HTTP 429 on a second request within seconds), and the fetcher's retries carried validation
+  through.
+- **Phenom `keywords`.** Phenom sources take a `keywords` parameter.
+- **Taleo's repeated last page.** Valero and Mercedes-Benz serve their last page again instead of an
+  empty page, and that repeat now ends a Taleo walk.
 
-AT&T and HCA Healthcare remain unconfigured because Freehire has no exact canonical company record
-for either. DENSO Robotics remains part of `denso-oracle`, because Freehire exposes the parent
-company rather than a separately identifiable robotics feed. The exact unresolved entries are in
-[unreachable-companies.md](unreachable-companies.md).
+The shared paged walk also accepts a stable overcount: two identical walks no more than 1% short
+of the declared total. Albertsons' Oracle search counts 401 and serves the same 398 in date,
+relevance and title order.
+
+The nine companies still without a direct source are in
+[unreachable-companies.md](unreachable-companies.md): Verizon, TSMC and SAP refuse ordinary
+requests; Ferrari (SuccessFactors tile layout), ADM (BrassRing), AbbVie and Progressive (custom
+pages) need an adapter; CMR Surgical has no US roles; StoneX has no public board. They left the
+filter allowlists until a source exists.
 
 ### Tesla through the Chrome relay (2026-10-21)
 

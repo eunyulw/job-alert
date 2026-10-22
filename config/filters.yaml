@@ -30,6 +30,9 @@
 # contains "motion", "Combat" contains "mba"). Terms are trimmed, so a trailing space does nothing.
 # Tesla moved from the every-internship filters to the expansion filters (2026-10-21): its board
 # types HR, finance, sales and technician programs as internships too.
+# The freehire feeds were removed on 2026-10-22. CMR Surgical, Ferrari, SAP, TSMC, AbbVie, ADM,
+# Progressive, StoneX and Verizon left the allowlists until they have a direct source (see
+# docs/unreachable-companies.md).
 # Every alerting filter is US-only (2026-10-14): a posting alerts only when at least one of its
 # locations is confidently in the US (job_alert/geo.py); an unknown or missing location does not.
 # Both filters name their companies, so they are a canary under the 90% broad-activation gate. See
@@ -67,7 +70,7 @@ filters:
        symbotic, fanuc, intuitive-surgical, procept-biorobotics, berkshire-grey, built-robotics,
        simbe-robotics, burro, exotec, persona-ai, gecko-robotics, neura-robotics, engineered-arts,
        dusty-robotics, machina-labs, hadrian, reliable-robotics, irobot, saronic,
-       bear-robotics, righthand-robotics, miso-robotics, omron, cmr-surgical,
+       bear-robotics, righthand-robotics, miso-robotics, omron,
        microagi, genesis-ai, mind-robotics, xdof, maven-robotics, walden-robotics, sunday-robotics,
        scout-ai, atoms, lightwheel, generalist-ai, allen-control-systems, dyna-robotics, rhoda-ai,
        terrafirma, monumental]
@@ -101,7 +104,7 @@ filters:
        symbotic, fanuc, intuitive-surgical, procept-biorobotics, berkshire-grey, built-robotics,
        simbe-robotics, burro, exotec, persona-ai, gecko-robotics, neura-robotics, engineered-arts,
        dusty-robotics, machina-labs, hadrian, reliable-robotics, irobot, saronic,
-       bear-robotics, righthand-robotics, miso-robotics, omron, cmr-surgical,
+       bear-robotics, righthand-robotics, miso-robotics, omron,
        microagi, genesis-ai, mind-robotics, xdof, maven-robotics, walden-robotics, sunday-robotics,
        scout-ai, atoms, lightwheel, generalist-ai, allen-control-systems, dyna-robotics, rhoda-ai,
        terrafirma, monumental]
@@ -152,13 +155,13 @@ filters:
        general-dynamics, snap-on, tae-technologies, gatik, archer-aviation, ouster,
        amd, schneider-electric, tesla,
        lockheed-martin, eaton, whirlpool, lam-research, qualcomm,
-       mercedes-benz-group, ferrari, sap, adobe, broadcom, cisco, cloudflare, microsoft,
-       snowflake, cadence, openai, servicenow, synopsys, tsmc, tencent, xai, abbvie,
-       archer-daniels-midland, cvs-health, cencora, cigna-group, freddie-mac, humana, lowes,
+       mercedes-benz-group, adobe, broadcom, cisco, cloudflare, microsoft,
+       snowflake, cadence, openai, servicenow, synopsys, tencent, xai,
+       cvs-health, cencora, cigna-group, freddie-mac, humana, lowes,
        merck, performance-food-group, procter-gamble, sysco, tjx, ups, usaa, united-airlines,
        albertsons, bristol-myers-squibb, centene, conocophillips, eli-lilly, fannie-mae,
-       liberty-mutual, marathon-petroleum, nationwide, pfizer, progressive, stonex-group,
-       valero-energy, verizon, wells-fargo]
+       liberty-mutual, marathon-petroleum, nationwide, pfizer,
+       valero-energy, wells-fargo]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,
@@ -218,13 +221,13 @@ filters:
        general-dynamics, snap-on, tae-technologies, gatik, archer-aviation, ouster,
        amd, schneider-electric, tesla,
        lockheed-martin, eaton, whirlpool, lam-research, qualcomm,
-       mercedes-benz-group, ferrari, sap, adobe, broadcom, cisco, cloudflare, microsoft,
-       snowflake, cadence, openai, servicenow, synopsys, tsmc, tencent, xai, abbvie,
-       archer-daniels-midland, cvs-health, cencora, cigna-group, freddie-mac, humana, lowes,
+       mercedes-benz-group, adobe, broadcom, cisco, cloudflare, microsoft,
+       snowflake, cadence, openai, servicenow, synopsys, tencent, xai,
+       cvs-health, cencora, cigna-group, freddie-mac, humana, lowes,
        merck, performance-food-group, procter-gamble, sysco, tjx, ups, usaa, united-airlines,
        albertsons, bristol-myers-squibb, centene, conocophillips, eli-lilly, fannie-mae,
-       liberty-mutual, marathon-petroleum, nationwide, pfizer, progressive, stonex-group,
-       valero-energy, verizon, wells-fargo]
+       liberty-mutual, marathon-petroleum, nationwide, pfizer,
+       valero-energy, wells-fargo]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,

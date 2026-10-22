@@ -1923,7 +1923,7 @@ companies:
     categories:
       - aerospace-defense
     aliases: []
-  # Freehire board-catalog pass (2026-10-18).
+  # Board-catalog pass (2026-10-18).
   - id: textron
     name: "Textron"
     categories:

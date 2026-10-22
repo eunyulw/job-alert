@@ -126,6 +126,19 @@ async def test_phenom_pages_by_from_and_builds_the_locale_job_link() -> None:
 
 @respx.mock
 @pytest.mark.asyncio
+async def test_phenom_sends_the_keyword_search_and_rejects_a_blank_one() -> None:
+    empty = {"refineSearch": {"totalHits": 0, "data": {"jobs": []}}}
+    route = respx.post(PHENOM).mock(return_value=httpx.Response(200, json=empty))
+
+    await collect(PhenomAdapter(), source("phenom", PHENOM, keywords="intern"))
+
+    assert json.loads(route.calls[0].request.content)["keywords"] == "intern"
+    with pytest.raises(AdapterError, match="keywords"):
+        await collect(PhenomAdapter(), source("phenom", PHENOM, keywords="  "))
+
+
+@respx.mock
+@pytest.mark.asyncio
 async def test_jibe_keeps_the_query_splits_multiple_locations_and_checks_the_total() -> None:
     def reply(request: httpx.Request) -> httpx.Response:
         query = dict(parse_qsl(urlsplit(str(request.url)).query))
@@ -342,6 +355,33 @@ async def test_taleo_stops_when_a_section_repeats_its_last_page() -> None:
     assert not result.complete
     assert route.call_count == 2
     assert "repeated earlier records only" in result.warnings[-1]
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_taleo_ends_a_walk_when_the_last_page_is_served_again() -> None:
+    # Valero, 2026-10-22: 38 postings, and page 3 repeated page 2 instead of coming back empty.
+    last = [taleo_record(3)]
+    route = taleo_routes({1: [taleo_record(1), taleo_record(2)], 2: last, 3: last, 4: last}, 3)
+
+    result = await collect(TaleoAdapter(), source("taleo", TALEO))
+
+    assert result.complete and result.declared_total == 3 and result.warnings == []
+    assert route.call_count == 3  # pages 1 to 3; the total was read, so no second walk
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_taleo_accepts_a_repeated_last_page_short_of_the_total_when_walks_agree() -> None:
+    # Mercedes-Benz, 2026-10-22: 384 served of 437 counted, page 19 repeating page 18.
+    last = [taleo_record(5)]
+    pages = {1: [taleo_record(1), taleo_record(2)], 2: [taleo_record(3), taleo_record(4)]}
+    route = taleo_routes({**pages, 3: last, 4: last}, 10)
+
+    result = await collect(TaleoAdapter(), source("taleo", TALEO))
+
+    assert result.complete and result.declared_total == 5
+    assert route.call_count == 8  # four pages on each of two walks
 
 
 @respx.mock

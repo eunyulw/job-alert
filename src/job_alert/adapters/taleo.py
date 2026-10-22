@@ -14,6 +14,13 @@ postings; failing that, when it ends on an empty page with no repeated or malfor
 second walk reads exactly the same postings. A posting published or removed mid-walk makes the two
 walks differ, and the collection is then incomplete.
 
+Past its last page a section does not always answer an empty page: Valero and Mercedes-Benz serve
+the last page again, record for record (measured 2026-10-22: Valero's page 3 repeated page 2, and
+Mercedes-Benz's page 19 repeated page 18). A page identical to the one before it therefore ends the
+walk like an empty page, once the walk is past page 2 or has already read the declared total. A
+section that ignores ``pageNo`` and repeats page 1 as page 2 still fails, because its walk has
+neither.
+
 Mapping: ``contestNo`` (the public job number) is the id and identity is
 ``taleo:{host}/{section}:{contestNo}``; ``column[0]`` the title; the ``column`` entries that
 ``locationsColumns`` points at (each a JSON list such as ``["US-California-Point Mugu"]``) the
@@ -104,6 +111,7 @@ class TaleoAdapter:
 
         async def walk() -> Walk:
             result = Walk()
+            previous: list[object] | None = None
             for page in range(1, MAX_PAGES + 1):
                 records, total = await fetch_page(page)
                 result.pages += 1
@@ -111,6 +119,11 @@ class TaleoAdapter:
                     result.total = total
                 if not records:
                     break
+                ids = [_contest(record) for record in records]
+                past_end = page > 2 or len(result.jobs) >= result.total
+                if ids == previous and None not in ids and past_end:
+                    break  # the section served its last page again: the board has ended
+                previous = ids
                 known = len(result.jobs)
                 for index, record in enumerate(records):
                     where = f"page {page} record {index}"
@@ -157,6 +170,11 @@ class TaleoAdapter:
             # The postings served: the section's own total can count some it never serves.
             declared_total=len(first.jobs) if not warnings else first.total,
         )
+
+
+def _contest(record: object) -> object:
+    """A record's public job number, or ``None`` when it has none, for comparing pages."""
+    return optional_text(record.get("contestNo")) if isinstance(record, Mapping) else None
 
 
 @dataclass(slots=True)

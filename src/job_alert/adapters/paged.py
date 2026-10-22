@@ -20,6 +20,15 @@ way, so the rules live here once:
   holds a posting closed between the walks costs one cycle at most. The cap, the page cap, or a
   missing total never earns a re-walk; a malformed record earns one only when the adapter passes
   ``rewalk_malformed`` because its provider serves such records transiently;
+- a board can also count postings it never serves. When both walks read exactly the same postings
+  and fall short of the shared total by at most ``OVERCOUNT_SHARE`` of it, the shortfall is the
+  board's count, not hidden postings, and the pool is complete. Measured 2026-10-22: Albertsons'
+  Oracle search counted 401 and served the same 398 in date, relevance and title order. A board
+  under 100 postings gets no such allowance, and neither do walks that disagree or that repeated a
+  record at the start of a page that followed a full one, which is how a shifting board hides a
+  posting it does have. (After a page that came back short, as Oracle's 199- and 198-row pages of
+  200 do, the repeat is the provider's collapsed double listing; an adapter passes ``page_size`` so
+  the walk can tell a short page from a full one.)
 - a record the provider counts in its total but publishes nothing for (Workday serves some as a
   bare requisition id) is a placeholder: it makes no job and no defect, and counts toward the total
   once per requisition id.
@@ -37,6 +46,9 @@ from collections.abc import Awaitable, Callable, Sequence
 from dataclasses import dataclass
 
 from job_alert.models import CollectionResult, NormalizedJob
+
+#: The share of a declared total that two identical walks may fall short of and still be complete.
+OVERCOUNT_SHARE = 0.01
 
 FetchPage = Callable[[int, int], Awaitable[tuple[Sequence[object], int | None]]]
 Normalize = Callable[[object], NormalizedJob]
@@ -60,6 +72,9 @@ class _Walk:
     #: The walk's only defects are what a shifting board causes, so another walk can repair them.
     shifted: bool
     placeholders: frozenset[str]
+    #: A record at the start of a page after a full one repeated one already read, the mark of a
+    #: shifting board.
+    boundary_repeat: bool = False
 
 
 async def walk_scoped(
@@ -71,6 +86,7 @@ async def walk_scoped(
     max_pages: int,
     cap_advice: str,
     rewalk_malformed: bool = False,
+    page_size: int | None = None,
 ) -> CollectionResult:
     """Walk a scoped search, and walk it once more if the board shifted underneath."""
 
@@ -83,6 +99,7 @@ async def walk_scoped(
             max_pages=max_pages,
             cap_advice=cap_advice,
             rewalk_malformed=rewalk_malformed,
+            page_size=page_size,
         )
 
     first = await walk()
@@ -105,7 +122,14 @@ def _pool(first: _Walk, second: _Walk) -> CollectionResult:
     placeholders = (first.placeholders | second.placeholders) - jobs.keys()
     found = len(jobs) + len(placeholders)
     page_count = first.result.page_count + second.result.page_count
-    if found == declared:
+    first_ids = {job.source_job_id for job in first.result.jobs} | first.placeholders
+    second_ids = {job.source_job_id for job in second.result.jobs} | second.placeholders
+    overcounted = (
+        first_ids == second_ids
+        and not (first.boundary_repeat or second.boundary_repeat)
+        and found < declared <= found + declared * OVERCOUNT_SHARE
+    )
+    if found == declared or overcounted:
         return CollectionResult(
             source_id=second.result.source_id,
             complete=True,
@@ -135,12 +159,15 @@ async def _walk_once(
     max_pages: int,
     cap_advice: str,
     rewalk_malformed: bool,
+    page_size: int | None,
 ) -> _Walk:
     jobs: list[NormalizedJob] = []
     warnings: list[str] = []
     structural = False
     seen: set[str] = set()
     placeholders: set[str] = set()
+    boundary_repeat = False
+    previous_full = False
     offset = 0
     page_count = 0
     declared: int | None = None
@@ -173,12 +200,14 @@ async def _walk_once(
                 warnings.append(f"skipped malformed job record at index {index}: {exc}")
                 continue
             if job.source_job_id in seen:
+                boundary_repeat = boundary_repeat or (index_in_page == 0 and previous_full)
                 warnings.append(
                     f"skipped duplicate job record at index {index}: the id already appeared"
                 )
                 continue
             seen.add(job.source_job_id)
             jobs.append(job)
+        previous_full = page_size is None or len(records) >= page_size
         if not records or (declared is not None and offset + len(records) >= declared):
             break
         if page_count >= max_pages:
@@ -205,4 +234,9 @@ async def _walk_once(
         page_count=page_count,
         declared_total=len(jobs) if complete else declared,
     )
-    return _Walk(result=result, shifted=not structural, placeholders=frozenset(placeholders))
+    return _Walk(
+        result=result,
+        shifted=not structural,
+        placeholders=frozenset(placeholders),
+        boundary_repeat=boundary_repeat,
+    )

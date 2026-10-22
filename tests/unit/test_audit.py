@@ -99,7 +99,7 @@ def test_coverage_prefers_the_best_status_of_every_company_source() -> None:
 
 
 def test_provider_adapters_cover_every_registered_provider() -> None:
-    # The documented providers, the audited fallbacks (including Freehire), the relayed Tesla feed
+    # The documented providers, the audited fallbacks, the relayed Tesla feed
     # and the company endpoints added by the expansion passes; every adapter answers to the provider
     # name it is registered under, which is what the registry dispatches on.
     assert sorted(PROVIDER_ADAPTERS) == [
@@ -111,7 +111,6 @@ def test_provider_adapters_cover_every_registered_provider() -> None:
         "breezy",
         "eightfold",
         "email-alerts",
-        "freehire",
         "generic-json",
         "google",
         "greenhouse",
