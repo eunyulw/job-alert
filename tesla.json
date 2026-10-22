@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-22T00:39:43.940Z",
- "board_total": 8249,
+ "generated_at": "2026-10-22T11:27:17.291Z",
+ "board_total": 8262,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -110,12 +110,6 @@
    "id": "263950",
    "location": "Cyberjaya, Selangor",
    "title": "Service Apprentice"
-  },
-  {
-   "department": "Manufacturing",
-   "id": "264275",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Schülerpraktikum im November (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
@@ -1154,12 +1148,6 @@
    "id": "281020",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Learning & Development - AI & Process Automation Intern (m/w/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
-   "department": "Manufacturing",
-   "id": "281023",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Schülerpraktikum im Januar 2027 (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Manufacturing",
@@ -3034,7 +3022,7 @@
    "title": "Internship, Recruiting Coordinator (Winter/Spring 2027)"
   },
   {
-   "department": "Engineering & Information Technology",
+   "department": "Vehicle Software",
    "id": "285605",
    "location": "Tilburg, Noord-brabant",
    "title": "Diagnostic Engineering Internship"
@@ -3256,13 +3244,13 @@
    "title": "Internship, Software Engineer, Infotainment Platforms Validation (Winter/Spring 2027)"
   },
   {
-   "department": "Vehicle Service",
+   "department": "Vehicle Software",
    "id": "286287",
    "location": "Amsterdam, Noord-holland",
    "title": "Software Product Support & Diagnostic Engineer – HV Battery Internship"
   },
   {
-   "department": "Vehicle Service",
+   "department": "Vehicle Software",
    "id": "286289",
    "location": "Amsterdam, Noord-holland",
    "title": "Software Product Support & Diagnostic Engineer – Thermal Internship"
@@ -3484,6 +3472,12 @@
    "title": "Logistic Financial Analyst Internship (m/f/d) - Gigafactory Berlin-Brandenburg  "
   },
   {
+   "department": "Supply Chain",
+   "id": "287217",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Manufacturing Purchasing Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "Finance",
    "id": "287224",
    "location": "Hayward, California",
@@ -3542,6 +3536,12 @@
    "id": "287478",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Production Engineering Internship, Battery Manufacturing (m/f/d) – Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "287545",
+   "location": "Fremont, California",
+   "title": "Logistics Industrial Engineer Intern, Cell Engineering (Winter/Spring 2027)"
   }
  ]
 }
