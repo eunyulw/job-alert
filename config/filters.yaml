@@ -28,6 +28,8 @@
 # spellings "coop", "co op", "fellowship" and a season with a year ("summer 20"), and title
 # exclusions for the substrings that misfired ("International" contains "intern", "Promotion"
 # contains "motion", "Combat" contains "mba"). Terms are trimmed, so a trailing space does nothing.
+# Tesla moved from the every-internship filters to the expansion filters (2026-10-21): its board
+# types HR, finance, sales and technician programs as internships too.
 # Every alerting filter is US-only (2026-10-14): a posting alerts only when at least one of its
 # locations is confidently in the US (job_alert/geo.py); an unknown or missing location does not.
 # Both filters name their companies, so they are a canary under the 90% broad-activation gate. See
@@ -65,7 +67,7 @@ filters:
        symbotic, fanuc, intuitive-surgical, procept-biorobotics, berkshire-grey, built-robotics,
        simbe-robotics, burro, exotec, persona-ai, gecko-robotics, neura-robotics, engineered-arts,
        dusty-robotics, machina-labs, hadrian, reliable-robotics, irobot, saronic,
-       bear-robotics, righthand-robotics, miso-robotics, tesla, omron, cmr-surgical,
+       bear-robotics, righthand-robotics, miso-robotics, omron, cmr-surgical,
        microagi, genesis-ai, mind-robotics, xdof, maven-robotics, walden-robotics, sunday-robotics,
        scout-ai, atoms, lightwheel, generalist-ai, allen-control-systems, dyna-robotics, rhoda-ai,
        terrafirma, monumental]
@@ -99,7 +101,7 @@ filters:
        symbotic, fanuc, intuitive-surgical, procept-biorobotics, berkshire-grey, built-robotics,
        simbe-robotics, burro, exotec, persona-ai, gecko-robotics, neura-robotics, engineered-arts,
        dusty-robotics, machina-labs, hadrian, reliable-robotics, irobot, saronic,
-       bear-robotics, righthand-robotics, miso-robotics, tesla, omron, cmr-surgical,
+       bear-robotics, righthand-robotics, miso-robotics, omron, cmr-surgical,
        microagi, genesis-ai, mind-robotics, xdof, maven-robotics, walden-robotics, sunday-robotics,
        scout-ai, atoms, lightwheel, generalist-ai, allen-control-systems, dyna-robotics, rhoda-ai,
        terrafirma, monumental]
@@ -148,7 +150,7 @@ filters:
        nissan-motor, otis, nordson, x-energy, microchip, western-digital, dell-technologies, denso,
        volkswagen-group, quantumscape, harley-davidson, corning, hubbell, ametek, aisin,
        general-dynamics, snap-on, tae-technologies, gatik, archer-aviation, ouster,
-       amd, schneider-electric,
+       amd, schneider-electric, tesla,
        lockheed-martin, eaton, whirlpool, lam-research, qualcomm,
        mercedes-benz-group, ferrari, sap, adobe, broadcom, cisco, cloudflare, microsoft,
        snowflake, cadence, openai, servicenow, synopsys, tsmc, tencent, xai, abbvie,
@@ -214,7 +216,7 @@ filters:
        nissan-motor, otis, nordson, x-energy, microchip, western-digital, dell-technologies, denso,
        volkswagen-group, quantumscape, harley-davidson, corning, hubbell, ametek, aisin,
        general-dynamics, snap-on, tae-technologies, gatik, archer-aviation, ouster,
-       amd, schneider-electric,
+       amd, schneider-electric, tesla,
        lockheed-martin, eaton, whirlpool, lam-research, qualcomm,
        mercedes-benz-group, ferrari, sap, adobe, broadcom, cisco, cloudflare, microsoft,
        snowflake, cadence, openai, servicenow, synopsys, tsmc, tencent, xai, abbvie,
