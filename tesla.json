@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-22T11:27:17.291Z",
- "board_total": 8262,
+ "generated_at": "2026-10-22T13:07:15.727Z",
+ "board_total": 8277,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3106,6 +3106,12 @@
    "title": "Service Technician Apprenticeship – Amsterdam"
   },
   {
+   "department": "Finance",
+   "id": "285758",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Financial Controlling Internship"
+  },
+  {
    "department": "Vehicle Software",
    "id": "285777",
    "location": "Palo Alto, California",
@@ -3128,12 +3134,6 @@
    "id": "285801",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer, Build & Simulation Platform (Winter/Spring 2027)"
-  },
-  {
-   "department": "People",
-   "id": "285870",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Machine Learning Intern, Generative SI Applications  (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
