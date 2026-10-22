@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-22T13:07:15.727Z",
- "board_total": 8277,
+ "generated_at": "2026-10-22T17:17:23.174Z",
+ "board_total": 8288,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -2746,12 +2746,6 @@
    "title": "Internship, Grid Compliance Test Engineer, Energy Engineering (Winter/Spring 2027)"
   },
   {
-   "department": "Sales & Customer Support",
-   "id": "284883",
-   "location": "Tempe, Arizona",
-   "title": "Internship, Project Manager, Field Service North America (Winter/Spring 2027) "
-  },
-  {
    "department": "Legal & Government Affairs",
    "id": "284884",
    "location": "Washington, District Of Columbia",
@@ -3488,6 +3482,18 @@
    "id": "287261",
    "location": "New York, New York",
    "title": "Internship, Program Manager, Sales & Delivery (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "287308",
+   "location": "Berlin, Be",
+   "title": "Mechanical Design Engineering Internship, Battery Engineering, Tesla Engineering Germany (m/f/d)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "287334",
+   "location": "Berlin",
+   "title": "Machine Learning Intern, Generative SI Applications  (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "People",
