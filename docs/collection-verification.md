@@ -221,7 +221,7 @@ announcement.
 | 3 | Comcast | `comcast-workday` | facet Intern (Trainee) | 2026-10-14: 2 twice | 2026-10-14, expansion filter |
 | 3 | Allstate | `allstate-workday` | facet Intern/Co-Op (Fixed Term) | 2026-10-14: 1 twice | 2026-10-14, expansion filter |
 
-| 1 | Tesla (requested 2026-10-14) | not collected | — | `cua-api/apps/careers/state` and `/careers/search` answer HTTP 403 Access Denied (Akamai) | `BLOCKED`; not circumvented |
+| 1 | Tesla (requested 2026-10-14) | `tesla-relay` (2026-10-21) | every listing Tesla types intern, US locations only | 2026-10-21 in the user's Chrome: 8,245 listings, 433 internships, 60 US locations placed with no foreign one | Tesla answers only a real browser, so a Chrome extension relays the board through the `tesla-feed` branch |
 
 ### Phase 3b — mechanical and robotics companies (2026-10-14)
 
@@ -357,13 +357,13 @@ are in [unreachable-companies.md](unreachable-companies.md).
 
 ### Freehire company-feed fallback (2026-10-19)
 
-Fifty-five companies that still had no direct source now use Freehire's keyless public
+Fifty-four companies that still had no direct source now use Freehire's keyless public
 `GET /api/v1/jobs/search` endpoint as an enabled fallback. Each source names exactly one
 `company_slug`; the adapter rejects any result carrying a different slug and pages until Freehire's
 declared total is read. Postings keep the original ATS source and URL, so the normal cross-source
 dedupe and geography filters still apply.
 
-This covers Tesla, Lockheed Martin, Eaton, Whirlpool, Lam Research, Qualcomm, OMRON, CMR Surgical,
+This covers Lockheed Martin, Eaton, Whirlpool, Lam Research, Qualcomm, OMRON, CMR Surgical,
 Mercedes-Benz Group, Ferrari and SAP in the priority set; Adobe, Broadcom, Cisco, Cloudflare,
 Microsoft, Snowflake, Cadence, OpenAI, ServiceNow, Synopsys, TSMC, Tencent and xAI among big tech;
 and 31 of the provider-refused Fortune 100 entries. The fallback is polled every 60 minutes and is
@@ -379,3 +379,21 @@ AT&T and HCA Healthcare remain unconfigured because Freehire has no exact canoni
 for either. DENSO Robotics remains part of `denso-oracle`, because Freehire exposes the parent
 company rather than a separately identifiable robotics feed. The exact unresolved entries are in
 [unreachable-companies.md](unreachable-companies.md).
+
+### Tesla through the Chrome relay (2026-10-21)
+
+Tesla's careers API refuses ordinary HTTP with an Akamai denial. A Playwright-driven browser fared
+no better: headless Chromium and headless Chrome got HTTP 403 for the careers page, and visible
+Chrome on the laptop and on a GitHub runner (virtual display) loaded the page, but Tesla's app then
+never requested the board. The one exception was the first visible session on the laptop. In the
+user's own Chrome the page's request and the same request repeated from the page both answer 200,
+including the per-job detail endpoint.
+
+`extension/tesla-relay` therefore reads the board in the user's Chrome every 10 minutes and commits
+Tesla's internships (listing type 3, which the board labels `intern`) to `tesla.json` on the orphan
+`tesla-feed` branch. The `tesla-relay` source reads that file and keeps postings whose location the
+geo rules place in the US. Tesla writes `City, State` in the US and `City, Region` elsewhere. On the
+2026-10-21 board the rules placed 60 of the 193 internship locations in the US, and every one was a
+real US city; London, Berlin, Vienna and Dublin, Ireland were all dropped. The public job link is
+built as `/careers/search/job/{title-slug}-{id}`, which matched the `url` Tesla's own detail record
+gives for posting 287407. Descriptions are not relayed, because no filter reads them.

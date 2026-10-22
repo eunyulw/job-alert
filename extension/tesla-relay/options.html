@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tesla relay</title>
+    <style>
+      body { font: 14px/1.4 -apple-system, BlinkMacSystemFont, sans-serif; margin: 16px; min-width: 340px; }
+      label { display: block; margin: 10px 0 4px; font-weight: 600; }
+      input { width: 100%; box-sizing: border-box; padding: 6px; }
+      button { margin: 12px 8px 0 0; padding: 6px 12px; }
+      #status { margin-top: 14px; white-space: pre-wrap; color: #444; }
+      .hint { color: #666; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <h3>Tesla relay</h3>
+    <label for="token">GitHub token</label>
+    <input id="token" type="password" autocomplete="off" placeholder="github_pat_…" />
+    <div class="hint">Fine-grained token for this one repository, Contents: read and write.</div>
+    <label for="repo">Repository</label>
+    <input id="repo" placeholder="eunyulw/job-alert" />
+    <label for="branch">Branch</label>
+    <input id="branch" placeholder="tesla-feed" />
+    <button id="save">Save</button>
+    <button id="run">Run now</button>
+    <div id="status"></div>
+    <script src="options.js"></script>
+  </body>
+</html>

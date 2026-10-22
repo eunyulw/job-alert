@@ -7,8 +7,8 @@ goes live, and add every company that was probed and missed.
 Robotics, mechanical, aerospace and automotive companies come first, because those are the search's
 priority. Last updated 2026-10-20, after the user's robotics list added 16 direct
 sources, and after the freehire company-feed fallback pass (see
-[collection-verification.md](collection-verification.md)), which moved 55 more companies to enabled
-`FALLBACK_ONLY` sources. The board-catalog pass on 2026-10-18 moved 70 companies to direct sources.
+[collection-verification.md](collection-verification.md)), which moved 54 more companies to enabled
+`FALLBACK_ONLY` sources. Tesla left that list on 2026-10-21 for the Chrome relay (see below). The board-catalog pass on 2026-10-18 moved 70 companies to direct sources.
 
 A company whose careers site refuses us can still be reachable when its job board is published
 somewhere else that answers an ordinary request. The fallback uses Freehire's keyless public API
@@ -17,12 +17,18 @@ returned record to carry that same slug, and keeps the original source provider 
 This monitor does not use Freehire's TLS-fingerprint spoofing, residential proxy, headless-browser,
 or hosted-scraping tiers.
 
+Tesla is the exception. Its careers API answers only a real browser, refusing ordinary HTTP,
+Playwright-driven browsers and GitHub's runners alike, and its Freehire feed held only three non-US
+reposts. The `tesla-relay` source reads Tesla's own internships, which the `extension/tesla-relay`
+Chrome extension reads in the user's Chrome and commits to the `tesla-feed` branch; see
+[operator-runbook.md](operator-runbook.md).
+
 ## 1. Reached through Freehire's public company feed
 
 These sources are enabled at `FALLBACK_ONLY` and poll every 60 minutes. The first group was listed
 as provider-refused in the previous pass.
 
-- **Robotics, industrial and mobility:** Tesla, Lockheed Martin, Eaton, Whirlpool, Lam Research,
+- **Robotics, industrial and mobility:** Lockheed Martin, Eaton, Whirlpool, Lam Research,
   Qualcomm, OMRON, CMR Surgical, Mercedes-Benz Group, Ferrari, SAP.
 - **Big tech and semiconductors:** Adobe, Broadcom, Cisco, Cloudflare, Microsoft, Snowflake,
   Cadence, OpenAI, ServiceNow, Synopsys, TSMC, Tencent, xAI.

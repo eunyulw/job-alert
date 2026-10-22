@@ -79,6 +79,7 @@ from job_alert.adapters.rippling import RipplingAdapter
 from job_alert.adapters.smartrecruiters import SmartRecruitersAdapter
 from job_alert.adapters.successfactors import SuccessFactorsAdapter
 from job_alert.adapters.taleo import TaleoAdapter
+from job_alert.adapters.tesla_relay import TeslaRelayAdapter
 from job_alert.adapters.ukg import UkgAdapter
 from job_alert.adapters.workable import WorkableAdapter
 from job_alert.adapters.workday import WorkdayAdapter
@@ -115,6 +116,7 @@ PROVIDER_ADAPTERS: dict[str, SourceAdapter] = {
     "eightfold": EightfoldAdapter(),
     "email-alerts": EmailAlertAdapter(),
     "freehire": FreehireAdapter(),
+    "tesla-relay": TeslaRelayAdapter(),
     "workday": WorkdayAdapter(),
     "generic-json": GenericJsonAdapter(),
     "json-ld": JsonLdAdapter(),
@@ -163,6 +165,7 @@ PROVIDER_SOURCE_CLASSES: dict[str, SourceClass] = {
     "breezy": SourceClass.PUBLIC_ATS,
     "jazzhr": SourceClass.PUBLIC_ATS,
     "freehire": SourceClass.FALLBACK,
+    "tesla-relay": SourceClass.COMPANY_JSON,
     "generic-json": SourceClass.COMPANY_JSON,
     "json-ld": SourceClass.HTML,
 }

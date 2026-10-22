@@ -5004,19 +5004,20 @@ sources:
   tenant: misorobotics
   enabled: true
   audit_date: '2026-10-19'
-- id: tesla-freehire
+- id: tesla-relay
   company_id: tesla
-  provider: freehire
-  source_class: fallback
-  support_status: FALLBACK_ONLY
-  endpoint: https://freehire.me/api/v1/jobs/search?company_slug=tesla
-  interval_minutes: 60
+  provider: tesla-relay
+  source_class: company_json
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://raw.githubusercontent.com/eunyulw/job-alert/tesla-feed/tesla.json
+  interval_minutes: 15
+  tenant: tesla
   parameters:
-    freehire_company_slug: tesla
-    scope: Freehire company feed; original source URLs retained
-    slow_poll_reason: public aggregator fallback; polled every 60 minutes to keep API traffic bounded
+    max_age_hours: 24
+    scope: Tesla's official careers state, every listing typed intern, read in the user's Chrome by extension/tesla-relay every 10 minutes and committed to the tesla-feed branch; US locations only
+    rationale: Tesla's Akamai front answers only a real browser; it refuses ordinary HTTP, Playwright-driven browsers and GitHub runners, so the read happens in the user's own browser and the monitor reads the relayed file
   enabled: true
-  audit_date: '2026-10-19'
+  audit_date: '2026-10-21'
 - id: tesla-email-alerts
   company_id: tesla
   provider: email-alerts
@@ -5032,8 +5033,8 @@ sources:
     lookback_days: 45
     keychain_service: job-alert-gmail
     scope: LinkedIn job-alert emails in the user's own Gmail (Task 30); Tesla's careers site refuses automated access
-    us_coverage_note: '2026-10-19: the tesla-freehire fallback carries no US postings (the Freehire tesla feed holds 3 reposts from Singapore, Thailand and Australia, and every US Tesla result there is Tesla Laboratories, Inc.), so this LinkedIn alert, set to United States, is the US route. Enable it once the job-alert-gmail keychain entry exists.'
-    expansion_note: '2026-10-14 Task 29 (user asked for Tesla): www.tesla.com/cua-api/apps/careers/state and /careers/search both answer HTTP 403 Access Denied from Akamai to an ordinary request. Tesla refuses automated access, so no source is configured and nothing is circumvented. Options: a documented aggregator under Task 27, or checking tesla.com/careers manually.'
+    us_coverage_note: '2026-10-21: tesla-relay carries Tesla''s official internships from the user''s Chrome; the user asked that no LinkedIn-based source be used for Tesla, so this route stays disabled.'
+    expansion_note: '2026-10-14 Task 29: ordinary HTTPS requests to Tesla answer HTTP 403 Access Denied from Akamai.'
     audit_status: BLOCKED
     audit_probed_at: '2026-09-18'
     audit_http_status: 403

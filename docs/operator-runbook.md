@@ -78,31 +78,34 @@ after monitoring began, accurate to one poll interval), `posted` (the provider's
 or `before monitoring` (already open when monitoring began, so the hours are a lower bound, shown
 with ≥). `uv run job-alert report openings --html FILE --db DB` writes the same page on demand.
 
-**Tesla through Gmail job alerts.** Tesla's careers site refuses automated access, so Tesla
-postings come from LinkedIn job-alert emails in your Gmail (plan Task 30). One-time setup:
+**Tesla through the Chrome relay.** Tesla's careers API answers only a real browser: Akamai
+refuses ordinary HTTP, Playwright-driven browsers (headless or visible) and GitHub's runners. The
+`extension/tesla-relay` Chrome extension therefore reads it in your own Chrome. Every 10 minutes it
+repeats the careers page's own request (`/cua-api/apps/careers/state`) in a tesla.com tab, reusing
+one you have open or opening a background tab it closes again a few seconds later, and commits every
+internship to `tesla.json` on the orphan `tesla-feed` branch. It commits only when the list changes,
+plus a heartbeat every six hours. The `tesla-relay` source reads that file every 15 minutes and keeps
+the US postings, so Tesla alerts through ntfy and appears on the openings page like any other
+company. One-time setup:
 
-1. On LinkedIn, search jobs for `Tesla intern` in United States, filter Company = Tesla, and turn
-   on a job alert (email, daily or as often as offered) delivered to your Gmail.
-2. In your Google Account, turn on 2-Step Verification if it is off, create an app password
-   (Security > App passwords), and store it in the login keychain; the command prompts for the
-   password so it never appears in your shell history:
+1. Create a fine-grained GitHub token: Settings > Developer settings > Personal access tokens >
+   Fine-grained tokens. Give it access to only the `eunyulw/job-alert` repository, with Repository
+   permissions > Contents set to Read and write, and nothing else.
+2. Open `chrome://extensions`, turn on Developer mode, choose Load unpacked, and select the
+   `extension/tesla-relay` folder of this checkout.
+3. Click the extension's toolbar icon, paste the token, choose Save, then Run now. The outcome
+   should read `published (internships changed): N internships`, and the `tesla-feed` branch
+   appears on GitHub. The monitor's first read of a new source seeds silently, so existing
+   internships are listed on the openings page without alerting.
 
-   ```sh
-   security add-generic-password -s job-alert-gmail -a you@gmail.com -w
-   ```
+The relay runs only while Chrome is open and the Mac is awake and online. A feed older than 24 hours
+(`max_age_hours`) fails the read, which opens one `Source failing — Tesla` incident and closes it
+when the relay publishes again. The token stays in the extension's local storage; to revoke it,
+delete it on GitHub. After a code change in the folder, press the extension's reload button in
+`chrome://extensions`.
 
-3. After the first alert email arrives, check what the source reads without changing anything:
-
-   ```sh
-   uv run job-alert collect --source tesla-email-alerts --mode dry-run \
-     --db ~/Library/Application\ Support/FastJobAlert/data/job-alert.sqlite3
-   ```
-
-   Then the source is enabled and `tesla` joins the expansion allowlist (plan Task 30 gate).
-
-The mailbox is opened read-only; nothing is marked read, moved, or deleted. To revoke access,
-delete the app password in your Google Account and run `security delete-generic-password -s
-job-alert-gmail`.
+The `tesla-email-alerts` source, which reads LinkedIn alert emails, stays disabled: no
+LinkedIn-based or aggregator source is used for Tesla.
 
 **What LIVE allows.** A notifying filter with an `include_companies` allowlist is a canary, and it
 may alert below the 90% coverage gate, as long as every company it names has an enabled source.
