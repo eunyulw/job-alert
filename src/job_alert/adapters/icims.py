@@ -12,9 +12,10 @@ endpoint must be the unscoped search (``?ss=1``).
 
 Mapping, per card: the ``a.iCIMS_Anchor`` link's ``/jobs/{id}/`` segment is the id and identity is
 ``icims:{site}:{id}``; the card's ``h3`` the title; the ``Job Locations`` value, split on ``|``, the
-locations, each ``US-CA-Marina`` label read as ``Marina, CA, US``; a ``Category`` field the
-department; the ``Posted Date`` (``10/15/2026 11:49 AM``) the publication date. The posting link is
-the card's link without its ``in_iframe`` query. Cards carry no description, so none is fetched.
+locations, each ``US-CA-Marina`` label read as ``Marina, CA, US`` (a ``Location/Org Data`` label,
+ITT's ``United States - California - Valencia``, is read city first); a ``Category`` field the
+department; the ``Posted Date`` (``10/15/2026 11:49 AM``) the publication date. The posting link
+is the card's link without its ``in_iframe`` query. Cards carry no description, so none is fetched.
 """
 
 from __future__ import annotations
@@ -85,6 +86,14 @@ def _parse_card(chunk: str) -> Card:
         if label == "Job Locations":
             text = html_text(value) or ""
             card.locations = unique(dashed_location(part) for part in text.split("|"))
+        elif label.startswith("Location") and not card.locations:
+            # ``Location/Org Data : Brand`` reads ``United States - California - Valencia``.
+            text = html_text(value) or ""
+            card.locations = unique(
+                ", ".join(reversed([part.strip() for part in place.split(" - ")]))
+                for place in text.split("|")
+                if place.strip()
+            )
         elif label == "Posted Date":
             posted = _POSTED.search(attrs)
             if posted is not None:

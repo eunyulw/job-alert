@@ -17,6 +17,7 @@ from job_alert.adapters.boards import dashed_location
 from job_alert.adapters.breezy import BreezyAdapter
 from job_alert.adapters.hrmdirect import HrmDirectAdapter
 from job_alert.adapters.icims import IcimsAdapter
+from job_alert.adapters.icims import parse_search_page as parse_icims_page
 from job_alert.adapters.jazzhr import JazzHrAdapter
 from job_alert.adapters.jibe import JibeAdapter
 from job_alert.adapters.phenom import PhenomAdapter
@@ -269,6 +270,16 @@ async def test_icims_reads_a_location_field_when_the_card_header_has_none() -> N
 
     assert result.complete
     assert result.jobs[0].locations == ["Groton, CT, US"]
+
+
+def test_icims_reads_an_org_data_location_label_city_first() -> None:
+    card = icims_card(18476, "Machinist II", "United States - California - Valencia").replace(
+        "Job Locations", "Location/Org Data : Brand"
+    )
+
+    cards, _ = parse_icims_page(icims_page([card], 1))
+
+    assert cards[0].locations == ["Valencia, California, United States"]
 
 
 @respx.mock

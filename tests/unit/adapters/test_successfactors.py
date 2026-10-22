@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from urllib.parse import parse_qsl, urlsplit
 
 import httpx
@@ -130,3 +131,97 @@ async def test_an_endpoint_that_is_not_a_search_url_is_refused() -> None:
             await SuccessFactorsAdapter().collect(
                 source("https://jobs.example-sf.com/go/Engineering/123/"), fetcher
             )
+
+
+def tile(job_id: str, title: str, fields: dict[str, str]) -> str:
+    """One tile-layout result: the link and section fields, repeated for desktop and phone."""
+    link = f"/job/Wooster-{title.replace(' ', '-')}-OH/{job_id}/"
+    views = []
+    for view in ("desktop", "mobile"):
+        values = "".join(
+            f'<div class="section-field {name}"><span class="section-label sr-only">{name}</span>'
+            f'<div id="job-{job_id}-{view}-section-{name}-value">{value}\n</div></div>'
+            for name, value in fields.items()
+        )
+        views.append(f'<a class="jobTitle-link" href="{link}">\n {title}\n</a>{values}')
+    return f'<li class="job-tile job-id-{job_id}"><div>{"".join(views)}</div></li>'
+
+
+def test_the_tile_layout_is_read_with_its_total_and_fields() -> None:
+    body = (
+        '<span id="tile-search-results-label">Showing 1 to 2 of 1,202 Jobs</span>'
+        '<ul id="job-tile-list">'
+        + tile("1440586633", "Mechanical Engineering Intern", {"city": "Wooster, OH"})
+        + tile(
+            "1336850662",
+            "Process Engineer",
+            {"location": "Chattanooga, Tennessee, US, 37410", "department": "Operations"},
+        )
+        + "</ul>"
+    )
+
+    rows, total = parse_search_page(body)
+
+    assert total == 1202
+    assert [(row.href, row.title, row.locations, row.department) for row in rows] == [
+        ("/job/Wooster-Mechanical-Engineering-Intern-OH/1440586633/",
+         "Mechanical Engineering Intern", ["Wooster, OH"], None),
+        ("/job/Wooster-Process-Engineer-OH/1336850662/", "Process Engineer",
+         ["Chattanooga, Tennessee, US, 37410"], "Operations"),
+    ]
+
+
+API = "https://careers.acme-sf.com/services/recruiting/v1/jobs"
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_the_jobs_api_sends_the_page_token_facets_and_date_sort() -> None:
+    respx.get("https://careers.acme-sf.com/search/").mock(
+        return_value=httpx.Response(
+            200,
+            text=(
+                '<script>$.ajaxSetup({headers: {"X-CSRF-Token" : "2792b9e3-bcfa-458f-b774"}});'
+                "</script>"
+            ),
+            headers={"content-type": "text/html"},
+        )
+    )
+
+    def posting(job_id: str, title: str) -> dict[str, object]:
+        return {
+            "response": {
+                "id": job_id,
+                "unifiedStandardTitle": title,
+                "urlTitle": "MFG-%28IND%29-&amp;-Test",
+                "jobLocationShort": ["Greensboro, NC, USA, 27409<br/>"],
+                "department_obj": ["Sensors"],
+            }
+        }
+
+    route = respx.post(API).mock(
+        side_effect=[
+            httpx.Response(200, json={"jobSearchResult": [posting("142104", "Process Intern")],
+                                      "totalJobs": 2}),
+            httpx.Response(200, json={"jobSearchResult": [posting("142105", "Test Intern")],
+                                      "totalJobs": 2}),
+        ]
+    )
+    config = source(API).model_copy(
+        update={"parameters": {"facet_filters": {"filter7": ["United States"]}}}
+    )
+
+    async with HttpFetcher() as fetcher:
+        result = await SuccessFactorsAdapter().collect(config, fetcher)
+
+    assert result.complete and [job.source_job_id for job in result.jobs] == ["142104", "142105"]
+    first = result.jobs[0]
+    assert first.locations == ["Greensboro, NC, USA, 27409"] and first.department == "Sensors"
+    assert str(first.posting_url) == (
+        "https://careers.acme-sf.com/job/MFG-%28IND%29-%26-Test/142104-en_US"
+    )
+    bodies = [json.loads(call.request.content) for call in route.calls]
+    assert [body["pageNumber"] for body in bodies] == [0, 1]
+    assert bodies[0]["sortBy"] == "date"
+    assert bodies[0]["facetFilters"] == {"filter7": ["United States"]}
+    assert route.calls[0].request.headers["X-CSRF-Token"] == "2792b9e3-bcfa-458f-b774"

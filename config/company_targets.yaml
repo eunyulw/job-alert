@@ -2812,3 +2812,236 @@ companies:
       - industrial-automation-advanced-manufacturing
       - runway-matches
     aliases: []
+  - id: humanoid
+    name: "Humanoid"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: jhu-apl
+    name: "Johns Hopkins Applied Physics Laboratory"
+    categories:
+      - aerospace-defense
+      - robotics-autonomy-physical-ai
+      - runway-matches
+    aliases: []
+  - id: mit-lincoln-laboratory
+    name: "MIT Lincoln Laboratory"
+    categories:
+      - aerospace-defense
+      - runway-matches
+    aliases: []
+  - id: eclipse-automation
+    name: "Eclipse Automation"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - robotics-autonomy-physical-ai
+      - runway-matches
+    aliases: []
+  - id: hendrickson
+    name: "Hendrickson"
+    categories:
+      - automotive-ev-autonomous-mobility
+      - runway-matches
+    aliases: []
+  - id: gd-mission-systems
+    name: "General Dynamics Mission Systems"
+    categories:
+      - aerospace-defense
+      - runway-matches
+    aliases: []
+  - id: toro
+    name: "The Toro Company"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - runway-matches
+    aliases: []
+  - id: westinghouse-electric
+    name: "Westinghouse Electric Company"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - runway-matches
+    aliases: []
+  - id: intralox
+    name: "Intralox"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - runway-matches
+    aliases: []
+  - id: inversion-space
+    name: "Inversion"
+    categories:
+      - aerospace-defense
+      - runway-matches
+    aliases: []
+  - id: nasa-jpl
+    name: "NASA Jet Propulsion Laboratory"
+    categories:
+      - aerospace-defense
+      - robotics-autonomy-physical-ai
+      - runway-matches
+    aliases: []
+  - id: ralliant
+    name: "Ralliant"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - runway-matches
+    aliases: []
+  - id: sargent-lundy
+    name: "Sargent & Lundy"
+    categories:
+      - runway-matches
+    aliases: []
+  - id: aerospace-corporation
+    name: "The Aerospace Corporation"
+    categories:
+      - aerospace-defense
+      - runway-matches
+    aliases: []
+  - id: ttm-technologies
+    name: "TTM Technologies"
+    categories:
+      - runway-matches
+    aliases: []
+  - id: astroforge
+    name: "AstroForge"
+    categories:
+      - aerospace-defense
+      - runway-matches
+    aliases: []
+  - id: farnsworth-group
+    name: "Farnsworth Group"
+    categories:
+      - runway-matches
+    aliases: []
+  - id: flex
+    name: "Flex"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - runway-matches
+    aliases: []
+  - id: huntington-ingalls
+    name: "HII (Huntington Ingalls Industries)"
+    categories:
+      - aerospace-defense
+      - runway-matches
+    aliases: []
+  - id: hii-mission-technologies
+    name: "HII Mission Technologies"
+    categories:
+      - aerospace-defense
+      - runway-matches
+    aliases: []
+  - id: s-and-c-electric
+    name: "S&C Electric Company"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - runway-matches
+    aliases: []
+  - id: us-tsubaki
+    name: "U.S. Tsubaki Power Transmission"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - runway-matches
+    aliases: []
+  - id: wabtec
+    name: "Wabtec"
+    categories:
+      - automotive-ev-autonomous-mobility
+      - industrial-automation-advanced-manufacturing
+      - runway-matches
+    aliases: []
+  - id: general-atomics
+    name: "General Atomics"
+    categories:
+      - aerospace-defense
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: spirit-aerosystems
+    name: "Spirit AeroSystems"
+    categories:
+      - aerospace-defense
+    aliases: []
+  - id: vecna-robotics
+    name: "Vecna Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: neocis
+    name: "Neocis"
+    categories:
+      - medical-robotics
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: garmin
+    name: "Garmin"
+    categories:
+      - runway-matches
+    aliases: []
+  - id: te-connectivity
+    name: "TE Connectivity"
+    categories:
+      - industrial-automation-advanced-manufacturing
+    aliases: []
+  - id: york-space-systems
+    name: "York Space Systems"
+    categories:
+      - aerospace-defense
+      - runway-matches
+    aliases: []
+  - id: gentuity
+    name: "Gentuity"
+    categories:
+      - medical-robotics
+      - runway-matches
+    aliases: []
+  - id: palladyne-ai
+    name: "Palladyne AI (formerly Sarcos)"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: starship-technologies
+    name: "Starship Technologies"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: chef-robotics
+    name: "Chef Robotics"
+    categories:
+      - robotics-autonomy-physical-ai
+    aliases: []
+  - id: brooks-automation
+    name: "Brooks Automation"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - robotics-autonomy-physical-ai
+      - runway-matches
+    aliases: []
+  - id: mercury-systems
+    name: "Mercury Systems"
+    categories:
+      - aerospace-defense
+      - runway-matches
+    aliases: []
+  - id: peraton
+    name: "Peraton"
+    categories:
+      - aerospace-defense
+      - runway-matches
+    aliases: []
+  - id: cmta
+    name: "CMTA, Inc."
+    categories:
+      - runway-matches
+    aliases: []
+  - id: maclean-fogg
+    name: "MacLean-Fogg"
+    categories:
+      - automotive-ev-autonomous-mobility
+      - runway-matches
+    aliases: []
+  - id: parker-hannifin
+    name: "Parker Hannifin"
+    categories:
+      - industrial-automation-advanced-manufacturing
+      - robotics-autonomy-physical-ai
+    aliases: []

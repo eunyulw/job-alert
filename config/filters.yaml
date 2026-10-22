@@ -79,7 +79,9 @@ filters:
        terrafirma, monumental,
        gitai, rugged-robotics, heven-aerotech, mantari, roboforce, salient-motion, relling,
        bedrock-robotics, agzen, human-computer-lab, mach9, orbital-robotics, swarm-aero,
-       bracket-bot, humble-robotics]
+       bracket-bot, humble-robotics,
+       humanoid, vecna-robotics, neocis, palladyne-ai, starship-technologies, chef-robotics,
+       kawasaki-robotics, kuka, geek-plus, eclipse-automation]
     include_title_keywords: [intern, co-op, coop, co op, student, fellowship, summer 20, spring 20, fall 20, winter 20]
     require_title_keywords: []
     exclude_title_keywords: [cooperative]
@@ -116,7 +118,9 @@ filters:
        terrafirma, monumental,
        gitai, rugged-robotics, heven-aerotech, mantari, roboforce, salient-motion, relling,
        bedrock-robotics, agzen, human-computer-lab, mach9, orbital-robotics, swarm-aero,
-       bracket-bot, humble-robotics]
+       bracket-bot, humble-robotics,
+       humanoid, vecna-robotics, neocis, palladyne-ai, starship-technologies, chef-robotics,
+       kawasaki-robotics, kuka, geek-plus, eclipse-automation]
     include_title_keywords: []
     require_title_keywords: []
     exclude_title_keywords: []
@@ -180,7 +184,14 @@ filters:
        motorola-solutions, nvent, organon, orion-steel, philips, plug-power, regeneron,
        sew-eurodrive, sonoco, smith-nephew, terex, watts-water, weg, costar-group,
        gates, mahle, spx-technologies, dorman-products, james-hardie, acuity, dodge-industrial, first-solar,
-       onsemi, vertiv, steris, quantinuum, kearfott, webco-industries, cesiumastro]
+       onsemi, vertiv, steris, quantinuum, kearfott, webco-industries, cesiumastro,
+       meta, siemens, hyundai-motor-group, aurora-innovation, keysight, constellation-energy, itt,
+       schaeffler, gerdau, jhu-apl, mit-lincoln-laboratory, hendrickson, gd-mission-systems, toro,
+       westinghouse-electric, intralox, inversion-space, nasa-jpl, ralliant, sargent-lundy,
+       aerospace-corporation, ttm-technologies, astroforge, farnsworth-group, flex,
+       huntington-ingalls, hii-mission-technologies, s-and-c-electric, us-tsubaki, wabtec,
+       general-atomics, spirit-aerosystems, garmin, te-connectivity, york-space-systems, gentuity,
+       brooks-automation, mercury-systems, peraton, cmta, maclean-fogg, parker-hannifin]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,
@@ -256,7 +267,14 @@ filters:
        motorola-solutions, nvent, organon, orion-steel, philips, plug-power, regeneron,
        sew-eurodrive, sonoco, smith-nephew, terex, watts-water, weg, costar-group,
        gates, mahle, spx-technologies, dorman-products, james-hardie, acuity, dodge-industrial, first-solar,
-       onsemi, vertiv, steris, quantinuum, kearfott, webco-industries, cesiumastro]
+       onsemi, vertiv, steris, quantinuum, kearfott, webco-industries, cesiumastro,
+       meta, siemens, hyundai-motor-group, aurora-innovation, keysight, constellation-energy, itt,
+       schaeffler, gerdau, jhu-apl, mit-lincoln-laboratory, hendrickson, gd-mission-systems, toro,
+       westinghouse-electric, intralox, inversion-space, nasa-jpl, ralliant, sargent-lundy,
+       aerospace-corporation, ttm-technologies, astroforge, farnsworth-group, flex,
+       huntington-ingalls, hii-mission-technologies, s-and-c-electric, us-tsubaki, wabtec,
+       general-atomics, spirit-aerosystems, garmin, te-connectivity, york-space-systems, gentuity,
+       brooks-automation, mercury-systems, peraton, cmta, maclean-fogg, parker-hannifin]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,

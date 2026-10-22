@@ -64,6 +64,10 @@ class RequestSpec:
     #: ``json_body``.
     form_body: Mapping[str, str] | None = None
     idempotent: bool | None = None
+    #: Scan an HTML body for challenge markers. An adapter turns this off only for a page whose own
+    #: markup carries a marker (BrassRing's home page ships a login-captcha template) and that it
+    #: verifies itself, so a challenge still fails the read there.
+    detect_challenge: bool = True
 
 
 @dataclass(frozen=True, slots=True)
@@ -218,7 +222,7 @@ class HttpFetcher:
     ) -> HttpPayload:
         try:
             body = await _read_bounded(response, self._max_bytes)
-            if _is_challenge(response.headers.get("Content-Type"), body):
+            if spec.detect_challenge and _is_challenge(response.headers.get("Content-Type"), body):
                 raise ChallengeDetected(f"challenge page detected for {spec.url}")
             return HttpPayload(
                 final_url=str(response.url),

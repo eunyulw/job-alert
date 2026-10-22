@@ -1,11 +1,15 @@
 {
   "manifest_version": 3,
-  "name": "Job Alert: Tesla relay",
-  "version": "1.0.0",
-  "description": "Every 10 minutes, reads Tesla's internship listings in a background tab and publishes them to the job-alert repository.",
+  "name": "Job Alert: browser relay",
+  "version": "1.1.0",
+  "description": "Reads career boards that answer only a real browser (Tesla every 10 minutes, Parker Hannifin every 30) in background tabs and publishes them to the job-alert repository.",
   "permissions": ["alarms", "storage", "scripting"],
-  "host_permissions": ["https://www.tesla.com/*", "https://api.github.com/*"],
+  "host_permissions": [
+    "https://www.tesla.com/*",
+    "https://parkercareers.ttcportals.com/*",
+    "https://api.github.com/*"
+  ],
   "background": { "service_worker": "background.js" },
   "options_page": "options.html",
-  "action": { "default_title": "Tesla relay", "default_popup": "options.html" }
+  "action": { "default_title": "Job Alert relay", "default_popup": "options.html" }
 }

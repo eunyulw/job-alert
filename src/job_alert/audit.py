@@ -47,9 +47,11 @@ import yaml
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, TypeAdapter, ValidationError
 
 from job_alert.adapters.adp import AdpAdapter
+from job_alert.adapters.adp_wfn import AdpWorkforceNowAdapter
 from job_alert.adapters.amazon import AmazonAdapter
 from job_alert.adapters.apple import AppleAdapter
 from job_alert.adapters.ashby import AshbyAdapter
+from job_alert.adapters.avature import AvatureAdapter
 from job_alert.adapters.bamboohr import BambooHrAdapter
 from job_alert.adapters.base import (
     AdapterError,
@@ -58,9 +60,13 @@ from job_alert.adapters.base import (
     job_metrics,
     validate_collection,
 )
+from job_alert.adapters.brassring import BrassRingAdapter
 from job_alert.adapters.breezy import BreezyAdapter
+from job_alert.adapters.browser_relay import BrowserRelayAdapter
+from job_alert.adapters.dayforce import DayforceAdapter
 from job_alert.adapters.eightfold import EightfoldAdapter
 from job_alert.adapters.email_alerts import EmailAlertAdapter
+from job_alert.adapters.gem import GemAdapter
 from job_alert.adapters.generic_json import GenericJsonAdapter
 from job_alert.adapters.google import GoogleAdapter
 from job_alert.adapters.greenhouse import GreenhouseAdapter
@@ -70,7 +76,10 @@ from job_alert.adapters.jazzhr import JazzHrAdapter
 from job_alert.adapters.jibe import JibeAdapter
 from job_alert.adapters.jsonld import JsonLdAdapter
 from job_alert.adapters.lever import LeverAdapter
+from job_alert.adapters.meta import MetaAdapter
 from job_alert.adapters.oracle import OracleAdapter
+from job_alert.adapters.paycor import PaycorAdapter
+from job_alert.adapters.paylocity import PaylocityAdapter
 from job_alert.adapters.phenom import PhenomAdapter
 from job_alert.adapters.pinpoint import PinpointAdapter
 from job_alert.adapters.radancy import RadancyAdapter
@@ -78,6 +87,7 @@ from job_alert.adapters.rippling import RipplingAdapter
 from job_alert.adapters.smartrecruiters import SmartRecruitersAdapter
 from job_alert.adapters.successfactors import SuccessFactorsAdapter
 from job_alert.adapters.taleo import TaleoAdapter
+from job_alert.adapters.teamtailor import TeamtailorAdapter
 from job_alert.adapters.tesla_relay import TeslaRelayAdapter
 from job_alert.adapters.ukg import UkgAdapter
 from job_alert.adapters.workable import WorkableAdapter
@@ -134,6 +144,16 @@ PROVIDER_ADAPTERS: dict[str, SourceAdapter] = {
     "radancy": RadancyAdapter(),
     "breezy": BreezyAdapter(),
     "jazzhr": JazzHrAdapter(),
+    "meta": MetaAdapter(),
+    "avature": AvatureAdapter(),
+    "paylocity": PaylocityAdapter(),
+    "paycor": PaycorAdapter(),
+    "dayforce": DayforceAdapter(),
+    "gem": GemAdapter(),
+    "brassring": BrassRingAdapter(),
+    "teamtailor": TeamtailorAdapter(),
+    "adp-wfn": AdpWorkforceNowAdapter(),
+    "browser-relay": BrowserRelayAdapter(),
 }
 
 # Public endpoints that a provider documents earn SUPPORTED; a public endpoint the provider does
@@ -162,7 +182,17 @@ PROVIDER_SOURCE_CLASSES: dict[str, SourceClass] = {
     "radancy": SourceClass.PUBLIC_ATS,
     "breezy": SourceClass.PUBLIC_ATS,
     "jazzhr": SourceClass.PUBLIC_ATS,
+    "avature": SourceClass.PUBLIC_ATS,
+    "paylocity": SourceClass.PUBLIC_ATS,
+    "paycor": SourceClass.PUBLIC_ATS,
+    "dayforce": SourceClass.PUBLIC_ATS,
+    "gem": SourceClass.PUBLIC_ATS,
+    "brassring": SourceClass.PUBLIC_ATS,
+    "teamtailor": SourceClass.PUBLIC_ATS,
+    "adp-wfn": SourceClass.PUBLIC_ATS,
+    "meta": SourceClass.COMPANY_JSON,
     "tesla-relay": SourceClass.COMPANY_JSON,
+    "browser-relay": SourceClass.COMPANY_JSON,
     "generic-json": SourceClass.COMPANY_JSON,
     "json-ld": SourceClass.HTML,
 }

@@ -5,22 +5,27 @@ gives the specific reason. Update this list on every expansion pass: remove a co
 goes live, and add every company that was probed and missed.
 
 Robotics, mechanical, aerospace and automotive companies come first, because those are the search's
-priority. Last updated 2026-10-22, when the Freehire fallback was removed entirely at the user's
-request (it is not used for any company). 45 of its 54 companies, and AT&T, now read their own
+priority. Last updated 2026-10-22. The pass for the user's unreached high-value companies (Runway
+picks and earlier misses) moved 52 companies to direct sources, through new adapters for Meta,
+Avature, Dayforce, BrassRing, Paylocity, Paycor, Gem, Teamtailor and ADP Workforce Now, the
+SuccessFactors tile layout and JSON search, and Parker Hannifin through the Chrome relay; see
+[runway-matches-2026-10-22.md](runway-matches-2026-10-22.md). Earlier that day the Freehire fallback
+was removed entirely at the user's request (it is not used for any company). 45 of its 54 companies, and AT&T, now read their own
 boards (see [collection-verification.md](collection-verification.md)); the other nine are listed
 below with their reasons. The board-catalog pass on 2026-10-18 moved 70 companies to direct sources.
 
-No aggregator or LinkedIn-based source is used. Tesla answers only a real browser, so the
-`tesla-relay` source reads Tesla's own internships, which the `extension/tesla-relay` Chrome
-extension reads in the user's Chrome and commits to the `tesla-feed` branch; see
-[operator-runbook.md](operator-runbook.md).
+No aggregator or LinkedIn-based source is used. Tesla and Parker Hannifin answer only a real
+browser, so the `extension/tesla-relay` Chrome extension reads them in the user's Chrome and commits
+them to the `tesla-feed` branch, where the `tesla-relay` and `browser-relay` sources read them; see
+[operator-runbook.md](operator-runbook.md). The relay is the last resort: every other company here
+was first checked for a board that ordinary HTTP can read.
 
 ## 1. Careers site refuses ordinary requests
 
 | Company | What the provider answers | Note |
 | --- | --- | --- |
-| Verizon | Its job API (`mycareer.verizon.com/api/jobs`) answers a Cloudflare challenge (HTTP 403) | A real browser reads it, so the Tesla relay approach would work |
-| TSMC | Avature career site answers HTTP 403 | Also no Avature adapter |
+| Verizon | Its job API (`mycareer.verizon.com/api/jobs`) answers a Cloudflare challenge (HTTP 403) | A real browser reads it, so the relay would work; not relayed because Verizon is not a robotics or mechanical priority |
+| TSMC | Avature career site answers HTTP 403 | The Avature adapter reads other Avature sites; a relay candidate if TSMC becomes a priority |
 | SAP | `jobs.sap.com` answers HTTP 403 and says current openings are still on the classic SuccessFactors page (`career5.successfactors.eu`, `career_company=SAP`) | The classic page has no career-site search the adapter reads |
 | HCA Healthcare | Careers site answers HTTP 403 | Not a priority |
 | DENSO Robotics | The main DENSO careers site answers HTTP 403 | DENSO North America is already collected by `denso-oracle` |
@@ -36,17 +41,17 @@ extension reads in the user's Chrome and commits to the `tesla-feed` branch; see
 
 | Job system | Priority companies | Others |
 | --- | --- | --- |
-| SuccessFactors tile layout (no result total, so completeness cannot be judged) | KUKA, CNH Industrial, TE Connectivity, Ferrari | |
+| SuccessFactors JSON search with no country facet the site exposes (its whole board is about 2,000 worldwide postings at 10 a page) | CNH Industrial | |
+| SuccessFactors tile layout without job links in the tiles | Ferrari | |
 | SuccessFactors without a career-site search | BMW Group | American Airlines |
-| Kenexa BrassRing | General Atomics | Archer Daniels Midland |
-| Paycor (listing built by JavaScript) | Vecna Robotics, Neocis | |
-| Teamtailor | Starship Technologies (1 posting) | |
-| Gem | Chef Robotics (1 posting) | |
+| Kenexa BrassRing (the adapter exists; not yet configured) | | Archer Daniels Midland |
+| Cornerstone OnDemand (the board's search takes a token the page issues) | MACOM | |
+| Paycom | Aquatech | |
 | Personio | Cartken (offices named without a country) | |
 | Factorial | THEKER Robotics | |
 | Y Combinator Work at a Startup (no ATS behind it) | Ultra (warehouse robots) | |
 | Custom server-rendered job list (no JSON API) | | AbbVie, Progressive |
-| Beesite / Jobylon / Dayforce | Porsche / Einride / Amphenol (a UK unit) | |
+| Beesite / Jobylon | Porsche / Einride | |
 | Eightfold with no derivable list endpoint | none | Chevron, Citigroup, American Express, Capital One, Morgan Stanley |
 
 Jibe also serves Arm, PepsiCo and State Farm, which wait for the Fortune 500 pass.
@@ -59,7 +64,6 @@ Jibe also serves Arm, PepsiCo and State Farm, which wait for the Fortune 500 pas
 | Realtime Robotics | freehire lists Workable postings, but the account name behind them could not be identified. |
 | Kratos Defense | The only board found, on Paylocity, belongs to "Kratos Industries"; it could not be confirmed as Kratos Defense. |
 | TransDigm | Only subsidiary ADP sites (such as `whippany`) were found, not a group board. |
-| Hyundai Motor Group | Its SuccessFactors site lists European postings only. |
 | JPMorgan Chase | Its Oracle board holds 7,318 postings. A keyword search matches description text, so it cannot narrow the board. Deferred, since JPMorgan isn't a priority. |
 | Mitsubishi Electric, Daifuku | Covered by one board each (Mitsubishi Electric US `meus-mea`; Daifuku Intralogistics America). Their second boards, MEPPI (HRM Direct) and Wynright (iCIMS), wait, because the registry keeps one source per company. |
 | General Dynamics | Only Electric Boat is covered. GDIT has a public Workday board but is IT services; no board was found for the other units. |
@@ -69,17 +73,19 @@ Jibe also serves Arm, PepsiCo and State Farm, which wait for the Fortune 500 pas
 These companies have no board under any guessed name on the providers the monitor reads, and
 freehire's catalog of 294,000 companies has none either, or only aggregator reposts.
 
-- **Robotics:** Aurora Innovation, Covariant, GreyOrange, Unitree, AGIBOT, Pudu Robotics, Geek+,
-  Kawasaki Robotics, Sarcos, Vention, Electric Sheep, Monarch Tractor, Hello Robot, Moon Surgical,
+- **Robotics:** Covariant (its team joined Amazon, which is monitored), GreyOrange (its 74 openings are on
+  Zwayam, `public.zwayam.com/jobs/search`, which plain HTTP reads; no adapter yet), Unitree, AGIBOT, Pudu Robotics, Vention, Electric Sheep, Monarch Tractor, Hello Robot, Moon Surgical,
   Vicarious Surgical. From the 2026-10-20 list: Booster Robotics, X Square Robot, EngineAI, LimX
   Dynamics, ROBOTERA, Sharpa, CenoBots, August Robotics, AITAN eyesAtop and Mecka (freehire has
   only aggregator reposts of Mecka). The Chinese companies recruit through domestic systems such as
   Moka and Feishu, which the monitor does not read.
-- **Aerospace and defense:** Huntington Ingalls, Spirit AeroSystems.
 - **Automotive and mobility:** Kia, BYD, Renault, Mazda, Geely, SAIC, Chery, Plus, Luminar, Canoo,
   Dana, AGCO, Volvo Cars.
-- **Industrial:** Siemens (only its Healthineers and Energy subsidiaries have boards), Parker
-  Hannifin, Ingersoll Rand, Garmin (only a Romanian office's Workable board), Seagate.
+- **Industrial:** Ingersoll Rand (its careers page links no job system), Seagate, Werfen (its
+  careers finder links no job system).
+- **From the Runway list:** Skyband Systems (its Ashby board answers HTTP 404), Brown and Caldwell
+  (UKG, but the careers page carries no board id), TPC Packaging Solutions (no Teamtailor site
+  found under its name).
 
 ## Reachable, but deferred to a later pass
 

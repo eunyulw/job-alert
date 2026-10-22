@@ -22,23 +22,41 @@ Mapping decisions:
 - The search page publishes no description and no reliable date, so ``content_hash`` digests the
   title and locations and ``source_published_at`` stays ``None``.
 
+Some sites (``jobs.schaeffler.com``, ``jobs.gerdau.com``) render the tile layout instead: each
+result is an ``<li class="job-tile">`` holding the same ``a.jobTitle-link`` and a set of
+``div.section-field`` values, repeated for the desktop, tablet and phone views, and the total is
+``Showing 1 to 25 of 120 Jobs``. A tile's first value of each field is read: ``location``, or else
+``city``, is its location, and a ``department`` field its department.
+
 A page with no pagination label and no rows is an error, not an empty board: an empty search still
 renders the label with a total of 0, so a missing label means the page is not a search page.
+
+The newest sites (``careers.te.com``, ``careers.huntingtoningalls.com``) render no results in the
+page at all: it loads them from ``POST /services/recruiting/v1/jobs``, ten a page with
+``totalJobs``, sending the CSRF token the ``/search/`` page carries. A source for one of those
+sites names that JSON path as its endpoint and scopes it with ``facet_filters`` (TE's country is
+``{"filter7": ["United States"]}``). The walk sorts by ``date``: the default relevance order and the
+other sorts the endpoint accepts repeat postings across pages (measured 2026-10-22 on TE's 309 US
+postings: 268 to 287 unique), while ``date`` held on repeated walks. Mapping: ``id`` is the posting
+id, ``unifiedStandardTitle`` the title, each ``jobLocationShort`` a location, the first
+``department_obj`` the department; the posting link is ``/job/{urlTitle}/{id}-en_US``.
 """
 
 from __future__ import annotations
 
 import html
+import json
 import re
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from html.parser import HTMLParser
-from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
+from urllib.parse import parse_qsl, quote, urlencode, urljoin, urlsplit, urlunsplit
 
 from pydantic import HttpUrl, ValidationError
 
 from job_alert.adapters.base import AdapterError
+from job_alert.adapters.boards import html_text, make_job, unique
 from job_alert.adapters.paged import UnusableRecord, walk_scoped
 from job_alert.fetch import HttpFetcher, HttpPayload, RequestSpec
 from job_alert.identity import build_dedupe_key, build_job_key, content_hash
@@ -46,12 +64,20 @@ from job_alert.models import CollectionResult, NormalizedJob, SourceConfig
 
 PROVIDER = "successfactors"
 SEARCH_PATH = "/search/"
+JOBS_API_PATH = "/services/recruiting/v1/jobs"
 SEARCH_CAP = 100_000
 MAX_PAGES = 400
 OWNED = frozenset({"startrow"})
-_TOTAL = re.compile(r"Results\s*<b>[^<]*</b>\s*of\s*<b>\s*([\d,.\s]+?)\s*</b>", re.IGNORECASE)
+_TOTAL = re.compile(
+    r"Results\s*<b>[^<]*</b>\s*of\s*<b>\s*([\d,.\s]+?)\s*</b>"
+    r"|tile-search-results-label\">\s*Showing\s+[\d,.]+\s+to\s+[\d,.]+\s+of\s+([\d,.]+)\s+Jobs",
+    re.IGNORECASE,
+)
+_TILE_VALUE = re.compile(r"job-\d+-[a-z]+-section-([a-z0-9]+)-value\Z")
 _EMPTY = re.compile(r"There are currently no open|no jobs? (?:were )?found", re.IGNORECASE)
 _POSTING_ID = re.compile(r"/(\d+)/?$")
+_CSRF = re.compile(r'(?:var CSRFToken\s*=\s*|CSRF-Token"\s*:\s*)"([0-9a-f-]{20,})"', re.IGNORECASE)
+_API_ID = re.compile(r"^\d+$")
 _VOID = frozenset({"br", "img", "hr", "input", "meta", "link", "wbr", "source"})
 
 
@@ -68,10 +94,11 @@ class Row:
     locations: list[str] = field(default_factory=list)
     department: str | None = None
     facility: str | None = None
+    fields: dict[str, str] = field(default_factory=dict)
 
 
 class _RowParser(HTMLParser):
-    """Collect each ``<tr class="data-row">``'s link and labelled spans."""
+    """Collect each ``<tr class="data-row">`` or ``<li class="job-tile">``'s link and fields."""
 
     _SPANS = {"jobLocation": "locations", "jobDepartment": "department", "jobFacility": "facility"}
 
@@ -83,15 +110,17 @@ class _RowParser(HTMLParser):
         self._capture: str | None = None
         self._buffer: list[str] = []
         self._capture_depth = 0
+        self._row_tag = "tr"
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         classes = set((dict(attrs).get("class") or "").split())
-        if tag == "tr":
-            if self._row is None and "data-row" in classes:
-                self._row, self._depth = Row(), 0
-                return
-            if self._row is not None:
-                self._depth += 1
+        if self._row is None and (
+            (tag == "tr" and "data-row" in classes) or (tag == "li" and "job-tile" in classes)
+        ):
+            self._row, self._depth, self._row_tag = Row(), 0, tag
+            return
+        if self._row is not None and tag == self._row_tag:
+            self._depth += 1
         if self._row is None:
             return
         if self._capture is not None:
@@ -108,6 +137,8 @@ class _RowParser(HTMLParser):
                 if css in classes:
                     self._start(name)
                     break
+        elif tag == "div" and (match := _TILE_VALUE.match(dict(attrs).get("id") or "")):
+            self._start(f"field:{match.group(1)}")
 
     def handle_endtag(self, tag: str) -> None:
         if self._row is None:
@@ -118,9 +149,9 @@ class _RowParser(HTMLParser):
                 return
             self._finish()
             return
-        if tag == "tr":
+        if tag == self._row_tag:
             if self._depth == 0:
-                self.rows.append(self._row)
+                self.rows.append(_settle(self._row))
                 self._row = None
             else:
                 self._depth -= 1
@@ -147,6 +178,17 @@ class _RowParser(HTMLParser):
             self._row.department = self._row.department or text
         elif name == "facility":
             self._row.facility = self._row.facility or text
+        else:
+            self._row.fields.setdefault(name.removeprefix("field:"), text)
+
+
+def _settle(row: Row) -> Row:
+    """Fill a tile's location and department from its section fields."""
+    location = row.fields.get("location") or row.fields.get("city")
+    if not row.locations and location:
+        row.locations.append(location)
+    row.department = row.department or row.fields.get("department")
+    return row
 
 
 def parse_search_page(body: str) -> tuple[list[Row], int]:
@@ -159,7 +201,7 @@ def parse_search_page(body: str) -> tuple[list[Row], int]:
         if not parser.rows and _EMPTY.search(body):
             return [], 0
         raise AdapterError("successfactors page declares no result total; it is not a search page")
-    digits = re.sub(r"\D", "", match.group(1))
+    digits = re.sub(r"\D", "", match.group(1) or match.group(2))
     if not digits:
         raise AdapterError("successfactors page declares an unreadable result total")
     return parser.rows, int(digits)
@@ -175,6 +217,8 @@ class SuccessFactorsAdapter:
 
     async def collect(self, source: SourceConfig, fetcher: HttpFetcher) -> CollectionResult:
         parts = urlsplit(str(source.endpoint))
+        if parts.scheme == "https" and parts.path == JOBS_API_PATH and not parts.query:
+            return await self._collect_api(source, fetcher, parts.netloc)
         if parts.scheme != "https" or parts.path != SEARCH_PATH:
             raise AdapterError(
                 f"successfactors endpoint {source.endpoint} is not an https {SEARCH_PATH} URL"
@@ -209,6 +253,105 @@ class SuccessFactorsAdapter:
             max_pages=MAX_PAGES,
             cap_advice="narrow the source's query",
         )
+
+    async def _collect_api(
+        self, source: SourceConfig, fetcher: HttpFetcher, netloc: str
+    ) -> CollectionResult:
+        facets = source.parameters.get("facet_filters", {})
+        if not isinstance(facets, dict) or not all(
+            isinstance(name, str)
+            and isinstance(values, list)
+            and all(isinstance(value, str) for value in values)
+            for name, values in facets.items()
+        ):
+            raise AdapterError(f"successfactors source {source.id} has unusable facet_filters")
+        page = await fetcher.get(
+            RequestSpec(
+                url=f"https://{netloc}{SEARCH_PATH}", headers=dict(source.headers), expected="html"
+            )
+        )
+        token = _CSRF.search(_decode(page))
+        if token is None:
+            raise AdapterError("successfactors search page carries no CSRF token")
+        host, first_seen_at = netloc.lower(), self._now()
+
+        async def fetch_page(index: int, _: int) -> tuple[Sequence[object], int]:
+            payload = await fetcher.post(
+                RequestSpec(
+                    url=f"https://{netloc}{JOBS_API_PATH}",
+                    headers={**source.headers, "X-CSRF-Token": token.group(1)},
+                    expected="json",
+                    json_body={
+                        "locale": "en_US",
+                        "pageNumber": index,
+                        "sortBy": "date",
+                        "keywords": "",
+                        "location": "",
+                        "facetFilters": facets,
+                        "brand": "",
+                        "skills": [],
+                        "categoryId": 0,
+                        "alertId": "",
+                        "rcmCandidateId": "",
+                    },
+                    idempotent=True,
+                )
+            )
+            try:
+                document = json.loads(payload.body)
+            except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+                raise AdapterError(f"successfactors jobs API answered non-JSON: {exc}") from exc
+            records = document.get("jobSearchResult") if isinstance(document, Mapping) else None
+            total = document.get("totalJobs") if isinstance(document, Mapping) else None
+            if not isinstance(records, list):
+                raise AdapterError("successfactors jobs API answered no jobSearchResult list")
+            if isinstance(total, bool) or not isinstance(total, int) or total < 0:
+                raise AdapterError("successfactors jobs API answered no non-negative totalJobs")
+            return [
+                record.get("response") if isinstance(record, Mapping) else record
+                for record in records
+            ], total
+
+        return await walk_scoped(
+            source_id=source.id,
+            fetch_page=fetch_page,
+            normalize=lambda record: _normalize_api_job(
+                record, source=source, host=host, first_seen_at=first_seen_at
+            ),
+            cap=SEARCH_CAP,
+            max_pages=MAX_PAGES,
+            cap_advice="narrow the source's facet_filters",
+        )
+
+
+def _normalize_api_job(
+    record: object, *, source: SourceConfig, host: str, first_seen_at: datetime
+) -> NormalizedJob:
+    if not isinstance(record, Mapping):
+        raise UnusableRecord("record is not a JSON object")
+    job_id = record.get("id")
+    identifier = job_id if isinstance(job_id, str) and _API_ID.match(job_id) else None
+    slug = record.get("urlTitle")
+    slug_text = html.unescape(slug) if isinstance(slug, str) and slug.strip() else "job"
+    places = record.get("jobLocationShort")
+    departments = record.get("department_obj")
+    return make_job(
+        provider=PROVIDER,
+        tenant=host,
+        source=source,
+        job_id=identifier,
+        title=html.unescape(record.get("unifiedStandardTitle") or "") or None,
+        posting_url=f"https://{host}/job/{quote(slug_text, safe='%-._~')}/{identifier}-en_US"
+        if identifier
+        else None,
+        first_seen_at=first_seen_at,
+        locations=unique(
+            (html_text(place.replace("<br/>", " ")) or "").strip(" ,") or None
+            for place in (places if isinstance(places, list) else [])
+            if isinstance(place, str)
+        ),
+        department=departments[0] if isinstance(departments, list) and departments else None,
+    )
 
 
 def _decode(payload: HttpPayload) -> str:
