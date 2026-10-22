@@ -1,0 +1,3541 @@
+{
+ "schema": 1,
+ "generated_at": "2026-10-22T00:39:14.709Z",
+ "board_total": 8245,
+ "internships": [
+  {
+   "department": "Vehicle Service",
+   "id": "232591",
+   "location": "Søborg",
+   "title": "Personvognsmekaniker Lærling - Søborg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "232731",
+   "location": "Berlin, Be",
+   "title": "(Power) Electronic/Electrical Design Engineer Intern, Drive Unit Traction Inverter (Powertrain) (m/f/d) - Tesla Engineering Germany"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "240142",
+   "location": "Vantaa",
+   "title": "Huoltomekaanikko-harjoittelija – Petikko"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "241213",
+   "location": "Hisings Backa, Västra Götalands Län",
+   "title": "Bilmekaniker Praktik - Gothenburg (Exportgatan)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "241215",
+   "location": "Uppsala, Uppsala Län",
+   "title": "Bilmekaniker Praktik - Uppsala"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "241217",
+   "location": "Upplands Vasby, Stockholms Lan",
+   "title": "Bilmekaniker Praktik - Stockholm (Kanalvägen)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "244107",
+   "location": "台中市",
+   "title": "Service Intern 電動車維修實習生"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "247709",
+   "location": "Reutlingen, Baden-württemberg",
+   "title": "Schülerpraktikum Reutlingen"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "247710",
+   "location": "Neuwied, Rhineland-palatinate",
+   "title": "Schülerpraktikum Neuwied"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "247711",
+   "location": "Neutraubling, Bavaria",
+   "title": "Schülerpraktikum Neutraubling"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "247788",
+   "location": "Austin, Texas",
+   "title": "2026, Manufacturing Development Program"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "253454",
+   "location": "Palo Alto, California",
+   "title": "Internship, Reinforcement Learning Engineer, Optimus (Summer 2026)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "257048",
+   "location": "Palo Alto, California",
+   "title": "Internship, Physics Engine Development Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "261781",
+   "location": "Kreisfreie Stadt Berlin",
+   "title": "Vehicle Integration Engineering - Mechanical Design Internship (m/w/d)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "262008",
+   "location": "Brookshire, Texas",
+   "title": "Manufacturing Development Program, Megapack"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "263119",
+   "location": "Tromso",
+   "title": "Service Technician Apprentice - Bodø"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "263121",
+   "location": "Skodje",
+   "title": "Service Technician Apprentice - Ålesund"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "263950",
+   "location": "Cyberjaya, Selangor",
+   "title": "Service Apprentice"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "264275",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Schülerpraktikum im November (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "266152",
+   "location": "Berlin, Be",
+   "title": "Technical Program Manager Intern, Battery Engineering, Tesla Engineering Germany (m/f/d)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "266320",
+   "location": "Palo Alto, California",
+   "title": "Internship, CAE Mechanical Design Engineer, Optimus (Fall 2026)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "266322",
+   "location": "Saint-ouen-sur-seine, Ile-de-france",
+   "title": "Stagiaire en Marketing & Communication - Marketing & Communications Intern (H/F) - St Ouen"
+  },
+  {
+   "department": "People",
+   "id": "266881",
+   "location": "Taipei, Taipei City",
+   "title": "Recruiting Intern"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "267076",
+   "location": "Vancouver, British Columbia",
+   "title": "Internship, Service Technician Trainee (Summer 2026)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "267486",
+   "location": "Athens, Attiki",
+   "title": "Metrology Technician Internship"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "267601",
+   "location": "Agios Ioannis Rentis",
+   "title": "Service Technician Apprentice - Athens (Τεχνικος οχηματων για Πρακτική εξάσκηση, Αθήνα)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "267706",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Schülerpraktikum Prüm"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "267908",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Werkstudent/in Einkauf (m/w/d)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "268052",
+   "location": "昭島市, 東京都",
+   "title": "テスラアドバイザーインターン/電気自動車ストア営業　昭島"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "268529",
+   "location": "Palo Alto, California",
+   "title": "Internship, Technical Program Manager, Optimus (Fall 2026)"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "269418",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Traffic Infrastructure Design Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "269518",
+   "location": "昭島市, 東京都",
+   "title": "テスラアドバイザーインターン/電気自動車ストア営業　昭島"
+  },
+  {
+   "department": "People",
+   "id": "269521",
+   "location": "Tokyo, Tokyo",
+   "title": "Recruitment Intern (Tokyo, Japan)"
+  },
+  {
+   "department": "Charging",
+   "id": "269538",
+   "location": "Tokyo, Tokyo",
+   "title": "Charging intern"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "269543",
+   "location": "Hillerød, Hovedstaden",
+   "title": "Personvognsmekaniker Lærling - Hillerød"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "269853",
+   "location": "Nyborg",
+   "title": "Service Technician Apprentice - Bergen (Åsane)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "270081",
+   "location": "Fremont, California",
+   "title": "Manufacturing Development Program"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "270108",
+   "location": "台北市, Taipei City",
+   "title": "Service Intern 電動車維修實習生"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "270744",
+   "location": "Berlin, Be",
+   "title": "Cell Qualification Testing Engineer Internship, Powertrain Engineering Europe (m/w/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "270745",
+   "location": "Berlin, Be",
+   "title": "Test Equipment Mechanical Design Engineer Internship, Tesla Engineering Germany (m/w/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "270748",
+   "location": "Berlin, Be",
+   "title": "Vehicle Testing Engineer Internship, Tesla Engineering Germany (m/w/d)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "271187",
+   "location": "Long Beach, California",
+   "title": "START Collision Technician (Winter 2027)"
+  },
+  {
+   "department": "People",
+   "id": "271340",
+   "location": "Palo Alto, California",
+   "title": "Internship, HR & People Teams (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "272103",
+   "location": "Kokstad",
+   "title": "Service Technician Apprentice - Bergen (Kokstad)"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "272232",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Mechanical Engineer Technical Services Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "People",
+   "id": "272532",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Software Engineering Intern, SI Applications (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "273355",
+   "location": "Reno, Nevada",
+   "title": "Manufacturing Development Program"
+  },
+  {
+   "department": "Legal & Government Affairs",
+   "id": "274253",
+   "location": "Alexandria, New South Wales",
+   "title": "Energy Policy Intern"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "274322",
+   "location": "Kastrup, Hovedstaden",
+   "title": "Personvognsmekaniker Lærling - Kastrup"
+  },
+  {
+   "department": "Finance",
+   "id": "274521",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Finance Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "274646",
+   "location": "Freiburg Im Breisgau",
+   "title": "Firmware & Validation Intern – Power Electronics PIL/SIL (m/f/d)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "275331",
+   "location": "Palo Alto, California",
+   "title": "Internship, SI Engineer, Tesla SI (Fall 2026/Winter 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "275494",
+   "location": "Palo Alto, California",
+   "title": "Internship, RL Engineer, Tesla SI (Fall 2026/Winter 2027) "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "275572",
+   "location": "Brugge, West-vlaanderen",
+   "title": "Service Technician Apprenticeship – Brugge"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "275573",
+   "location": "Hasselt",
+   "title": "Service Technician Apprenticeship – Hasselt "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "275575",
+   "location": "Zaventem, Brussels",
+   "title": "Service Technician Apprenticeship – Brussels/Zaventem"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "276274",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Data Analyst Operational Excellence, Supply Chain Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "People",
+   "id": "276365",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "HR Internship, German Speaker (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "276639",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "General Assembly Process Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "276705",
+   "location": "Fremont, California",
+   "title": "Internship, Vehicle Manufacturing Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "276706",
+   "location": "Fremont, California",
+   "title": "Internship, Technical Program Manager, Vehicle Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Charging",
+   "id": "276891",
+   "location": "Alexandria, New South Wales",
+   "title": "Charging Development Intern"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "277009",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Integration Engineer, SI Platforms (Winter/Spring 2027)"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "277090",
+   "location": "Austin, Texas",
+   "title": "Internship, Construction Project Management, Infrastructure (Winter/Spring 2027)"
+  },
+  {
+   "department": "Charging",
+   "id": "277439",
+   "location": "Munich",
+   "title": "Business Development Internship Charging - München (m/w/d)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "277502",
+   "location": "Chicago, Illinois",
+   "title": "Pathway to START Program (Winter 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "277525",
+   "location": "Fremont, California",
+   "title": "Internship, Controls Engineer, Manufacturing (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "277611",
+   "location": "Blue Ash, Ohio",
+   "title": "Pathway to START Program (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "277705",
+   "location": "Chatswood, New South Wales",
+   "title": "Apprentice Vehicle Technician, Chatswood | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "277707",
+   "location": "Alexandria, New South Wales",
+   "title": "Apprentice Vehicle Technician, Alexandria | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "277708",
+   "location": "Parramatta, Nsw",
+   "title": "Apprentice Vehicle Technician, Parramatta | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "277710",
+   "location": "Miranda, New South Wales",
+   "title": "Apprentice Vehicle Technician, Miranda | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "277711",
+   "location": "Fyshwick, Act",
+   "title": "Apprentice Vehicle Technician, Canberra | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "277712",
+   "location": "Newcastle West, Nsw",
+   "title": "Apprentice Vehicle Technician, Newcastle | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "277713",
+   "location": "Oakleigh South",
+   "title": "Apprentice Vehicle Technician, Oakleigh | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "277714",
+   "location": "Cremorne, Victoria",
+   "title": "Apprentice Vehicle Technician, Richmond | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "277715",
+   "location": "West Footscray, Victoria",
+   "title": "Apprentice Vehicle Technician, Footscray | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "277716",
+   "location": "Nunawading, Vic",
+   "title": "Apprentice Vehicle Technician, Nunawading | January 2027 Intake "
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "277744",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Wastewater Treatment Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "277799",
+   "location": "Austin, Texas",
+   "title": "Internship, Architecture & Structural Engineer, Infrastructure (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "277843",
+   "location": "Palo Alto, California",
+   "title": "Internship, Red Team Security Engineer, Vehicle Software (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "277856",
+   "location": "Aalborg",
+   "title": "Personvognsmekaniker Lærling - Aalborg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "278021",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Electrical Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "278120",
+   "location": "New Delhi, Dl",
+   "title": "Management Trainee - North"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "278121",
+   "location": "Mumbai Suburban, Maharashtra",
+   "title": "Management Trainee - South"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "278386",
+   "location": "Fremont, California",
+   "title": "Internship, Industrial Engineer, Supply Chain (Winter/Spring 2027)"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "278392",
+   "location": "Fremont, California",
+   "title": "Internship, Supply Chain (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "278461",
+   "location": "Upper Mount Gravatt, Queensland",
+   "title": "Apprentice Vehicle Technician, Mount Gravatt | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "278462",
+   "location": "Burleigh Heads, Queensland",
+   "title": "Apprentice Vehicle Technician, Gold Coast | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "278463",
+   "location": "Adelaide Airport, South Australia",
+   "title": "Apprentice Vehicle Technician, Adelaide | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "278464",
+   "location": "O'connor, Western Australia",
+   "title": "Apprentice Vehicle Technician, O'Connor | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "278465",
+   "location": "O'connor",
+   "title": "Apprentice Vehicle Technician, Osborne | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "278466",
+   "location": "Auckland, Auckland",
+   "title": "Apprentice Vehicle Technician, Auckland | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "278467",
+   "location": "Wellington",
+   "title": "Apprentice Vehicle Technician, Wellington | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "278468",
+   "location": "Christchurch, Canterbury",
+   "title": "Apprentice Vehicle Technician, Christchurch | January 2027 Intake "
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278506",
+   "location": "Neuwied, Rhineland-palatinate",
+   "title": "Ausbildung Technisches Produktdesign - Fachrichtung Maschinen- und Anlagenkonstruktion (m/w/d)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "278578",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, SI Infrastructure (Fall 2026/Winter 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278618",
+   "location": "Palo Alto, California",
+   "title": "Internship, Reliability Engineer, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278620",
+   "location": "Palo Alto, California",
+   "title": "Internship, Cell Qualification, Cell Engineering (Winter/Spring 2027) "
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278623",
+   "location": "Palo Alto, California",
+   "title": "Internship, Mechanical Design Engineer, Battery Engineering (Winter/Spring 2027) "
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278625",
+   "location": "Palo Alto, California",
+   "title": "Internship, Battery Materials, Battery Engineering (Winter/Spring 2027) "
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278628",
+   "location": "Fremont, California",
+   "title": "Internship, Safety Engineer, Vehicle Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278630",
+   "location": "Palo Alto, California",
+   "title": "Internship, Electrical Design Engineer, Vehicle Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "278925",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Quality Internship Paint Shop, Corrosion (m/f/d) - Gigafactory Berlin-Brandenburg "
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278946",
+   "location": "Fremont, California",
+   "title": "Internship, Mechanical Design Engineer, Vehicle Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "278952",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Construction Procurement Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278960",
+   "location": "Sparks, Nevada",
+   "title": "Internship, Powertrain, Manufacturing Automation Controls Engineering (Winter/Spring 2027) "
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278962",
+   "location": "Fremont, California",
+   "title": "Internship, Powertrain & Energy Products, Manufacturing Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278963",
+   "location": "Elgin, Illinois",
+   "title": "Internship, Automation Development & Tooling Engineer (Winter/Spring 2027) "
+  },
+  {
+   "department": "Design",
+   "id": "279000",
+   "location": "Hawthorne, California",
+   "title": " Internship, Digital Modeling, Design Studio (Winter/Spring 2027)"
+  },
+  {
+   "department": "Design",
+   "id": "279003",
+   "location": "Austin, Texas",
+   "title": "Internship, Architecture, Design Studio (Winter/Spring 2027) "
+  },
+  {
+   "department": "Design",
+   "id": "279012",
+   "location": "Hawthorne, California",
+   "title": "Internship, CMF Design, Design Studio (Winter/Spring 2027)"
+  },
+  {
+   "department": "Design",
+   "id": "279013",
+   "location": "Hawthorne, California",
+   "title": "Internship, Exterior Vehicle Design, Design Studio (Winter/Spring 2027)"
+  },
+  {
+   "department": "Design",
+   "id": "279014",
+   "location": "Austin, Texas",
+   "title": "Internship, Design Quality, Design Studio (Winter/Spring 2027)"
+  },
+  {
+   "department": "Design",
+   "id": "279016",
+   "location": "Hawthorne, California",
+   "title": "Internship, Digital Content, Design Studio (Winter/Spring 2027)"
+  },
+  {
+   "department": "Design",
+   "id": "279018",
+   "location": "Hawthorne, California",
+   "title": "Internship, Human Factors & Ergonomics, Design Studio (Winter/Spring 2027)"
+  },
+  {
+   "department": "Design",
+   "id": "279019",
+   "location": "Hawthorne, California",
+   "title": "Internship, Industrial Design, Design Studio (Winter/Spring 2027)"
+  },
+  {
+   "department": "Design",
+   "id": "279020",
+   "location": "Hawthorne, California",
+   "title": "Internship, Interior Vehicle Design, Design Studio (Winter/Spring 2027) "
+  },
+  {
+   "department": "Design",
+   "id": "279022",
+   "location": "Austin, Texas",
+   "title": "Internship, Soft Trim & Seat Design, Design Studio (Winter/Spring 2027)"
+  },
+  {
+   "department": "Design",
+   "id": "279023",
+   "location": "Hawthorne, California",
+   "title": "Internship, UX Design, Design Studio (Winter/Spring 2027)"
+  },
+  {
+   "department": "Design",
+   "id": "279030",
+   "location": "Fremont, California",
+   "title": "Internship, Automotive Photographer & Retoucher, Design Studio (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "279034",
+   "location": "Fremont, California",
+   "title": "Internship, Manufacturing Engineering, Optimus (Winter/ Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "279111",
+   "location": "Bengaluru Urban, Ka",
+   "title": "DFT Intern"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "279112",
+   "location": "Bengaluru Urban, Ka",
+   "title": "ASIC RTL Design Intern"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279230",
+   "location": "Pleasant Grove, Utah",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279238",
+   "location": "Dedham, Massachusetts",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279311",
+   "location": "Columbus, Ohio",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "279313",
+   "location": "Fremont, California",
+   "title": "Internship, Industrial Engineer, Manufacturing (Winter/Spring 2027)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "279314",
+   "location": "Sparks, Nevada",
+   "title": "Internship, Instructional Design, Manufacturing (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279370",
+   "location": "Chesterfield, Missouri",
+   "title": "Internship, Service Technician Trainee (Fall 2026) "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279414",
+   "location": "Kansas City, Missouri",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279417",
+   "location": "Saint Louis, Missouri",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279421",
+   "location": "Milwaukee, Wisconsin",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279422",
+   "location": "Madison, Wisconsin",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279425",
+   "location": "West Bloomfield Township, Michigan",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "279508",
+   "location": "Palo Alto, California",
+   "title": "Internship, Thermal Design Engineer, Electronic Devices (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279545",
+   "location": "Bartlett, Tennessee",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "279585",
+   "location": "Berlin, Be",
+   "title": "Mechanical Design Engineering Internship, High Voltage Distribution, Tesla Engineering Germany (m/f/d)"
+  },
+  {
+   "department": "People",
+   "id": "279586",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "HR Business Partner Werkstudent (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "279600",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, SI Inference Co Design (Winter/Spring 2027) "
+  },
+  {
+   "department": "Tesla SI",
+   "id": "279603",
+   "location": "Palo Alto, California",
+   "title": "Internship, Applied SI Engineer, SI Hardware (Winter/Spring 2027) "
+  },
+  {
+   "department": "People",
+   "id": "279606",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Personalentwicklung / HR Werkstudent (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279619",
+   "location": "Rockville, Maryland",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279620",
+   "location": "Sterling, Virginia",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279687",
+   "location": "Cyberjaya, Selangor",
+   "title": "Service Apprentice"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "279742",
+   "location": "Austin, Texas",
+   "title": "Internship, Mechanical Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "279743",
+   "location": "Austin, Texas",
+   "title": "Internship, Electrical Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "279752",
+   "location": "Palo Alto, California",
+   "title": " Internship, Electronic Design Engineer, Radio Frequency (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "279760",
+   "location": "Palo Alto, California",
+   "title": "Internship, Electronic Design Engineer, Electronic Systems (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "279763",
+   "location": "Palo Alto, California",
+   "title": "Internship, Engineering Automation Software Engineer, Vehicle Engineering (Winter/Spring 2027)   "
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "279766",
+   "location": "Palo Alto, California",
+   "title": " Internship, Systems Architecture & Integration Engineer, LV Architecture (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279782",
+   "location": "Totowa, New Jersey",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279783",
+   "location": "Whitehall, Pennsylvania",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279787",
+   "location": "Seattle, Washington",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279792",
+   "location": "Mechanicsburg, Pennsylvania",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279807",
+   "location": "Laval, Quebec",
+   "title": "Stage, Technicien de Service (Automne 2026) | Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279816",
+   "location": "Dublin, California",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279835",
+   "location": "Laval, Quebec",
+   "title": "Technicien de Service START (Hiver 2027) | START Service Technician (Winter 2027) "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279837",
+   "location": "Alexandria, New South Wales",
+   "title": "Apprentice Body Repair Technician (Panel Beater), Alexandria | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279838",
+   "location": "Auckland, Auckland",
+   "title": "Apprentice Body Repair Technician (Panel Beater), Auckland South | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279839",
+   "location": "Eagle Farm",
+   "title": "Apprentice Body Repair Technician (Panel Beater), Eagle Farm | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279840",
+   "location": "Oakleigh South, Vic",
+   "title": "Apprentice Body Repair Technician (Panel Beater), Oakleigh | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279841",
+   "location": "O'connor, Western Australia",
+   "title": "Apprentice Body Repair Technician (Panel Beater), O'Connor | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279842",
+   "location": "O'connor, Western Australia",
+   "title": "Apprentice Body Repair Spray Painter, O'Connor | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279843",
+   "location": "Oakleigh South, Vic",
+   "title": "Apprentice Body Repair Spray Painter, Oakleigh | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279844",
+   "location": "Eagle Farm",
+   "title": "Apprentice Body Repair Spray Painter, Eagle Farm | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279845",
+   "location": "Alexandria, New South Wales",
+   "title": "Apprentice Body Repair Spray Painter, Alexandria | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279846",
+   "location": "Auckland, Auckland",
+   "title": "Apprentice Body Repair Spray Painter, Auckland South| January 2027 Intake "
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "279877",
+   "location": "Berlin",
+   "title": "Real Estate Internship (m/w/d)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279954",
+   "location": "Sacramento, California",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Finance",
+   "id": "279963",
+   "location": "Austin, Texas",
+   "title": "Internship, Accounting & Finance (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "279979",
+   "location": "Burlingame, California",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "279991",
+   "location": "Fremont, California",
+   "title": "Internship, Firmware Engineer, New Programs Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280090",
+   "location": "Fremont, California",
+   "title": "Internship, Quality Engineer, Manufacturing (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280192",
+   "location": "Fremont, California",
+   "title": " Internship, Chemical Engineer, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280285",
+   "location": "Austin, Texas",
+   "title": "Internship, Controls & Software Automation Engineer, Cell Manufacturing (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280286",
+   "location": "Austin, Texas",
+   "title": "Internship, Engineer, Cell Manufacturing (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280288",
+   "location": "Hutto, Texas",
+   "title": " Internship, Materials Engineer, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280289",
+   "location": "Fremont, California",
+   "title": " Internship, Mechanical Engineer, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280290",
+   "location": "Fremont, California",
+   "title": "Internship, Technical Program Manager, Cell Manufacturing (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "280324",
+   "location": "Montreal, Quebec",
+   "title": "Stage, Technicien de Service (Automne 2026) | Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280389",
+   "location": "Markham, Ontario",
+   "title": " Internship, Mechanical Engineer, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280390",
+   "location": "Markham, Ontario",
+   "title": "Internship, Technical Program Manager, Cell Manufacturing (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280392",
+   "location": "San Diego, California",
+   "title": " Internship, Electrical Engineer, Cell Manufacturing (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280393",
+   "location": "Richmond Hill, Ontario",
+   "title": " Internship, Mechanical Design Engineer, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "280668",
+   "location": "Marietta, Georgia",
+   "title": "START Service Technician (Winter 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "280669",
+   "location": "Huntersville, North Carolina",
+   "title": "START Service Technician (Winter 2026)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280820",
+   "location": "Fremont, California",
+   "title": "Internship, Fullstack Engineer, Applications Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280826",
+   "location": "Fremont, California",
+   "title": "Internship, Equipment or Process Engineer, Manufacturing (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "280960",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Maps & Navigation, Robotaxi (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "280967",
+   "location": "Fremont, California",
+   "title": "Internship, Materials Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "281020",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Learning & Development - AI & Process Automation Intern (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281023",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Schülerpraktikum im Januar 2027 (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281024",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Schülerpraktikum im Februar 2027 (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281025",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Schülerpraktikum im April 2027 (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281026",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Schülerpraktikum im Juni 2027 (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281027",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Schülerpraktikum im September 2027 (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "281097",
+   "location": "Palo Alto, California",
+   "title": "Next Gen Internship, Software Engineer, Vehicle Software (Summer 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "281098",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software QA Engineer, Vehicle Software (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "281099",
+   "location": "Palo Alto, California",
+   "title": " Internship, Fullstack Software Engineer, Fleetnet (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281113",
+   "location": "Palo Alto, California",
+   "title": "Internship, Electromagnetic Compatibility Engineer (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "281127",
+   "location": "Bengaluru Urban, Ka",
+   "title": "SOC Verification Graduate Intern"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281172",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Duales Studium Maschinenbau 2027 (B. Eng.) (m/w/d) - TH Wildau - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281173",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Duales Studium Automatisierungstechnik (B.Eng.) (m/w/d) - TH Wildau - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281174",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Masterstudium Maschinenbau – Produktionssysteme (M.Eng.) (m/w/d) – BHT Berlin - Gigafactory Berlin-Brandenburg "
+  },
+  {
+   "department": "Supply Chain",
+   "id": "281175",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Duales Studium Mobilität Umwelt Logistik (B.Sc.) – TH Wildau - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281176",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zum Elektroniker für Betriebstechnik (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281177",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zum Elektroniker Automatisierungstechnik (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281182",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Praxisorientiertes Studium Elektrotechnik (B.Eng.) – HTW Berlin - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281188",
+   "location": "Rosenberg, Texas",
+   "title": "START Service Technician (Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281218",
+   "location": "Louisville, Colorado",
+   "title": "Internship, Cell Materials Engineer, Cell Engineering (Winter/Spring 2027) "
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281219",
+   "location": "Palo Alto, California",
+   "title": "Internship, Cell Engineer, Cell Engineering (Winter/Spring 2027) "
+  },
+  {
+   "department": "Tesla SI",
+   "id": "281233",
+   "location": "Palo Alto, California",
+   "title": "Internship, SI Hardware Physical Design Engineer, SI Hardware (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "281271",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Maps & Navigation Validation (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "281306",
+   "location": "Red Hill, Queensland",
+   "title": "Embedded Software & Automation Engineering Intern, Energy Service Tooling"
+  },
+  {
+   "department": "People",
+   "id": "281349",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "HR Systems & Automation Intern (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281377",
+   "location": "East Attica Regional Unit",
+   "title": "Software Engineering Internship - Post-Processing  Dyno Measurements"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281395",
+   "location": "Charlotte, North Carolina",
+   "title": "Pathway to START Program (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281397",
+   "location": "Owings Mills, Maryland",
+   "title": "Pathway to START Program (Winter 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "281457",
+   "location": "Hayward, California",
+   "title": "Internship, Electrical Engineer, Energy Service Tooling (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281462",
+   "location": "Fremont, California",
+   "title": "Internship, Fullstack Engineer, Infrastructure Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281467",
+   "location": "Fremont, California",
+   "title": "Internship, Backend Engineer, Infrastructure Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281473",
+   "location": "Bellevue, Washington",
+   "title": "Internship, Software Engineer, Information Security (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281476",
+   "location": "Fremont, California",
+   "title": "Internship, Network Engineer, Infrastructure Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281482",
+   "location": "Fremont, California",
+   "title": "Internship, Site Reliability Engineer, Infrastructure Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281483",
+   "location": "Austin, Texas",
+   "title": "Internship, Offensive Security Engineer, Information Security (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281501",
+   "location": "Mississauga, Ontario",
+   "title": " Internship, Cathode Advanced Manufacturing Engineer, Cell Engineering (Spring 2027)"
+  },
+  {
+   "department": "Environmental, Health, Safety & Security",
+   "id": "281542",
+   "location": "Hamburg",
+   "title": "EHS Specialist Internship (m/w/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281552",
+   "location": "Berlin, Be",
+   "title": "Electrical/Electronic Launch Design Engineering Internship, Battery Engineering, Tesla Engineering Germany (m/f/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281561",
+   "location": "Austin, Texas",
+   "title": "Internship, Security Analyst, Security & Intelligence (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "281607",
+   "location": "Palo Alto, California",
+   "title": "Internship, Product Support Engineer, Service Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "281612",
+   "location": "Palo Alto, California",
+   "title": "Internship, Data Engineer, Fleet Data, Self-Driving (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "281623",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Automated Diagnostics Intern (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281625",
+   "location": "Palo Alto, California",
+   "title": " Internship, Mobile Applications, Automated Diagnostics (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "281632",
+   "location": "Palo Alto, California",
+   "title": "Internship, Technical Editor, Service Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "281634",
+   "location": "Fremont, California",
+   "title": "START Optimus Service Technician (Winter 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281650",
+   "location": "Fremont, California",
+   "title": "Internship, Launch Engineer, Manufacturing (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281673",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Praxisorientiertes Studium Technische Informatik – Embedded Systems (B.Eng.) (m/w/d) – BHT Berlin - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281684",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Praxisorientiertes Studium Maschinenbau (B.Sc.) (m/w/d) – HTW Berlin - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281686",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Praxisorientiertes Studium Maschinenbau (B.Eng.) (m/w/d) – BHT Berlin - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281687",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zum Chemielaboranten (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281689",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zum Industriemechaniker (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281690",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zum Werkzeugmechaniker (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281692",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zum Gießereimechaniker (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281693",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zum Kunststoff- und Kautschuktechnologe (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281694",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zum Mechatroniker (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281695",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zum Verfahrensmechaniker Beschichtungstechnik (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "281699",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zum Anlagenmechaniker für Sanitär- Heizungs- und Klimatechnik (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "281700",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zum Kraftfahrzeugmechatroniker für System- und Hochvolttechnik (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "281701",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zum Umwelttechnologen für Abwasserbewirtschaftung (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "281702",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung Werkfeuerwehrleute (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Environmental, Health, Safety & Security",
+   "id": "281703",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zur Fachkraft für Schutz und Sicherheit (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "281704",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zur Fachkraft Lagerlogistik - Industrie 4.0 - 2027 (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Operations & Business Support",
+   "id": "281705",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung Industriekaufleute (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Environmental, Health, Safety & Security",
+   "id": "281739",
+   "location": "Austin, Texas",
+   "title": "Internship, Environmental, Health, Safety & Security (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281756",
+   "location": "Wolverhampton",
+   "title": "Trainee Automotive Mechanic / Service Technician – Wolverhampton"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281809",
+   "location": "Bristol, England",
+   "title": "Trainee Automotive Mechanic / Service Technician – Bristol"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281810",
+   "location": "Dartford, London",
+   "title": "Trainee Automotive Mechanic / Service Technician – Dartford"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281811",
+   "location": "London",
+   "title": "Trainee Automotive Mechanic / Service Technician – Tottenham"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281813",
+   "location": "Dublin, Dublin",
+   "title": "Trainee Automotive Mechanic / Service Technician – Dublin"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281814",
+   "location": "Manchester",
+   "title": "Trainee Automotive Mechanic / Service Technician – Manchester"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281815",
+   "location": "Aberdeen, Aberdeenshire",
+   "title": "Trainee Automotive Mechanic / Service Technician – Aberdeen"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281816",
+   "location": "Belfast",
+   "title": "Trainee Automotive Mechanic / Service Technician – Belfast"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281817",
+   "location": "Chester, Cheshire",
+   "title": "Trainee Automotive Mechanic / Service Technician – Chester"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281818",
+   "location": "Newbridge",
+   "title": "Trainee Automotive Mechanic / Service Technician – Edinburgh"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281819",
+   "location": "Glasgow, Scotland",
+   "title": "Trainee Automotive Mechanic / Service Technician – Glasgow"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281820",
+   "location": "Leeds, West Yorkshire",
+   "title": "Trainee Automotive Mechanic / Service Technician – Leeds"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281821",
+   "location": "Liverpool",
+   "title": "Trainee Automotive Mechanic / Service Technician – Liverpool"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281822",
+   "location": "Newcastle",
+   "title": "Trainee Automotive Mechanic / Service Technician – Newcastle"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281823",
+   "location": "Sheffield",
+   "title": "Trainee Automotive Mechanic / Service Technician – Sheffield"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281824",
+   "location": "Chelmsford, Essex",
+   "title": "Trainee Automotive Mechanic / Service Technician – Chelmsford"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281825",
+   "location": "St Albans",
+   "title": "Trainee Automotive Mechanic / Service Technician – St Albans"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281826",
+   "location": "Cork",
+   "title": "Trainee Automotive Mechanic / Service Technician – Cork"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281827",
+   "location": "Birmingham, Greater London",
+   "title": "Trainee Automotive Mechanic / Service Technician – Longbridge"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281828",
+   "location": "Reading, Berkshire",
+   "title": "Trainee Automotive Mechanic / Service Technician – Reading"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281829",
+   "location": "Southampton",
+   "title": "Trainee Automotive Mechanic / Service Technician – Southampton"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281830",
+   "location": "Ferndown, England",
+   "title": "Trainee Automotive Mechanic / Service Technician – Bournemouth"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281831",
+   "location": "Cardiff",
+   "title": "Trainee Automotive Mechanic / Service Technician – Cardiff"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281832",
+   "location": "Exeter",
+   "title": "Trainee Automotive Mechanic / Service Technician – Exeter"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281833",
+   "location": "Winchester",
+   "title": "Trainee Automotive Mechanic / Service Technician – Winchester"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281834",
+   "location": "Cambridge, England",
+   "title": "Trainee Automotive Mechanic / Service Technician – Cambridge"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281835",
+   "location": "Lincoln",
+   "title": "Trainee Automotive Mechanic / Service Technician – Lincoln"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281836",
+   "location": "Northampton, England",
+   "title": "Trainee Automotive Mechanic / Service Technician – Northampton"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281837",
+   "location": "Nottingham, Nottinghamshire",
+   "title": "Trainee Automotive Mechanic / Service Technician – Nottingham"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "281838",
+   "location": "Solihull",
+   "title": "Trainee Automotive Mechanic / Service Technician – Solihull"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "281921",
+   "location": "Palo Alto, California",
+   "title": "Internship, Vehicle Software Engineer, Diagnostic User Interface (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "281951",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Core SI Compiler & Runtime (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281977",
+   "location": "Fremont, California",
+   "title": "Internship, Noise Vibration Harshness Engineer, Vehicle Engineering (Winter/Spring 2027)  "
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "282123",
+   "location": "Fremont, California",
+   "title": "Internship, Instructional Designer, Collision (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "282147",
+   "location": "Palo Alto, California",
+   "title": "Internship, Physics Engine Development Engineer, Optimus (Summer 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282227",
+   "location": "Palo Alto, California",
+   "title": "Internship, Embedded Software Engineer, High Voltage Systems (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282241",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Integration Engineer, Battery Management Systems (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282242",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Vehicle UI Development (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282246",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Validation Engineer, Vehicle Firmware (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282248",
+   "location": "Palo Alto, California",
+   "title": "Internship, Embedded Software Engineer, Steering, Chassis Systems (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282250",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Validation Engineer, Steering, Chassis Systems (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282253",
+   "location": "Palo Alto, California",
+   "title": "Internship, Technical Project Manager, Chassis Controls, Vehicle Software (Winter/Spring 2026)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282255",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Torque Path & Chassis Controls (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282258",
+   "location": "Palo Alto, California",
+   "title": "Internship, Integration Engineer, Access Control Systems (Winter/Spring 2027)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "282261",
+   "location": "Old Bridge, New Jersey",
+   "title": "Internship, Program Manager, North America Service Field Management (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282264",
+   "location": "Palo Alto, California",
+   "title": "Internship, Thermal Controls Engineer, Vehicle Controls (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282265",
+   "location": "Palo Alto, California",
+   "title": "Internship, Vehicle Dynamics Controls Engineer, Vehicle Controls (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282266",
+   "location": "Palo Alto, California",
+   "title": "Internship, Motor Controls Engineer, Vehicle Controls (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282267",
+   "location": "Palo Alto, California",
+   "title": "Internship, Powertrain Controls Engineer, Vehicle Controls (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "282282",
+   "location": "Austin, Texas",
+   "title": "Internship, Mechanical Engineer, Global Body Repair Business & Technical Operations (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "282291",
+   "location": "Palo Alto, California",
+   "title": "Internship, Fullstack Engineer, SI Tooling (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "282292",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, SI Data Infrastructure (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "282301",
+   "location": "Palo Alto, California",
+   "title": "Internship, Audio & Sensor Software Engineer, Vehicle Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Finance",
+   "id": "282303",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Finance Programs (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "282331",
+   "location": "Palo Alto, California",
+   "title": " Internship, Embedded Systems Software Engineer, SI Platforms (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "282340",
+   "location": "Palo Alto, California",
+   "title": " Internship, Embedded Software Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "282342",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Integration Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "282445",
+   "location": "Ottawa, Ontario",
+   "title": "Internship, Service Technician Trainee (Fall 2026) "
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "282451",
+   "location": "Palo Alto, California",
+   "title": "Internship, Cost Reduction, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "282464",
+   "location": "Austin, Texas",
+   "title": "Internship, Program Manager, North America Service Program & Project Management (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "282596",
+   "location": "Fremont, California",
+   "title": "Internship, Test Engineer, Self-Driving (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "282597",
+   "location": "Austin, Texas",
+   "title": "Internship, Recruiting (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "282598",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Code Hardening & Framework Resilience, Robotaxi (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "282599",
+   "location": "Palo Alto, California",
+   "title": "Internship, Recruiting (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "282600",
+   "location": "Sparks, Nevada",
+   "title": "Internship, Recruiting (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "282648",
+   "location": "West Drayton",
+   "title": "Trainee Automotive Mechanic / Service Technician – Heathrow"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "282649",
+   "location": "London",
+   "title": "Trainee Automotive Mechanic / Service Technician – Park Royal"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "282719",
+   "location": "Wezep, Gelderland",
+   "title": "Service Technician Apprenticeship – Zwolle"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "282754",
+   "location": "Palo Alto, California",
+   "title": "Technical Program Management Intern, Fleet Operations (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "282774",
+   "location": "Fremont, California",
+   "title": "Internship, Software Engineer, IT Apps (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "282777",
+   "location": "Palo Alto, California",
+   "title": "Internship, Audio Visual Technician, Infrastructure Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "282780",
+   "location": "Fremont, California",
+   "title": "Internship, Video Producer, Product Knowledge, North America Sales Operations (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "282825",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Autonomy Systems Foundations (Winter/Spring 2027)"
+  },
+  {
+   "department": "Terafab",
+   "id": "282846",
+   "location": "Austin, Texas",
+   "title": "Internship, Equipment Engineer, Terafab (Winter/Spring 2027)"
+  },
+  {
+   "department": "Terafab",
+   "id": "282848",
+   "location": "Austin, Texas",
+   "title": "Internship, Process Engineer, Terafab (Winter/Spring 2027)"
+  },
+  {
+   "department": "Terafab",
+   "id": "282849",
+   "location": "Austin, Texas",
+   "title": "Internship, Equipment Engineer, Terafab (Fall 2026)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "282916",
+   "location": "Fremont, California",
+   "title": "Internship, Machine Learning Engineer, Factory Software (Winter/Spring 2027)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "282931",
+   "location": "Encinitas, California",
+   "title": "Internship, Program Manager, Territory (Winter/Spring 2027)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "282971",
+   "location": "New York, New York",
+   "title": "Internship, Instructional Designer, Service Content Development (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "283008",
+   "location": "Bengaluru Urban, Ka",
+   "title": "Tesla SI Software — Embedded Systems Internship"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "283076",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Chemical Engineer Technical Services Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283117",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Data Platforms (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "283128",
+   "location": "Palo Alto, California",
+   "title": "Internship, Robotics Physics Modeling Engineer, Model Based Design, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Operations & Business Support",
+   "id": "283137",
+   "location": "Hawthorne, California",
+   "title": "Internship, Vehicle Accessories & Merchandise Product Intern, Global Merchandise (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283138",
+   "location": "Palo Alto, California",
+   "title": "Internship, Data Engineer, Fleet Analytics (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283156",
+   "location": "Palo Alto, California",
+   "title": "Internship, Commercial Charging Product Management, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "283200",
+   "location": "Mumbai, Mh",
+   "title": "Service Trainee"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "283214",
+   "location": "Austin, Texas",
+   "title": "Internship, Factory Engineering, Infrastructure (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "283220",
+   "location": "Palo Alto, California",
+   "title": "Internship, Content Integration Engineer, Vehicle Firmware (Winter/Spring 2027)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "283241",
+   "location": "Richmond Hill, Ontario",
+   "title": "CNC Machinist, Apprentice"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283259",
+   "location": "Palo Alto, California",
+   "title": "Internship, Electrical Engineer, Project Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "283265",
+   "location": "Brookshire, Texas",
+   "title": "START Manufacturing Trainee, Megapack"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283274",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Camera & Robotics (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283290",
+   "location": "Palo Alto, California",
+   "title": "Internship, Computer Vision Engineer, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283298",
+   "location": "Fremont, California",
+   "title": "Internship, Product Engineer, Applications Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283352",
+   "location": "East Attica Regional Unit",
+   "title": "Optimus Powertrain Internship"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283364",
+   "location": "Fremont, California",
+   "title": "Internship, Thermal R&D, Thermal Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "283378",
+   "location": "Langley, British Columbia",
+   "title": "Internship, Actuator Geartrain Mechanical Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "283379",
+   "location": "City Of Industry, California",
+   "title": "START Semi Technician (Winter 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283384",
+   "location": "Palo Alto, California",
+   "title": "Internship, Field Quality Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283387",
+   "location": "Palo Alto, California",
+   "title": "Internship, Thermal System Modeling Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "283393",
+   "location": "San Jose, California",
+   "title": "START Service Technician (Winter 2027) "
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "283395",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Integration Engineer, Factory Firmware (Winter/Spring 2027)  "
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283396",
+   "location": "Palo Alto, California",
+   "title": "Internship, System Integration & Test Automation Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283423",
+   "location": "Palo Alto, California",
+   "title": "Internship, Solar Hardware Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283426",
+   "location": "Fremont, California",
+   "title": "Internship, Manufacturing Electrical Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "283447",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Integration Engineer, Factory Firmware Team (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283511",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Manufacturing Engineering Internship, Electrode Mixing, Battery Cell (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283546",
+   "location": "East Attica Regional Unit",
+   "title": "Optimus Data Analysis Internship"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283620",
+   "location": "Palo Alto, California",
+   "title": "Internship, Thermal Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283630",
+   "location": "Buffalo, New York",
+   "title": "Internship, Factory Firmware Integration Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "283633",
+   "location": "Quebec City, Quebec",
+   "title": "Internship, Program Manager, Territory Operations (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "283634",
+   "location": "Langley, British Columbia",
+   "title": "Internship, Actuator Test Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "283635",
+   "location": "Langley, British Columbia",
+   "title": "Internship, Robotics Test Automation Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283672",
+   "location": "Palo Alto, California",
+   "title": "Internship, Electrical Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "283674",
+   "location": "Palo Alto, California",
+   "title": "Internship, Technical Program Management, People Products (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283675",
+   "location": "Palo Alto, California",
+   "title": "Internship, Radio Frequency Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283676",
+   "location": "Palo Alto, California",
+   "title": "Internship, Electronic Design Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283677",
+   "location": "Palo Alto, California",
+   "title": "Internship, Mechanical Design Engineer, Enclosures, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "283704",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Material Flow Engineering Internship (m/f/d) - Gigafactory Berlin - Brandenburg "
+  },
+  {
+   "department": "Charging",
+   "id": "283711",
+   "location": "Saint-ouen-sur-seine, Ile-de-france",
+   "title": "Stage - Concepteur de projet de recharge / Charging Project Designer, Intern (H/F) - Saint-Ouen"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283816",
+   "location": "Palo Alto, California",
+   "title": "Internship, System Controls Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283821",
+   "location": "Austin, Texas",
+   "title": " Internship, Process Engineering, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283824",
+   "location": "Fremont, California",
+   "title": " Internship, Mechanical Engineer, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy - Solar & Storage",
+   "id": "283841",
+   "location": "Palo Alto, California",
+   "title": "Internship, Product Manager, Residential Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy - Solar & Storage",
+   "id": "283849",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Firmware Technical Program Manager (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283857",
+   "location": "Palo Alto, California",
+   "title": "Internship, Embedded System Software Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283950",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer Opticaster, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "283954",
+   "location": "Palo Alto, California",
+   "title": "Internship, Validation Engineer Intern, Body Controls (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283956",
+   "location": "Palo Alto, California",
+   "title": "Internship, Site Controller Software Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "283989",
+   "location": "Palo Alto, California",
+   "title": "Internship, Mechanical Design Engineer, Autonomous Charging, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "283990",
+   "location": "Palo Alto, California",
+   "title": "Internship, Systems Integration Engineer, Body Controls (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "283994",
+   "location": "Palo Alto, California",
+   "title": "Internship, Embedded Software Engineer, Body Controls Firmware (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284003",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineering, People Products (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284004",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineering, People Products (Summer 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "284007",
+   "location": "Palo Alto, California",
+   "title": "Internship, Electromechanical Product Design Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "284008",
+   "location": "Palo Alto, California",
+   "title": "Internship, Electronic Design Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "284009",
+   "location": "Palo Alto, California",
+   "title": "Internship, Electrical Engineer, Power Electronics, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284020",
+   "location": "Palo Alto, California",
+   "title": "Internship, Mechanical Design Engineer, Residential Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284026",
+   "location": "Palo Alto, California",
+   "title": "Internship, System Integration & Test Automation Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284029",
+   "location": "Palo Alto, California",
+   "title": "Internship, Power Electronics Firmware Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284031",
+   "location": "Palo Alto, California",
+   "title": "Internship, System Test Engineer, Off Board Vehicle Charging, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284040",
+   "location": "North Geelong, Vic",
+   "title": "Apprentice Vehicle Technician, Geelong | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284041",
+   "location": "Red Hill, Queensland",
+   "title": "Apprentice Vehicle Technician, Red Hill | January 2027 Intake "
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284126",
+   "location": "Palo Alto, California",
+   "title": "Internship, Reliability Electronics Design Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "284156",
+   "location": "Austin, Texas",
+   "title": "Internship, Integration Engineer, Factory Firmware (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284180",
+   "location": "Palo Alto, California",
+   "title": "Internship, Power Electronics Controls Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284183",
+   "location": "Palo Alto, California",
+   "title": "Internship, Power Electronics Electrical Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284213",
+   "location": "Palo Alto, California",
+   "title": "Internship, Engineering Product Marketing (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284215",
+   "location": "Fremont, California",
+   "title": "Internship, Grid Compliance Test Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284235",
+   "location": "East Attica Regional Unit",
+   "title": "Technical Program Manager Internship"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284237",
+   "location": "Aarhus, Midtjylland",
+   "title": "Personvognsmekaniker Lærling - Aarhus"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284275",
+   "location": "Palo Alto, California",
+   "title": "Internship, Residential Energy Device Software Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284278",
+   "location": "Palo Alto, California",
+   "title": "Internship, Reliability Test Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284286",
+   "location": "Palo Alto, California",
+   "title": "Internship, Supercharger SIL Test Infrastructure Software Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284343",
+   "location": "Palo Alto, California",
+   "title": "Internship, Mechanical Design Engineer, Vehicle Power Electronics, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "284356",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Production Engineering Internship, Cell (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284398",
+   "location": "Cham",
+   "title": "Ausbildung zum Automobil-Mechatroniker EFZ System- und Hochvolttechnik (m/w/d) - Cham"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284400",
+   "location": "Möhlin, Ag",
+   "title": "Ausbildung zum Automobil-Mechatroniker EFZ System- und Hochvolttechnik (m/w/d) - Basel"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284402",
+   "location": "Buchs",
+   "title": "Ausbildung zum Automobil-Mechatroniker EFZ System- und Hochvolttechnik (m/w/d)- Zurich, Winterthur"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "284423",
+   "location": "Santa Oliva",
+   "title": "Vehicle Dynamics Chassis Controls Engineering Internship "
+  },
+  {
+   "department": "Tesla SI",
+   "id": "284436",
+   "location": "Palo Alto, California",
+   "title": "Internship, Robotics Modeling & Simulation Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Finance",
+   "id": "284439",
+   "location": "Sparks, Nevada",
+   "title": "Internship, FP&A & Business Operations (Summer 2027)"
+  },
+  {
+   "department": "Finance",
+   "id": "284442",
+   "location": "Palo Alto, California",
+   "title": "Internship, FP&A & Business Operations (Summer 2027)"
+  },
+  {
+   "department": "Finance",
+   "id": "284443",
+   "location": "Austin, Texas",
+   "title": "Internship, FP&A & Business Operations (Summer 2027)"
+  },
+  {
+   "department": "People",
+   "id": "284446",
+   "location": "Brookshire, Texas",
+   "title": "Internship, Recruiting (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284448",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer Industrial Firmware, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284489",
+   "location": "Palo Alto, California",
+   "title": "Internship, Solar Hardware Engineer, PV Cell, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284490",
+   "location": "Fremont, California",
+   "title": "Internship, IT Support Technician, Infrastructure Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284504",
+   "location": "Rochester, New York",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284505",
+   "location": "Brooklyn, New York",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284506",
+   "location": "Westbury, New York",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284509",
+   "location": "White Plains, New York",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "284527",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Data Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "284551",
+   "location": "Palo Alto, California",
+   "title": "Internship, Robotics Mechanical Design Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "284593",
+   "location": "Palo Alto, California",
+   "title": "Internship, Robotics Electrical Design Engineer, Tactile Sensing, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "284605",
+   "location": "Oakville, Ontario",
+   "title": "Internship, Project Manager, Sales & Delivery (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284607",
+   "location": "Palo Alto, California",
+   "title": "Internship, Optical Engineer, Electronic Systems (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284643",
+   "location": "Fremont, California",
+   "title": "Internship, Compliance Test Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284646",
+   "location": "Washington, District Of Columbia",
+   "title": "Internship, EV Charging & Energy Public Policy (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284718",
+   "location": "Palo Alto, California",
+   "title": "Internship, Mechanical Test Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "284732",
+   "location": "Austin, Texas",
+   "title": "Internship, Compensation Data Analyst (Winter/Fall 2026)"
+  },
+  {
+   "department": "People",
+   "id": "284734",
+   "location": "Austin, Texas",
+   "title": "Internship, Compensation Project Manager (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284737",
+   "location": "Austin, Texas",
+   "title": "Internship, Technical Construction Project Manager, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "284741",
+   "location": "Austin, Texas",
+   "title": "Internship, HR Partner, Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "284743",
+   "location": "Austin, Texas",
+   "title": "Internship, Total Rewards (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "284745",
+   "location": "Austin, Texas",
+   "title": "Internship, Immigration Specialist (Winter/Spring 2027)"
+  },
+  {
+   "department": "Finance",
+   "id": "284749",
+   "location": "Draper, Utah",
+   "title": "Internship, Payroll (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284753",
+   "location": "Fremont, California",
+   "title": "Internship, Grid Compliance Test Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Design",
+   "id": "284757",
+   "location": "Austin, Texas",
+   "title": "Internship, Video Production, People Content (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284776",
+   "location": "Palo Alto, California",
+   "title": "Internship, Mobile Application Software Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284796",
+   "location": "Kreisfreie Stadt Berlin",
+   "title": "Cabin Engineering Internship (m/w/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284800",
+   "location": "Zug, Zg",
+   "title": "Data Engineering Internship"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284817",
+   "location": "Palo Alto, California",
+   "title": " Internship, Electric Motor Mechanical Modeling Engineer, Motor Design (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284818",
+   "location": "Palo Alto, California",
+   "title": "Internship, Actuator Mechanical Design Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "284819",
+   "location": "Palo Alto, California",
+   "title": "Internship, Actuator Test Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "284820",
+   "location": "Palo Alto, California",
+   "title": "Internship, Robotics Thermal Design Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "284821",
+   "location": "Palo Alto, California",
+   "title": "Internship, SI Hardware Silicon Validation Engineer, SI Hardware (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "284822",
+   "location": "Palo Alto, California",
+   "title": "Internship, Robotics Technical Program Manager, Optimus Hardware (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284864",
+   "location": "Palo Alto, California",
+   "title": "Internship, Program Manager, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284872",
+   "location": "Palo Alto, California",
+   "title": "Internship, Power Systems Studies Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "284875",
+   "location": "Palo Alto, California",
+   "title": "Internship, Power Systems Modeling , Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Finance",
+   "id": "284878",
+   "location": "Draper, Utah",
+   "title": "Internship, Insurance Accounting (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "284882",
+   "location": "Fremont, California",
+   "title": "Internship, Grid Compliance Test Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "284883",
+   "location": "Tempe, Arizona",
+   "title": "Internship, Project Manager, Field Service North America (Winter/Spring 2027) "
+  },
+  {
+   "department": "Legal & Government Affairs",
+   "id": "284884",
+   "location": "Washington, District Of Columbia",
+   "title": "Internship, State Policy (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "284885",
+   "location": "Palo Alto, California",
+   "title": "Internship, HR Partner, HR & Legal (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284889",
+   "location": "Buffalo, New York",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "People",
+   "id": "284893",
+   "location": "Fremont, California",
+   "title": "Internship, HR & People Teams (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284896",
+   "location": "Albany, New York",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "People",
+   "id": "284898",
+   "location": "Brookshire, Texas",
+   "title": "Internship, HR & People Teams (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284905",
+   "location": "Flushing, New York",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284907",
+   "location": "Nesconset, New York",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "People",
+   "id": "284912",
+   "location": "Palo Alto, California",
+   "title": "Internship, HR Partner, Energy & Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "284915",
+   "location": "Fremont, California",
+   "title": "Internship, Employee Referrals (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "284919",
+   "location": "Austin, Texas",
+   "title": "Internship, Organization Development (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "284924",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Developer, Integration Tools (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "284925",
+   "location": "Palo Alto, California",
+   "title": " Internship, Software Engineer, Data Transformations (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "284990",
+   "location": "Landquart",
+   "title": "Ausbildung zum Automobil-Mechatroniker/-in EFZ Personenwagen - Landquart"
+  },
+  {
+   "department": "People",
+   "id": "285012",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Recruiting Intern, Active Sourcing (m/w/d) – Gigafactory Berlin-Brandenburg "
+  },
+  {
+   "department": "Operations & Business Support",
+   "id": "285035",
+   "location": "Fremont, California",
+   "title": "Internship, Project Manager, Service Campaigns & Compliance (Winter/Spring 2027) "
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "285054",
+   "location": "Palo Alto, California",
+   "title": "Internship, Thermal Design Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "285057",
+   "location": "Palo Alto, California",
+   "title": "Internship, Thermofluids Analyst Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "285076",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, SI Hardware Infrastructure (Winter/Spring 2027) "
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "285077",
+   "location": "Palo Alto, California",
+   "title": "Internship, Technical Program Manager, Software, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "285084",
+   "location": "Palo Alto, California",
+   "title": "Internship, Embedded Software Engineer, Silicon Development (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "285085",
+   "location": "Palo Alto, California",
+   "title": "Internship, SI Software Engineer, Core Infrastructure (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "285088",
+   "location": "Palo Alto, California",
+   "title": "Internship, SI Hardware Design Verification Engineer, SI Hardware (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "285089",
+   "location": "Palo Alto, California",
+   "title": "Internship, SI Hardware RTL Design Engineer, SI Hardware (Winter/Spring 2027)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "285099",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Battery Equipment Engineering Internship (m/f/d) – Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "285102",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Battery Equipment Engineering Internship, German Speaker (m/w/d) – Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "285120",
+   "location": "Palo Alto, California",
+   "title": "Internship, SI Hardware Signal & Power Integrity Engineer, SI Hardware (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "285127",
+   "location": "Cincinnati, Ohio",
+   "title": "START Service Technician (Winter 2027)"
+  },
+  {
+   "department": "Design",
+   "id": "285144",
+   "location": "Austin, Texas",
+   "title": "Internship, Graphic Design (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "285153",
+   "location": "Palo Alto, California",
+   "title": "Internship, Embedded Software Engineer, Vehicle Suspension (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "285179",
+   "location": "Fremont, California",
+   "title": "Internship, Data Engineer, Applications Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "285202",
+   "location": "Palo Alto, California",
+   "title": "Internship, Commercial UI Software Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "285203",
+   "location": "Palo Alto, California",
+   "title": "Internship, Mechanical Design Engineer, Energy Infrastructure Power Electronics, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "285278",
+   "location": "Palo Alto, California",
+   "title": "Internship, System Modeling & Infrastructure Engineer, Low Voltage Power Distribution  (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "285280",
+   "location": "Palo Alto, California",
+   "title": "Internship, Systems Integration Engineer Low Voltage Power Management, Vehicle Firmware (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "285291",
+   "location": "Fremont, California",
+   "title": "Internship, Data Engineer, Data Engineering & Business Intelligence (Winter/Spring2027)"
+  },
+  {
+   "department": "Finance",
+   "id": "285297",
+   "location": "Hayward, California",
+   "title": "Internship, Indirect Tax Counsel (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "285317",
+   "location": "Palo Alto, California",
+   "title": "Internship, Product Security Engineer (Summer 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "285350",
+   "location": "Hawthorne, California",
+   "title": "Internship, Aerodynamics Engineering, New Programs Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "285355",
+   "location": "Maroochydore, Qld",
+   "title": "Apprentice Vehicle Technician, Sunshine Coast | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "285356",
+   "location": "Garbutt, Queensland",
+   "title": "Apprentice Vehicle Technician, Townsville | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "285384",
+   "location": "Padova, Padova",
+   "title": "Service Technician Traineeship - Padova"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "285385",
+   "location": "Firenze, Toscana",
+   "title": "Service Technician Traineeship - Florence"
+  },
+  {
+   "department": "People",
+   "id": "285435",
+   "location": "Palo Alto, California",
+   "title": "Internship, Recruiting (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "285460",
+   "location": "Austin, Texas",
+   "title": "Internship, Recruiting Coordinator (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "285605",
+   "location": "Tilburg, Noord-brabant",
+   "title": "Diagnostic Engineering Internship"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "285609",
+   "location": "Sankt Pölten",
+   "title": "Lehrstelle als Kraftfahrzeugtechniker inkl. Hochvolttechnik (m/w/d) - Sankt Pölten"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "285611",
+   "location": "Vienna",
+   "title": "Lehrstelle als Kraftfahrzeugtechniker inkl. Hochvolttechnik (m/w/d) - Wien Triesterstr."
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "285613",
+   "location": "Wien",
+   "title": "Lehrstelle als Kraftfahrzeugtechniker inkl. Hochvolttechnik (m/w/d) - Wien Shuttleworthstr."
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "285614",
+   "location": "Kalsdorf Bei Graz",
+   "title": "Lehrstelle als Kraftfahrzeugtechniker inkl. Hochvolttechnik (m/w/d) - Kalsdorf, Graz"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "285616",
+   "location": "Salzburg, Salzburg",
+   "title": "Lehrstelle als Kraftfahrzeugtechniker inkl. Hochvolttechnik (m/w/d) - Salzburg"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "285617",
+   "location": "Dornbirn",
+   "title": "Lehrstelle als Kraftfahrzeugtechniker inkl. Hochvolttechnik (m/w/d) - Dornbirn"
+  },
+  {
+   "department": "Terafab",
+   "id": "285641",
+   "location": "Austin, Texas",
+   "title": "Internship, Process Engineer, Dielectric Deposition, Terafab (Winter/Spring 2027)  "
+  },
+  {
+   "department": "Terafab",
+   "id": "285663",
+   "location": "Austin, Texas",
+   "title": "Internship, Process Engineer, Dry Etch, Terafab (Winter/Spring 2027)  "
+  },
+  {
+   "department": "Terafab",
+   "id": "285664",
+   "location": "Austin, Texas",
+   "title": "Internship, Process Engineer, Wet Etch, Terafab (Winter/Spring 2027)  "
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "285667",
+   "location": "Austin, Texas",
+   "title": "Customer & Field Quality Engineer Intern, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "285679",
+   "location": "Fremont, California",
+   "title": " Internship, Inline Metrology Systems Design/Engineer, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "285723",
+   "location": "Hengelo",
+   "title": "Service Technician Apprenticeship – Hengelo"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "285727",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Service Technician Apprenticeship – Amsterdam"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "285777",
+   "location": "Palo Alto, California",
+   "title": "Internship, Validation Engineer, Crash Safety (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "285779",
+   "location": "Palo Alto, California",
+   "title": "Internship, Systems Integration Engineer, Thermal Systems (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "285797",
+   "location": "Palo Alto, California",
+   "title": "Internship, Embedded Software Engineer, Thermal Systems (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "285801",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Build & Simulation Platform (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "285870",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Machine Learning Intern, Generative SI Applications  (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "285872",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Stamping Process Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "285879",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Architecture & Integrated Planning Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "285885",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Supplier Chargeback Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "285950",
+   "location": "Fremont, California",
+   "title": "Internship, Program Manager, Lifecycle Communications (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "285983",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "AI Adoption & Implementation Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "286003",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Field Operations Internship"
+  },
+  {
+   "department": "Finance",
+   "id": "286013",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Finance Data Analyst Internship"
+  },
+  {
+   "department": "Finance",
+   "id": "286043",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Revenue and Accounts Receivable Data Controller Internship "
+  },
+  {
+   "department": "Supply Chain",
+   "id": "286048",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Direct Purchasing Internship (m/f/d) - Gigafactory Berlin – Brandenburg"
+  },
+  {
+   "department": "Finance",
+   "id": "286080",
+   "location": "Austin, Texas",
+   "title": "Internship, Manufacturing Accounting (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "286085",
+   "location": "Palo Alto, California",
+   "title": "Internship, Data Analyst, People Products (Winter/Spring 2027)"
+  },
+  {
+   "department": "Terafab",
+   "id": "286098",
+   "location": "Austin, Texas",
+   "title": "Internship, Process Engineer, Mask, Terafab (Winter/Spring 2027) "
+  },
+  {
+   "department": "Terafab",
+   "id": "286099",
+   "location": "Austin, Texas",
+   "title": "Internship, Process Engineer, Lithography, Terafab (Winter/Spring 2027)  "
+  },
+  {
+   "department": "Terafab",
+   "id": "286101",
+   "location": "Austin, Texas",
+   "title": "Internship, Process Engineer, Metal Deposition, Terafab (Winter/Spring 2027) "
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "286127",
+   "location": "Fremont, California",
+   "title": "Internship, Software Integration Engineer, Service Tooling (Winter/Spring 2027)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "286128",
+   "location": "Fremont, California",
+   "title": "Internship, Mechanical Design, Robotaxi Service Tooling (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "286178",
+   "location": "Berlin, Be",
+   "title": "Vehicle Testing Engineer Internship, Tesla Engineering Germany (m/w/d)"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "286261",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Infotainment Platforms Validation (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "286287",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Software Product Support & Diagnostic Engineer – HV Battery Internship"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "286289",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Software Product Support & Diagnostic Engineer – Thermal Internship"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "286323",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Material Planning Internship (m/f/d) – Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "286332",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Supply Chain Battery Responsible Sourcing Internship (m/f/d) - Gigafactory Berlin-Brandenburg  "
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "286342",
+   "location": "Saint-ouen-sur-seine, Ile-de-france",
+   "title": "Stagiaire Immobilier - West / Real Estate Intern - West (H/F) - Saint-Ouen"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "286371",
+   "location": "Glen Allen, Virginia",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "286429",
+   "location": "Upper Mount Gravatt",
+   "title": "Sales Customer Support Advisor (Entry-Level), Brisbane "
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "286431",
+   "location": "Mulgrave",
+   "title": "Sales Customer Support Advisor (Entry-Level), Melbourne"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "286432",
+   "location": "Auckland, Auckland",
+   "title": "Sales Customer Support Advisor (Entry-Level), Auckland"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "286433",
+   "location": "Kreisfreie Stadt Berlin",
+   "title": "Homologation Testing Internship (m/w/d)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "286474",
+   "location": "Den Haag",
+   "title": "Service Technician Apprenticeship - Den Haag"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "286487",
+   "location": "Columbia, Maryland",
+   "title": "START Service Technician (Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "286496",
+   "location": "Doral, Florida",
+   "title": "START Service Technician (Winter 2027)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "286586",
+   "location": "Zug, Zg",
+   "title": "New Markets Analyst Internship (m/w/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "286611",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Software Engineer Internship, IT Applications"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "286618",
+   "location": "Berlin, Be",
+   "title": "Mechanical Design Engineering Internship, High Voltage Distribution, Tesla Engineering Germany (m/f/d)"
+  },
+  {
+   "department": "People",
+   "id": "286624",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "HR Project & Systems Intern(m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "People",
+   "id": "286651",
+   "location": "Austin, Texas",
+   "title": "Internship, HR Partner (Winter/Spring 2027)"
+  },
+  {
+   "department": "Environmental, Health, Safety & Security",
+   "id": "286658",
+   "location": "Fremont, California",
+   "title": "Internship, Environmental, Health, Safety & Security (Winter/Spring 2027)"
+  },
+  {
+   "department": "Environmental, Health, Safety & Security",
+   "id": "286659",
+   "location": "Sparks, Nevada",
+   "title": "Internship, Environmental, Health, Safety & Security (Winter/Spring 2027)"
+  },
+  {
+   "department": "Environmental, Health, Safety & Security",
+   "id": "286660",
+   "location": "Fremont, California",
+   "title": "Internship, Sustainability, EHS (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "286768",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Power Systems Modeling Internship"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "286875",
+   "location": "O'connor",
+   "title": "Sales Customer Support Advisor (Entry-Level), Perth"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "286898",
+   "location": "Vittuone",
+   "title": "Service Technician Traineeship - Milan"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "286899",
+   "location": "Roma",
+   "title": "Service Technician Traineeship - Rome"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "286900",
+   "location": "Verona",
+   "title": "Service Technician Traineeship - Verona"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "286901",
+   "location": "Castenedolo",
+   "title": "Service Technician Traineeship - Brescia"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "286903",
+   "location": "Torino, Piemonte",
+   "title": "Service Technician Traineeship - Torino"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "286904",
+   "location": "Marcianise, Campania",
+   "title": "Service Technician Traineeship - Napoli"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "286948",
+   "location": "Proviso Township, Illinois",
+   "title": " START Service Technician (Winter 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "286986",
+   "location": "Fremont, California",
+   "title": "Advanced Automation Engineer Intern, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "287024",
+   "location": "Austin, Texas",
+   "title": "Internship, SoC Firmware Engineer, SI Hardware Infrastructure (Winter/Spring 2027) "
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "287038",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Vehicle Software Engineer Internship, Diagnostic User Interface"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "287039",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Vehicle Software Validation Engineer Internship, Diagnostic Tools"
+  },
+  {
+   "department": "Vehicle Software",
+   "id": "287040",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Vehicle Diagnostic Engineer Internship, Infotainment & System"
+  },
+  {
+   "department": "Operations & Business Support",
+   "id": "287078",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Technical Services Project Management Internship (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "287080",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Intralogistics Engineering Internship (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "287082",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Logistic Financial Analyst Internship (m/f/d) - Gigafactory Berlin-Brandenburg  "
+  },
+  {
+   "department": "Finance",
+   "id": "287224",
+   "location": "Hayward, California",
+   "title": "Internship, Global Trade (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "287261",
+   "location": "New York, New York",
+   "title": "Internship, Program Manager, Sales & Delivery (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "287343",
+   "location": "Palo Alto, California",
+   "title": "Internship, HR Partner, IT (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "287347",
+   "location": "Lempaala, Pirkanmaa",
+   "title": "Huoltomekaanikko-harjoittelija – Tampere"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "287360",
+   "location": "Palo Alto, California",
+   "title": "Internship, SI Chip Thermal Design Engineer, SI Hardware (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "287390",
+   "location": "Palo Alto, California",
+   "title": "Internship, Analysis Engineer, Vehicle & Powertrain Engineering (Winter/Spring 2027)  "
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "287391",
+   "location": "Palo Alto, California",
+   "title": "Internship, Thermal Modeling Engineer, Abuse Functional Safety (Winter/Spring 2027)"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "287407",
+   "location": "Palo Alto, California",
+   "title": "Internship, Electrical Engineer, Embedded Systems & Test Engineering, Supply Chain (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "287478",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Production Engineering Internship, Battery Manufacturing (m/f/d) – Gigafactory Berlin-Brandenburg"
+  }
+ ]
+}
