@@ -33,6 +33,9 @@
 # The freehire feeds were removed on 2026-10-22. CMR Surgical, Ferrari, SAP, TSMC, AbbVie, ADM,
 # Progressive, StoneX and Verizon left the allowlists until they have a direct source (see
 # docs/unreachable-companies.md).
+# The Runway match-score pass (2026-10-22) added 15 robotics startups to the every-internship
+# filters and 69 engineering, industrial, medical and aerospace employers to the expansion
+# filters, all from the user's top 1,000 Runway matches.
 # Every alerting filter is US-only (2026-10-14): a posting alerts only when at least one of its
 # locations is confidently in the US (job_alert/geo.py); an unknown or missing location does not.
 # Both filters name their companies, so they are a canary under the 90% broad-activation gate. See
@@ -73,7 +76,10 @@ filters:
        bear-robotics, righthand-robotics, miso-robotics, omron,
        microagi, genesis-ai, mind-robotics, xdof, maven-robotics, walden-robotics, sunday-robotics,
        scout-ai, atoms, lightwheel, generalist-ai, allen-control-systems, dyna-robotics, rhoda-ai,
-       terrafirma, monumental]
+       terrafirma, monumental,
+       gitai, rugged-robotics, heven-aerotech, mantari, roboforce, salient-motion, relling,
+       bedrock-robotics, agzen, human-computer-lab, mach9, orbital-robotics, swarm-aero,
+       bracket-bot, humble-robotics]
     include_title_keywords: [intern, co-op, coop, co op, student, fellowship, summer 20, spring 20, fall 20, winter 20]
     require_title_keywords: []
     exclude_title_keywords: [cooperative]
@@ -107,7 +113,10 @@ filters:
        bear-robotics, righthand-robotics, miso-robotics, omron,
        microagi, genesis-ai, mind-robotics, xdof, maven-robotics, walden-robotics, sunday-robotics,
        scout-ai, atoms, lightwheel, generalist-ai, allen-control-systems, dyna-robotics, rhoda-ai,
-       terrafirma, monumental]
+       terrafirma, monumental,
+       gitai, rugged-robotics, heven-aerotech, mantari, roboforce, salient-motion, relling,
+       bedrock-robotics, agzen, human-computer-lab, mach9, orbital-robotics, swarm-aero,
+       bracket-bot, humble-robotics]
     include_title_keywords: []
     require_title_keywords: []
     exclude_title_keywords: []
@@ -161,7 +170,17 @@ filters:
        merck, performance-food-group, procter-gamble, sysco, tjx, ups, usaa, united-airlines,
        albertsons, bristol-myers-squibb, centene, conocophillips, eli-lilly, fannie-mae,
        liberty-mutual, marathon-petroleum, nationwide, pfizer,
-       valero-energy, wells-fargo]
+       valero-energy, wells-fargo,
+       mill, atricure, brph, cyclokinetics, ginkgo-bioworks, graphcore, hyliion, lila-sciences,
+       moment-energy, orbital-operations, rheo-engineering, stratolaunch, tenstorrent,
+       reflect-orbital, base-power, crusoe, nox-metals, plasmidsaurus, rainmaker, rivet,
+       furientis, mojave-energy-systems, caci, crb, draper, globalfoundries, rolls-royce, leidos,
+       zoll-medical, badger-meter, dupont, hendrick-motorsports, entegris, dubois-chemicals,
+       globus-medical, hose-master, allegion, heidelberg-materials, menasha, methode-electronics,
+       motorola-solutions, nvent, organon, orion-steel, philips, plug-power, regeneron,
+       sew-eurodrive, sonoco, smith-nephew, terex, watts-water, weg, costar-group,
+       gates, mahle, spx-technologies, dorman-products, james-hardie, acuity, dodge-industrial, first-solar,
+       onsemi, vertiv, steris, quantinuum, kearfott, webco-industries, cesiumastro]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,
@@ -227,7 +246,17 @@ filters:
        merck, performance-food-group, procter-gamble, sysco, tjx, ups, usaa, united-airlines,
        albertsons, bristol-myers-squibb, centene, conocophillips, eli-lilly, fannie-mae,
        liberty-mutual, marathon-petroleum, nationwide, pfizer,
-       valero-energy, wells-fargo]
+       valero-energy, wells-fargo,
+       mill, atricure, brph, cyclokinetics, ginkgo-bioworks, graphcore, hyliion, lila-sciences,
+       moment-energy, orbital-operations, rheo-engineering, stratolaunch, tenstorrent,
+       reflect-orbital, base-power, crusoe, nox-metals, plasmidsaurus, rainmaker, rivet,
+       furientis, mojave-energy-systems, caci, crb, draper, globalfoundries, rolls-royce, leidos,
+       zoll-medical, badger-meter, dupont, hendrick-motorsports, entegris, dubois-chemicals,
+       globus-medical, hose-master, allegion, heidelberg-materials, menasha, methode-electronics,
+       motorola-solutions, nvent, organon, orion-steel, philips, plug-power, regeneron,
+       sew-eurodrive, sonoco, smith-nephew, terex, watts-water, weg, costar-group,
+       gates, mahle, spx-technologies, dorman-products, james-hardie, acuity, dodge-industrial, first-solar,
+       onsemi, vertiv, steris, quantinuum, kearfott, webco-industries, cesiumastro]
     include_title_keywords: [robot, mechanical, mechatronic, hardware, manufacturing, controls, embedded, firmware,
        automation, autonom, electrical, actuator, aerospace, avionics, propulsion, structural,
        perception, motion, kinematic, machine design, product design, test engineer, maintenance, material,

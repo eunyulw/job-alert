@@ -5928,3 +5928,1077 @@ sources:
   tenant: monumental
   enabled: true
   audit_date: '2026-10-20'
+- id: gitai-greenhouse
+  company_id: gitai
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/gitai/jobs?content=true
+  interval_minutes: 5
+  tenant: gitai
+  enabled: true
+  audit_date: '2026-10-22'
+- id: mill-greenhouse
+  company_id: mill
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/mill/jobs?content=true
+  interval_minutes: 5
+  tenant: mill
+  enabled: true
+  audit_date: '2026-10-22'
+- id: atricure-greenhouse
+  company_id: atricure
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/atricure/jobs?content=true
+  interval_minutes: 5
+  tenant: atricure
+  enabled: true
+  audit_date: '2026-10-22'
+- id: rugged-robotics-greenhouse
+  company_id: rugged-robotics
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/ruggedrobotics/jobs?content=true
+  interval_minutes: 5
+  tenant: ruggedrobotics
+  enabled: true
+  audit_date: '2026-10-22'
+- id: brph-greenhouse
+  company_id: brph
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/brph/jobs?content=true
+  interval_minutes: 5
+  tenant: brph
+  enabled: true
+  audit_date: '2026-10-22'
+- id: cyclokinetics-greenhouse
+  company_id: cyclokinetics
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/cyclokinetics/jobs?content=true
+  interval_minutes: 5
+  tenant: cyclokinetics
+  enabled: true
+  audit_date: '2026-10-22'
+- id: ginkgo-bioworks-greenhouse
+  company_id: ginkgo-bioworks
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/ginkgobioworks/jobs?content=true
+  interval_minutes: 5
+  tenant: ginkgobioworks
+  enabled: true
+  audit_date: '2026-10-22'
+- id: graphcore-greenhouse
+  company_id: graphcore
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/graphcore/jobs?content=true
+  interval_minutes: 5
+  tenant: graphcore
+  enabled: true
+  audit_date: '2026-10-22'
+- id: heven-aerotech-greenhouse
+  company_id: heven-aerotech
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/hevenaerotech/jobs?content=true
+  interval_minutes: 5
+  tenant: hevenaerotech
+  enabled: true
+  audit_date: '2026-10-22'
+- id: hyliion-greenhouse
+  company_id: hyliion
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/hyliion/jobs?content=true
+  interval_minutes: 5
+  tenant: hyliion
+  enabled: true
+  audit_date: '2026-10-22'
+- id: lila-sciences-greenhouse
+  company_id: lila-sciences
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/lilasciences/jobs?content=true
+  interval_minutes: 5
+  tenant: lilasciences
+  enabled: true
+  audit_date: '2026-10-22'
+- id: mantari-greenhouse
+  company_id: mantari
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/mantari/jobs?content=true
+  interval_minutes: 5
+  tenant: mantari
+  enabled: true
+  audit_date: '2026-10-22'
+- id: moment-energy-greenhouse
+  company_id: moment-energy
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/momentenergy/jobs?content=true
+  interval_minutes: 5
+  tenant: momentenergy
+  enabled: true
+  audit_date: '2026-10-22'
+- id: orbital-operations-greenhouse
+  company_id: orbital-operations
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/orbitaloperations/jobs?content=true
+  interval_minutes: 5
+  tenant: orbitaloperations
+  enabled: true
+  audit_date: '2026-10-22'
+- id: rheo-engineering-greenhouse
+  company_id: rheo-engineering
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/rheoengineering/jobs?content=true
+  interval_minutes: 5
+  tenant: rheoengineering
+  enabled: true
+  audit_date: '2026-10-22'
+- id: roboforce-greenhouse
+  company_id: roboforce
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/roboforce/jobs?content=true
+  interval_minutes: 5
+  tenant: roboforce
+  enabled: true
+  audit_date: '2026-10-22'
+- id: salient-motion-greenhouse
+  company_id: salient-motion
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/salientmotion/jobs?content=true
+  interval_minutes: 5
+  tenant: salientmotion
+  enabled: true
+  audit_date: '2026-10-22'
+- id: stratolaunch-greenhouse
+  company_id: stratolaunch
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/stratolaunch/jobs?content=true
+  interval_minutes: 5
+  tenant: stratolaunch
+  enabled: true
+  audit_date: '2026-10-22'
+- id: tenstorrent-greenhouse
+  company_id: tenstorrent
+  provider: greenhouse
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://boards-api.greenhouse.io/v1/boards/tenstorrent/jobs?content=true
+  interval_minutes: 5
+  tenant: tenstorrent
+  enabled: true
+  audit_date: '2026-10-22'
+- id: relling-ashby
+  company_id: relling
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/relling
+  interval_minutes: 5
+  tenant: relling
+  enabled: true
+  audit_date: '2026-10-22'
+- id: bedrock-robotics-ashby
+  company_id: bedrock-robotics
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/bedrock-robotics
+  interval_minutes: 5
+  tenant: bedrock-robotics
+  enabled: true
+  audit_date: '2026-10-22'
+- id: reflect-orbital-ashby
+  company_id: reflect-orbital
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/reflect-orbital
+  interval_minutes: 5
+  tenant: reflect-orbital
+  enabled: true
+  audit_date: '2026-10-22'
+- id: agzen-ashby
+  company_id: agzen
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/agzen
+  interval_minutes: 5
+  tenant: agzen
+  enabled: true
+  audit_date: '2026-10-22'
+- id: base-power-ashby
+  company_id: base-power
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/base-power
+  interval_minutes: 5
+  tenant: base-power
+  enabled: true
+  audit_date: '2026-10-22'
+- id: crusoe-ashby
+  company_id: crusoe
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/crusoe
+  interval_minutes: 5
+  tenant: crusoe
+  enabled: true
+  audit_date: '2026-10-22'
+- id: human-computer-lab-ashby
+  company_id: human-computer-lab
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/human-computer-lab
+  interval_minutes: 5
+  tenant: human-computer-lab
+  enabled: true
+  audit_date: '2026-10-22'
+- id: mach9-ashby
+  company_id: mach9
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/mach9
+  interval_minutes: 5
+  tenant: mach9
+  enabled: true
+  audit_date: '2026-10-22'
+- id: nox-metals-ashby
+  company_id: nox-metals
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/nox-metals
+  interval_minutes: 5
+  tenant: nox-metals
+  enabled: true
+  audit_date: '2026-10-22'
+- id: orbital-robotics-ashby
+  company_id: orbital-robotics
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/orbital-robotics
+  interval_minutes: 5
+  tenant: orbital-robotics
+  enabled: true
+  audit_date: '2026-10-22'
+- id: plasmidsaurus-ashby
+  company_id: plasmidsaurus
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/plasmidsaurus
+  interval_minutes: 5
+  tenant: plasmidsaurus
+  enabled: true
+  audit_date: '2026-10-22'
+- id: rainmaker-ashby
+  company_id: rainmaker
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/rainmaker
+  interval_minutes: 5
+  tenant: rainmaker
+  enabled: true
+  audit_date: '2026-10-22'
+- id: rivet-ashby
+  company_id: rivet
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/rivet
+  interval_minutes: 5
+  tenant: rivet
+  enabled: true
+  audit_date: '2026-10-22'
+- id: swarm-aero-ashby
+  company_id: swarm-aero
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/swarmaero
+  interval_minutes: 5
+  tenant: swarmaero
+  enabled: true
+  audit_date: '2026-10-22'
+- id: bracket-bot-ashby
+  company_id: bracket-bot
+  provider: ashby
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.ashbyhq.com/posting-api/job-board/bracket-bot
+  interval_minutes: 5
+  tenant: bracket-bot
+  enabled: true
+  audit_date: '2026-10-22'
+- id: furientis-lever
+  company_id: furientis
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/furientis?mode=json
+  interval_minutes: 5
+  tenant: furientis
+  enabled: true
+  audit_date: '2026-10-22'
+- id: humble-robotics-lever
+  company_id: humble-robotics
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/humble-robotics?mode=json
+  interval_minutes: 5
+  tenant: humble-robotics
+  enabled: true
+  audit_date: '2026-10-22'
+- id: mojave-energy-systems-lever
+  company_id: mojave-energy-systems
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/mojave-energy-systems?mode=json
+  interval_minutes: 5
+  tenant: mojave-energy-systems
+  enabled: true
+  audit_date: '2026-10-22'
+- id: caci-smartrecruiters
+  company_id: caci
+  provider: smartrecruiters
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.smartrecruiters.com/v1/companies/Caci/postings?country=us
+  interval_minutes: 5
+  tenant: Caci
+  enabled: true
+  audit_date: '2026-10-22'
+- id: crb-smartrecruiters
+  company_id: crb
+  provider: smartrecruiters
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.smartrecruiters.com/v1/companies/Crb/postings?country=us
+  interval_minutes: 5
+  tenant: Crb
+  enabled: true
+  audit_date: '2026-10-22'
+- id: draper-workday
+  company_id: draper
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://draper.wd5.myworkdayjobs.com/wday/cxs/draper/Draper_Careers/jobs
+  interval_minutes: 10
+  tenant: draper
+  parameters:
+    applied_facets:
+      workerSubType:
+      - b9bd15164d241000cf9857a64e2e0000
+    scope: worker subtype Student
+  enabled: true
+  audit_date: '2026-10-22'
+- id: globalfoundries-workday
+  company_id: globalfoundries
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://globalfoundries.wd1.myworkdayjobs.com/wday/cxs/globalfoundries/External/jobs
+  interval_minutes: 10
+  tenant: globalfoundries
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 51f993b53bda010524990ac0ea5d0004
+      - 51f993b53bda010524990ac0ea5d0001
+    scope: worker subtypes Intern and Student with Pay
+  enabled: true
+  audit_date: '2026-10-22'
+- id: rolls-royce-workday
+  company_id: rolls-royce
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://rollsroyce.wd3.myworkdayjobs.com/wday/cxs/rollsroyce/Intern_Graduate/jobs
+  interval_minutes: 10
+  tenant: rollsroyce
+  parameters:
+    whole_board: true
+    scope: the Intern_Graduate site, whole (103 postings on 2026-10-22)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: leidos-workday
+  company_id: leidos
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://leidos.wd5.myworkdayjobs.com/wday/cxs/leidos/External/jobs
+  interval_minutes: 10
+  tenant: leidos
+  parameters:
+    applied_facets:
+      jobFamilyGroup:
+      - 628672aa96cf106cf05cd4c3de06246b
+    scope: job family group Internship
+  enabled: true
+  audit_date: '2026-10-22'
+- id: zoll-medical-workday
+  company_id: zoll-medical
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://zoll.wd5.myworkdayjobs.com/wday/cxs/zoll/ZOLLMedicalCorp/jobs
+  interval_minutes: 10
+  tenant: zoll
+  parameters:
+    applied_facets:
+      workerSubType:
+      - c49cfa168464014d5276b663bc2b610b
+    scope: worker subtype Intern / Co-Op
+  enabled: true
+  audit_date: '2026-10-22'
+- id: badger-meter-workday
+  company_id: badger-meter
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://badgermeter.wd5.myworkdayjobs.com/wday/cxs/badgermeter/US_CareerSite/jobs
+  interval_minutes: 10
+  tenant: badgermeter
+  parameters:
+    whole_board: true
+    scope: whole US board (69 postings on 2026-10-22)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: dupont-workday
+  company_id: dupont
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://dupont.wd5.myworkdayjobs.com/wday/cxs/dupont/Jobs/jobs
+  interval_minutes: 10
+  tenant: dupont
+  parameters:
+    whole_board: true
+    scope: whole board (201 postings on 2026-10-22; no intern facet)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: hendrick-motorsports-workday
+  company_id: hendrick-motorsports
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://hendrick.wd5.myworkdayjobs.com/wday/cxs/hendrick/HMSCareers/jobs
+  interval_minutes: 10
+  tenant: hendrick
+  parameters:
+    whole_board: true
+    scope: whole Hendrick Motorsports board (42 postings on 2026-10-22)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: entegris-workday
+  company_id: entegris
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://entegris.wd1.myworkdayjobs.com/wday/cxs/entegris/EntegrisCareers/jobs
+  interval_minutes: 10
+  tenant: entegris
+  parameters:
+    applied_facets:
+      workerSubType:
+      - d189a1effabd4c76b2627c81ab3570de
+    scope: worker subtype Intern/Co-op/Apprentice
+  enabled: true
+  audit_date: '2026-10-22'
+- id: dubois-chemicals-workday
+  company_id: dubois-chemicals
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://duboischemicals.wd1.myworkdayjobs.com/wday/cxs/duboischemicals/External/jobs
+  interval_minutes: 10
+  tenant: duboischemicals
+  parameters:
+    whole_board: true
+    scope: whole board (44 postings on 2026-10-22)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: globus-medical-workday
+  company_id: globus-medical
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://globusmedical.wd5.myworkdayjobs.com/wday/cxs/globusmedical/GMED_Careers/jobs
+  interval_minutes: 10
+  tenant: globusmedical
+  parameters:
+    applied_facets:
+      workerSubType:
+      - ed61d993e9b410010d8bd698837f0000
+      - ed61d993e9b410010d8bd4cb5e9f0000
+    scope: worker subtypes Co-op and Intern (Trainee)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: hose-master-workday
+  company_id: hose-master
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://hosemaster.wd12.myworkdayjobs.com/wday/cxs/hosemaster/HoseMaster_Careers/jobs
+  interval_minutes: 10
+  tenant: hosemaster
+  parameters:
+    whole_board: true
+    scope: whole board (39 postings on 2026-10-22)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: allegion-workday
+  company_id: allegion
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://allegion.wd5.myworkdayjobs.com/wday/cxs/allegion/EarlyTalent_Careers/jobs
+  interval_minutes: 10
+  tenant: allegion
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 94e33d79ccff1077bad47ec30deb4d52
+    scope: EarlyTalent_Careers site, worker subtype Intern (Trainee)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: heidelberg-materials-workday
+  company_id: heidelberg-materials
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://heidelbergmaterials.wd3.myworkdayjobs.com/wday/cxs/heidelbergmaterials/heidelberg_materials_NAM/jobs
+  interval_minutes: 10
+  tenant: heidelbergmaterials
+  parameters:
+    whole_board: true
+    scope: whole North America board (156 postings on 2026-10-22)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: menasha-workday
+  company_id: menasha
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://menasha.wd12.myworkdayjobs.com/wday/cxs/menasha/MenashaCorp/jobs
+  interval_minutes: 10
+  tenant: menasha
+  parameters:
+    applied_facets:
+      workerSubType:
+      - a079eb5583981000f6fd32d01b7b0001
+    scope: worker subtype Intern / Co-op
+  enabled: true
+  audit_date: '2026-10-22'
+- id: methode-electronics-workday
+  company_id: methode-electronics
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://methode.wd5.myworkdayjobs.com/wday/cxs/methode/methode/jobs
+  interval_minutes: 10
+  tenant: methode
+  parameters:
+    whole_board: true
+    scope: whole board (45 postings on 2026-10-22)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: motorola-solutions-workday
+  company_id: motorola-solutions
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://motorolasolutions.wd5.myworkdayjobs.com/wday/cxs/motorolasolutions/Careers/jobs
+  interval_minutes: 30
+  tenant: motorolasolutions
+  parameters:
+    whole_board: true
+    scope: whole board (879 postings on 2026-10-22; no intern facet)
+    slow_poll_reason: whole board of about 44 pages; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-22'
+- id: nvent-workday
+  company_id: nvent
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://nvent.wd5.myworkdayjobs.com/wday/cxs/nvent/nVent/jobs
+  interval_minutes: 30
+  tenant: nvent
+  parameters:
+    whole_board: true
+    scope: whole board (568 postings on 2026-10-22; no intern facet)
+    slow_poll_reason: whole board of about 29 pages; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-22'
+- id: organon-workday
+  company_id: organon
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://organon.wd5.myworkdayjobs.com/wday/cxs/organon/SearchJobs/jobs
+  interval_minutes: 10
+  tenant: organon
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 778f59ec4f0a0198986b520b021105b1
+    scope: worker subtype Intern/Co-op (Fixed Term)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: orion-steel-workday
+  company_id: orion-steel
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://orionsteel.wd5.myworkdayjobs.com/wday/cxs/orionsteel/externalcareers/jobs
+  interval_minutes: 10
+  tenant: orionsteel
+  parameters:
+    whole_board: true
+    scope: whole board (112 postings on 2026-10-22)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: philips-workday
+  company_id: philips
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://philips.wd3.myworkdayjobs.com/wday/cxs/philips/jobs-and-careers/jobs
+  interval_minutes: 10
+  tenant: philips
+  parameters:
+    applied_facets:
+      jobFamilyGroup:
+      - c3f6a5a61d7f100163dbf8ad74690000
+    scope: job family group Trainees, Interns and Apprentices
+  enabled: true
+  audit_date: '2026-10-22'
+- id: plug-power-workday
+  company_id: plug-power
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://plugpower.wd5.myworkdayjobs.com/wday/cxs/plugpower/Plug_Power_Inc/jobs
+  interval_minutes: 10
+  tenant: plugpower
+  parameters:
+    whole_board: true
+    scope: whole board (89 postings on 2026-10-22)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: regeneron-workday
+  company_id: regeneron
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://regeneron.wd1.myworkdayjobs.com/wday/cxs/regeneron/US_Only_University_Relations_Career/jobs
+  interval_minutes: 10
+  tenant: regeneron
+  parameters:
+    whole_board: true
+    scope: US university-relations site, whole (23 postings on 2026-10-22)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: sew-eurodrive-workday
+  company_id: sew-eurodrive
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://seweurodrive.wd5.myworkdayjobs.com/wday/cxs/seweurodrive/SEW/jobs
+  interval_minutes: 10
+  tenant: seweurodrive
+  parameters:
+    whole_board: true
+    scope: whole US board (26 postings on 2026-10-22)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: sonoco-workday
+  company_id: sonoco
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://sonoco.wd1.myworkdayjobs.com/wday/cxs/sonoco/CorporateCareers/jobs
+  interval_minutes: 10
+  tenant: sonoco
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 4ac9dfb89ccc1014961616190dbd886d
+    scope: worker subtype Intern
+  enabled: true
+  audit_date: '2026-10-22'
+- id: smith-nephew-workday
+  company_id: smith-nephew
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://smithnephew.wd5.myworkdayjobs.com/wday/cxs/smithnephew/External/jobs
+  interval_minutes: 10
+  tenant: smithnephew
+  parameters:
+    applied_facets:
+      jobFamilyGroup:
+      - f5fdbf146cd51001d40b4ba602390000
+    scope: job family group Early Career Talent
+  enabled: true
+  audit_date: '2026-10-22'
+- id: terex-workday
+  company_id: terex
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://terex.wd1.myworkdayjobs.com/wday/cxs/terex/terexcareers/jobs
+  interval_minutes: 10
+  tenant: terex
+  parameters:
+    applied_facets:
+      workerSubType:
+      - 4f04687824e710169d39f6f42b160000
+    scope: worker subtype Team Member - Intern/Co-op
+  enabled: true
+  audit_date: '2026-10-22'
+- id: watts-water-workday
+  company_id: watts-water
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://wattswater.wd5.myworkdayjobs.com/wday/cxs/wattswater/Intern-External/jobs
+  interval_minutes: 10
+  tenant: wattswater
+  parameters:
+    whole_board: true
+    scope: the Intern-External site, whole (36 postings on 2026-10-22)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: weg-workday
+  company_id: weg
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://weg.wd501.myworkdayjobs.com/wday/cxs/weg/Careers/jobs
+  interval_minutes: 10
+  tenant: weg
+  parameters:
+    whole_board: true
+    scope: whole board (31 postings on 2026-10-22)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: costar-group-workday
+  company_id: costar-group
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://costar.wd1.myworkdayjobs.com/wday/cxs/costar/CoStarCareers/jobs
+  interval_minutes: 30
+  tenant: costar
+  parameters:
+    whole_board: true
+    scope: whole board (427 postings on 2026-10-22; no intern facet)
+    slow_poll_reason: whole board of about 22 pages; polled every 30 minutes
+  enabled: true
+  audit_date: '2026-10-22'
+- id: schaeffler-discovery
+  company_id: schaeffler
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://jobs.schaeffler.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - 'SuccessFactors tile layout: the search page declares no result total, so completeness cannot be judged'
+  enabled: false
+  audit_date: '2026-10-22'
+- id: gates-successfactors
+  company_id: gates
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.gates.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: careers.gates.com
+  parameters:
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-22'
+- id: mahle-successfactors
+  company_id: mahle
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.mahle.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: careers.mahle.com
+  parameters:
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-22'
+- id: spx-technologies-successfactors
+  company_id: spx-technologies
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.spx.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: careers.spx.com
+  parameters:
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-22'
+- id: dorman-products-successfactors
+  company_id: dorman-products
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://jobs.dormanproducts.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: jobs.dormanproducts.com
+  parameters:
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-22'
+- id: gerdau-discovery
+  company_id: gerdau
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://jobs.gerdau.com/
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - 'SuccessFactors tile layout: the search page declares no result total, so completeness cannot be judged'
+  enabled: false
+  audit_date: '2026-10-22'
+- id: james-hardie-successfactors
+  company_id: james-hardie
+  provider: successfactors
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.jameshardie.com/search/?q=&optionsFacetsDD_country=US
+  interval_minutes: 10
+  tenant: careers.jameshardie.com
+  parameters:
+    scope: career-site search filtered to the United States
+  enabled: true
+  audit_date: '2026-10-22'
+- id: itt-discovery
+  company_id: itt
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careerhub-itt-inc.icims.com/jobs/search?ss=1
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - iCIMS board refuses its sitemap.xml (HTTP 403), which the adapter needs to judge completeness
+  enabled: false
+  audit_date: '2026-10-22'
+- id: keysight-discovery
+  company_id: keysight
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers-keysight.icims.com/jobs/search?ss=1
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - iCIMS board refuses its sitemap.xml (HTTP 403), which the adapter needs to judge completeness
+  enabled: false
+  audit_date: '2026-10-22'
+- id: constellation-energy-discovery
+  company_id: constellation-energy
+  provider: discovery
+  source_class: fallback
+  support_status: BLOCKED
+  endpoint: https://careers-constellationenergy.icims.com/jobs/search?ss=1
+  interval_minutes: 30
+  parameters:
+    audit_status: BLOCKED
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - iCIMS board refuses its sitemap.xml (HTTP 403), which the adapter needs to judge completeness
+  enabled: false
+  audit_date: '2026-10-22'
+- id: acuity-ukg
+  company_id: acuity
+  provider: ukg
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://recruiting2.ultipro.com/HER1001ACFIN/JobBoard/ab33798a-3521-417b-8db8-a8e435c475fa/JobBoardView/LoadSearchResults
+  interval_minutes: 10
+  tenant: HER1001ACFIN
+  parameters:
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-22'
+- id: dodge-industrial-ukg
+  company_id: dodge-industrial
+  provider: ukg
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://recruiting.ultipro.com/ROL1001RBCAI/JobBoard/323503a8-be53-4e45-a425-31ab5d011434/JobBoardView/LoadSearchResults
+  interval_minutes: 10
+  tenant: ROL1001RBCAI
+  parameters:
+    query: Dodge
+    scope: RBC Bearings board, query Dodge (the link Dodge's careers page uses)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: first-solar-oracle
+  company_id: first-solar
+  provider: oracle
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://fa-esbv-saasfaprod1.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=CX_1
+  interval_minutes: 10
+  tenant: fa-esbv-saasfaprod1.fa.ocs.oraclecloud.com
+  parameters:
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-22'
+- id: onsemi-oracle
+  company_id: onsemi
+  provider: oracle
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://hctz.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=CX_1001,keyword=intern
+  interval_minutes: 10
+  tenant: hctz.fa.us2.oraclecloud.com
+  parameters:
+    scope: keyword intern (loose text match; the filter decides)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: vertiv-oracle
+  company_id: vertiv
+  provider: oracle
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://egup.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations&finder=findReqs;siteNumber=CX,keyword=intern
+  interval_minutes: 10
+  tenant: egup.fa.us2.oraclecloud.com
+  parameters:
+    scope: keyword intern (loose text match; the filter decides)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: steris-phenom
+  company_id: steris
+  provider: phenom
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://careers.steris.com/widgets
+  interval_minutes: 10
+  tenant: careers.steris.com
+  parameters:
+    keywords: intern
+    scope: keyword search intern (loose text match; the filter decides)
+  enabled: true
+  audit_date: '2026-10-22'
+- id: cesiumastro-lever
+  company_id: cesiumastro
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.lever.co/v0/postings/CesiumAstro?mode=json
+  interval_minutes: 5
+  tenant: CesiumAstro
+  enabled: true
+  audit_date: '2026-10-22'
+- id: quantinuum-lever
+  company_id: quantinuum
+  provider: lever
+  source_class: documented_api
+  support_status: SUPPORTED
+  endpoint: https://api.eu.lever.co/v0/postings/quantinuum?mode=json
+  interval_minutes: 5
+  tenant: quantinuum
+  enabled: true
+  audit_date: '2026-10-22'
+- id: skyband-systems-discovery
+  company_id: skyband-systems
+  provider: discovery
+  source_class: fallback
+  support_status: NEEDS_MANUAL_REVIEW
+  endpoint: https://jobs.ashbyhq.com/Skyband
+  interval_minutes: 30
+  parameters:
+    audit_status: NEEDS_MANUAL_REVIEW
+    audit_probed_at: '2026-10-22'
+    audit_notes:
+    - the careers page links jobs.ashbyhq.com/Skyband, but the Ashby posting API answers HTTP 404 for that board
+  enabled: false
+  audit_date: '2026-10-22'
+- id: kearfott-adp
+  company_id: kearfott
+  provider: adp
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://myjobs.adp.com/public/staffing/v1/career-site/kearfott
+  interval_minutes: 10
+  tenant: kearfott
+  parameters:
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-22'
+- id: webco-industries-workday
+  company_id: webco-industries
+  provider: workday
+  source_class: public_ats
+  support_status: SUPPORTED_UNDOCUMENTED
+  endpoint: https://webcotube.wd12.myworkdayjobs.com/wday/cxs/webcotube/webco/jobs
+  interval_minutes: 10
+  tenant: webcotube
+  parameters:
+    whole_board: true
+    scope: whole board
+  enabled: true
+  audit_date: '2026-10-22'
