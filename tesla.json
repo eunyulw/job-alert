@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-23T00:27:27.132Z",
- "board_total": 8310,
+ "generated_at": "2026-10-23T01:37:16.831Z",
+ "board_total": 8312,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -2084,12 +2084,6 @@
    "id": "283290",
    "location": "Palo Alto, California",
    "title": "Internship, Computer Vision Engineer, Cell Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "283298",
-   "location": "Fremont, California",
-   "title": "Internship, Product Engineer, Applications Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
