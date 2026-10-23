@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-23T20:37:15.960Z",
- "board_total": 8250,
+ "generated_at": "2026-10-23T21:11:58.357Z",
+ "board_total": 8244,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3718,12 +3718,6 @@
    "title": "Internship, Thermal Modeling Engineer, Abuse Functional Safety (Winter/Spring 2027)"
   },
   {
-   "department": "Supply Chain",
-   "id": "287407",
-   "location": "Palo Alto, California",
-   "title": "Internship, Electrical Engineer, Embedded Systems & Test Engineering, Supply Chain (Winter/Spring 2027)"
-  },
-  {
    "department": "Engineering & Information Technology",
    "id": "287443",
    "location": "Palo Alto, California",
@@ -3740,6 +3734,12 @@
    "id": "287478",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Production Engineering Internship, Battery Manufacturing (m/f/d) – Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "287481",
+   "location": "Athens, Attiki",
+   "title": "Optimus Motor Design Internship"
   },
   {
    "department": "Engineering & Information Technology",
