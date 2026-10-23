@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-23T23:13:54.908Z",
- "board_total": 8242,
+ "generated_at": "2026-10-23T23:55:09.199Z",
+ "board_total": 8252,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -2398,12 +2398,6 @@
    "title": "Internship, Electronic Design Engineer, Energy Engineering (Winter/Spring 2027)"
   },
   {
-   "department": "Energy Engineering",
-   "id": "283677",
-   "location": "Palo Alto, California",
-   "title": "Internship, Mechanical Design Engineer, Enclosures, Energy Engineering (Winter/Spring 2027)"
-  },
-  {
    "department": "Supply Chain",
    "id": "283704",
    "location": "Grünheide (mark), Brandenburg",
@@ -2447,12 +2441,6 @@
   },
   {
    "department": "Energy Engineering",
-   "id": "283857",
-   "location": "Palo Alto, California",
-   "title": "Internship, Embedded System Software Engineer, Energy Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Energy Engineering",
    "id": "283950",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer Opticaster, Energy Engineering (Winter/Spring 2027)"
@@ -2462,12 +2450,6 @@
    "id": "283954",
    "location": "Palo Alto, California",
    "title": "Internship, Validation Engineer Intern, Body Controls (Winter/Spring 2027)"
-  },
-  {
-   "department": "Energy Engineering",
-   "id": "283956",
-   "location": "Palo Alto, California",
-   "title": "Internship, Site Controller Software Engineer, Energy Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Software",
@@ -2522,12 +2504,6 @@
    "id": "284026",
    "location": "Palo Alto, California",
    "title": "Internship, System Integration & Test Automation Engineer, Energy Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Energy Engineering",
-   "id": "284029",
-   "location": "Palo Alto, California",
-   "title": "Internship, Power Electronics Firmware Engineer, Energy Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Energy Engineering",
@@ -3020,12 +2996,6 @@
    "id": "285076",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer, SI Hardware Infrastructure (Winter/Spring 2027) "
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "285077",
-   "location": "Palo Alto, California",
-   "title": "Internship, Technical Program Manager, Software, Energy Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Tesla SI",
