@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-23T15:57:16.091Z",
- "board_total": 8261,
+ "generated_at": "2026-10-23T20:37:15.960Z",
+ "board_total": 8250,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3726,7 +3726,7 @@
   {
    "department": "Engineering & Information Technology",
    "id": "287443",
-   "location": "Fremont, California",
+   "location": "Palo Alto, California",
    "title": "Internship, Product Management, Megapack Services (Winter/Spring 2027)"
   },
   {
