@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-22T20:37:23.696Z",
- "board_total": 8309,
+ "generated_at": "2026-10-23T00:27:27.132Z",
+ "board_total": 8310,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3226,6 +3226,12 @@
    "title": "Internship, Mechanical Design, Robotaxi Service Tooling (Winter/Spring 2027)"
   },
   {
+   "department": "Supply Chain",
+   "id": "286158",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Returnable Fleet Projects Working Student (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "Engineering & Information Technology",
    "id": "286178",
    "location": "Berlin, Be",
@@ -3302,6 +3308,12 @@
    "id": "286474",
    "location": "Den Haag",
    "title": "Service Technician Apprenticeship - Den Haag"
+  },
+  {
+   "department": "Operations & Business Support",
+   "id": "286477",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Packaging Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Vehicle Service",
@@ -3536,6 +3548,12 @@
    "id": "287443",
    "location": "Fremont, California",
    "title": "Internship, Product Management, Megapack Services (Winter/Spring 2027)"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "287458",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Controls Design Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
