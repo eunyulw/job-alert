@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-23T21:11:58.357Z",
- "board_total": 8244,
+ "generated_at": "2026-10-23T23:13:54.908Z",
+ "board_total": 8242,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -2468,12 +2468,6 @@
    "id": "283956",
    "location": "Palo Alto, California",
    "title": "Internship, Site Controller Software Engineer, Energy Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Energy Engineering",
-   "id": "283989",
-   "location": "Palo Alto, California",
-   "title": "Internship, Mechanical Design Engineer, Autonomous Charging, Energy Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Software",
