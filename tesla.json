@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-24T06:07:16.079Z",
- "board_total": 8268,
+ "generated_at": "2026-10-24T23:47:15.906Z",
+ "board_total": 8270,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3614,6 +3614,12 @@
    "id": "287082",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Logistic Financial Analyst Internship (m/f/d) - Gigafactory Berlin-Brandenburg  "
+  },
+  {
+   "department": "Operations & Business Support",
+   "id": "287183",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Fleet & Supply Specialist Internship"
   },
   {
    "department": "Vehicle Service",
