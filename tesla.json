@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-26T17:47:59.214Z",
- "board_total": 8257,
+ "generated_at": "2026-10-26T19:07:15.883Z",
+ "board_total": 8254,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3716,6 +3716,12 @@
    "id": "287724",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Inbound Transports Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Energy - Solar & Storage",
+   "id": "287742",
+   "location": "Bergamo, Lombardia",
+   "title": "Powerwall Sales Internship - Energy Products EMEA"
   }
  ]
 }
