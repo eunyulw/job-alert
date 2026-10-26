@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-25T05:47:20.767Z",
- "board_total": 8269,
+ "generated_at": "2026-10-26T00:27:20.829Z",
+ "board_total": 8271,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3646,6 +3646,12 @@
    "title": "Internship, Program Manager, Sales & Delivery (Winter/Spring 2027)"
   },
   {
+   "department": "People",
+   "id": "287285",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Intern HR Data Analytics & AI (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "Engineering & Information Technology",
    "id": "287308",
    "location": "Berlin, Be",
@@ -3710,6 +3716,12 @@
    "id": "287481",
    "location": "Athens, Attiki",
    "title": "Optimus Motor Design Internship"
+  },
+  {
+   "department": "Environmental, Health, Safety & Security",
+   "id": "287488",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Plant Environmental Control Engineering Internship, Battery Pack & Drive Unit (m/f/d) – Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
