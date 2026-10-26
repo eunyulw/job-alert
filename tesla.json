@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-26T17:38:33.249Z",
- "board_total": 8256,
+ "generated_at": "2026-10-26T17:47:59.214Z",
+ "board_total": 8257,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -2098,12 +2098,6 @@
    "title": "Internship, Audio Visual Technician, Infrastructure Engineering (Winter/Spring 2027)"
   },
   {
-   "department": "Sales & Customer Support",
-   "id": "282780",
-   "location": "Fremont, California",
-   "title": "Internship, Video Producer, Product Knowledge, North America Sales Operations (Winter/Spring 2027)"
-  },
-  {
    "department": "Tesla SI",
    "id": "282825",
    "location": "Palo Alto, California",
@@ -2330,12 +2324,6 @@
    "id": "283630",
    "location": "Buffalo, New York",
    "title": "Internship, Factory Firmware Integration Engineer, Energy Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Sales & Customer Support",
-   "id": "283633",
-   "location": "Quebec City, Quebec",
-   "title": "Internship, Program Manager, Territory Operations (Winter/Spring 2027)"
   },
   {
    "department": "Tesla SI",
