@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-26T21:17:15.916Z",
- "board_total": 8253,
+ "generated_at": "2026-10-26T21:37:15.871Z",
+ "board_total": 8266,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -1049,12 +1049,6 @@
   },
   {
    "department": "Vehicle Service",
-   "id": "279787",
-   "location": "Seattle, Washington",
-   "title": "Internship, Service Technician Trainee (Fall 2026)"
-  },
-  {
-   "department": "Vehicle Service",
    "id": "279792",
    "location": "Mechanicsburg, Pennsylvania",
    "title": "Internship, Service Technician Trainee (Fall 2026)"
@@ -1064,12 +1058,6 @@
    "id": "279807",
    "location": "Laval, Quebec",
    "title": "Stage, Technicien de Service (Automne 2026) | Internship, Service Technician Trainee (Fall 2026)"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "279816",
-   "location": "Dublin, California",
-   "title": "Internship, Service Technician Trainee (Fall 2026)"
   },
   {
    "department": "Vehicle Service",
@@ -3656,6 +3644,12 @@
    "id": "287478",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Production Engineering Internship, Battery Manufacturing (m/f/d) – Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "287480",
+   "location": "East Attica Regional Unit",
+   "title": "Electrical Engineering Internship "
   },
   {
    "department": "Tesla SI",
