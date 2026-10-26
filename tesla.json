@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "generated_at": "2026-10-26T17:17:16.009Z",
+ "generated_at": "2026-10-26T17:38:33.249Z",
  "board_total": 8256,
  "internships": [
   {
@@ -3553,13 +3553,13 @@
    "department": "Vehicle Software",
    "id": "287038",
    "location": "Amsterdam, Noord-holland",
-   "title": "Vehicle Software Engineer Internship, Diagnostic User Interface"
+   "title": "Internship, Service Engineering - Diagnostic UI development"
   },
   {
    "department": "Vehicle Software",
    "id": "287039",
    "location": "Amsterdam, Noord-holland",
-   "title": "Vehicle Software Validation Engineer Internship, Diagnostic Tools"
+   "title": "Internship, Service Engineering - Diagnostic tools validation"
   },
   {
    "department": "Vehicle Software",
