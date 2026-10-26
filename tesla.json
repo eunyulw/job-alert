@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-26T06:27:15.709Z",
- "board_total": 8266,
+ "generated_at": "2026-10-26T16:27:21.486Z",
+ "board_total": 8255,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -892,12 +892,6 @@
    "title": "Internship, Service Technician Trainee (Fall 2026)"
   },
   {
-   "department": "Vehicle Service",
-   "id": "279311",
-   "location": "Columbus, Ohio",
-   "title": "Internship, Service Technician Trainee (Fall 2026)"
-  },
-  {
    "department": "Engineering & Information Technology",
    "id": "279313",
    "location": "Fremont, California",
@@ -980,12 +974,6 @@
    "id": "279603",
    "location": "Palo Alto, California",
    "title": "Internship, Applied SI Engineer, SI Hardware (Winter/Spring 2027) "
-  },
-  {
-   "department": "People",
-   "id": "279606",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Personalentwicklung / HR Werkstudent (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Vehicle Service",
@@ -1516,10 +1504,10 @@
    "title": " Internship, Cathode Advanced Manufacturing Engineer, Cell Engineering (Spring 2027)"
   },
   {
-   "department": "Environmental, Health, Safety & Security",
-   "id": "281542",
-   "location": "Hamburg",
-   "title": "EHS Specialist Internship (m/w/d)"
+   "department": "Manufacturing",
+   "id": "281524",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Open Day in der Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
@@ -3293,12 +3281,6 @@
   },
   {
    "department": "Finance",
-   "id": "286013",
-   "location": "Amsterdam, Noord-holland",
-   "title": "Finance Data Analyst Internship"
-  },
-  {
-   "department": "Finance",
    "id": "286043",
    "location": "Amsterdam, Noord-holland",
    "title": "Revenue and Accounts Receivable Data Controller Internship "
@@ -3646,6 +3628,12 @@
    "title": "Mechanical Design Engineering Internship, Battery Engineering, Tesla Engineering Germany (m/f/d)"
   },
   {
+   "department": "Sales & Customer Support",
+   "id": "287322",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Content & Communications Internship"
+  },
+  {
    "department": "Tesla SI",
    "id": "287334",
    "location": "Berlin",
@@ -3734,6 +3722,12 @@
    "id": "287709",
    "location": "Melbourne, Vic",
    "title": "Industrial Product Engineering Intern, Megapack, Energy"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "287724",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Inbound Transports Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   }
  ]
 }
