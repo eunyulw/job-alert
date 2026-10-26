@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-26T00:27:20.829Z",
- "board_total": 8271,
+ "generated_at": "2026-10-26T06:27:15.709Z",
+ "board_total": 8266,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -274,12 +274,6 @@
    "title": "Manufacturing Development Program"
   },
   {
-   "department": "Legal & Government Affairs",
-   "id": "274253",
-   "location": "Alexandria, New South Wales",
-   "title": "Energy Policy Intern"
-  },
-  {
    "department": "Vehicle Service",
    "id": "274322",
    "location": "Kastrup, Hovedstaden",
@@ -356,12 +350,6 @@
    "id": "276706",
    "location": "Fremont, California",
    "title": "Internship, Technical Program Manager, Vehicle Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Charging",
-   "id": "276891",
-   "location": "Alexandria, New South Wales",
-   "title": "Charging Development Intern"
   },
   {
    "department": "Tesla SI",
