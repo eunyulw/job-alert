@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-26T16:27:21.486Z",
- "board_total": 8255,
+ "generated_at": "2026-10-26T17:17:16.009Z",
+ "board_total": 8256,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3127,7 +3127,7 @@
    "department": "Vehicle Software",
    "id": "285605",
    "location": "Tilburg, Noord-brabant",
-   "title": "Diagnostic Engineering Internship"
+   "title": "Internship, Service Engineering - Low voltage, chassis"
   },
   {
    "department": "Vehicle Service",
@@ -3355,13 +3355,13 @@
    "department": "Vehicle Software",
    "id": "286287",
    "location": "Amsterdam, Noord-holland",
-   "title": "Software Product Support & Diagnostic Engineer – HV Battery Internship"
+   "title": "Internship, Service Engineering - HV battery"
   },
   {
    "department": "Vehicle Software",
    "id": "286289",
    "location": "Amsterdam, Noord-holland",
-   "title": "Software Product Support & Diagnostic Engineer – Thermal Internship"
+   "title": "Internship, Service Engineering - Thermal systems"
   },
   {
    "department": "Supply Chain",
@@ -3565,7 +3565,7 @@
    "department": "Vehicle Software",
    "id": "287040",
    "location": "Amsterdam, Noord-holland",
-   "title": "Vehicle Diagnostic Engineer Internship, Infotainment & System"
+   "title": "Internship, Service Engineering - Infotainment and mobile app"
   },
   {
    "department": "Operations & Business Support",
