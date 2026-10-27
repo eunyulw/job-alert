@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-27T03:27:19.595Z",
- "board_total": 8282,
+ "generated_at": "2026-10-27T14:07:15.789Z",
+ "board_total": 8276,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3371,12 +3371,6 @@
   },
   {
    "department": "Engineering & Information Technology",
-   "id": "286611",
-   "location": "Amsterdam, Noord-holland",
-   "title": "Software Engineer Internship, IT Applications"
-  },
-  {
-   "department": "Engineering & Information Technology",
    "id": "286618",
    "location": "Berlin, Be",
    "title": "Mechanical Design Engineering Internship, High Voltage Distribution, Tesla Engineering Germany (m/f/d)"
@@ -3422,12 +3416,6 @@
    "id": "286875",
    "location": "O'connor",
    "title": "Sales Customer Support Advisor (Entry-Level), Perth"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "286898",
-   "location": "Vittuone",
-   "title": "Service Technician Traineeship - Milan"
   },
   {
    "department": "Vehicle Service",
@@ -3638,6 +3626,12 @@
    "id": "287545",
    "location": "Fremont, California",
    "title": "Logistics Industrial Engineer Intern, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "287597",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Industrial Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Manufacturing",
