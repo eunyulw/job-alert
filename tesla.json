@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-27T18:37:20.116Z",
- "board_total": 8230,
+ "generated_at": "2026-10-27T19:17:20.303Z",
+ "board_total": 8224,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -2056,12 +2056,6 @@
    "title": "Internship, Program Manager, Territory (Winter/Spring 2027)"
   },
   {
-   "department": "Sales & Customer Support",
-   "id": "282971",
-   "location": "New York, New York",
-   "title": "Internship, Instructional Designer, Service Content Development (Winter/Spring 2027)"
-  },
-  {
    "department": "Tesla SI",
    "id": "283008",
    "location": "Bengaluru Urban, Ka",
@@ -3644,6 +3638,12 @@
    "id": "287742",
    "location": "Bergamo, Lombardia",
    "title": "Powerwall Sales Internship - Energy Products EMEA"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "287928",
+   "location": "Sunnyvale, California",
+   "title": "Engineering Technician Program Trainee "
   },
   {
    "department": "Vehicle Service",
