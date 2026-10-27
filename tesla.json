@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-27T18:27:19.976Z",
- "board_total": 8244,
+ "generated_at": "2026-10-27T18:37:20.116Z",
+ "board_total": 8230,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -1454,12 +1454,6 @@
    "id": "281607",
    "location": "Palo Alto, California",
    "title": "Internship, Product Support Engineer, Service Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Tesla SI",
-   "id": "281612",
-   "location": "Palo Alto, California",
-   "title": "Internship, Data Engineer, Fleet Data, Self-Driving (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Software",
