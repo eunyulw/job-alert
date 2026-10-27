@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-27T14:07:15.789Z",
- "board_total": 8276,
+ "generated_at": "2026-10-27T17:07:19.952Z",
+ "board_total": 8259,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -1430,12 +1430,6 @@
    "id": "281482",
    "location": "Fremont, California",
    "title": "Internship, Site Reliability Engineer, Infrastructure Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "281483",
-   "location": "Austin, Texas",
-   "title": "Internship, Offensive Security Engineer, Information Security (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
