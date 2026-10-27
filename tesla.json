@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-27T21:17:20.646Z",
- "board_total": 8253,
+ "generated_at": "2026-10-27T22:57:16.123Z",
+ "board_total": 8228,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -1340,12 +1340,6 @@
    "id": "281271",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer, Maps & Navigation Validation (Winter/Spring 2027)"
-  },
-  {
-   "department": "Energy Engineering",
-   "id": "281306",
-   "location": "Red Hill, Queensland",
-   "title": "Embedded Software & Automation Engineering Intern, Energy Service Tooling"
   },
   {
    "department": "People",
