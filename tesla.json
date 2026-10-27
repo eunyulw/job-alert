@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-26T21:37:15.871Z",
- "board_total": 8266,
+ "generated_at": "2026-10-27T01:17:20.462Z",
+ "board_total": 8280,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -116,12 +116,6 @@
    "id": "266152",
    "location": "Berlin, Be",
    "title": "Technical Program Manager Intern, Battery Engineering, Tesla Engineering Germany (m/f/d)"
-  },
-  {
-   "department": "Tesla SI",
-   "id": "266320",
-   "location": "Palo Alto, California",
-   "title": "Internship, CAE Mechanical Design Engineer, Optimus (Fall 2026)"
   },
   {
    "department": "Sales & Customer Support",
