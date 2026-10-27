@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-27T20:47:15.820Z",
- "board_total": 8245,
+ "generated_at": "2026-10-27T21:17:20.646Z",
+ "board_total": 8253,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -914,18 +914,6 @@
    "id": "279586",
    "location": "Grünheide (mark), Brandenburg",
    "title": "HR Business Partner Werkstudent (m/w/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
-   "department": "Tesla SI",
-   "id": "279600",
-   "location": "Palo Alto, California",
-   "title": "Internship, Software Engineer, SI Inference Co Design (Winter/Spring 2027) "
-  },
-  {
-   "department": "Tesla SI",
-   "id": "279603",
-   "location": "Palo Alto, California",
-   "title": "Internship, Applied SI Engineer, SI Hardware (Winter/Spring 2027) "
   },
   {
    "department": "Vehicle Service",
