@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-27T22:57:16.123Z",
- "board_total": 8228,
+ "generated_at": "2026-10-28T00:37:21.032Z",
+ "board_total": 8232,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3356,6 +3356,12 @@
    "id": "286660",
    "location": "Fremont, California",
    "title": "Internship, Sustainability, EHS (Winter/Spring 2027)"
+  },
+  {
+   "department": "Finance",
+   "id": "286701",
+   "location": "Draper, Utah",
+   "title": "Internship, Stock Administrator (Winter/Spring 2027)"
   },
   {
    "department": "Energy Engineering",
