@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-28T00:37:21.032Z",
- "board_total": 8232,
+ "generated_at": "2026-10-28T21:17:19.814Z",
+ "board_total": 8199,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -224,12 +224,6 @@
    "id": "270745",
    "location": "Berlin, Be",
    "title": "Test Equipment Mechanical Design Engineer Internship, Tesla Engineering Germany (m/w/d)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "270748",
-   "location": "Berlin, Be",
-   "title": "Vehicle Testing Engineer Internship, Tesla Engineering Germany (m/w/d)"
   },
   {
    "department": "Vehicle Service",
@@ -476,6 +470,12 @@
    "id": "278386",
    "location": "Fremont, California",
    "title": "Internship, Industrial Engineer, Supply Chain (Winter/Spring 2027)"
+  },
+  {
+   "department": "Supply Chain",
+   "id": "278389",
+   "location": "Fremont, California",
+   "title": "Internship, Packaging Engineer, Supply Chain (Winter/Spring 2027)"
   },
   {
    "department": "Supply Chain",
@@ -1789,7 +1789,7 @@
    "department": "Vehicle Software",
    "id": "282241",
    "location": "Palo Alto, California",
-   "title": "Internship, Software Integration Engineer, Battery Management Systems (Winter/Spring 2027)"
+   "title": "Internship, Software Integration Engineer, High Voltage Systems (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Software",
@@ -2629,7 +2629,7 @@
    "department": "People",
    "id": "284743",
    "location": "Austin, Texas",
-   "title": "Internship, Total Rewards (Winter/Spring 2027)"
+   "title": "Internship, Leave of Absence (Winter/Spring 2027)"
   },
   {
    "department": "People",
@@ -3220,12 +3220,6 @@
    "title": "Returnable Fleet Projects Working Student (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
-   "department": "Engineering & Information Technology",
-   "id": "286178",
-   "location": "Berlin, Be",
-   "title": "Vehicle Testing Engineer Internship, Tesla Engineering Germany (m/w/d)"
-  },
-  {
    "department": "Vehicle Software",
    "id": "286261",
    "location": "Palo Alto, California",
@@ -3622,6 +3616,24 @@
    "title": "Powerwall Sales Internship - Energy Products EMEA"
   },
   {
+   "department": "Construction & Facilities",
+   "id": "287750",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "QC Electrical Internship (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "287753",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Intern Quality Coordinator (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "287754",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Intern Quality Control CSA (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "Engineering & Information Technology",
    "id": "287928",
    "location": "Sunnyvale, California",
@@ -3644,6 +3656,24 @@
    "id": "287993",
    "location": "Miranda, New South Wales",
    "title": "Apprentice Vehicle Technician, Miranda | January 2027 Intake "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288088",
+   "location": "Nepean, Ontario",
+   "title": "Internship, Service Technician Trainee (Fall 2026) "
+  },
+  {
+   "department": "Tesla SI",
+   "id": "288119",
+   "location": "Langley, British Columbia",
+   "title": "Internship, Electromechanical Product Design Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "People",
+   "id": "288229",
+   "location": "Austin, Texas",
+   "title": "Internship, Accomodations (Winter/Spring 2027)"
   }
  ]
 }
