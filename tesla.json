@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-29T17:57:22.926Z",
- "board_total": 8203,
+ "generated_at": "2026-10-29T19:27:21.097Z",
+ "board_total": 8198,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -1142,12 +1142,6 @@
    "id": "280290",
    "location": "Fremont, California",
    "title": "Internship, Technical Program Manager, Cell Manufacturing (Winter/Spring 2027)"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "280324",
-   "location": "Montreal, Quebec",
-   "title": "Stage, Technicien de Service (Automne 2026) | Internship, Service Technician Trainee (Fall 2026)"
   },
   {
    "department": "Engineering & Information Technology",
