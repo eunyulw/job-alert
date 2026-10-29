@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-29T09:57:20.311Z",
- "board_total": 8224,
+ "generated_at": "2026-10-29T17:57:22.926Z",
+ "board_total": 8203,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -1402,6 +1402,12 @@
    "title": " Internship, Cathode Advanced Manufacturing Engineer, Cell Engineering (Spring 2027)"
   },
   {
+   "department": "Manufacturing",
+   "id": "281524",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Open Day in der Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "Engineering & Information Technology",
    "id": "281552",
    "location": "Berlin, Be",
@@ -2036,12 +2042,6 @@
    "id": "283128",
    "location": "Palo Alto, California",
    "title": "Internship, Robotics Physics Modeling Engineer, Model Based Design, Optimus (Winter/Spring 2027)"
-  },
-  {
-   "department": "Operations & Business Support",
-   "id": "283137",
-   "location": "Hawthorne, California",
-   "title": "Internship, Vehicle Accessories & Merchandise Product Intern, Global Merchandise (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -3076,12 +3076,6 @@
    "title": "Service Technician Apprenticeship – Amsterdam"
   },
   {
-   "department": "Finance",
-   "id": "285758",
-   "location": "Amsterdam, Noord-holland",
-   "title": "Financial Controlling Internship"
-  },
-  {
    "department": "Vehicle Software",
    "id": "285777",
    "location": "Palo Alto, California",
@@ -3140,12 +3134,6 @@
    "id": "286003",
    "location": "Amsterdam, Noord-holland",
    "title": "Field Operations Internship"
-  },
-  {
-   "department": "Finance",
-   "id": "286004",
-   "location": "Amsterdam, Noord-holland",
-   "title": "Corporate Finance Internship"
   },
   {
    "department": "Finance",
@@ -3481,7 +3469,7 @@
    "department": "People",
    "id": "287285",
    "location": "Grünheide (mark), Brandenburg",
-   "title": "Intern HR Data Analytics & AI (m/f/d) - Gigafactory Berlin-Brandenburg"
+   "title": "HR Data Analytics & AI Intern  (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
@@ -3626,6 +3614,12 @@
    "id": "287754",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Intern Quality Control CSA (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "287755",
+   "location": "Amsterdam, Zuid-holland",
+   "title": "Supercharger Product Engineering Internship"
   },
   {
    "department": "Construction & Facilities",
