@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-29T22:37:19.577Z",
- "board_total": 8222,
+ "generated_at": "2026-10-29T23:07:20.661Z",
+ "board_total": 8227,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3650,6 +3650,12 @@
    "id": "288232",
    "location": "Palo Alto, California",
    "title": "Internship, Actuator Mechanical Design Engineer, Optimus (Summer 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "288413",
+   "location": "Palo Alto, California",
+   "title": "Internship, Optimus Mechanical Design Engineer, Electronic Devices (Winter/Spring 2027) "
   }
  ]
 }
