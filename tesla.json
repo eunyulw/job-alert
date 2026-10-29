@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-28T21:17:19.814Z",
- "board_total": 8199,
+ "generated_at": "2026-10-29T07:27:21.355Z",
+ "board_total": 8226,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -1418,12 +1418,6 @@
    "id": "281552",
    "location": "Berlin, Be",
    "title": "Electrical/Electronic Launch Design Engineering Internship, Battery Engineering, Tesla Engineering Germany (m/f/d)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "281561",
-   "location": "Austin, Texas",
-   "title": "Internship, Security Analyst, Security & Intelligence (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Software",
@@ -3004,6 +2998,12 @@
    "title": "Internship, Recruiting Coordinator (Winter/Spring 2027)"
   },
   {
+   "department": "Energy Engineering",
+   "id": "285508",
+   "location": "Palo Alto, California",
+   "title": "Internship, Distributed Systems Software Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
    "department": "Vehicle Software",
    "id": "285605",
    "location": "Tilburg, Noord-brabant",
@@ -3358,6 +3358,12 @@
    "title": "Internship, Stock Administrator (Winter/Spring 2027)"
   },
   {
+   "department": "Manufacturing",
+   "id": "286716",
+   "location": "Robstown, Texas",
+   "title": "Chemical Operator Intern, Lithium Refinery "
+  },
+  {
    "department": "Energy Engineering",
    "id": "286768",
    "location": "Amsterdam, Noord-holland",
@@ -3640,6 +3646,12 @@
    "title": "Engineering Technician Program Trainee "
   },
   {
+   "department": "Engineering & Information Technology",
+   "id": "287982",
+   "location": "Palo Alto, California",
+   "title": "Internship, Data Engineer, Energy (Winter/Spring 2027)"
+  },
+  {
    "department": "Vehicle Service",
    "id": "287991",
    "location": "Alexandria, New South Wales",
@@ -3668,6 +3680,12 @@
    "id": "288119",
    "location": "Langley, British Columbia",
    "title": "Internship, Electromechanical Product Design Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Operations & Business Support",
+   "id": "288153",
+   "location": "Toa Payoh",
+   "title": "Leads Generation Intern"
   },
   {
    "department": "People",
