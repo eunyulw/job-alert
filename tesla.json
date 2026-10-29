@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-29T07:27:21.355Z",
- "board_total": 8226,
+ "generated_at": "2026-10-29T09:57:20.311Z",
+ "board_total": 8224,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -302,12 +302,6 @@
    "id": "275575",
    "location": "Zaventem, Brussels",
    "title": "Service Technician Apprenticeship – Brussels/Zaventem"
-  },
-  {
-   "department": "Supply Chain",
-   "id": "276274",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Data Analyst Operational Excellence, Supply Chain Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "People",
@@ -1406,12 +1400,6 @@
    "id": "281501",
    "location": "Mississauga, Ontario",
    "title": " Internship, Cathode Advanced Manufacturing Engineer, Cell Engineering (Spring 2027)"
-  },
-  {
-   "department": "Manufacturing",
-   "id": "281524",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Open Day in der Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
@@ -3638,6 +3626,12 @@
    "id": "287754",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Intern Quality Control CSA (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "287883",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Mechanical Design Intern for HVAC/Plumbing (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
