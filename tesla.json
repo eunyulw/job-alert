@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-29T21:57:20.015Z",
- "board_total": 8225,
+ "generated_at": "2026-10-29T22:37:19.577Z",
+ "board_total": 8222,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -986,18 +986,6 @@
    "id": "279783",
    "location": "Whitehall, Pennsylvania",
    "title": "Internship, Service Technician Trainee (Fall 2026)"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "279792",
-   "location": "Mechanicsburg, Pennsylvania",
-   "title": "Internship, Service Technician Trainee (Fall 2026)"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "279807",
-   "location": "Laval, Quebec",
-   "title": "Stage, Technicien de Service (Automne 2026) | Internship, Service Technician Trainee (Fall 2026)"
   },
   {
    "department": "Vehicle Service",
