@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-29T19:27:21.097Z",
- "board_total": 8198,
+ "generated_at": "2026-10-29T20:37:20.494Z",
+ "board_total": 8211,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -2140,12 +2140,6 @@
    "title": "START Service Technician (Winter 2027) "
   },
   {
-   "department": "Vehicle Software",
-   "id": "283395",
-   "location": "Palo Alto, California",
-   "title": "Internship, Software Integration Engineer, Factory Firmware (Winter/Spring 2027)  "
-  },
-  {
    "department": "Energy Engineering",
    "id": "283396",
    "location": "Palo Alto, California",
@@ -3674,6 +3668,12 @@
    "id": "288229",
    "location": "Austin, Texas",
    "title": "Internship, Accomodations (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "288232",
+   "location": "Palo Alto, California",
+   "title": "Internship, Actuator Mechanical Design Engineer, Optimus (Summer 2027)"
   }
  ]
 }
