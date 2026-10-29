@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-29T20:37:20.494Z",
- "board_total": 8211,
+ "generated_at": "2026-10-29T21:57:20.015Z",
+ "board_total": 8225,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -884,12 +884,6 @@
    "id": "279425",
    "location": "West Bloomfield Township, Michigan",
    "title": "Internship, Service Technician Trainee (Fall 2026)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "279508",
-   "location": "Palo Alto, California",
-   "title": "Internship, Thermal Design Engineer, Electronic Devices (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Service",
@@ -1862,12 +1856,6 @@
    "id": "282292",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer, SI Data Infrastructure (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "282301",
-   "location": "Palo Alto, California",
-   "title": "Internship, Audio & Sensor Software Engineer, Vehicle Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Finance",
