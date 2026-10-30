@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-30T16:37:21.189Z",
- "board_total": 8247,
+ "generated_at": "2026-10-30T18:37:20.294Z",
+ "board_total": 8254,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3386,12 +3386,6 @@
    "id": "287080",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Intralogistics Engineering Internship (m/w/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
-   "department": "Supply Chain",
-   "id": "287082",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Logistic Financial Analyst Internship (m/f/d) - Gigafactory Berlin-Brandenburg  "
   },
   {
    "department": "Operations & Business Support",
