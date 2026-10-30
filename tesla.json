@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-29T23:07:20.661Z",
- "board_total": 8227,
+ "generated_at": "2026-10-30T16:37:21.189Z",
+ "board_total": 8247,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -101,12 +101,6 @@
   },
   {
    "department": "Vehicle Service",
-   "id": "263121",
-   "location": "Skodje",
-   "title": "Service Technician Apprentice - Ålesund"
-  },
-  {
-   "department": "Vehicle Service",
    "id": "263950",
    "location": "Cyberjaya, Selangor",
    "title": "Service Apprentice"
@@ -138,7 +132,7 @@
   {
    "department": "Engineering & Information Technology",
    "id": "267486",
-   "location": "Athens, Attiki",
+   "location": "East Attica Regional Unit",
    "title": "Metrology Technician Internship"
   },
   {
@@ -3510,7 +3504,7 @@
   {
    "department": "Tesla SI",
    "id": "287481",
-   "location": "Athens, Attiki",
+   "location": "East Attica Regional Unit",
    "title": "Optimus Motor Design Internship"
   },
   {
@@ -3622,6 +3616,12 @@
    "title": "Apprentice Vehicle Technician, Miranda | January 2027 Intake "
   },
   {
+   "department": "People",
+   "id": "288030",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Talent Strategy & HR Projects Internship (m/f/d) - Gigafactory Berlin – Brandenburg"
+  },
+  {
    "department": "Vehicle Service",
    "id": "288088",
    "location": "Nepean, Ontario",
@@ -3650,6 +3650,12 @@
    "id": "288232",
    "location": "Palo Alto, California",
    "title": "Internship, Actuator Mechanical Design Engineer, Optimus (Summer 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288406",
+   "location": "Mount Kisco, New York",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
   },
   {
    "department": "Engineering & Information Technology",
