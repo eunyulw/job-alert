@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-30T18:37:20.294Z",
- "board_total": 8254,
+ "generated_at": "2026-10-31T05:57:20.564Z",
+ "board_total": 8298,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -254,12 +254,6 @@
    "id": "274322",
    "location": "Kastrup, Hovedstaden",
    "title": "Personvognsmekaniker Lærling - Kastrup"
-  },
-  {
-   "department": "Finance",
-   "id": "274521",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Finance Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Energy Engineering",
@@ -1874,12 +1868,6 @@
    "id": "282451",
    "location": "Palo Alto, California",
    "title": "Internship, Cost Reduction, Energy Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "282464",
-   "location": "Austin, Texas",
-   "title": "Internship, Program Manager, North America Service Program & Project Management (Winter/Spring 2027)"
   },
   {
    "department": "Tesla SI",
@@ -3626,6 +3614,12 @@
    "id": "288119",
    "location": "Langley, British Columbia",
    "title": "Internship, Electromechanical Product Design Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "288126",
+   "location": "Palo Alto, California",
+   "title": "Internship, Megapack Business Development, Energy (Winter/Spring 2027)"
   },
   {
    "department": "Operations & Business Support",
