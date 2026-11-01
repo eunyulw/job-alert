@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-31T05:57:20.564Z",
- "board_total": 8298,
+ "generated_at": "2026-11-01T07:47:19.673Z",
+ "board_total": 8292,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -2884,12 +2884,6 @@
    "title": "Internship, Indirect Tax Counsel (Winter/Spring 2027)"
   },
   {
-   "department": "Vehicle Software",
-   "id": "285317",
-   "location": "Palo Alto, California",
-   "title": "Internship, Product Security Engineer (Summer 2027)"
-  },
-  {
    "department": "Engineering & Information Technology",
    "id": "285350",
    "location": "Hawthorne, California",
@@ -3650,6 +3644,12 @@
    "id": "288413",
    "location": "Palo Alto, California",
    "title": "Internship, Optimus Mechanical Design Engineer, Electronic Devices (Winter/Spring 2027) "
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288425",
+   "location": "Fayetteville, New York",
+   "title": "Internship, Service Technician Trainee (Fall 2026)"
   }
  ]
 }
