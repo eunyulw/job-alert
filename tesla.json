@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-02T20:17:19.496Z",
- "board_total": 8289,
+ "generated_at": "2026-11-02T20:47:20.175Z",
+ "board_total": 8291,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -1190,12 +1190,6 @@
    "id": "281501",
    "location": "Mississauga, Ontario",
    "title": " Internship, Cathode Advanced Manufacturing Engineer, Cell Engineering (Spring 2027)"
-  },
-  {
-   "department": "Manufacturing",
-   "id": "281524",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Open Day in der Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
