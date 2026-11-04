@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-04T08:57:15.855Z",
- "board_total": 8293,
+ "generated_at": "2026-11-04T11:27:20.319Z",
+ "board_total": 8303,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3392,6 +3392,12 @@
    "id": "288153",
    "location": "Toa Payoh",
    "title": "Leads Generation Intern"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288162",
+   "location": "Ribe",
+   "title": "Personvognsmekaniker Lærling - Ribe"
   },
   {
    "department": "People",
