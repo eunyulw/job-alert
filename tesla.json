@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-04T02:27:15.838Z",
- "board_total": 8305,
+ "generated_at": "2026-11-04T08:57:15.855Z",
+ "board_total": 8293,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -560,12 +560,6 @@
    "id": "278630",
    "location": "Palo Alto, California",
    "title": "Internship, Electrical Design Engineer, Vehicle Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Manufacturing",
-   "id": "278925",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Quality Internship Paint Shop, Corrosion (m/f/d) - Gigafactory Berlin-Brandenburg "
   },
   {
    "department": "Engineering & Information Technology",
