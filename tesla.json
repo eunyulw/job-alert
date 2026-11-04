@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-04T11:27:20.319Z",
- "board_total": 8303,
+ "generated_at": "2026-11-04T19:57:21.126Z",
+ "board_total": 8300,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -527,27 +527,9 @@
   },
   {
    "department": "Engineering & Information Technology",
-   "id": "278618",
-   "location": "Palo Alto, California",
-   "title": "Internship, Reliability Engineer, Cell Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "278620",
-   "location": "Palo Alto, California",
-   "title": "Internship, Cell Qualification, Cell Engineering (Winter/Spring 2027) "
-  },
-  {
-   "department": "Engineering & Information Technology",
    "id": "278623",
    "location": "Palo Alto, California",
    "title": "Internship, Mechanical Design Engineer, Battery Engineering (Winter/Spring 2027) "
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "278625",
-   "location": "Palo Alto, California",
-   "title": "Internship, Battery Materials, Battery Engineering (Winter/Spring 2027) "
   },
   {
    "department": "Engineering & Information Technology",
@@ -1750,12 +1732,6 @@
    "title": "Internship, Machine Learning Engineer, Factory Software (Winter/Spring 2027)"
   },
   {
-   "department": "Sales & Customer Support",
-   "id": "282931",
-   "location": "Encinitas, California",
-   "title": "Internship, Program Manager, Territory (Winter/Spring 2027)"
-  },
-  {
    "department": "Tesla SI",
    "id": "283008",
    "location": "Bengaluru Urban, Ka",
@@ -1814,12 +1790,6 @@
    "id": "283265",
    "location": "Brookshire, Texas",
    "title": "START Manufacturing Trainee, Megapack"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "283274",
-   "location": "Palo Alto, California",
-   "title": "Internship, Software Engineer, Camera & Robotics (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -2699,18 +2669,6 @@
   },
   {
    "department": "Vehicle Service",
-   "id": "285611",
-   "location": "Vienna",
-   "title": "Lehrstelle als Kraftfahrzeugtechniker inkl. Hochvolttechnik (m/w/d) - Wien Triesterstr."
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "285613",
-   "location": "Wien",
-   "title": "Lehrstelle als Kraftfahrzeugtechniker inkl. Hochvolttechnik (m/w/d) - Wien Shuttleworthstr."
-  },
-  {
-   "department": "Vehicle Service",
    "id": "285614",
    "location": "Kalsdorf Bei Graz",
    "title": "Lehrstelle als Kraftfahrzeugtechniker inkl. Hochvolttechnik (m/w/d) - Kalsdorf, Graz"
@@ -3440,6 +3398,12 @@
    "id": "288688",
    "location": "Palo Alto, California",
    "title": "Internship, Robotics Mechanical Design Engineer, Optimus (Summer 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288721",
+   "location": "Shoreline, Washington",
+   "title": "START Service Technician (Winter 2027)"
   },
   {
    "department": "Engineering & Information Technology",
