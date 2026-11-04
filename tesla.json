@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-02T20:47:20.175Z",
- "board_total": 8291,
+ "generated_at": "2026-11-04T02:27:15.838Z",
+ "board_total": 8305,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -220,12 +220,6 @@
    "title": "Test Equipment Mechanical Design Engineer Internship, Tesla Engineering Germany (m/w/d)"
   },
   {
-   "department": "Vehicle Service",
-   "id": "271187",
-   "location": "Long Beach, California",
-   "title": "START Collision Technician (Winter 2027)"
-  },
-  {
    "department": "People",
    "id": "271340",
    "location": "Palo Alto, California",
@@ -242,6 +236,12 @@
    "id": "272232",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Mechanical Engineer Technical Services Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "272236",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Werkstudent für den Bereich Systems Concept Development/ Layout – und Konzepterstellung (m/w/d)"
   },
   {
    "department": "Manufacturing",
@@ -701,12 +701,6 @@
   },
   {
    "department": "Vehicle Service",
-   "id": "279414",
-   "location": "Kansas City, Missouri",
-   "title": "Internship, Service Technician Trainee (Fall 2026)"
-  },
-  {
-   "department": "Vehicle Service",
    "id": "279417",
    "location": "Saint Louis, Missouri",
    "title": "Internship, Service Technician Trainee (Fall 2026)"
@@ -799,12 +793,6 @@
    "department": "Vehicle Service",
    "id": "279782",
    "location": "Totowa, New Jersey",
-   "title": "Internship, Service Technician Trainee (Fall 2026)"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "279783",
-   "location": "Whitehall, Pennsylvania",
    "title": "Internship, Service Technician Trainee (Fall 2026)"
   },
   {
@@ -1307,12 +1295,6 @@
   },
   {
    "department": "Construction & Facilities",
-   "id": "281701",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Ausbildung zum Umwelttechnologen für Abwasserbewirtschaftung (m/w/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
-   "department": "Construction & Facilities",
    "id": "281702",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Ausbildung Werkfeuerwehrleute (m/w/d) - Gigafactory Berlin-Brandenburg"
@@ -1678,12 +1660,6 @@
    "title": "Internship, Software Integration Engineer, Optimus (Winter/Spring 2027)"
   },
   {
-   "department": "Vehicle Service",
-   "id": "282445",
-   "location": "Ottawa, Ontario",
-   "title": "Internship, Service Technician Trainee (Fall 2026) "
-  },
-  {
    "department": "Energy Engineering",
    "id": "282451",
    "location": "Palo Alto, California",
@@ -1774,12 +1750,6 @@
    "title": "Internship, Process Engineer, Terafab (Winter/Spring 2027)"
   },
   {
-   "department": "Terafab",
-   "id": "282849",
-   "location": "Austin, Texas",
-   "title": "Internship, Equipment Engineer, Terafab (Fall 2026)"
-  },
-  {
    "department": "Engineering & Information Technology",
    "id": "282916",
    "location": "Fremont, California",
@@ -1796,12 +1766,6 @@
    "id": "283008",
    "location": "Bengaluru Urban, Ka",
    "title": "Tesla SI Software — Embedded Systems Internship"
-  },
-  {
-   "department": "Construction & Facilities",
-   "id": "283076",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Chemical Engineer Technical Services Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
@@ -1844,12 +1808,6 @@
    "id": "283220",
    "location": "Palo Alto, California",
    "title": "Internship, Content Integration Engineer, Vehicle Firmware (Winter/Spring 2027)"
-  },
-  {
-   "department": "Manufacturing",
-   "id": "283241",
-   "location": "Richmond Hill, Ontario",
-   "title": "CNC Machinist, Apprentice"
   },
   {
    "department": "Energy Engineering",
@@ -2048,12 +2006,6 @@
    "id": "283954",
    "location": "Palo Alto, California",
    "title": "Internship, Validation Engineer Intern, Body Controls (Winter/Spring 2027)"
-  },
-  {
-   "department": "Vehicle Software",
-   "id": "283990",
-   "location": "Palo Alto, California",
-   "title": "Internship, Systems Integration Engineer, Body Controls (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Software",
@@ -2347,7 +2299,7 @@
    "department": "People",
    "id": "284732",
    "location": "Austin, Texas",
-   "title": "Internship, Compensation Data Analyst (Winter/Fall 2026)"
+   "title": "Internship, Compensation Data Analyst (Winter/Spring 2027)"
   },
   {
    "department": "People",
@@ -2680,12 +2632,6 @@
    "title": "Internship, System Modeling & Infrastructure Engineer, Low Voltage Power Distribution  (Winter/Spring 2027)"
   },
   {
-   "department": "Vehicle Software",
-   "id": "285280",
-   "location": "Palo Alto, California",
-   "title": "Internship, Systems Integration Engineer Low Voltage Power Management, Vehicle Firmware (Winter/Spring 2027)"
-  },
-  {
    "department": "Engineering & Information Technology",
    "id": "285291",
    "location": "Fremont, California",
@@ -2993,15 +2939,15 @@
   },
   {
    "department": "Sales & Customer Support",
-   "id": "286431",
-   "location": "Mulgrave",
-   "title": "Sales Customer Support Advisor (Entry-Level), Melbourne"
+   "id": "286430",
+   "location": "Alexandria, New South Wales",
+   "title": "Sales Customer Support Advisor (Entry-Level), Sydney"
   },
   {
    "department": "Sales & Customer Support",
-   "id": "286432",
-   "location": "Auckland, Auckland",
-   "title": "Sales Customer Support Advisor (Entry-Level), Auckland"
+   "id": "286431",
+   "location": "Mulgrave",
+   "title": "Sales Customer Support Advisor (Entry-Level), Melbourne"
   },
   {
    "department": "Engineering & Information Technology",
@@ -3082,10 +3028,28 @@
    "title": "Chemical Operator Intern, Lithium Refinery "
   },
   {
+   "department": "Manufacturing",
+   "id": "286718",
+   "location": "Austin, Texas",
+   "title": "Chemical Operator Intern, Cathode Materials "
+  },
+  {
+   "department": "Manufacturing",
+   "id": "286719",
+   "location": "Robstown, Texas",
+   "title": "I&E Intern, Lithium Refinery"
+  },
+  {
    "department": "Energy Engineering",
    "id": "286768",
    "location": "Amsterdam, Noord-holland",
    "title": "Power Systems Modeling Internship"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "286770",
+   "location": "Austin, Texas",
+   "title": "I&E Intern, Cathode Materials"
   },
   {
    "department": "Sales & Customer Support",
@@ -3182,6 +3146,12 @@
    "id": "287201",
    "location": "Roermond",
    "title": "Service Technician Apprenticeship - Roermond"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "287202",
+   "location": "Duiven, Gelderland",
+   "title": "Service Technician Apprenticeship – Arnhem - Duiven"
   },
   {
    "department": "Supply Chain",
@@ -3358,6 +3328,12 @@
    "title": "Supercharger Product Engineering Internship"
   },
   {
+   "department": "Engineering & Information Technology",
+   "id": "287766",
+   "location": "Kreisfreie Stadt Berlin",
+   "title": "Mechanical Design Engineer, Electronic Devices & LV Architecture Internship (m/w/d)"
+  },
+  {
    "department": "Construction & Facilities",
    "id": "287883",
    "location": "Grünheide (mark), Brandenburg",
@@ -3458,6 +3434,18 @@
    "id": "288425",
    "location": "Fayetteville, New York",
    "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "288688",
+   "location": "Palo Alto, California",
+   "title": "Internship, Robotics Mechanical Design Engineer, Optimus (Summer 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "288805",
+   "location": "Palo Alto, California",
+   "title": "Internship, Product Management, Megapack Services 3 (Winter/Spring 2027)"
   }
  ]
 }
