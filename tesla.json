@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-05T01:27:21.330Z",
- "board_total": 8336,
+ "generated_at": "2026-11-05T21:57:11.417Z",
+ "board_total": 8391,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -2687,12 +2687,6 @@
   },
   {
    "department": "Engineering & Information Technology",
-   "id": "285667",
-   "location": "Austin, Texas",
-   "title": "Customer & Field Quality Engineer Intern, Cell Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
    "id": "285679",
    "location": "Fremont, California",
    "title": " Internship, Inline Metrology Systems Design/Engineer, Cell Engineering (Winter/Spring 2027)"
@@ -3382,6 +3376,12 @@
    "title": "Data Analyst Internship, Vehicle Operations – EMEA Business Analytics"
   },
   {
+   "department": "Engineering & Information Technology",
+   "id": "288619",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Quality Vision Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "Tesla SI",
    "id": "288688",
    "location": "Palo Alto, California",
@@ -3394,10 +3394,106 @@
    "title": "START Service Technician (Winter 2027)"
   },
   {
+   "department": "Operations & Business Support",
+   "id": "288780",
+   "location": "Tilburg, Noord-brabant",
+   "title": "Service Tooling Engineer Internship"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288804",
+   "location": "Kesselsdorf, Sachsen",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Dresden"
+  },
+  {
    "department": "Engineering & Information Technology",
    "id": "288805",
    "location": "Palo Alto, California",
    "title": "Internship, Product Management, Megapack Services 3 (Winter/Spring 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288806",
+   "location": "Leipzig",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Leipzig"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288969",
+   "location": "Düsseldorf, Nrw",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Düsseldorf"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288972",
+   "location": "Frankfurt Am Main",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Frankfurt"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288977",
+   "location": "Ottersberg",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Bremen"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288978",
+   "location": "Hamburg",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Hamburg"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288979",
+   "location": "Gettorf",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Kiel"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288980",
+   "location": "Rostock, Mecklenburg-vorpommern",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Rostock"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288981",
+   "location": "Bielefeld, Nrw",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Bielefeld"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288982",
+   "location": "Braunschweig, Nds",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Braunschweig"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288983",
+   "location": "Hannover",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Hannover"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288993",
+   "location": "Parsdorf, Bayern",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - München Parsdorf"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289004",
+   "location": "Karlsruhe, Baden-wuerttemberg",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Karlsruhe"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289007",
+   "location": "Neu-ulm, Bayern",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Neu-Ulm"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289010",
+   "location": "Weinstadt",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Weinstadt"
   }
  ]
 }
