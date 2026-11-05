@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-05T21:57:11.417Z",
- "board_total": 8391,
+ "generated_at": "2026-11-05T22:27:11.497Z",
+ "board_total": 8398,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -1484,12 +1484,6 @@
    "id": "281951",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer, Core SI Compiler & Runtime (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "281977",
-   "location": "Fremont, California",
-   "title": "Internship, Noise Vibration Harshness Engineer, Vehicle Engineering (Winter/Spring 2027)  "
   },
   {
    "department": "Sales & Customer Support",
