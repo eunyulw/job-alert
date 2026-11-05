@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-04T19:57:21.126Z",
- "board_total": 8300,
+ "generated_at": "2026-11-05T01:27:21.330Z",
+ "board_total": 8336,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -1174,12 +1174,6 @@
    "title": "Internship, Software Engineer, Automated Diagnostics Intern (Winter/Spring 2027)"
   },
   {
-   "department": "Engineering & Information Technology",
-   "id": "281625",
-   "location": "Palo Alto, California",
-   "title": " Internship, Mobile Applications, Automated Diagnostics (Winter/Spring 2027)"
-  },
-  {
    "department": "Vehicle Software",
    "id": "281632",
    "location": "Palo Alto, California",
@@ -1964,18 +1958,6 @@
    "id": "283950",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer Opticaster, Energy Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Vehicle Software",
-   "id": "283954",
-   "location": "Palo Alto, California",
-   "title": "Internship, Validation Engineer Intern, Body Controls (Winter/Spring 2027)"
-  },
-  {
-   "department": "Vehicle Software",
-   "id": "283994",
-   "location": "Palo Alto, California",
-   "title": "Internship, Embedded Software Engineer, Body Controls Firmware (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -3392,6 +3374,12 @@
    "id": "288425",
    "location": "Fayetteville, New York",
    "title": "Internship, Service Technician Trainee (Fall 2026)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "288494",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Data Analyst Internship, Vehicle Operations – EMEA Business Analytics"
   },
   {
    "department": "Tesla SI",
