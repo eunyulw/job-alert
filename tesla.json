@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-05T22:27:11.497Z",
- "board_total": 8398,
+ "generated_at": "2026-11-06T19:57:13.799Z",
+ "board_total": 8444,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -232,12 +232,6 @@
    "title": "Service Technician Apprentice - Bergen (Kokstad)"
   },
   {
-   "department": "Construction & Facilities",
-   "id": "272232",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Mechanical Engineer Technical Services Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
    "department": "Engineering & Information Technology",
    "id": "272236",
    "location": "Prüm, Rhineland-palatinate",
@@ -410,12 +404,6 @@
    "id": "277799",
    "location": "Austin, Texas",
    "title": "Internship, Architecture & Structural Engineer, Infrastructure (Winter/Spring 2027)"
-  },
-  {
-   "department": "Vehicle Software",
-   "id": "277843",
-   "location": "Palo Alto, California",
-   "title": "Internship, Red Team Security Engineer, Vehicle Software (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Service",
@@ -950,12 +938,6 @@
    "id": "280826",
    "location": "Fremont, California",
    "title": "Internship, Equipment or Process Engineer, Manufacturing (Winter/Spring 2027)"
-  },
-  {
-   "department": "Vehicle Software",
-   "id": "280960",
-   "location": "Palo Alto, California",
-   "title": "Internship, Software Engineer, Maps & Navigation, Robotaxi (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -1826,12 +1808,6 @@
    "id": "283396",
    "location": "Palo Alto, California",
    "title": "Internship, System Integration & Test Automation Engineer, Energy Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Energy Engineering",
-   "id": "283423",
-   "location": "Palo Alto, California",
-   "title": "Internship, Solar Hardware Engineer, Energy Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Energy Engineering",
@@ -2746,16 +2722,16 @@
    "title": "Internship, Program Manager, Lifecycle Communications (Winter/Spring 2027)"
   },
   {
-   "department": "Tesla SI",
-   "id": "285983",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "AI Adoption & Implementation Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
    "department": "Energy Engineering",
    "id": "286003",
    "location": "Amsterdam, Noord-holland",
    "title": "Field Operations Internship"
+  },
+  {
+   "department": "Finance",
+   "id": "286004",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Corporate Finance Internship"
   },
   {
    "department": "Finance",
@@ -2846,6 +2822,12 @@
    "id": "286342",
    "location": "Saint-ouen-sur-seine, Ile-de-france",
    "title": "Stagiaire Immobilier - West / Real Estate Intern - West (H/F) - Saint-Ouen"
+  },
+  {
+   "department": "Charging",
+   "id": "286345",
+   "location": "Tilburg, Noord-brabant",
+   "title": "Equipment and Assembly Flow Coordinator, Supercharger Internship "
   },
   {
    "department": "Vehicle Service",
@@ -3395,6 +3377,12 @@
   },
   {
    "department": "Vehicle Service",
+   "id": "288803",
+   "location": "Berlin, Berlin",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Berlin"
+  },
+  {
+   "department": "Vehicle Service",
    "id": "288804",
    "location": "Kesselsdorf, Sachsen",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Dresden"
@@ -3413,6 +3401,18 @@
   },
   {
    "department": "Vehicle Service",
+   "id": "288843",
+   "location": "Long Beach, California",
+   "title": "START Collision Technician (Summer 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288968",
+   "location": "Holzwickede",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Dortmund"
+  },
+  {
+   "department": "Vehicle Service",
    "id": "288969",
    "location": "Düsseldorf, Nrw",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Düsseldorf"
@@ -3422,6 +3422,12 @@
    "id": "288972",
    "location": "Frankfurt Am Main",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Frankfurt"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288975",
+   "location": "Saarbrücken",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Saarbrücken"
   },
   {
    "department": "Vehicle Service",
@@ -3467,9 +3473,33 @@
   },
   {
    "department": "Vehicle Service",
+   "id": "288984",
+   "location": "Magdeburg, Sachsen-anhalt",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Magdeburg"
+  },
+  {
+   "department": "Vehicle Service",
    "id": "288993",
    "location": "Parsdorf, Bayern",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - München Parsdorf"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288996",
+   "location": "Nürnberg, Bavaria",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Nürnberg"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288997",
+   "location": "Fürth, Bayern",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Fürth"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288998",
+   "location": "Obertraubling, Bayern",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Regensburg"
   },
   {
    "department": "Vehicle Service",
@@ -3488,6 +3518,174 @@
    "id": "289010",
    "location": "Weinstadt",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Weinstadt"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289017",
+   "location": "Oceanside, California",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289021",
+   "location": "San Bernardino, California",
+   "title": " Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289027",
+   "location": "Temecula, California",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289032",
+   "location": "Hawthorne, California",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289043",
+   "location": "Santa Monica, California",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289047",
+   "location": "Fort Lauderdale, Florida",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289049",
+   "location": "Orlando, Florida",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289086",
+   "location": "Nashville, Tennessee",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289089",
+   "location": "Raleigh, North Carolina",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289090",
+   "location": "Dallas, Texas",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289091",
+   "location": "Plano, Texas",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289200",
+   "location": "Houston, Texas",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289203",
+   "location": "Mcclellan Park, California",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289204",
+   "location": "Reno, Nevada",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289206",
+   "location": "San Rafael, California",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289207",
+   "location": "Sunnyvale, California",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289208",
+   "location": "Portland, Oregon",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289210",
+   "location": "Renton, Washington",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289211",
+   "location": "Carle Place, New York",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289213",
+   "location": "North Brunswick Township, New Jersey",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289215",
+   "location": "Denver, Colorado",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289216",
+   "location": "Frederick, Colorado",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289217",
+   "location": "Las Vegas, Nevada",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289220",
+   "location": "Phoenix, Arizona",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289223",
+   "location": "Tempe, Arizona",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289224",
+   "location": "Eden Prairie, Minnesota",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289227",
+   "location": "Lincolnshire, Illinois",
+   "title": "Internship, Collision Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "289240",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, SI Reinforcement Learning (Winter/Spring 2027)"
   }
  ]
 }
