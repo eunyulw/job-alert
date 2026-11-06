@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-06T19:57:13.799Z",
- "board_total": 8444,
+ "generated_at": "2026-11-06T22:27:13.203Z",
+ "board_total": 8443,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3404,6 +3404,12 @@
    "id": "288843",
    "location": "Long Beach, California",
    "title": "START Collision Technician (Summer 2027)"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "288961",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Document Control Internship (m/f/d)- Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Vehicle Service",
