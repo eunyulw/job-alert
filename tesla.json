@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-06T22:27:13.203Z",
- "board_total": 8443,
+ "generated_at": "2026-11-07T17:27:13.587Z",
+ "board_total": 8456,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -1610,12 +1610,6 @@
    "id": "282451",
    "location": "Palo Alto, California",
    "title": "Internship, Cost Reduction, Energy Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Tesla SI",
-   "id": "282596",
-   "location": "Fremont, California",
-   "title": "Internship, Test Engineer, Self-Driving (Winter/Spring 2027)"
   },
   {
    "department": "People",
@@ -3692,6 +3686,24 @@
    "id": "289240",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer, SI Reinforcement Learning (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "289241",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, SI Reinforcement Learning (Summer 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "289254",
+   "location": "Palo Alto, California",
+   "title": " Internship, Software Engineer, Inference Infrastructure (Summer 2027)"
+  },
+  {
+   "department": "Finance",
+   "id": "289284",
+   "location": "Austin, Texas",
+   "title": "Internship, Automotive Revenue Accounting (Winter/Spring 2027)"
   }
  ]
 }
