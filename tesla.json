@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-09T18:57:07.544Z",
- "board_total": 8441,
+ "generated_at": "2026-11-09T19:47:07.321Z",
+ "board_total": 8442,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3710,12 +3710,6 @@
    "id": "289241",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer, SI Reinforcement Learning (Summer 2027)"
-  },
-  {
-   "department": "Tesla SI",
-   "id": "289254",
-   "location": "Palo Alto, California",
-   "title": " Internship, Software Engineer, Inference Infrastructure (Summer 2027)"
   },
   {
    "department": "Finance",
