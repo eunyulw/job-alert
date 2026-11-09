@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-09T08:47:13.146Z",
- "board_total": 8429,
+ "generated_at": "2026-11-09T17:57:08.357Z",
+ "board_total": 8415,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3413,9 +3413,27 @@
   },
   {
    "department": "Vehicle Service",
+   "id": "288970",
+   "location": "Duisburg, Nrw",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Duisburg"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288971",
+   "location": "Mannheim",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Mannheim"
+  },
+  {
+   "department": "Vehicle Service",
    "id": "288972",
    "location": "Frankfurt Am Main",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Frankfurt"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288974",
+   "location": "Mülheim-kärlich, Rheinland-pfalz",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Koblenz"
   },
   {
    "department": "Vehicle Service",
@@ -3473,6 +3491,18 @@
   },
   {
    "department": "Vehicle Service",
+   "id": "288985",
+   "location": "Gersthofen, Bayern",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Augsburg"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288987",
+   "location": "München, Bavaria",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - München Freiham"
+  },
+  {
+   "department": "Vehicle Service",
    "id": "288993",
    "location": "Parsdorf, Bayern",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - München Parsdorf"
@@ -3506,6 +3536,12 @@
    "id": "289007",
    "location": "Neu-ulm, Bayern",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Neu-Ulm"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289009",
+   "location": "Stuttgart",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Stuttgart"
   },
   {
    "department": "Vehicle Service",
