@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-09T02:17:07.912Z",
- "board_total": 8433,
+ "generated_at": "2026-11-09T08:47:13.146Z",
+ "board_total": 8429,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3368,12 +3368,6 @@
    "id": "288780",
    "location": "Tilburg, Noord-brabant",
    "title": "Service Tooling Engineer Internship"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "288803",
-   "location": "Berlin, Berlin",
-   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Berlin"
   },
   {
    "department": "Vehicle Service",
