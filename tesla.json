@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-09T17:57:08.357Z",
- "board_total": 8415,
+ "generated_at": "2026-11-09T18:47:07.304Z",
+ "board_total": 8443,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -302,12 +302,6 @@
    "id": "276639",
    "location": "Grünheide (mark), Brandenburg",
    "title": "General Assembly Process Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "276705",
-   "location": "Fremont, California",
-   "title": "Internship, Vehicle Manufacturing Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -3734,6 +3728,12 @@
    "id": "289284",
    "location": "Austin, Texas",
    "title": "Internship, Automotive Revenue Accounting (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "289480",
+   "location": "Palo Alto, California",
+   "title": " Internship, Mobile Developer, Optimus (Winter/Spring 2027)"
   }
  ]
 }
