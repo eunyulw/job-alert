@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-09T18:47:07.304Z",
- "board_total": 8443,
+ "generated_at": "2026-11-09T18:57:07.544Z",
+ "board_total": 8441,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3056,12 +3056,6 @@
    "id": "287224",
    "location": "Hayward, California",
    "title": "Internship, Global Trade (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "287261",
-   "location": "New York, New York",
-   "title": "Internship, Program Manager, Sales & Delivery (Winter/Spring 2027)"
   },
   {
    "department": "People",
