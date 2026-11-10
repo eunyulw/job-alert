@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-09T19:47:07.321Z",
- "board_total": 8442,
+ "generated_at": "2026-11-10T01:47:11.566Z",
+ "board_total": 8455,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -653,12 +653,6 @@
   },
   {
    "department": "Vehicle Service",
-   "id": "279370",
-   "location": "Chesterfield, Missouri",
-   "title": "Internship, Service Technician Trainee (Fall 2026) "
-  },
-  {
-   "department": "Vehicle Service",
    "id": "279417",
    "location": "Saint Louis, Missouri",
    "title": "Internship, Service Technician Trainee (Fall 2026)"
@@ -673,12 +667,6 @@
    "department": "Vehicle Service",
    "id": "279422",
    "location": "Madison, Wisconsin",
-   "title": "Internship, Service Technician Trainee (Fall 2026)"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "279425",
-   "location": "West Bloomfield Township, Michigan",
    "title": "Internship, Service Technician Trainee (Fall 2026)"
   },
   {
@@ -1552,12 +1540,6 @@
    "title": "Internship, Motor Controls Engineer, Vehicle Controls (Winter/Spring 2027)"
   },
   {
-   "department": "Vehicle Software",
-   "id": "282267",
-   "location": "Palo Alto, California",
-   "title": "Internship, Powertrain Controls Engineer, Vehicle Controls (Winter/Spring 2027)"
-  },
-  {
    "department": "Engineering & Information Technology",
    "id": "282282",
    "location": "Austin, Texas",
@@ -1754,6 +1736,12 @@
    "id": "283290",
    "location": "Palo Alto, California",
    "title": "Internship, Computer Vision Engineer, Cell Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "283298",
+   "location": "Fremont, California",
+   "title": "Internship, Product Engineer, Applications Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -2135,12 +2123,6 @@
   },
   {
    "department": "Vehicle Service",
-   "id": "284505",
-   "location": "Brooklyn, New York",
-   "title": "Internship, Service Technician Trainee (Fall 2026)"
-  },
-  {
-   "department": "Vehicle Service",
    "id": "284506",
    "location": "Westbury, New York",
    "title": "Internship, Service Technician Trainee (Fall 2026)"
@@ -2174,12 +2156,6 @@
    "id": "284605",
    "location": "Oakville, Ontario",
    "title": "Internship, Project Manager, Sales & Delivery (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "284607",
-   "location": "Palo Alto, California",
-   "title": "Internship, Optical Engineer, Electronic Systems (Winter/Spring 2027)"
   },
   {
    "department": "Energy Engineering",
@@ -3716,6 +3692,12 @@
    "id": "289284",
    "location": "Austin, Texas",
    "title": "Internship, Automotive Revenue Accounting (Winter/Spring 2027)"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "289478",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, SI ML Platform (Winter/Spring 2027)"
   },
   {
    "department": "Tesla SI",
