@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-10T01:47:11.566Z",
- "board_total": 8455,
+ "generated_at": "2026-11-11T12:32:36.687Z",
+ "board_total": 8468,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -13,7 +13,7 @@
    "department": "Engineering & Information Technology",
    "id": "232731",
    "location": "Berlin, Be",
-   "title": "(Power) Electronic/Electrical Design Engineer Intern, Drive Unit Traction Inverter (Powertrain) (m/f/d) - Tesla Engineering Germany"
+   "title": "(Power) Electronic/Electrical Design Engineer Intern, Drive Unit Traction Inverter (Powertrain) (m/f/d) - Berlin Tesla Engineering Center"
   },
   {
    "department": "Vehicle Service",
@@ -109,7 +109,7 @@
    "department": "Engineering & Information Technology",
    "id": "266152",
    "location": "Berlin, Be",
-   "title": "Technical Program Manager Intern, Battery Engineering, Tesla Engineering Germany (m/f/d)"
+   "title": "Technical Program Manager Intern, Battery Engineering, Berlin Tesla Engineering Center (m/f/d)"
   },
   {
    "department": "Sales & Customer Support",
@@ -128,12 +128,6 @@
    "id": "267076",
    "location": "Vancouver, British Columbia",
    "title": "Internship, Service Technician Trainee (Summer 2026)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "267486",
-   "location": "East Attica Regional Unit",
-   "title": "Metrology Technician Internship"
   },
   {
    "department": "Vehicle Service",
@@ -211,13 +205,13 @@
    "department": "Engineering & Information Technology",
    "id": "270744",
    "location": "Berlin, Be",
-   "title": "Cell Qualification Testing Engineer Internship, Powertrain Engineering Europe (m/w/d)"
+   "title": "Cell Qualification Testing Engineer Internship, Berlin Tesla Engineering Center (m/w/d)"
   },
   {
    "department": "Engineering & Information Technology",
    "id": "270745",
    "location": "Berlin, Be",
-   "title": "Test Equipment Mechanical Design Engineer Internship, Tesla Engineering Germany (m/w/d)"
+   "title": "Test Equipment Mechanical Design Engineer Internship, Berlin Tesla Engineering Center (m/w/d)"
   },
   {
    "department": "People",
@@ -521,12 +515,6 @@
   },
   {
    "department": "Engineering & Information Technology",
-   "id": "278630",
-   "location": "Palo Alto, California",
-   "title": "Internship, Electrical Design Engineer, Vehicle Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
    "id": "278946",
    "location": "Fremont, California",
    "title": "Internship, Mechanical Design Engineer, Vehicle Engineering (Winter/Spring 2027)"
@@ -551,12 +539,6 @@
   },
   {
    "department": "Design",
-   "id": "279000",
-   "location": "Hawthorne, California",
-   "title": " Internship, Digital Modeling, Design Studio (Winter/Spring 2027)"
-  },
-  {
-   "department": "Design",
    "id": "279003",
    "location": "Austin, Texas",
    "title": "Internship, Architecture, Design Studio (Winter/Spring 2027) "
@@ -566,12 +548,6 @@
    "id": "279012",
    "location": "Hawthorne, California",
    "title": "Internship, CMF Design, Design Studio (Winter/Spring 2027)"
-  },
-  {
-   "department": "Design",
-   "id": "279013",
-   "location": "Hawthorne, California",
-   "title": "Internship, Exterior Vehicle Design, Design Studio (Winter/Spring 2027)"
   },
   {
    "department": "Design",
@@ -590,18 +566,6 @@
    "id": "279018",
    "location": "Hawthorne, California",
    "title": "Internship, Human Factors & Ergonomics, Design Studio (Winter/Spring 2027)"
-  },
-  {
-   "department": "Design",
-   "id": "279019",
-   "location": "Hawthorne, California",
-   "title": "Internship, Industrial Design, Design Studio (Winter/Spring 2027)"
-  },
-  {
-   "department": "Design",
-   "id": "279020",
-   "location": "Hawthorne, California",
-   "title": "Internship, Interior Vehicle Design, Design Studio (Winter/Spring 2027) "
   },
   {
    "department": "Design",
@@ -679,7 +643,7 @@
    "department": "Engineering & Information Technology",
    "id": "279585",
    "location": "Berlin, Be",
-   "title": "Mechanical Design Engineering Internship, High Voltage Distribution, Tesla Engineering Germany (m/f/d)"
+   "title": "Mechanical Design Engineering Internship, High Voltage Distribution, Berlin Tesla Engineering Center (m/f/d)"
   },
   {
    "department": "People",
@@ -814,12 +778,6 @@
    "title": "Real Estate Internship (m/w/d)"
   },
   {
-   "department": "Finance",
-   "id": "279963",
-   "location": "Austin, Texas",
-   "title": "Internship, Accounting & Finance (Winter/Spring 2027)"
-  },
-  {
    "department": "Vehicle Service",
    "id": "279979",
    "location": "Burlingame, California",
@@ -926,12 +884,6 @@
    "id": "280967",
    "location": "Fremont, California",
    "title": "Internship, Materials Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "People",
-   "id": "281020",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Learning & Development - AI & Process Automation Intern (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Manufacturing",
@@ -1054,12 +1006,6 @@
    "title": "Internship, Software Engineer, Maps & Navigation Validation (Winter/Spring 2027)"
   },
   {
-   "department": "People",
-   "id": "281349",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "HR Systems & Automation Intern (m/f/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
    "department": "Engineering & Information Technology",
    "id": "281377",
    "location": "East Attica Regional Unit",
@@ -1123,13 +1069,7 @@
    "department": "Engineering & Information Technology",
    "id": "281552",
    "location": "Berlin, Be",
-   "title": "Electrical/Electronic Launch Design Engineering Internship, Battery Engineering, Tesla Engineering Germany (m/f/d)"
-  },
-  {
-   "department": "Vehicle Software",
-   "id": "281607",
-   "location": "Palo Alto, California",
-   "title": "Internship, Product Support Engineer, Service Engineering (Winter/Spring 2027)"
+   "title": "Electrical/Electronic Launch Design Engineering Internship, Battery Engineering, Berlin Tesla Engineering Center (m/f/d)"
   },
   {
    "department": "Vehicle Software",
@@ -1558,12 +1498,6 @@
    "title": "Internship, Software Engineer, SI Data Infrastructure (Winter/Spring 2027)"
   },
   {
-   "department": "Finance",
-   "id": "282303",
-   "location": "Palo Alto, California",
-   "title": "Internship, Software Engineer, Finance Programs (Winter/Spring 2027)"
-  },
-  {
    "department": "Tesla SI",
    "id": "282331",
    "location": "Palo Alto, California",
@@ -1730,12 +1664,6 @@
    "id": "283265",
    "location": "Brookshire, Texas",
    "title": "START Manufacturing Trainee, Megapack"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "283290",
-   "location": "Palo Alto, California",
-   "title": "Internship, Computer Vision Engineer, Cell Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -1910,12 +1838,6 @@
    "id": "284003",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineering, People Products (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "284004",
-   "location": "Palo Alto, California",
-   "title": "Internship, Software Engineering, People Products (Summer 2027)"
   },
   {
    "department": "Tesla SI",
@@ -2239,7 +2161,7 @@
    "department": "Engineering & Information Technology",
    "id": "284796",
    "location": "Kreisfreie Stadt Berlin",
-   "title": "Cabin Engineering Internship (m/w/d)"
+   "title": "Cabin Engineering Internship, Berlin Tesla Engineering Center (m/w/d)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -2812,22 +2734,10 @@
    "title": "Sales Customer Support Advisor (Entry-Level), Sydney"
   },
   {
-   "department": "Sales & Customer Support",
-   "id": "286431",
-   "location": "Mulgrave",
-   "title": "Sales Customer Support Advisor (Entry-Level), Melbourne"
-  },
-  {
    "department": "Engineering & Information Technology",
    "id": "286433",
    "location": "Kreisfreie Stadt Berlin",
    "title": "Homologation Testing Internship (m/w/d)"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "286474",
-   "location": "Den Haag",
-   "title": "Service Technician Apprenticeship - Den Haag"
   },
   {
    "department": "Operations & Business Support",
@@ -2857,7 +2767,7 @@
    "department": "Engineering & Information Technology",
    "id": "286618",
    "location": "Berlin, Be",
-   "title": "Mechanical Design Engineering Internship, High Voltage Distribution, Tesla Engineering Germany (m/f/d)"
+   "title": "Mechanical Design Engineering Internship, High Voltage Distribution, Berlin Tesla Engineering Center (m/f/d)"
   },
   {
    "department": "People",
@@ -2942,12 +2852,6 @@
    "id": "286901",
    "location": "Castenedolo",
    "title": "Service Technician Traineeship - Brescia"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "286903",
-   "location": "Torino, Piemonte",
-   "title": "Service Technician Traineeship - Torino"
   },
   {
    "department": "Vehicle Service",
@@ -3043,7 +2947,7 @@
    "department": "Engineering & Information Technology",
    "id": "287308",
    "location": "Berlin, Be",
-   "title": "Mechanical Design Engineering Internship, Battery Engineering, Tesla Engineering Germany (m/f/d)"
+   "title": "Mechanical Design Engineering Internship, Battery Engineering, Berlin Tesla Engineering Center (m/f/d)"
   },
   {
    "department": "Sales & Customer Support",
@@ -3704,6 +3608,12 @@
    "id": "289480",
    "location": "Palo Alto, California",
    "title": " Internship, Mobile Developer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "289683",
+   "location": "Fremont, California",
+   "title": "Internship, Software Engineer, IT Apps (Summer 2027)"
   }
  ]
 }
