@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-11T12:32:36.687Z",
- "board_total": 8468,
+ "generated_at": "2026-11-11T13:22:37.217Z",
+ "board_total": 8467,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3608,6 +3608,12 @@
    "id": "289480",
    "location": "Palo Alto, California",
    "title": " Internship, Mobile Developer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "289583",
+   "location": "Berlin, Be",
+   "title": "Cell Abuse Testing Engineer Internship, Berlin Tesla Engineering Center (m/w/d)"
   },
   {
    "department": "Engineering & Information Technology",
