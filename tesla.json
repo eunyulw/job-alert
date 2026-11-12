@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-11T13:22:37.217Z",
- "board_total": 8467,
+ "generated_at": "2026-11-12T02:52:37.069Z",
+ "board_total": 8465,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -1076,12 +1076,6 @@
    "id": "281623",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer, Automated Diagnostics Intern (Winter/Spring 2027)"
-  },
-  {
-   "department": "Vehicle Software",
-   "id": "281632",
-   "location": "Palo Alto, California",
-   "title": "Internship, Technical Editor, Service Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Tesla SI",
@@ -2224,12 +2218,6 @@
    "title": "Internship, Power Systems Modeling , Energy Engineering (Winter/Spring 2027)"
   },
   {
-   "department": "Finance",
-   "id": "284878",
-   "location": "Draper, Utah",
-   "title": "Internship, Insurance Accounting (Winter/Spring 2027)"
-  },
-  {
    "department": "Engineering & Information Technology",
    "id": "284882",
    "location": "Fremont, California",
@@ -2624,12 +2612,6 @@
    "id": "286043",
    "location": "Amsterdam, Noord-holland",
    "title": "Revenue and Accounts Receivable Data Controller Internship "
-  },
-  {
-   "department": "Finance",
-   "id": "286080",
-   "location": "Austin, Texas",
-   "title": "Internship, Manufacturing Accounting (Winter/Spring 2027)"
   },
   {
    "department": "People",
@@ -3341,12 +3323,6 @@
   },
   {
    "department": "Vehicle Service",
-   "id": "288982",
-   "location": "Braunschweig, Nds",
-   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Braunschweig"
-  },
-  {
-   "department": "Vehicle Service",
    "id": "288983",
    "location": "Hannover",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Hannover"
@@ -3620,6 +3596,12 @@
    "id": "289683",
    "location": "Fremont, California",
    "title": "Internship, Software Engineer, IT Apps (Summer 2027)"
+  },
+  {
+   "department": "People",
+   "id": "289780",
+   "location": "Austin, Texas",
+   "title": "Internship, HR Compliance (Winter/Spring 2027)"
   }
  ]
 }
