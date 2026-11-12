@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-12T02:52:37.069Z",
- "board_total": 8465,
+ "generated_at": "2026-11-12T18:52:36.476Z",
+ "board_total": 8440,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -134,12 +134,6 @@
    "id": "267601",
    "location": "Agios Ioannis Rentis",
    "title": "Service Technician Apprentice - Athens (Τεχνικος οχηματων για Πρακτική εξάσκηση, Αθήνα)"
-  },
-  {
-   "department": "Manufacturing",
-   "id": "267706",
-   "location": "Prüm, Rhineland-palatinate",
-   "title": "Schülerpraktikum Prüm"
   },
   {
    "department": "Supply Chain",
@@ -278,12 +272,6 @@
    "id": "275573",
    "location": "Hasselt",
    "title": "Service Technician Apprenticeship – Hasselt "
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "275575",
-   "location": "Zaventem, Brussels",
-   "title": "Service Technician Apprenticeship – Brussels/Zaventem"
   },
   {
    "department": "People",
@@ -3299,12 +3287,6 @@
   },
   {
    "department": "Vehicle Service",
-   "id": "288978",
-   "location": "Hamburg",
-   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Hamburg"
-  },
-  {
-   "department": "Vehicle Service",
    "id": "288979",
    "location": "Gettorf",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Kiel"
@@ -3598,10 +3580,28 @@
    "title": "Internship, Software Engineer, IT Apps (Summer 2027)"
   },
   {
+   "department": "Engineering & Information Technology",
+   "id": "289744",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Factory Integration Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "289745",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Factory Layout Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "People",
    "id": "289780",
    "location": "Austin, Texas",
    "title": "Internship, HR Compliance (Winter/Spring 2027)"
+  },
+  {
+   "department": "Energy Engineering",
+   "id": "289796",
+   "location": "Palo Alto, California",
+   "title": "Internship, Software Engineer, Energy Engineering (Winter/Spring 2027)"
   }
  ]
 }
