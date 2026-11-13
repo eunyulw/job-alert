@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-12T18:52:36.476Z",
- "board_total": 8440,
+ "generated_at": "2026-11-13T01:52:37.000Z",
+ "board_total": 8450,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -971,12 +971,6 @@
   },
   {
    "department": "Engineering & Information Technology",
-   "id": "281218",
-   "location": "Louisville, Colorado",
-   "title": "Internship, Cell Materials Engineer, Cell Engineering (Winter/Spring 2027) "
-  },
-  {
-   "department": "Engineering & Information Technology",
    "id": "281219",
    "location": "Palo Alto, California",
    "title": "Internship, Cell Engineer, Cell Engineering (Winter/Spring 2027) "
@@ -1046,12 +1040,6 @@
    "id": "281482",
    "location": "Fremont, California",
    "title": "Internship, Site Reliability Engineer, Infrastructure Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "281501",
-   "location": "Mississauga, Ontario",
-   "title": " Internship, Cathode Advanced Manufacturing Engineer, Cell Engineering (Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -1787,12 +1775,6 @@
   },
   {
    "department": "Engineering & Information Technology",
-   "id": "283821",
-   "location": "Austin, Texas",
-   "title": " Internship, Process Engineering, Cell Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
    "id": "283824",
    "location": "Fremont, California",
    "title": " Internship, Mechanical Engineer, Cell Engineering (Winter/Spring 2027)"
@@ -2377,7 +2359,7 @@
    "department": "Design",
    "id": "285144",
    "location": "Austin, Texas",
-   "title": "Internship, Graphic Design (Winter/Spring 2027)"
+   "title": "Internship, Coordinator, People Content (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Software",
@@ -2516,12 +2498,6 @@
    "id": "285664",
    "location": "Austin, Texas",
    "title": "Internship, Process Engineer, Wet Etch, Terafab (Winter/Spring 2027)  "
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "285679",
-   "location": "Fremont, California",
-   "title": " Internship, Inline Metrology Systems Design/Engineer, Cell Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Service",
@@ -3145,7 +3121,7 @@
    "department": "People",
    "id": "288229",
    "location": "Austin, Texas",
-   "title": "Internship, Accomodations (Winter/Spring 2027)"
+   "title": "Internship, Accommodations (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
