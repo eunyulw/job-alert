@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-13T07:52:37.581Z",
- "board_total": 8453,
+ "generated_at": "2026-11-14T15:52:38.595Z",
+ "board_total": 8474,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -605,12 +605,6 @@
   },
   {
    "department": "Vehicle Service",
-   "id": "279417",
-   "location": "Saint Louis, Missouri",
-   "title": "Internship, Service Technician Trainee (Fall 2026)"
-  },
-  {
-   "department": "Vehicle Service",
    "id": "279421",
    "location": "Milwaukee, Wisconsin",
    "title": "Internship, Service Technician Trainee (Fall 2026)"
@@ -686,12 +680,6 @@
    "id": "279766",
    "location": "Palo Alto, California",
    "title": " Internship, Systems Architecture & Integration Engineer, LV Architecture (Winter/Spring 2027)"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "279782",
-   "location": "Totowa, New Jersey",
-   "title": "Internship, Service Technician Trainee (Fall 2026)"
   },
   {
    "department": "Vehicle Service",
@@ -1058,12 +1046,6 @@
    "id": "281634",
    "location": "Fremont, California",
    "title": "START Optimus Service Technician (Winter 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "281650",
-   "location": "Fremont, California",
-   "title": "Internship, Launch Engineer, Manufacturing (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -2113,7 +2095,7 @@
    "department": "Design",
    "id": "284757",
    "location": "Austin, Texas",
-   "title": "Internship, Video Production, People Content (Winter/Spring 2027)"
+   "title": "Internship, Graphic Design (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -3088,12 +3070,6 @@
    "title": "Talent Strategy & HR Projects Internship (m/f/d) - Gigafactory Berlin – Brandenburg"
   },
   {
-   "department": "Vehicle Service",
-   "id": "288088",
-   "location": "Nepean, Ontario",
-   "title": "Internship, Service Technician Trainee (Fall 2026) "
-  },
-  {
    "department": "Tesla SI",
    "id": "288119",
    "location": "Langley, British Columbia",
@@ -3142,12 +3118,6 @@
    "title": "Internship, Service Technician Trainee (Fall 2026)"
   },
   {
-   "department": "Engineering & Information Technology",
-   "id": "288413",
-   "location": "Palo Alto, California",
-   "title": "Internship, Optimus Mechanical Design Engineer, Electronic Devices (Winter/Spring 2027) "
-  },
-  {
    "department": "Vehicle Service",
    "id": "288425",
    "location": "Fayetteville, New York",
@@ -3182,6 +3152,12 @@
    "id": "288780",
    "location": "Tilburg, Noord-brabant",
    "title": "Service Tooling Engineer Internship"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "288803",
+   "location": "Berlin, Berlin",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Berlin"
   },
   {
    "department": "Vehicle Service",
@@ -3266,12 +3242,6 @@
    "id": "288979",
    "location": "Gettorf",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Kiel"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "288980",
-   "location": "Rostock, Mecklenburg-vorpommern",
-   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Rostock"
   },
   {
    "department": "Vehicle Service",
@@ -3532,6 +3502,12 @@
    "title": "Internship, Automotive Revenue Accounting (Winter/Spring 2027)"
   },
   {
+   "department": "Engineering & Information Technology",
+   "id": "289434",
+   "location": "Berlin, Be",
+   "title": "Exterior & Lighting Engineering Internship (m/w/d)"
+  },
+  {
    "department": "Tesla SI",
    "id": "289478",
    "location": "Palo Alto, California",
@@ -3551,12 +3527,6 @@
   },
   {
    "department": "Engineering & Information Technology",
-   "id": "289683",
-   "location": "Fremont, California",
-   "title": "Internship, Software Engineer, IT Apps (Summer 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
    "id": "289744",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Factory Integration Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
@@ -3566,6 +3536,12 @@
    "id": "289745",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Factory Layout Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "289755",
+   "location": "Berlin, Be",
+   "title": "Engineering Facility Layout Design, Internship, Berlin Tesla Engineering Center (m/w/d)"
   },
   {
    "department": "People",
@@ -3578,6 +3554,24 @@
    "id": "289796",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer, Energy Engineering (Winter/Spring 2027)"
+  },
+  {
+   "department": "Operations & Business Support",
+   "id": "289839",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Workplace Projects Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Operations & Business Support",
+   "id": "289840",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Workplace Projects, Technical Program Manager Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "289951",
+   "location": "Palo Alto, California",
+   "title": "Internship, Electrical Engineer, High Speed Hardware Design, Optimus (Winter/Spring 2027)"
   }
  ]
 }
