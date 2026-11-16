@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-15T04:22:36.754Z",
- "board_total": 8472,
+ "generated_at": "2026-11-16T18:42:36.943Z",
+ "board_total": 8452,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -242,6 +242,12 @@
    "id": "274488",
    "location": "Langley, British Columbia",
    "title": "Internship, Robotics Motor Design Engineer, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Finance",
+   "id": "274521",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Finance Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Energy Engineering",
@@ -2447,12 +2453,6 @@
   },
   {
    "department": "Vehicle Service",
-   "id": "285614",
-   "location": "Kalsdorf Bei Graz",
-   "title": "Lehrstelle als Kraftfahrzeugtechniker inkl. Hochvolttechnik (m/w/d) - Kalsdorf, Graz"
-  },
-  {
-   "department": "Vehicle Service",
    "id": "285616",
    "location": "Salzburg, Salzburg",
    "title": "Lehrstelle als Kraftfahrzeugtechniker inkl. Hochvolttechnik (m/w/d) - Salzburg"
@@ -2780,12 +2780,6 @@
    "id": "286901",
    "location": "Castenedolo",
    "title": "Service Technician Traineeship - Brescia"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "286904",
-   "location": "Marcianise, Campania",
-   "title": "Service Technician Traineeship - Napoli"
   },
   {
    "department": "Vehicle Service",
@@ -3524,6 +3518,12 @@
    "id": "289583",
    "location": "Berlin, Be",
    "title": "Cell Abuse Testing Engineer Internship, Berlin Tesla Engineering Center (m/w/d)"
+  },
+  {
+   "department": "Operations & Business Support",
+   "id": "289739",
+   "location": "Amsterdam, Noord-holland",
+   "title": "EMEA Service Systems Engineering Internship"
   },
   {
    "department": "Engineering & Information Technology",
