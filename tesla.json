@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-17T11:02:37.129Z",
- "board_total": 8444,
+ "generated_at": "2026-11-17T15:52:37.938Z",
+ "board_total": 8437,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -2542,12 +2542,6 @@
    "title": "Internship, Process Engineer, Metal Deposition, Terafab (Winter/Spring 2027) "
   },
   {
-   "department": "Supply Chain",
-   "id": "286158",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Returnable Fleet Projects Working Student (m/f/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
    "department": "Vehicle Software",
    "id": "286261",
    "location": "Palo Alto, California",
@@ -2816,12 +2810,6 @@
    "id": "287322",
    "location": "Amsterdam, Noord-holland",
    "title": "Content & Communications Internship"
-  },
-  {
-   "department": "Tesla SI",
-   "id": "287334",
-   "location": "Berlin",
-   "title": "Machine Learning Intern, Generative SI Applications  (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "People",
