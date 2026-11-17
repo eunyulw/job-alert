@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-16T18:42:36.943Z",
- "board_total": 8452,
+ "generated_at": "2026-11-17T10:52:36.711Z",
+ "board_total": 8450,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -80,12 +80,6 @@
    "id": "257048",
    "location": "Palo Alto, California",
    "title": "Internship, Physics Engine Development Engineer, Optimus (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "261781",
-   "location": "Kreisfreie Stadt Berlin",
-   "title": "Vehicle Integration Engineering - Mechanical Design Internship (m/w/d)"
   },
   {
    "department": "Manufacturing",
@@ -503,12 +497,6 @@
   },
   {
    "department": "Engineering & Information Technology",
-   "id": "278628",
-   "location": "Fremont, California",
-   "title": "Internship, Safety Engineer, Vehicle Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
    "id": "278946",
    "location": "Fremont, California",
    "title": "Internship, Mechanical Design Engineer, Vehicle Engineering (Winter/Spring 2027)"
@@ -530,12 +518,6 @@
    "id": "278963",
    "location": "Elgin, Illinois",
    "title": "Internship, Automation Development & Tooling Engineer (Winter/Spring 2027) "
-  },
-  {
-   "department": "Design",
-   "id": "279003",
-   "location": "Austin, Texas",
-   "title": "Internship, Architecture, Design Studio (Winter/Spring 2027) "
   },
   {
    "department": "Design",
@@ -1552,12 +1534,6 @@
    "title": "Internship, Equipment Engineer, Terafab (Winter/Spring 2027)"
   },
   {
-   "department": "Terafab",
-   "id": "282848",
-   "location": "Austin, Texas",
-   "title": "Internship, Process Engineer, Terafab (Winter/Spring 2027)"
-  },
-  {
    "department": "Engineering & Information Technology",
    "id": "282916",
    "location": "Fremont, California",
@@ -2374,12 +2350,6 @@
    "title": "Internship, Mechanical Design Engineer, Energy Infrastructure Power Electronics, Energy Engineering (Winter/Spring 2027)"
   },
   {
-   "department": "Vehicle Software",
-   "id": "285278",
-   "location": "Palo Alto, California",
-   "title": "Internship, System Modeling & Infrastructure Engineer, Low Voltage Power Distribution  (Winter/Spring 2027)"
-  },
-  {
    "department": "Engineering & Information Technology",
    "id": "285291",
    "location": "Fremont, California",
@@ -2468,12 +2438,6 @@
    "id": "285641",
    "location": "Austin, Texas",
    "title": "Internship, Process Engineer, Dielectric Deposition, Terafab (Winter/Spring 2027)  "
-  },
-  {
-   "department": "Terafab",
-   "id": "285663",
-   "location": "Austin, Texas",
-   "title": "Internship, Process Engineer, Dry Etch, Terafab (Winter/Spring 2027)  "
   },
   {
    "department": "Terafab",
@@ -2567,12 +2531,6 @@
   },
   {
    "department": "Terafab",
-   "id": "286098",
-   "location": "Austin, Texas",
-   "title": "Internship, Process Engineer, Mask, Terafab (Winter/Spring 2027) "
-  },
-  {
-   "department": "Terafab",
    "id": "286099",
    "location": "Austin, Texas",
    "title": "Internship, Process Engineer, Lithography, Terafab (Winter/Spring 2027)  "
@@ -2582,18 +2540,6 @@
    "id": "286101",
    "location": "Austin, Texas",
    "title": "Internship, Process Engineer, Metal Deposition, Terafab (Winter/Spring 2027) "
-  },
-  {
-   "department": "Sales & Customer Support",
-   "id": "286127",
-   "location": "Fremont, California",
-   "title": "Internship, Software Integration Engineer, Service Tooling (Winter/Spring 2027)"
-  },
-  {
-   "department": "Sales & Customer Support",
-   "id": "286128",
-   "location": "Fremont, California",
-   "title": "Internship, Mechanical Design, Robotaxi Service Tooling (Winter/Spring 2027)"
   },
   {
    "department": "Supply Chain",
@@ -2684,12 +2630,6 @@
    "id": "286496",
    "location": "Doral, Florida",
    "title": "START Service Technician (Winter 2027)"
-  },
-  {
-   "department": "Sales & Customer Support",
-   "id": "286586",
-   "location": "Zug, Zg",
-   "title": "New Markets Analyst Internship (m/w/d)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -2900,18 +2840,6 @@
    "id": "287360",
    "location": "Palo Alto, California",
    "title": "Internship, SI Chip Thermal Design Engineer, SI Hardware (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "287390",
-   "location": "Palo Alto, California",
-   "title": "Internship, Analysis Engineer, Vehicle & Powertrain Engineering (Winter/Spring 2027)  "
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "287391",
-   "location": "Palo Alto, California",
-   "title": "Internship, Thermal Modeling Engineer, Abuse Functional Safety (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -3149,12 +3077,6 @@
   },
   {
    "department": "Vehicle Service",
-   "id": "288803",
-   "location": "Berlin, Berlin",
-   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Berlin"
-  },
-  {
-   "department": "Vehicle Service",
    "id": "288804",
    "location": "Kesselsdorf, Sachsen",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Dresden"
@@ -3182,12 +3104,6 @@
    "id": "288961",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Document Control Internship (m/f/d)- Gigafactory Berlin-Brandenburg"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "288968",
-   "location": "Holzwickede",
-   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Dortmund"
   },
   {
    "department": "Vehicle Service",
@@ -3502,6 +3418,12 @@
    "title": "Exterior & Lighting Engineering Internship (m/w/d)"
   },
   {
+   "department": "Engineering & Information Technology",
+   "id": "289458",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Data Science Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "Tesla SI",
    "id": "289478",
    "location": "Palo Alto, California",
@@ -3572,6 +3494,30 @@
    "id": "289951",
    "location": "Palo Alto, California",
    "title": "Internship, Electrical Engineer, High Speed Hardware Design, Optimus (Winter/Spring 2027)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "289978",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Production Planning & Control Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "290144",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Factory Planning Intelligence - Software Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "290174",
+   "location": "Denver, Colorado",
+   "title": "START Service Technician (Winter 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "290287",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Bachelorarbeit Controls Engineering"
   }
  ]
 }
