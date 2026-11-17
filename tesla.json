@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-17T10:52:36.711Z",
- "board_total": 8450,
+ "generated_at": "2026-11-17T11:02:37.129Z",
+ "board_total": 8444,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3110,12 +3110,6 @@
    "id": "288969",
    "location": "Düsseldorf, Nrw",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Düsseldorf"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "288970",
-   "location": "Duisburg, Nrw",
-   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Duisburg"
   },
   {
    "department": "Vehicle Service",
