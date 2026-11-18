@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-18T08:42:33.188Z",
- "board_total": 8443,
+ "generated_at": "2026-11-18T12:22:32.838Z",
+ "board_total": 8453,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -1124,12 +1124,6 @@
    "id": "281704",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Ausbildung zur Fachkraft Lagerlogistik - Industrie 4.0 - 2027 (m/w/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
-   "department": "Operations & Business Support",
-   "id": "281705",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Ausbildung Industriekaufleute (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Environmental, Health, Safety & Security",
@@ -2578,12 +2572,6 @@
    "title": "Homologation Testing Internship (m/w/d)"
   },
   {
-   "department": "Operations & Business Support",
-   "id": "286477",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Packaging Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
    "department": "Vehicle Service",
    "id": "286487",
    "location": "Columbia, Maryland",
@@ -3436,6 +3424,12 @@
    "title": "Workplace Projects, Technical Program Manager Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
+   "department": "Construction & Facilities",
+   "id": "289844",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Building Design Management Internship, Factory Design Engineering (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "Tesla SI",
    "id": "289951",
    "location": "Palo Alto, California",
@@ -3446,6 +3440,12 @@
    "id": "289978",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Production Planning & Control Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "289986",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Engineering Operations & Process Support Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
