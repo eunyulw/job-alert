@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-17T15:52:37.938Z",
- "board_total": 8437,
+ "generated_at": "2026-11-18T07:32:32.827Z",
+ "board_total": 8444,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -128,12 +128,6 @@
    "id": "267601",
    "location": "Agios Ioannis Rentis",
    "title": "Service Technician Apprentice - Athens (Τεχνικος οχηματων για Πρακτική εξάσκηση, Αθήνα)"
-  },
-  {
-   "department": "Supply Chain",
-   "id": "267908",
-   "location": "Prüm, Rhineland-palatinate",
-   "title": "Werkstudent/in Einkauf (m/w/d)"
   },
   {
    "department": "Sales & Customer Support",
@@ -1612,12 +1606,6 @@
    "title": "Optimus Powertrain Internship"
   },
   {
-   "department": "Engineering & Information Technology",
-   "id": "283364",
-   "location": "Fremont, California",
-   "title": "Internship, Thermal R&D, Thermal Engineering (Winter/Spring 2027)"
-  },
-  {
    "department": "Tesla SI",
    "id": "283378",
    "location": "Langley, British Columbia",
@@ -2230,12 +2218,6 @@
    "title": "Internship, Software Developer, Integration Tools (Winter/Spring 2027)"
   },
   {
-   "department": "Vehicle Software",
-   "id": "284925",
-   "location": "Palo Alto, California",
-   "title": " Internship, Software Engineer, Data Transformations (Winter/Spring 2027)"
-  },
-  {
    "department": "Vehicle Service",
    "id": "284990",
    "location": "Landquart",
@@ -2360,12 +2342,6 @@
    "id": "285297",
    "location": "Hayward, California",
    "title": "Internship, Indirect Tax Counsel (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "285350",
-   "location": "Hawthorne, California",
-   "title": "Internship, Aerodynamics Engineering, New Programs Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Service",
@@ -2498,12 +2474,6 @@
    "id": "285885",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Supplier Chargeback Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
-   "department": "Sales & Customer Support",
-   "id": "285950",
-   "location": "Fremont, California",
-   "title": "Internship, Program Manager, Lifecycle Communications (Winter/Spring 2027)"
   },
   {
    "department": "Energy Engineering",
@@ -2650,12 +2620,6 @@
    "title": "Internship, Environmental, Health, Safety & Security (Winter/Spring 2027)"
   },
   {
-   "department": "Environmental, Health, Safety & Security",
-   "id": "286660",
-   "location": "Fremont, California",
-   "title": "Internship, Sustainability, EHS (Winter/Spring 2027)"
-  },
-  {
    "department": "Finance",
    "id": "286701",
    "location": "Draper, Utah",
@@ -2720,12 +2684,6 @@
    "id": "286948",
    "location": "Proviso Township, Illinois",
    "title": " START Service Technician (Winter 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "286986",
-   "location": "Fremont, California",
-   "title": "Advanced Automation Engineer Intern, Cell Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Tesla SI",
@@ -3424,6 +3382,12 @@
    "title": "Cell Abuse Testing Engineer Internship, Berlin Tesla Engineering Center (m/w/d)"
   },
   {
+   "department": "Engineering & Information Technology",
+   "id": "289737",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Audio Visual Support Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "Operations & Business Support",
    "id": "289739",
    "location": "Amsterdam, Noord-holland",
@@ -3500,6 +3464,12 @@
    "id": "290287",
    "location": "Prüm, Rhineland-palatinate",
    "title": "Bachelorarbeit Controls Engineering"
+  },
+  {
+   "department": "Tesla SI",
+   "id": "290425",
+   "location": "Palo Alto, California",
+   "title": "Internship, Robotics Technical Program Manager, Optimus Hardware (Summer 2027)"
   }
  ]
 }
