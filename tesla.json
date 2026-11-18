@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-18T08:22:32.879Z",
- "board_total": 8446,
+ "generated_at": "2026-11-18T08:42:33.188Z",
+ "board_total": 8443,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -2492,12 +2492,6 @@
    "id": "286004",
    "location": "Amsterdam, Noord-holland",
    "title": "Corporate Finance Internship"
-  },
-  {
-   "department": "Finance",
-   "id": "286043",
-   "location": "Amsterdam, Noord-holland",
-   "title": "Revenue and Accounts Receivable Data Controller Internship "
   },
   {
    "department": "People",
