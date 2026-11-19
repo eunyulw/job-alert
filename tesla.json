@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-18T12:22:32.838Z",
- "board_total": 8453,
+ "generated_at": "2026-11-19T02:53:35.418Z",
+ "board_total": 8459,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -2974,12 +2974,6 @@
    "title": "Internship, Service Technician Trainee (Fall 2026)"
   },
   {
-   "department": "Vehicle Service",
-   "id": "288425",
-   "location": "Fayetteville, New York",
-   "title": "Internship, Service Technician Trainee (Fall 2026)"
-  },
-  {
    "department": "Sales & Customer Support",
    "id": "288494",
    "location": "Amsterdam, Noord-holland",
@@ -3458,6 +3452,24 @@
    "id": "290174",
    "location": "Denver, Colorado",
    "title": "START Service Technician (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "290182",
+   "location": "Birmingham, Alabama",
+   "title": "Internship, Service Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "290184",
+   "location": "Bartlett, Tennessee",
+   "title": "Internship, Service Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "290186",
+   "location": "Brandon, Mississippi",
+   "title": "Internship, Service Technician Trainee (Winter 2027)"
   },
   {
    "department": "Engineering & Information Technology",
