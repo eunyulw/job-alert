@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "board": "parker",
- "generated_at": "2026-11-19T17:49:28.108Z",
- "declared_total": 101,
+ "generated_at": "2026-11-19T20:49:24.392Z",
+ "declared_total": 102,
  "jobs": [
   {
    "id": "17350209",
@@ -710,6 +710,13 @@
    "posted": "2026-11-19T00:00:00.000Z",
    "title": "Aerospace Marketing Intern (Business)",
    "url": "https://parkercareers.ttcportals.com/jobs/18500549-aerospace-marketing-intern-business"
+  },
+  {
+   "id": "18501425",
+   "location": "Woburn, MA, United States",
+   "posted": "2026-11-19T00:00:00.000Z",
+   "title": "EHS Intern - Summer 2027",
+   "url": "https://parkercareers.ttcportals.com/jobs/18501425-ehs-intern-summer-2027"
   }
  ]
 }
