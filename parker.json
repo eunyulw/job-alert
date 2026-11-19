@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "board": "parker",
- "generated_at": "2026-11-19T16:39:28.006Z",
- "declared_total": 96,
+ "generated_at": "2026-11-19T17:49:28.108Z",
+ "declared_total": 101,
  "jobs": [
   {
    "id": "17350209",
@@ -675,6 +675,41 @@
    "posted": "2026-11-19T00:00:00.000Z",
    "title": "Applications Engineering Intern",
    "url": "https://parkercareers.ttcportals.com/jobs/18500158-applications-engineering-intern"
+  },
+  {
+   "id": "18500545",
+   "location": "Irvine, CA, United States",
+   "posted": "2026-11-19T00:00:00.000Z",
+   "title": "Structural Analysis Engineering Intern - Summer 2027",
+   "url": "https://parkercareers.ttcportals.com/jobs/18500545-structural-analysis-engineering-intern-summer-2027"
+  },
+  {
+   "id": "18500546",
+   "location": "KENT, WA, United States",
+   "posted": "2026-11-19T00:00:00.000Z",
+   "title": "Supply Chain Intern - Aerospace",
+   "url": "https://parkercareers.ttcportals.com/jobs/18500546-supply-chain-intern-aerospace"
+  },
+  {
+   "id": "18500547",
+   "location": "KENT, WA, United States",
+   "posted": "2026-11-19T00:00:00.000Z",
+   "title": "Planning Intern - Aerospace",
+   "url": "https://parkercareers.ttcportals.com/jobs/18500547-planning-intern-aerospace"
+  },
+  {
+   "id": "18500548",
+   "location": "KENT, WA, United States",
+   "posted": "2026-11-19T00:00:00.000Z",
+   "title": "Aerospace Marketing Intern (Technical)",
+   "url": "https://parkercareers.ttcportals.com/jobs/18500548-aerospace-marketing-intern-technical"
+  },
+  {
+   "id": "18500549",
+   "location": "KENT, WA, United States",
+   "posted": "2026-11-19T00:00:00.000Z",
+   "title": "Aerospace Marketing Intern (Business)",
+   "url": "https://parkercareers.ttcportals.com/jobs/18500549-aerospace-marketing-intern-business"
   }
  ]
 }
