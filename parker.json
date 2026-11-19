@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "board": "parker",
- "generated_at": "2026-11-19T14:49:19.024Z",
- "declared_total": 92,
+ "generated_at": "2026-11-19T16:39:28.006Z",
+ "declared_total": 96,
  "jobs": [
   {
    "id": "17350209",
@@ -647,6 +647,34 @@
    "posted": "2026-11-18T00:00:00.000Z",
    "title": "Supply Chain Intern - Expeditor",
    "url": "https://parkercareers.ttcportals.com/jobs/18496601-supply-chain-intern-expeditor"
+  },
+  {
+   "id": "18500152",
+   "location": "Woburn, MA, United States",
+   "posted": "2026-11-19T00:00:00.000Z",
+   "title": "Marketing Intern - Summer 2027",
+   "url": "https://parkercareers.ttcportals.com/jobs/18500152-marketing-intern-summer-2027"
+  },
+  {
+   "id": "18500153",
+   "location": "Woburn, MA, United States",
+   "posted": "2026-11-19T00:00:00.000Z",
+   "title": "Application Engineer Intern - Summer 2027",
+   "url": "https://parkercareers.ttcportals.com/jobs/18500153-application-engineer-intern-summer-2027"
+  },
+  {
+   "id": "18500154",
+   "location": "Woburn, MA, United States",
+   "posted": "2026-11-19T00:00:00.000Z",
+   "title": "Automation Engineer Intern - Summer 2027",
+   "url": "https://parkercareers.ttcportals.com/jobs/18500154-automation-engineer-intern-summer-2027"
+  },
+  {
+   "id": "18500158",
+   "location": "LEXINGTON, KY, United States",
+   "posted": "2026-11-19T00:00:00.000Z",
+   "title": "Applications Engineering Intern",
+   "url": "https://parkercareers.ttcportals.com/jobs/18500158-applications-engineering-intern"
   }
  ]
 }
