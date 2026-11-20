@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "board": "parker",
- "generated_at": "2026-11-20T09:49:31.030Z",
- "declared_total": 102,
+ "generated_at": "2026-11-20T15:57:11.090Z",
+ "declared_total": 101,
  "jobs": [
   {
    "id": "17350209",
@@ -140,7 +140,7 @@
   {
    "id": "18229623",
    "location": "FORT WORTH, TX, United States",
-   "posted": "2026-10-27T00:00:00.000Z",
+   "posted": "2026-11-20T00:00:00.000Z",
    "title": "Product Design Engineering Co-Op - Aerospace January-August 2027",
    "url": "https://parkercareers.ttcportals.com/jobs/18229623-product-design-engineering-co-op-aerospace-january-august-2027"
   },
@@ -168,16 +168,9 @@
   {
    "id": "18252804",
    "location": "FORT WORTH, TX, United States",
-   "posted": "2026-10-27T00:00:00.000Z",
+   "posted": "2026-11-20T00:00:00.000Z",
    "title": "Manufacturing Engineer Intern - Aerospace",
    "url": "https://parkercareers.ttcportals.com/jobs/18252804-manufacturing-engineer-intern-aerospace"
-  },
-  {
-   "id": "18262397",
-   "location": "Akron, OH, United States",
-   "posted": "2026-09-21T00:00:00.000Z",
-   "title": "Spring 2027 - Engineering Co-op",
-   "url": "https://parkercareers.ttcportals.com/jobs/18262397-spring-2027-engineering-co-op"
   },
   {
    "id": "18273164",
