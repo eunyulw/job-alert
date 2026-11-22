@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-21T11:39:11.249Z",
- "board_total": 8443,
+ "generated_at": "2026-11-22T10:49:06.490Z",
+ "board_total": 8445,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3464,6 +3464,12 @@
    "id": "290756",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer, SI Hardware Architecture Simulation (Winter/Spring 2027) "
+  },
+  {
+   "department": "Manufacturing",
+   "id": "290832",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Warehouse Logistics & Digital Processes Intern (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Vehicle Service",
