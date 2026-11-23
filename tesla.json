@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-23T10:29:11.223Z",
- "board_total": 8446,
+ "generated_at": "2026-11-23T11:49:10.929Z",
+ "board_total": 8443,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -2113,7 +2113,7 @@
    "department": "People",
    "id": "285012",
    "location": "Grünheide (mark), Brandenburg",
-   "title": "Recruiting Intern, Active Sourcing (m/w/d) – Gigafactory Berlin-Brandenburg "
+   "title": "Recruiting Internship, Active Sourcing (m/w/d) – Gigafactory Berlin-Brandenburg "
   },
   {
    "department": "Operations & Business Support",
@@ -3362,12 +3362,6 @@
    "id": "290306",
    "location": "Freiburg Im Breisgau",
    "title": "Controls Engineering Internship – Power Electronics (m/f/d)"
-  },
-  {
-   "department": "Energy Engineering",
-   "id": "290307",
-   "location": "Freiburg Im Breisgau",
-   "title": "Firmware Engineering Internship – Power Electronics (m/f/d)"
   },
   {
    "department": "Tesla SI",
