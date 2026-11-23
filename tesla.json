@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-23T09:39:11.373Z",
- "board_total": 8441,
+ "generated_at": "2026-11-23T10:09:11.268Z",
+ "board_total": 8442,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3308,6 +3308,12 @@
    "id": "289986",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Engineering Operations & Process Support Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Operations & Business Support",
+   "id": "290015",
+   "location": "Amsterdam, Noord-holland",
+   "title": "B2B Customer Journey Manager Internship"
   },
   {
    "department": "Engineering & Information Technology",
