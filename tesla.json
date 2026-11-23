@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-22T10:49:06.490Z",
- "board_total": 8445,
+ "generated_at": "2026-11-23T03:59:11.338Z",
+ "board_total": 8454,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -3512,6 +3512,30 @@
    "id": "290893",
    "location": "Thousand Oaks, California",
    "title": "Internship, Service Technician Trainee (Spring 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "290903",
+   "location": "Encinitas, California",
+   "title": "Internship, Service Technician Trainee (Spring 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "290906",
+   "location": "San Diego, California",
+   "title": "Internship, Service Technician Trainee (Spring 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "290909",
+   "location": "San Diego, California",
+   "title": "Internship, Service Technician Trainee (Spring 2026)"
+  },
+  {
+   "department": "Sales & Customer Support",
+   "id": "290947",
+   "location": "Alexandria, New South Wales",
+   "title": "Customer Support Trainee"
   }
  ]
 }
