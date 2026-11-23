@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "generated_at": "2026-11-23T11:49:10.929Z",
+ "generated_at": "2026-11-23T12:39:12.616Z",
  "board_total": 8443,
  "internships": [
   {
@@ -230,12 +230,6 @@
    "id": "274521",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Finance Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
-   "department": "Energy Engineering",
-   "id": "274646",
-   "location": "Freiburg Im Breisgau",
-   "title": "Firmware & Validation Intern – Power Electronics PIL/SIL (m/f/d)"
   },
   {
    "department": "Tesla SI",
@@ -3344,12 +3338,6 @@
    "id": "290184",
    "location": "Bartlett, Tennessee",
    "title": "Internship, Service Technician Trainee (Winter 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "290287",
-   "location": "Prüm, Rhineland-palatinate",
-   "title": "Bachelorarbeit Controls Engineering"
   },
   {
    "department": "People",
