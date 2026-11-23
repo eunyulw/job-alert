@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "board": "parker",
- "generated_at": "2026-11-23T21:49:25.226Z",
- "declared_total": 100,
+ "generated_at": "2026-11-23T23:09:26.797Z",
+ "declared_total": 101,
  "jobs": [
   {
    "id": "17350209",
@@ -703,6 +703,13 @@
    "posted": "2026-11-23T00:00:00.000Z",
    "title": "Product Design Engineering Co-op - Summer & Fall 2027",
    "url": "https://parkercareers.ttcportals.com/jobs/18508103-product-design-engineering-co-op-summer-and-fall-2027"
+  },
+  {
+   "id": "18511177",
+   "location": "SAN DIEGO, CA, United States",
+   "posted": "2026-11-23T00:00:00.000Z",
+   "title": "Supply Chain Co-Op 2027",
+   "url": "https://parkercareers.ttcportals.com/jobs/18511177-supply-chain-co-op-2027"
   }
  ]
 }
