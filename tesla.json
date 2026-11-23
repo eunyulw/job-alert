@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-23T03:59:11.338Z",
- "board_total": 8454,
+ "generated_at": "2026-11-23T09:39:11.373Z",
+ "board_total": 8441,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -74,12 +74,6 @@
    "id": "253454",
    "location": "Palo Alto, California",
    "title": "Internship, Reinforcement Learning Engineer, Optimus (Summer 2026)"
-  },
-  {
-   "department": "Tesla SI",
-   "id": "257048",
-   "location": "Palo Alto, California",
-   "title": "Internship, Physics Engine Development Engineer, Optimus (Winter/Spring 2027)"
   },
   {
    "department": "Manufacturing",
@@ -1250,12 +1244,6 @@
    "id": "281951",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer, Core SI Compiler & Runtime (Winter/Spring 2027)"
-  },
-  {
-   "department": "Tesla SI",
-   "id": "282147",
-   "location": "Palo Alto, California",
-   "title": "Internship, Physics Engine Development Engineer, Optimus (Summer 2027)"
   },
   {
    "department": "Vehicle Software",
