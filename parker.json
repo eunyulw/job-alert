@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "board": "parker",
- "generated_at": "2026-11-24T17:49:19.735Z",
- "declared_total": 101,
+ "generated_at": "2026-11-24T19:39:19.460Z",
+ "declared_total": 100,
  "jobs": [
   {
    "id": "17350209",
@@ -227,13 +227,6 @@
    "posted": "2026-10-16T00:00:00.000Z",
    "title": "Intern Manufacturing Engineering - HPS Otsego",
    "url": "https://parkercareers.ttcportals.com/jobs/18369443-intern-manufacturing-engineering-hps-otsego"
-  },
-  {
-   "id": "18377560",
-   "location": "KINGS MOUNTAIN, NC, United States",
-   "posted": "2026-10-20T00:00:00.000Z",
-   "title": "Intern Supply Chain",
-   "url": "https://parkercareers.ttcportals.com/jobs/18377560-intern-supply-chain"
   },
   {
    "id": "18379018",
