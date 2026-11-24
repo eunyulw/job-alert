@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-23T12:39:12.616Z",
- "board_total": 8443,
+ "generated_at": "2026-11-24T05:59:12.510Z",
+ "board_total": 8425,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -268,12 +268,6 @@
    "title": "General Assembly Process Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
-   "department": "Engineering & Information Technology",
-   "id": "276706",
-   "location": "Fremont, California",
-   "title": "Internship, Technical Program Manager, Vehicle Engineering (Winter/Spring 2027)"
-  },
-  {
    "department": "Tesla SI",
    "id": "277009",
    "location": "Palo Alto, California",
@@ -296,12 +290,6 @@
    "id": "277525",
    "location": "Fremont, California",
    "title": "Internship, Controls Engineer, Manufacturing (Winter/Spring 2027)"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "277708",
-   "location": "Parramatta, Nsw",
-   "title": "Apprentice Vehicle Technician, Parramatta | January 2027 Intake "
   },
   {
    "department": "Vehicle Service",
@@ -448,28 +436,10 @@
    "title": "Internship, Software Engineer, SI Infrastructure (Fall 2026/Winter 2027)"
   },
   {
-   "department": "Engineering & Information Technology",
-   "id": "278623",
-   "location": "Palo Alto, California",
-   "title": "Internship, Mechanical Design Engineer, Battery Engineering (Winter/Spring 2027) "
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "278946",
-   "location": "Fremont, California",
-   "title": "Internship, Mechanical Design Engineer, Vehicle Engineering (Winter/Spring 2027)"
-  },
-  {
    "department": "Supply Chain",
    "id": "278952",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Construction Procurement Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "278962",
-   "location": "Fremont, California",
-   "title": "Internship, Powertrain & Energy Products, Manufacturing Engineering (Winter/Spring 2027)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -512,12 +482,6 @@
    "id": "279030",
    "location": "Fremont, California",
    "title": "Internship, Automotive Photographer & Retoucher, Design Studio (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "279034",
-   "location": "Fremont, California",
-   "title": "Internship, Manufacturing Engineering, Optimus (Winter/ Spring 2027)"
   },
   {
    "department": "Tesla SI",
@@ -1232,12 +1196,6 @@
    "id": "281921",
    "location": "Palo Alto, California",
    "title": "Internship, Vehicle Software Engineer, Diagnostic User Interface (Winter/Spring 2027)"
-  },
-  {
-   "department": "Tesla SI",
-   "id": "281951",
-   "location": "Palo Alto, California",
-   "title": "Internship, Software Engineer, Core SI Compiler & Runtime (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Software",
@@ -2356,12 +2314,6 @@
    "title": "Supplier Chargeback Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
-   "department": "Finance",
-   "id": "286004",
-   "location": "Amsterdam, Noord-holland",
-   "title": "Corporate Finance Internship"
-  },
-  {
    "department": "People",
    "id": "286085",
    "location": "Palo Alto, California",
@@ -2476,34 +2428,10 @@
    "title": "Internship, Stock Administrator (Winter/Spring 2027)"
   },
   {
-   "department": "Manufacturing",
-   "id": "286716",
-   "location": "Robstown, Texas",
-   "title": "Chemical Operator Intern, Lithium Refinery "
-  },
-  {
-   "department": "Manufacturing",
-   "id": "286718",
-   "location": "Austin, Texas",
-   "title": "Chemical Operator Intern, Cathode Materials "
-  },
-  {
-   "department": "Manufacturing",
-   "id": "286719",
-   "location": "Robstown, Texas",
-   "title": "I&E Intern, Lithium Refinery"
-  },
-  {
    "department": "Energy Engineering",
    "id": "286768",
    "location": "Amsterdam, Noord-holland",
    "title": "Power Systems Modeling Internship"
-  },
-  {
-   "department": "Manufacturing",
-   "id": "286770",
-   "location": "Austin, Texas",
-   "title": "I&E Intern, Cathode Materials"
   },
   {
    "department": "Sales & Customer Support",
@@ -2588,12 +2516,6 @@
    "id": "287202",
    "location": "Duiven, Gelderland",
    "title": "Service Technician Apprenticeship – Arnhem - Duiven"
-  },
-  {
-   "department": "Supply Chain",
-   "id": "287217",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Manufacturing Purchasing Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Finance",
@@ -2863,7 +2785,7 @@
    "department": "Engineering & Information Technology",
    "id": "288805",
    "location": "Palo Alto, California",
-   "title": "Internship, Product Management, Megapack Services 3 (Winter/Spring 2027)"
+   "title": "Internship, Product Management, Megapack Hardware (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Service",
@@ -3358,6 +3280,12 @@
    "title": "Internship, Robotics Technical Program Manager, Optimus Hardware (Summer 2027)"
   },
   {
+   "department": "Energy - Solar & Storage",
+   "id": "290511",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Marketing Programs Internship"
+  },
+  {
    "department": "Energy Engineering",
    "id": "290512",
    "location": "Grünheide (mark), Brandenburg",
@@ -3386,6 +3314,12 @@
    "id": "290551",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Recruiting Working Student (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Finance",
+   "id": "290554",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Internal Audit Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Vehicle Service",
@@ -3460,6 +3394,12 @@
    "title": "Material Planning Intern (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
+   "department": "Engineering & Information Technology",
+   "id": "290846",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Factory Layout Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "Vehicle Service",
    "id": "290874",
    "location": "Torrance, California",
@@ -3503,6 +3443,24 @@
   },
   {
    "department": "Vehicle Service",
+   "id": "290897",
+   "location": "Irvine, California",
+   "title": "Internship, Service Technician Trainee (Spring 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "290899",
+   "location": "Buena Park, California",
+   "title": "Internship, Service Technician Trainee (Spring 2026)"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "290900",
+   "location": "Anaheim, California",
+   "title": "Internship, Service Technician Trainee (Spring 2026)"
+  },
+  {
+   "department": "Vehicle Service",
    "id": "290903",
    "location": "Encinitas, California",
    "title": "Internship, Service Technician Trainee (Spring 2026)"
@@ -3524,6 +3482,12 @@
    "id": "290947",
    "location": "Alexandria, New South Wales",
    "title": "Customer Support Trainee"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "290994",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Werkstudent Vision / Bildverarbeitung (w/m/d)"
   }
  ]
 }
