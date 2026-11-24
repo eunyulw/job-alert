@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-24T08:59:11.760Z",
- "board_total": 8434,
+ "generated_at": "2026-11-24T22:09:10.986Z",
+ "board_total": 8444,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -262,22 +262,28 @@
    "title": "HR Internship, German Speaker (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
-   "department": "Manufacturing",
-   "id": "276639",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "General Assembly Process Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
    "department": "Tesla SI",
    "id": "277009",
    "location": "Palo Alto, California",
    "title": "Internship, Software Integration Engineer, SI Platforms (Winter/Spring 2027)"
   },
   {
-   "department": "Construction & Facilities",
-   "id": "277090",
-   "location": "Austin, Texas",
-   "title": "Internship, Construction Project Management, Infrastructure (Winter/Spring 2027)"
+   "department": "Manufacturing",
+   "id": "277249",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Ausbildung Industriemechanik (m/w/d) "
+  },
+  {
+   "department": "Operations & Business Support",
+   "id": "277251",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Ausbildung Fachkraft für Lagerlogistik (m/w/d)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "277253",
+   "location": "Neutraubling, Bavaria",
+   "title": " Ausbildung Elektronik für Betriebstechnik (m/w/d)"
   },
   {
    "department": "Charging",
@@ -418,10 +424,70 @@
    "title": "Apprentice Vehicle Technician, Christchurch | January 2027 Intake "
   },
   {
+   "department": "Manufacturing",
+   "id": "278478",
+   "location": "Reutlingen, Baden-württemberg",
+   "title": " Ausbildung Elektronik für Betriebstechnik (m/w/d)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "278482",
+   "location": "Neutraubling, Bavaria",
+   "title": "Ausbildung Mechatronik (m/w/d)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "278488",
+   "location": "Neutraubling, Bavaria",
+   "title": "Ausbildung Industriemechanik (m/w/d)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "278489",
+   "location": "Neutraubling, Bavaria",
+   "title": "Ausbildung Zerspanungsmechanik (m/w/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278492",
+   "location": "Reutlingen, Baden-württemberg",
+   "title": "Duales Studium Wirtschaftsingenieurwesen (m/w/d)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "278499",
+   "location": "Neuwied, Rhineland-palatinate",
+   "title": "Ausbildung Industriemechanik (m/w/d)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "278502",
+   "location": "Neuwied, Rhineland-palatinate",
+   "title": "Ausbildung Elektronik für Betriebstechnik (m/w/d)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "278504",
+   "location": "Neuwied, Rhineland-palatinate",
+   "title": "Ausbildung Mechatronik (m/w/d)"
+  },
+  {
    "department": "Engineering & Information Technology",
    "id": "278506",
    "location": "Neuwied, Rhineland-palatinate",
    "title": "Ausbildung Technisches Produktdesign - Fachrichtung Maschinen- und Anlagenkonstruktion (m/w/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278508",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Ausbildungsintegriertes duales Studium Maschinenbau (m/w/d) - Schwerpunkt Konstruktion"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278509",
+   "location": "Reutlingen, Baden-württemberg",
+   "title": "Ausbildungsintegriertes duales Studium Maschinenbau (m/w/d)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -430,10 +496,88 @@
    "title": "Ausbildungsintegriertes duales Studium Maschinenbau (m/w/d)"
   },
   {
+   "department": "Engineering & Information Technology",
+   "id": "278519",
+   "location": "Reutlingen, Baden-württemberg",
+   "title": "Duales Studium Elektrotechnik, Schwerpunkt Automatisierungstechnik (m/w/d)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "278523",
+   "location": "Reutlingen, Baden-württemberg",
+   "title": "Ausbildung Industriemechanik (m/w/d)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "278525",
+   "location": "Reutlingen, Baden-württemberg",
+   "title": "Ausbildung Mechatronik (m/w/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278529",
+   "location": "Reutlingen, Baden-württemberg",
+   "title": "Ausbildung Zerspanungsmechanik (m/w/d)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "278536",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Ausbildung Elektronik für Betriebstechnik (m/w/d)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "278538",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Ausbildung Mechatronik (m/w/d)"
+  },
+  {
    "department": "Tesla SI",
    "id": "278578",
    "location": "Palo Alto, California",
    "title": "Internship, Software Engineer, SI Infrastructure (Fall 2026/Winter 2027)"
+  },
+  {
+   "department": "Manufacturing",
+   "id": "278653",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Ausbildung Zerspanungsmechanik (m/w/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278655",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Ausbildung Technisches Produktdesign - Fachrichtung Maschinen- und Anlagenkonstruktion (m/w/d)"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "278657",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Ausbildung Konstruktionsmechanik (m/w/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278659",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Ausbildungsintegrietes duales Studium Maschinenbau – Schwerpunkt: Prozessinbetriebnahme & -qualifikation (m/w/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278661",
+   "location": "Neuwied, Rhineland-palatinate",
+   "title": "Ausbildungsintegriertes duales Studium - Elektrotechnik, Schwerpunkt Automatisierungstechnik (m/w/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278666",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": " Ausbildungsintegriertes duales Studium Elektrotechnik, Schwerpunkt Automatisierungstechnik (m/w/d)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "278668",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Ausbildungsintegriertes duales Studium Maschinenbau (m/w/d) - Schwerpunkt Konstruktion"
   },
   {
    "department": "Supply Chain",
@@ -536,6 +680,24 @@
    "id": "279687",
    "location": "Cyberjaya, Selangor",
    "title": "Service Apprentice"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "279694",
+   "location": "Neutraubling, Bavaria",
+   "title": "Ausbildung Technisches Produktdesign - Fachrichtung Maschinen- und Anlagenkonstruktion (m/w/d)"
+  },
+  {
+   "department": "Operations & Business Support",
+   "id": "279696",
+   "location": "Neutraubling, Bavaria",
+   "title": "Ausbildung Fachkraft für Lagerlogistik (m/w/d) "
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "279698",
+   "location": "Reutlingen, Baden-württemberg",
+   "title": "Ausbildung Technisches Produktdesign - Fachrichtung Maschinen- und Anlagenkonstruktion (m/w/d)"
   },
   {
    "department": "Energy Engineering",
@@ -836,6 +998,12 @@
    "id": "281177",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Ausbildung zum Elektroniker Automatisierungstechnik (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "281181",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung zum Fachinformatiker Systemintegration (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
@@ -1354,12 +1522,6 @@
    "title": "Trainee Automotive Mechanic / Service Technician – Park Royal"
   },
   {
-   "department": "Vehicle Service",
-   "id": "282719",
-   "location": "Wezep, Gelderland",
-   "title": "Service Technician Apprenticeship – Zwolle"
-  },
-  {
    "department": "Vehicle Software",
    "id": "282754",
    "location": "Palo Alto, California",
@@ -1754,12 +1916,6 @@
    "id": "284402",
    "location": "Buchs",
    "title": "Ausbildung zum Automobil-Mechatroniker EFZ System- und Hochvolttechnik (m/w/d)- Zurich, Winterthur"
-  },
-  {
-   "department": "Vehicle Software",
-   "id": "284423",
-   "location": "Santa Oliva",
-   "title": "Vehicle Dynamics Chassis Controls Engineering Internship "
   },
   {
    "department": "Tesla SI",
@@ -2260,12 +2416,6 @@
    "title": "Service Technician Apprenticeship – Hengelo"
   },
   {
-   "department": "Vehicle Service",
-   "id": "285727",
-   "location": "Amsterdam, Noord-holland",
-   "title": "Service Technician Apprenticeship – Amsterdam"
-  },
-  {
    "department": "Vehicle Software",
    "id": "285777",
    "location": "Palo Alto, California",
@@ -2294,12 +2444,6 @@
    "id": "285872",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Stamping Process Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
-   "department": "Construction & Facilities",
-   "id": "285879",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Architecture & Integrated Planning Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Supply Chain",
@@ -2374,12 +2518,6 @@
    "title": "Sales Customer Support Advisor (Entry-Level), Sydney"
   },
   {
-   "department": "Engineering & Information Technology",
-   "id": "286433",
-   "location": "Kreisfreie Stadt Berlin",
-   "title": "Homologation Testing Internship (m/w/d)"
-  },
-  {
    "department": "Vehicle Service",
    "id": "286487",
    "location": "Columbia, Maryland",
@@ -2432,12 +2570,6 @@
    "id": "286875",
    "location": "O'connor",
    "title": "Sales Customer Support Advisor (Entry-Level), Perth"
-  },
-  {
-   "department": "Vehicle Service",
-   "id": "286899",
-   "location": "Roma",
-   "title": "Service Technician Traineeship - Rome"
   },
   {
    "department": "Vehicle Service",
@@ -2602,18 +2734,6 @@
    "title": "Industrial Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
-   "department": "Manufacturing",
-   "id": "287631",
-   "location": "Sparks, Nevada",
-   "title": "Professional Engineering Trainee, PEAK Program (Spring 2027)"
-  },
-  {
-   "department": "Manufacturing",
-   "id": "287634",
-   "location": "Brookshire, Texas",
-   "title": "Professional Engineering Trainee, PEAK Program (Spring 2027)"
-  },
-  {
    "department": "Energy Engineering",
    "id": "287709",
    "location": "Melbourne, Vic",
@@ -2665,7 +2785,7 @@
    "department": "Construction & Facilities",
    "id": "287883",
    "location": "Grünheide (mark), Brandenburg",
-   "title": "Mechanical Design Intern for HVAC/Plumbing (m/f/d) - Gigafactory Berlin-Brandenburg"
+   "title": "Mechanical Design HVAC/Plumbing Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
@@ -2792,6 +2912,12 @@
    "id": "288843",
    "location": "Long Beach, California",
    "title": "START Collision Technician (Summer 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "288925",
+   "location": "Neuwied, Rhineland-palatinate",
+   "title": "Ausbildung Technisches Produktdesign - Fachrichtung Maschinen- und Anlagenkonstruktion (m/w/d)"
   },
   {
    "department": "Construction & Facilities",
@@ -3094,12 +3220,6 @@
    "title": "Internship, Software Engineer, SI Reinforcement Learning (Summer 2027)"
   },
   {
-   "department": "Finance",
-   "id": "289284",
-   "location": "Austin, Texas",
-   "title": "Internship, Automotive Revenue Accounting (Winter/Spring 2027)"
-  },
-  {
    "department": "Engineering & Information Technology",
    "id": "289434",
    "location": "Berlin, Be",
@@ -3254,6 +3374,12 @@
    "id": "290184",
    "location": "Bartlett, Tennessee",
    "title": "Internship, Service Technician Trainee (Winter 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "290283",
+   "location": "Neutraubling, Bavaria",
+   "title": "Ausbildungsintegriertes duales Studium Maschinenbau (m/w/d)"
   },
   {
    "department": "People",
@@ -3478,10 +3604,28 @@
    "title": "Customer Support Trainee"
   },
   {
+   "department": "Construction & Facilities",
+   "id": "290981",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Mechanical Engineer Technical Services Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "290983",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Testing and Balancing Engineer Internship – Technical Services (m/f/d) Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "Engineering & Information Technology",
    "id": "290994",
    "location": "Prüm, Rhineland-palatinate",
    "title": "Werkstudent Vision / Bildverarbeitung (w/m/d)"
+  },
+  {
+   "department": "Construction & Facilities",
+   "id": "290999",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Architecture and Integrated Planning Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Vehicle Service",
