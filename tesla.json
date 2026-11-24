@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-24T22:09:10.986Z",
- "board_total": 8444,
+ "generated_at": "2026-11-24T22:59:12.788Z",
+ "board_total": 8437,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -68,12 +68,6 @@
    "id": "247788",
    "location": "Austin, Texas",
    "title": "2026, Manufacturing Development Program"
-  },
-  {
-   "department": "Tesla SI",
-   "id": "253454",
-   "location": "Palo Alto, California",
-   "title": "Internship, Reinforcement Learning Engineer, Optimus (Summer 2026)"
   },
   {
    "department": "Manufacturing",
