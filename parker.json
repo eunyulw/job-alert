@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "board": "parker",
- "generated_at": "2026-11-25T15:19:27.334Z",
- "declared_total": 100,
+ "generated_at": "2026-11-25T17:39:25.662Z",
+ "declared_total": 101,
  "jobs": [
   {
    "id": "17350209",
@@ -199,6 +199,13 @@
    "posted": "2026-10-02T00:00:00.000Z",
    "title": "Supply Chain Intern",
    "url": "https://parkercareers.ttcportals.com/jobs/18305949-supply-chain-intern"
+  },
+  {
+   "id": "18311200",
+   "location": "KENT, WA, United States",
+   "posted": "2026-11-25T00:00:00.000Z",
+   "title": "Intern – Mechanical Engineering (Aerospace)",
+   "url": "https://parkercareers.ttcportals.com/jobs/18311200-intern-mechanical-engineering-aerospace"
   },
   {
    "id": "18312685",
