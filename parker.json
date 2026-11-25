@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "board": "parker",
- "generated_at": "2026-11-25T08:19:31.204Z",
- "declared_total": 101,
+ "generated_at": "2026-11-25T15:19:27.334Z",
+ "declared_total": 100,
  "jobs": [
   {
    "id": "17350209",
@@ -213,13 +213,6 @@
    "posted": "2026-10-13T00:00:00.000Z",
    "title": "Spring 2027 Accounting Intern",
    "url": "https://parkercareers.ttcportals.com/jobs/18354896-spring-2027-accounting-intern"
-  },
-  {
-   "id": "18357281",
-   "location": "CLEVELAND, OH, United States",
-   "posted": "2026-10-30T00:00:00.000Z",
-   "title": "Spring 2027 Economics Intern",
-   "url": "https://parkercareers.ttcportals.com/jobs/18357281-spring-2027-economics-intern"
   },
   {
    "id": "18369443",
