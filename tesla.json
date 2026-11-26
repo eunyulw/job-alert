@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-26T14:09:14.997Z",
- "board_total": 8504,
+ "generated_at": "2026-11-26T19:19:11.150Z",
+ "board_total": 8497,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -266,12 +266,6 @@
    "id": "277251",
    "location": "Prüm, Rhineland-palatinate",
    "title": "Ausbildung Fachkraft für Lagerlogistik (m/w/d)"
-  },
-  {
-   "department": "Charging",
-   "id": "277439",
-   "location": "Munich",
-   "title": "Business Development Internship Charging - München (m/w/d)"
   },
   {
    "department": "Engineering & Information Technology",
@@ -1808,12 +1802,6 @@
    "id": "284215",
    "location": "Fremont, California",
    "title": "Internship, Grid Compliance Test Engineer, Energy Engineering (Winter/Spring 2027)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "284235",
-   "location": "East Attica Regional Unit",
-   "title": "Technical Program Manager Internship"
   },
   {
    "department": "Vehicle Service",
