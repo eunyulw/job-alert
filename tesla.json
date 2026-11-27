@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-11-26T19:19:11.150Z",
- "board_total": 8497,
+ "generated_at": "2026-11-27T17:19:13.397Z",
+ "board_total": 8486,
  "internships": [
   {
    "department": "Vehicle Service",
@@ -335,21 +335,9 @@
   },
   {
    "department": "Supply Chain",
-   "id": "278386",
-   "location": "Fremont, California",
-   "title": "Internship, Industrial Engineer, Supply Chain (Winter/Spring 2027)"
-  },
-  {
-   "department": "Supply Chain",
    "id": "278389",
    "location": "Fremont, California",
    "title": "Internship, Packaging Engineer, Supply Chain (Winter/Spring 2027)"
-  },
-  {
-   "department": "Supply Chain",
-   "id": "278392",
-   "location": "Fremont, California",
-   "title": "Internship, Supply Chain (Winter/Spring 2027)"
   },
   {
    "department": "Vehicle Service",
@@ -422,12 +410,6 @@
    "id": "278489",
    "location": "Neutraubling, Bavaria",
    "title": "Ausbildung Zerspanungsmechanik (m/w/d)"
-  },
-  {
-   "department": "Engineering & Information Technology",
-   "id": "278492",
-   "location": "Reutlingen, Baden-württemberg",
-   "title": "Duales Studium Wirtschaftsingenieurwesen (m/w/d)"
   },
   {
    "department": "Manufacturing",
@@ -878,12 +860,6 @@
    "id": "281025",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Schülerpraktikum im April 2027 (m/w/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
-   "department": "Manufacturing",
-   "id": "281026",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Schülerpraktikum im Juni 2027 (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Manufacturing",
@@ -2566,6 +2542,12 @@
    "title": "Internship, Global Trade (Winter/Spring 2027)"
   },
   {
+   "department": "People",
+   "id": "287285",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "HR Data Analytics - Software Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "Engineering & Information Technology",
    "id": "287308",
    "location": "Berlin, Be",
@@ -2930,6 +2912,12 @@
    "id": "288998",
    "location": "Obertraubling, Bayern",
    "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Regensburg"
+  },
+  {
+   "department": "Vehicle Service",
+   "id": "289001",
+   "location": "Freiburg Im Breisgau",
+   "title": "Ausbildung zum Kfz-Mechatroniker (m/w/d) System inkl. Hochvolttechnik - Freiburg"
   },
   {
    "department": "Vehicle Service",
@@ -3340,16 +3328,16 @@
    "title": "Software Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
+   "department": "Operations & Business Support",
+   "id": "290548",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Ausbildung Industriekaufleute (m/w/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "People",
    "id": "290551",
    "location": "Grünheide (mark), Brandenburg",
    "title": "Recruiting Working Student (m/f/d) - Gigafactory Berlin-Brandenburg"
-  },
-  {
-   "department": "Finance",
-   "id": "290554",
-   "location": "Grünheide (mark), Brandenburg",
-   "title": "Internal Audit Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Vehicle Service",
@@ -3379,19 +3367,19 @@
    "department": "Construction & Facilities",
    "id": "290667",
    "location": "Grünheide (mark), Brandenburg",
-   "title": "Workwear & Personal Protective Equipment (PPE) Intern (m/w/d) - Gigafactory Berlin-Brandenburg"
+   "title": "Workwear & Personal Protective Equipment (PPE) Internship (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Construction & Facilities",
    "id": "290680",
    "location": "Grünheide (mark), Brandenburg",
-   "title": "Outbound Operations & Dispatch Process Optimization Intern (m/w/d) - Gigafactory Berlin-Brandenburg"
+   "title": "Outbound Operations & Dispatch Process Optimization Internship (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Construction & Facilities",
    "id": "290708",
    "location": "Grünheide (mark), Brandenburg",
-   "title": "Inventory Optimization & Warehouse Analytics Intern (m/w/d) - Gigafactory Berlin-Brandenburg"
+   "title": "Inventory Optimization & Warehouse Analytics Internship (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Environmental, Health, Safety & Security",
@@ -3433,13 +3421,13 @@
    "department": "Manufacturing",
    "id": "290839",
    "location": "Grünheide (mark), Brandenburg",
-   "title": "Warehouse Engineer Intern (m/w/d) - Gigafactory Berlin-Brandenburg"
+   "title": "Warehouse Engineer Internship (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Manufacturing",
    "id": "290842",
    "location": "Grünheide (mark), Brandenburg",
-   "title": "Material Planning Intern (m/w/d) - Gigafactory Berlin-Brandenburg"
+   "title": "Material Planning Internship (m/w/d) - Gigafactory Berlin-Brandenburg"
   },
   {
    "department": "Engineering & Information Technology",
@@ -3532,6 +3520,12 @@
    "title": "Customer Support Trainee"
   },
   {
+   "department": "Manufacturing",
+   "id": "290978",
+   "location": "Grünheide (mark), Brandenburg",
+   "title": "Quality Engineering Internship (m/f/d) - Gigafactory Berlin-Brandenburg"
+  },
+  {
    "department": "Construction & Facilities",
    "id": "290981",
    "location": "Grünheide (mark), Brandenburg",
@@ -3569,6 +3563,12 @@
   },
   {
    "department": "Energy - Solar & Storage",
+   "id": "291124",
+   "location": "Amsterdam, Noord-holland",
+   "title": "Sales Engineering Internship"
+  },
+  {
+   "department": "Energy - Solar & Storage",
    "id": "291127",
    "location": "Amsterdam, Noord-holland",
    "title": "Energy Team Technical Project Management Internship"
@@ -3584,6 +3584,12 @@
    "id": "291227",
    "location": "Palo Alto, California",
    "title": "Internship, Robotics Audio DSP Engineer, Optimus (Summer 2027)"
+  },
+  {
+   "department": "Engineering & Information Technology",
+   "id": "291460",
+   "location": "Prüm, Rhineland-palatinate",
+   "title": "Praktikum Enterprise Architecture & Engineering (m/w/d)"
   }
  ]
 }
